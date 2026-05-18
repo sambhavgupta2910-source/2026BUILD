@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PRISM Valuation Intelligence</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <aside class="sidebar">
+        <div>
+          <div class="brand">PRISM</div>
+          <div class="subbrand">Valuation Intelligence</div>
+        </div>
+        <nav>
+          <a class="active" href="#valuation">Valuation</a>
+          <a href="#comparables">Comparables</a>
+          <a href="#market">Market</a>
+          <a href="#quality">Confidence</a>
+        </nav>
+        <div class="unit-lock">
+          <span>Unit basis</span>
+          <strong>AED/sqft</strong>
+        </div>
+      </aside>
+
+      <section class="workspace">
+        <header class="topbar">
+          <div>
+            <h1>Property valuation workspace</h1>
+            <p>Sales-only valuation with sqm source areas converted once to sqft.</p>
+          </div>
+          <div class="status" id="loadStatus">Loading data</div>
+        </header>
+
+        <section class="grid main-grid" id="valuation">
+          <form class="panel form-panel" id="valuationForm">
+            <div class="panel-title">
+              <h2>Subject property</h2>
+              <span>Advisor input</span>
+            </div>
+
+            <label>
+              Area / community
+              <input list="areas" name="area" placeholder="BUSINESS BAY" required />
+            </label>
+            <label>
+              Project
+              <input list="projects" name="project" placeholder="THE CRESTMARK" />
+            </label>
+            <div class="two-col">
+              <label>
+                Property type
+                <input list="propertyTypes" name="propertyType" value="Unit" />
+              </label>
+              <label>
+                Subtype
+                <input list="propertySubtypes" name="propertySubtype" value="Flat" />
+              </label>
+            </div>
+            <div class="two-col">
+              <label>
+                Rooms
+                <input list="rooms" name="rooms" placeholder="1 B/R" />
+              </label>
+              <label>
+                Usage
+                <input list="usage" name="usage" value="Residential" />
+              </label>
+            </div>
+            <div class="two-col">
+              <label>
+                Off-plan
+                <input list="offplan" name="offplan" placeholder="Ready / Off-Plan" />
+              </label>
+              <label>
+                Tenure
+                <input list="freehold" name="freehold" placeholder="Free Hold" />
+              </label>
+            </div>
+            <div class="size-row">
+              <label>
+                Size
+                <input name="size" type="number" min="1" step="0.01" value="900" required />
+              </label>
+              <label>
+                Size unit
+                <select name="sizeUnit">
+                  <option value="sqft">sqft</option>
+                  <option value="sqm">sqm</option>
+                </select>
+              </label>
+            </div>
+            <button type="submit">Run valuation</button>
+          </form>
+
+          <section class="panel results-panel">
+            <div class="panel-title">
+              <h2>Valuation result</h2>
+              <span id="basisLabel">AED/sqft</span>
+            </div>
+            <div class="estimate">
+              <span>Base estimate</span>
+              <strong id="baseValue">-</strong>
+            </div>
+            <div class="range">
+              <div>
+                <span>Low</span>
+                <strong id="lowValue">-</strong>
+              </div>
+              <div>
+                <span>High</span>
+                <strong id="highValue">-</strong>
+              </div>
+            </div>
+            <div class="metric-strip">
+              <div>
+                <span>Base AED/sqft</span>
+                <strong id="basePsf">-</strong>
+              </div>
+              <div>
+                <span>Comparable count</span>
+                <strong id="compCount">-</strong>
+              </div>
+              <div>
+                <span>Confidence</span>
+                <strong id="confidence">-</strong>
+              </div>
+            </div>
+            <div class="advisor-note" id="advisorNote">
+              Enter a property and run valuation.
+            </div>
+          </section>
+        </section>
+
+        <section class="panel" id="quality">
+          <div class="panel-title">
+            <h2>Data confidence</h2>
+            <span>Unit-safe checks</span>
+          </div>
+          <div class="confidence-grid">
+            <div>
+              <span>Source rows</span>
+              <strong id="rowCount">-</strong>
+            </div>
+            <div>
+              <span>Clean Sales rows</span>
+              <strong id="cleanSales">-</strong>
+            </div>
+            <div>
+              <span>Median AED/sqft</span>
+              <strong id="medianPsf">-</strong>
+            </div>
+            <div>
+              <span>Adjusted rows</span>
+              <strong id="winsorizedRows">-</strong>
+            </div>
+          </div>
+          <p class="quality-copy" id="qualityCopy">
+            Raw DLD area fields are treated as square meters, converted once to sqft, and client outputs stay in AED/sqft.
+          </p>
+        </section>
+
+        <section class="panel" id="comparables">
+          <div class="panel-title">
+            <h2>Comparable transactions</h2>
+            <span id="fallbackLabel">No valuation run yet</span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Area</th>
+                  <th>Project</th>
+                  <th>Rooms</th>
+                  <th>Size sqft</th>
+                  <th>Value AED</th>
+                  <th>AED/sqft</th>
+                  <th>Adjusted</th>
+                </tr>
+              </thead>
+              <tbody id="comparablesBody">
+                <tr>
+                  <td colspan="8">Run a valuation to see comparable transactions.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="grid market-grid" id="market">
+          <section class="panel">
+            <div class="panel-title">
+              <h2>Top areas</h2>
+              <span>By Sales count</span>
+            </div>
+            <div id="topAreas" class="rank-list"></div>
+          </section>
+          <section class="panel">
+            <div class="panel-title">
+              <h2>Top projects</h2>
+              <span>By Sales count</span>
+            </div>
+            <div id="topProjects" class="rank-list"></div>
+          </section>
+        </section>
+      </section>
+    </main>
+
+    <datalist id="areas"></datalist>
+    <datalist id="projects"></datalist>
+    <datalist id="propertyTypes"></datalist>
+    <datalist id="propertySubtypes"></datalist>
+    <datalist id="rooms"></datalist>
+    <datalist id="usage"></datalist>
+    <datalist id="offplan"></datalist>
+    <datalist id="freehold"></datalist>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
