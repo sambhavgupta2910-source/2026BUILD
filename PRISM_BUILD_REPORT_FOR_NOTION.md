@@ -2,12 +2,13 @@
 
 ## Executive Summary
 
-Two separated handoff packages are being saved in this GitHub repository:
+This GitHub repository now contains:
 
-- `artifacts/prism-valuation-web-mvp.zip`
-- `artifacts/prism-original-colab-analysis.zip`
+- `artifacts/prism-valuation-web-mvp.zip` - uploaded web MVP prototype package
+- `prism-original-colab-analysis/` - documentation for the original Colab analytical baseline
+- `PRISM_BUILD_REPORT_FOR_NOTION.md` - this handoff report
 
-The web MVP is a UI and architecture prototype. It should not be treated as production-ready or analytically authoritative. The original Colab notebook has been preserved separately because it was considered more accurate.
+The web MVP is a UI and architecture prototype. It should not be treated as production-ready or analytically authoritative. The original Colab notebook has been preserved locally because it was considered more accurate, but the full notebook zip was too large to safely upload through the current connector path.
 
 ## Current Build
 
@@ -59,10 +60,35 @@ The MVP assumes DLD area fields are square meters:
 - Tested Business Bay / The Crestmark valuation
 - Tested JVC area-level valuation
 
+## GitHub Upload Status
+
+Uploaded:
+
+- Web MVP zip artifact
+- Build report
+- Original-analysis documentation
+
+Not uploaded:
+
+- Raw transaction CSV
+- Full original Colab notebook zip
+
+The original notebook remains available locally at:
+
+```text
+C:\Users\bhavn\Downloads\Coding Enviroment_
+```
+
+Prepared local package:
+
+```text
+C:\Users\bhavn\OneDrive\Documents\PRISM APP & Elevate Advisory\repo-bundles\prism-original-colab-analysis.zip
+```
+
 ## Recommended Next Steps
 
-1. Download both zip artifacts from this repo.
-2. Unzip and inspect original Colab analysis first.
+1. Download the web MVP zip from this repo.
+2. Upload the original Colab zip through GitHub web UI, GitHub Desktop, or Google Drive.
 3. Run side-by-side validation between the original notebook and web MVP outputs.
 4. Lock canonical cleaning, filtering, and unit rules.
 5. Refine the valuation logic only after reconciliation.
