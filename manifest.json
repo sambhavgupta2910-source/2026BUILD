@@ -1,0 +1,40 @@
+{
+  "name": "APEX Charters",
+  "short_name": "APEX",
+  "description": "Private aviation redefined. Search, personalise, and fly.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0D1B3E",
+  "theme_color": "#0D1B3E",
+  "categories": ["travel", "lifestyle"],
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Search Flights",
+      "short_name": "Search",
+      "description": "Search available private aircraft",
+      "url": "/#search"
+    },
+    {
+      "name": "Empty Legs",
+      "short_name": "Deals",
+      "description": "View discounted empty leg flights",
+      "url": "/#empty-legs"
+    }
+  ]
+}

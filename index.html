@@ -2,15 +2,48 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>APEX Charters — Private Aviation Redefined</title>
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- Theme colour (nav bar on Android) -->
+    <meta name="theme-color" content="#0D1B3E" />
+
+    <!-- iOS — makes "Add to Home Screen" launch full-screen like a native app -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="APEX" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- Android -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="application-name" content="APEX" />
+
+    <!-- SEO / Share card -->
+    <meta name="description" content="Private aviation redefined. Search, personalise, and fly anywhere in the world." />
+    <meta property="og:title" content="APEX Charters" />
+    <meta property="og:description" content="Instant AI-matched private jet quotes. No broker markups." />
+    <meta property="og:type" content="website" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-    <script type="module" crossorigin src="/2026BUILD/assets/index-BbD2L0aZ.js"></script>
-    <link rel="stylesheet" crossorigin href="/2026BUILD/assets/index-C1_TPSQD.css">
+    <script type="module" crossorigin src="/assets/index-BbD2L0aZ.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-C1_TPSQD.css">
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js');
+        });
+      }
+    </script>
   </body>
 </html>
