@@ -24,6 +24,10 @@
           <span>Unit basis</span>
           <strong>AED/sqft</strong>
         </div>
+        <div class="oracle-url-wrap">
+          <span>Oracle backend</span>
+          <input id="oracleUrl" type="text" value="http://localhost:8000" spellcheck="false" />
+        </div>
       </aside>
 
       <section class="workspace">
@@ -48,8 +52,9 @@
             </label>
             <label>
               Project
-              <input list="projects" name="project" placeholder="THE CRESTMARK" />
+              <input list="projects" name="project" id="projectInput" placeholder="THE CRESTMARK" autocomplete="off" />
             </label>
+            <div class="oracle-search-chip" id="oracleSearchChip" hidden></div>
             <div class="two-col">
               <label>
                 Property type
@@ -80,6 +85,41 @@
                 <input list="freehold" name="freehold" placeholder="Free Hold" />
               </label>
             </div>
+            <div class="oracle-divider">Oracle inputs</div>
+            <label>
+              Listing price (AED)
+              <input name="listingPrice" type="number" min="0" step="10000" placeholder="3500000" />
+            </label>
+            <div class="two-col">
+              <label>
+                Bedrooms
+                <input name="bedrooms" type="number" min="0" max="10" step="1" placeholder="1" />
+              </label>
+              <label>
+                Floor
+                <input name="floor" type="number" min="0" max="200" step="1" placeholder="10" />
+              </label>
+            </div>
+            <div class="two-col">
+              <label>
+                Brand
+                <input list="brands" name="brand" value="None" />
+              </label>
+              <label>
+                View
+                <input list="views" name="view" value="Standard" />
+              </label>
+            </div>
+            <label>
+              Unit category
+              <select name="unitCategory">
+                <option value="Standard">Standard</option>
+                <option value="Premium">Premium</option>
+                <option value="Luxury">Luxury</option>
+                <option value="Ultra-Luxury">Ultra-Luxury</option>
+              </select>
+            </label>
+
             <div class="size-row">
               <label>
                 Size
@@ -96,43 +136,93 @@
             <button type="submit">Run valuation</button>
           </form>
 
-          <section class="panel results-panel">
-            <div class="panel-title">
-              <h2>Valuation result</h2>
-              <span id="basisLabel">AED/sqft</span>
-            </div>
-            <div class="estimate">
-              <span>Base estimate</span>
-              <strong id="baseValue">-</strong>
-            </div>
-            <div class="range">
-              <div>
-                <span>Low</span>
-                <strong id="lowValue">-</strong>
+          <div class="results-col">
+            <section class="panel results-panel">
+              <div class="panel-title">
+                <h2>Comparable median</h2>
+                <span id="basisLabel">AED/sqft</span>
               </div>
-              <div>
-                <span>High</span>
-                <strong id="highValue">-</strong>
+              <div class="estimate">
+                <span>Base estimate</span>
+                <strong id="baseValue">—</strong>
               </div>
-            </div>
-            <div class="metric-strip">
-              <div>
-                <span>Base AED/sqft</span>
-                <strong id="basePsf">-</strong>
+              <div class="range">
+                <div>
+                  <span>Low (P25)</span>
+                  <strong id="lowValue">—</strong>
+                </div>
+                <div>
+                  <span>High (P75)</span>
+                  <strong id="highValue">—</strong>
+                </div>
               </div>
-              <div>
-                <span>Comparable count</span>
-                <strong id="compCount">-</strong>
+              <div class="metric-strip">
+                <div>
+                  <span>Base AED/sqft</span>
+                  <strong id="basePsf">—</strong>
+                </div>
+                <div>
+                  <span>Comparable count</span>
+                  <strong id="compCount">—</strong>
+                </div>
+                <div>
+                  <span>Confidence</span>
+                  <strong id="confidence">—</strong>
+                </div>
               </div>
-              <div>
-                <span>Confidence</span>
-                <strong id="confidence">-</strong>
+              <div class="advisor-note" id="advisorNote">
+                Enter a property and run valuation.
               </div>
-            </div>
-            <div class="advisor-note" id="advisorNote">
-              Enter a property and run valuation.
-            </div>
-          </section>
+            </section>
+
+            <section class="panel oracle-panel" id="oraclePanel">
+              <div class="panel-title">
+                <h2>Oracle AI estimate</h2>
+                <span id="oracleBadge">Enter fields → run</span>
+              </div>
+              <div class="estimate oracle-estimate">
+                <span>Fair value</span>
+                <strong id="oracleFairValue">—</strong>
+              </div>
+              <div class="range">
+                <div>
+                  <span>Confidence low</span>
+                  <strong id="oracleConfLow">—</strong>
+                </div>
+                <div>
+                  <span>Confidence high</span>
+                  <strong id="oracleConfHigh">—</strong>
+                </div>
+              </div>
+              <div class="oracle-metric-grid">
+                <div><span>Fair AED/sqft</span><strong id="oracleFairPsf">—</strong></div>
+                <div><span>Brand premium</span><strong id="oracleBrandPremium">—</strong></div>
+                <div><span>Premium %</span><strong id="oraclePremiumPct">—</strong></div>
+                <div><span>Gross yield</span><strong id="oracleYield">—</strong></div>
+                <div><span>Total return</span><strong id="oracleReturn">—</strong></div>
+                <div><span>Est. DOM</span><strong id="oracleDom">—</strong></div>
+              </div>
+              <div class="oracle-liquidity">
+                <div class="oracle-liquidity-row">
+                  <span>Sell in 30 days</span>
+                  <strong id="oracleSell30">—</strong>
+                </div>
+                <div class="oracle-liquidity-row">
+                  <span>Sell in 90 days</span>
+                  <strong id="oracleSell90">—</strong>
+                </div>
+                <div class="oracle-liquidity-row">
+                  <span>Overpricing risk</span>
+                  <strong id="oracleRisk">—</strong>
+                </div>
+                <div class="oracle-liquidity-row">
+                  <span>Liquidity score</span>
+                  <div class="liquidity-bar-wrap"><div class="liquidity-bar" id="oracleLiqBar"></div></div>
+                  <strong id="oracleLiqScore">—</strong>
+                </div>
+              </div>
+            </section>
+          </div>
         </section>
 
         <section class="panel" id="quality">
@@ -274,6 +364,30 @@
     <datalist id="usage"></datalist>
     <datalist id="offplan"></datalist>
     <datalist id="freehold"></datalist>
+    <datalist id="oracleProjects"></datalist>
+    <datalist id="brands">
+      <option value="None"></option>
+      <option value="Armani"></option>
+      <option value="Bulgari"></option>
+      <option value="Four Seasons"></option>
+      <option value="Dorchester"></option>
+      <option value="Ritz-Carlton"></option>
+      <option value="W Hotels"></option>
+      <option value="Versace"></option>
+      <option value="Lamborghini"></option>
+      <option value="Bugatti"></option>
+      <option value="Cavalli"></option>
+    </datalist>
+    <datalist id="views">
+      <option value="Standard"></option>
+      <option value="Sea View"></option>
+      <option value="Burj View"></option>
+      <option value="Golf View"></option>
+      <option value="Canal View"></option>
+      <option value="Marina View"></option>
+      <option value="Park View"></option>
+      <option value="City View"></option>
+    </datalist>
 
     <script src="/app.js"></script>
   </body>

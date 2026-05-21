@@ -411,6 +411,147 @@ a { color: inherit; text-decoration: none; }
 .table-wrap tr:last-child td { border-bottom: none; }
 .table-wrap tr:hover td { background: var(--bg-elev-2); }
 
+/* Oracle integration --------------------------------------------------- */
+
+.oracle-url-wrap {
+  padding: 10px 12px;
+  background: var(--bg-elev-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.oracle-url-wrap span {
+  font-size: 10px;
+  color: var(--text-mute);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.oracle-url-wrap input {
+  background: transparent;
+  border: none;
+  color: var(--accent);
+  font-size: 11px;
+  font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+  padding: 0;
+  outline: none;
+  width: 100%;
+}
+
+.oracle-divider {
+  font-size: 10px;
+  color: var(--text-mute);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  padding: 8px 0 2px;
+  border-top: 1px solid var(--border);
+  margin-top: 2px;
+}
+
+.oracle-search-chip {
+  font-size: 11px;
+  color: var(--text-dim);
+  padding: 5px 9px;
+  background: var(--bg-elev-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.results-col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;
+}
+
+.oracle-panel {
+  border-left: 3px solid var(--warn);
+}
+
+.oracle-estimate strong {
+  color: var(--warn);
+}
+
+.oracle-metric-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.oracle-metric-grid > div {
+  padding: 8px 10px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.oracle-metric-grid span {
+  font-size: 10px;
+  color: var(--text-mute);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.oracle-metric-grid strong { font-size: 13px; font-weight: 600; }
+
+.oracle-liquidity {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 12px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.oracle-liquidity-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  gap: 8px;
+}
+
+.oracle-liquidity-row span { color: var(--text-dim); white-space: nowrap; }
+
+.liquidity-bar-wrap {
+  flex: 1;
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.liquidity-bar {
+  height: 100%;
+  width: 0%;
+  background: var(--good);
+  border-radius: 2px;
+  transition: width 0.5s ease;
+}
+
+.risk-badge {
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.risk-badge.risk-low  { background: rgba(95,214,168,0.15); color: var(--good); }
+.risk-badge.risk-medium { background: rgba(246,179,92,0.15); color: var(--warn); }
+.risk-badge.risk-high { background: rgba(239,107,107,0.15); color: var(--bad); }
+
+@media (max-width: 700px) {
+  .oracle-metric-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
 /* Trends --------------------------------------------------------------- */
 
 .trends-grid {

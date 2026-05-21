@@ -172,24 +172,167 @@ function renderError(msg) {
     '<tr><td colspan="8">No comparables for this query.</td></tr>';
 }
 
-async function runValuation(event) {
-  event.preventDefault();
+async function callNodeValuation(formData) {
   const note = $('#advisorNote');
-  note.textContent = 'Running valuation…';
+  note.textContent = 'Running comparable-median…';
   try {
     const res = await fetch('/api/valuation', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify(readForm()),
+      body: JSON.stringify(formData),
     });
     const data = await res.json();
-    if (!res.ok || data.error) {
-      renderError(data.error || `HTTP ${res.status}`);
-      return;
-    }
+    if (!res.ok || data.error) { renderError(data.error || `HTTP ${res.status}`); return; }
     renderResult(data);
   } catch (err) {
     renderError(err.message || 'Request failed');
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Oracle backend integration
+// ---------------------------------------------------------------------------
+
+const getOracleUrl = () => (document.getElementById('oracleUrl')?.value || '').replace(/\/$/, '');
+
+let _oracleSearchTimer = null;
+function onProjectInput(e) {
+  clearTimeout(_oracleSearchTimer);
+  const q = (e.target.value || '').trim();
+  if (q.length < 2) return;
+  _oracleSearchTimer = setTimeout(() => searchOracle(q), 300);
+}
+
+async function searchOracle(q) {
+  const base = getOracleUrl();
+  if (!base) return;
+  try {
+    const res = await fetch(`${base}/search?q=${encodeURIComponent(q)}`);
+    if (!res.ok) return;
+    const results = await res.json();
+    const dl = document.getElementById('oracleProjects');
+    if (dl) dl.innerHTML = results.map((r) => `<option value="${escapeAttr(r.name)}"></option>`).join('');
+    const chip = document.getElementById('oracleSearchChip');
+    if (!chip) return;
+    if (!results.length) { chip.hidden = true; return; }
+    const first = results[0];
+    chip.textContent = `${first.name} · ${first.location} · ${fmtPsf(first.avgPsf)} AED/sqft · Liquidity ${first.liquidityScore}`;
+    chip.hidden = false;
+  } catch { /* backend offline — silent */ }
+}
+
+async function callOraclePredict(formData) {
+  const base = getOracleUrl();
+  if (!base) { renderOracleError('No Oracle URL configured'); return; }
+
+  const sizeRaw = parseFloat(formData.size) || 0;
+  const sizeSqFt = formData.sizeUnit === 'sqm' ? sizeRaw * 10.764 : sizeRaw;
+  const listingPrice = parseFloat(formData.listingPrice) || (sizeSqFt * 3000);
+
+  const body = {
+    project: formData.project || '',
+    sizeSqFt: Math.round(sizeSqFt * 100) / 100,
+    bedrooms: parseInt(formData.bedrooms, 10) || 1,
+    unitCategory: formData.unitCategory || 'Standard',
+    listingPrice,
+    floor: parseInt(formData.floor, 10) || 10,
+    brand: formData.brand || 'None',
+    view: formData.view || 'Standard',
+  };
+
+  document.getElementById('oracleBadge').textContent = 'Running…';
+  try {
+    const res = await fetch(`${base}/predict`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    if (!res.ok) { renderOracleError(`Oracle error: HTTP ${res.status}`); return; }
+    renderOracleResult(await res.json());
+  } catch (err) {
+    renderOracleError(`Oracle unreachable: ${err.message}`);
+  }
+}
+
+function renderOracleResult(data) {
+  const v = data.valuation || {};
+  const l = data.liquidity || {};
+
+  document.getElementById('oracleFairValue').textContent = fmtAed(v.fairValuePrice);
+  document.getElementById('oracleConfLow').textContent = fmtAed(v.confidenceLow);
+  document.getElementById('oracleConfHigh').textContent = fmtAed(v.confidenceHigh);
+  document.getElementById('oracleFairPsf').textContent = `${fmtPsf(v.fairValuePsf)} AED/sqft`;
+  document.getElementById('oracleBrandPremium').textContent = fmtAed(v.brandPremiumAmount);
+  document.getElementById('oraclePremiumPct').textContent =
+    Number.isFinite(v.brandPremiumPercent) ? `${v.brandPremiumPercent.toFixed(1)}%` : '—';
+  document.getElementById('oracleYield').textContent =
+    Number.isFinite(v.grossYield) ? `${v.grossYield.toFixed(1)}%` : '—';
+  document.getElementById('oracleReturn').textContent =
+    Number.isFinite(v.totalReturn) ? `${v.totalReturn.toFixed(1)}%` : '—';
+  document.getElementById('oracleDom').textContent =
+    Number.isFinite(l.estimatedDOM) ? `${l.estimatedDOM} days` : '—';
+  document.getElementById('oracleSell30').textContent =
+    Number.isFinite(l.probabilityToSell30Days) ? `${l.probabilityToSell30Days.toFixed(0)}%` : '—';
+  document.getElementById('oracleSell90').textContent =
+    Number.isFinite(l.probabilityToSell90Days) ? `${l.probabilityToSell90Days.toFixed(0)}%` : '—';
+
+  const riskEl = document.getElementById('oracleRisk');
+  const risk = l.overpricingRisk || '—';
+  riskEl.textContent = risk;
+  riskEl.className = `risk-badge risk-${risk.toLowerCase()}`;
+
+  const score = l.liquidityScore || 0;
+  document.getElementById('oracleLiqScore').textContent = `${score.toFixed(0)} / 100`;
+  document.getElementById('oracleLiqBar').style.width = `${Math.min(100, score)}%`;
+  document.getElementById('oracleBadge').textContent = 'Oracle AI';
+}
+
+function renderOracleError(msg) {
+  document.getElementById('oracleBadge').textContent = 'Offline';
+  ['oracleFairValue','oracleConfLow','oracleConfHigh','oracleFairPsf',
+   'oracleBrandPremium','oraclePremiumPct','oracleYield','oracleReturn',
+   'oracleDom','oracleSell30','oracleSell90'].forEach((id) => {
+    document.getElementById(id).textContent = '—';
+  });
+  document.getElementById('oracleRisk').textContent = msg;
+  document.getElementById('oracleRisk').className = 'risk-badge';
+  document.getElementById('oracleLiqScore').textContent = '—';
+  document.getElementById('oracleLiqBar').style.width = '0%';
+}
+
+async function runValuation(event) {
+  event.preventDefault();
+  const formData = readForm();
+  await Promise.allSettled([
+    callNodeValuation(formData),
+    callOraclePredict(formData),
+  ]);
+}
+
+// ---------------------------------------------------------------------------
+// URL query-parameter auto-fill + zero-touch auto-run
+// ---------------------------------------------------------------------------
+
+function applyUrlParams() {
+  const params = new URLSearchParams(location.search);
+  if (![...params.keys()].length) return;
+  const form = document.getElementById('valuationForm');
+  if (!form) return;
+  const fields = [
+    'area','project','rooms','size','sizeUnit','offplan','freehold',
+    'listingPrice','bedrooms','brand','view','unitCategory','floor',
+  ];
+  let anySet = false;
+  for (const name of fields) {
+    const val = params.get(name);
+    if (val === null) continue;
+    const el = form.elements[name];
+    if (el) { el.value = val; anySet = true; }
+  }
+  if (anySet) {
+    loadMetadata()
+      .then(() => form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true })))
+      .catch(() => {});
   }
 }
 
@@ -360,16 +503,22 @@ async function loadTrends() {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-  loadMetadata().catch(() => {});
-  loadTrends().catch(() => {});
+  const hasUrlParams = [...new URLSearchParams(location.search).keys()].length > 0;
+  if (!hasUrlParams) {
+    loadMetadata().catch(() => {});
+    loadTrends().catch(() => {});
+  }
+  applyUrlParams();
+
   $('#valuationForm').addEventListener('submit', runValuation);
+  document.getElementById('projectInput')?.addEventListener('input', onProjectInput);
 
   // Nav highlight follows hash
   const nav = document.querySelectorAll('aside nav a');
-  const apply = () => {
+  const applyHash = () => {
     const hash = location.hash || '#valuation';
     nav.forEach((a) => a.classList.toggle('active', a.getAttribute('href') === hash));
   };
-  window.addEventListener('hashchange', apply);
-  apply();
+  window.addEventListener('hashchange', applyHash);
+  applyHash();
 });
