@@ -137,13 +137,28 @@ h3 { font-size: 1.25rem; font-weight: 600; }
 .hero {
   min-height: 100vh;
   background:
-    linear-gradient(165deg, rgba(13,27,62,0.92) 0%, rgba(13,27,62,0.75) 50%, rgba(13,27,62,0.88) 100%),
-    url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1920&q=80') center/cover no-repeat;
+    linear-gradient(165deg, #0A1428 0%, #0D1B3E 40%, #0F2252 70%, #0A1830 100%);
   display: flex;
   align-items: center;
   padding-top: 72px;
   position: relative;
   overflow: hidden;
+}
+/* Layered depth — runway lights perspective grid */
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(212,168,67,0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(212,168,67,0.04) 1px, transparent 1px);
+  background-size: 80px 80px;
+  transform: perspective(600px) rotateX(48deg) scaleX(1.8);
+  transform-origin: bottom center;
+  bottom: -20%;
+  mask-image: linear-gradient(to top, rgba(0,0,0,0.35) 0%, transparent 55%);
+  -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,0.35) 0%, transparent 55%);
+  pointer-events: none;
 }
 .hero::before {
   content: '';
