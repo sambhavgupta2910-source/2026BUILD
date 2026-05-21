@@ -16,6 +16,7 @@
         <nav>
           <a class="active" href="#valuation">Valuation</a>
           <a href="#comparables">Comparables</a>
+          <a href="#trends">Trends</a>
           <a href="#market">Market</a>
           <a href="#quality">Confidence</a>
         </nav>
@@ -185,6 +186,62 @@
                 <tr>
                   <td colspan="8">Run a valuation to see comparable transactions.</td>
                 </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="grid trends-grid" id="trends">
+          <section class="panel trends-chart-panel">
+            <div class="panel-title">
+              <h2>Monthly transaction trends</h2>
+              <span id="trendsDateRange">-</span>
+            </div>
+            <div id="trendsChart" class="trends-chart-wrap">
+              <div class="rank-empty">Loading trends…</div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-title">
+              <h2>Off-plan vs ready</h2>
+              <span>Sales split</span>
+            </div>
+            <div id="offplanSplit" class="offplan-split"></div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-title">
+              <h2>Period statistics</h2>
+              <span id="trendsRange">-</span>
+            </div>
+            <div class="confidence-grid">
+              <div><span>Total Sales</span><strong id="trendsTotalCount">-</strong></div>
+              <div><span>Total Volume</span><strong id="trendsTotalValue">-</strong></div>
+              <div><span>Peak Month</span><strong id="trendsPeakMonth">-</strong></div>
+              <div><span>Peak AED/sqft</span><strong id="trendsPeakPsf">-</strong></div>
+            </div>
+          </section>
+        </section>
+
+        <section class="panel" id="sublocations">
+          <div class="panel-title">
+            <h2>Sub-location performance</h2>
+            <span>AREA_EN · top 25 by volume</span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Area</th>
+                  <th>Transactions</th>
+                  <th>Median AED/sqft</th>
+                  <th>Off-Plan %</th>
+                  <th>Price trend</th>
+                </tr>
+              </thead>
+              <tbody id="areaStatsBody">
+                <tr><td colspan="5">Loading sub-location data…</td></tr>
               </tbody>
             </table>
           </div>

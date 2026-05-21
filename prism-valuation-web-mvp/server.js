@@ -287,6 +287,82 @@ function buildMetadata(d) {
 }
 
 // ---------------------------------------------------------------------------
+// Trends — monthly aggregates, off-plan split, sub-location breakdown
+// ---------------------------------------------------------------------------
+
+function buildTrends(dataset) {
+  const byMonth = new Map();
+  for (const r of dataset.rows) {
+    const month = r.date ? r.date.slice(0, 7) : '';
+    if (!month) continue;
+    if (!byMonth.has(month)) {
+      byMonth.set(month, { count: 0, psfs: [], totalValue: 0, offplanCount: 0, readyCount: 0 });
+    }
+    const b = byMonth.get(month);
+    b.count++;
+    b.psfs.push(r.aedPerSqft);
+    b.totalValue += r.transValue;
+    if ((r.offplan || '').toLowerCase().includes('off')) b.offplanCount++;
+    else b.readyCount++;
+  }
+
+  const monthly = [...byMonth.entries()]
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([month, b]) => ({
+      month,
+      count: b.count,
+      medianPsf: median(b.psfs),
+      totalValue: b.totalValue,
+      offplanCount: b.offplanCount,
+      readyCount: b.readyCount,
+    }));
+
+  const offplanBuckets = new Map();
+  for (const r of dataset.rows) {
+    const key = r.offplan || 'Unknown';
+    if (!offplanBuckets.has(key)) offplanBuckets.set(key, { count: 0, psfs: [] });
+    offplanBuckets.get(key).count++;
+    offplanBuckets.get(key).psfs.push(r.aedPerSqft);
+  }
+  const totalClean = dataset.rows.length;
+  const offplanSplit = [...offplanBuckets.entries()]
+    .map(([label, b]) => ({
+      label,
+      count: b.count,
+      medianPsf: median(b.psfs),
+      share: totalClean > 0 ? b.count / totalClean : 0,
+    }))
+    .sort((a, b) => b.count - a.count);
+
+  const areaStats = [...dataset.byArea.entries()]
+    .map(([label, rows]) => {
+      const sorted = [...rows].sort((a, b) => (a.date < b.date ? -1 : 1));
+      const half = Math.floor(sorted.length / 2);
+      const firstMed = median(sorted.slice(0, half).map((r) => r.aedPerSqft));
+      const lastMed = median(sorted.slice(half).map((r) => r.aedPerSqft));
+      const trend = firstMed > 0 ? ((lastMed - firstMed) / firstMed) * 100 : 0;
+      const offplanCount = rows.filter((r) => (r.offplan || '').toLowerCase().includes('off')).length;
+      return {
+        label,
+        count: rows.length,
+        medianPsf: median(rows.map((r) => r.aedPerSqft)),
+        offplanPct: Math.round((offplanCount / rows.length) * 100),
+        trend: Math.round(trend * 10) / 10,
+      };
+    })
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 25);
+
+  return {
+    dateMin: dataset.dateMin,
+    dateMax: dataset.dateMax,
+    monthly,
+    offplanSplit,
+    areaStats,
+  };
+}
+
+// ---------------------------------------------------------------------------
 // Valuation engine — comparable-median with documented fallback widening
 // ---------------------------------------------------------------------------
 
@@ -474,11 +550,15 @@ async function start() {
   const csvText = await loadCsvText();
   const dataset = buildDataset(csvText);
   const metadata = buildMetadata(dataset);
+  const trends = buildTrends(dataset);
 
   const server = http.createServer(async (req, res) => {
     try {
       if (req.method === 'GET' && req.url === '/api/metadata') {
         return send(res, 200, metadata);
+      }
+      if (req.method === 'GET' && req.url === '/api/trends') {
+        return send(res, 200, trends);
       }
       if (req.method === 'POST' && req.url === '/api/valuation') {
         const body = await readJson(req);
