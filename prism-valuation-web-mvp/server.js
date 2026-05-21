@@ -626,17 +626,75 @@ function readJson(req) {
   });
 }
 
-async function start() {
+// ---------------------------------------------------------------------------
+// Dataset state — rebuilt on boot and on each scheduled/manual refresh
+// ---------------------------------------------------------------------------
+
+let state = { dataset: null, metadata: null, trends: null };
+
+async function rebuildDataset() {
   const csvText = await loadCsvText();
   const dataset = buildDataset(csvText);
   const metadata = buildMetadata(dataset);
   const trends = buildTrends(dataset);
+  analysisCache.clear();
+  state = { dataset, metadata, trends };
+  console.log(
+    `[data] rebuilt — ${dataset.cleanRows.toLocaleString()} rows, ` +
+      `${metadata.areas.length} areas, ${metadata.projects.length} projects`,
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Nightly scheduler — fires at midnight UAE time (UTC+4)
+// ---------------------------------------------------------------------------
+
+function scheduleNightlyRefresh() {
+  const nowMs = Date.now();
+  const uaeOffset = 4 * 60 * 60 * 1000;
+  const nowUAE = new Date(nowMs + uaeOffset);
+  const midnightUAE = new Date(nowUAE);
+  midnightUAE.setUTCHours(20, 0, 0, 0); // 20:00 UTC = 00:00 UAE
+  if (midnightUAE <= nowUAE) midnightUAE.setUTCDate(midnightUAE.getUTCDate() + 1);
+  const msUntil = midnightUAE - nowUAE;
+  console.log(`[refresh] next nightly reload in ${(msUntil / 3_600_000).toFixed(1)}h`);
+  setTimeout(async () => {
+    console.log('[refresh] nightly reload starting…');
+    try {
+      await rebuildDataset();
+      console.log('[refresh] nightly reload complete');
+    } catch (err) {
+      console.error('[refresh] nightly reload failed:', err.message);
+    }
+    scheduleNightlyRefresh();
+  }, msUntil);
+}
+
+// ---------------------------------------------------------------------------
+// HTTP server
+// ---------------------------------------------------------------------------
+
+async function start() {
+  await rebuildDataset();
+  scheduleNightlyRefresh();
 
   const server = http.createServer(async (req, res) => {
+    const { dataset, metadata, trends } = state;
     try {
       if (req.url === '/healthz') {
         return send(res, 200, { ok: true, rows: dataset.cleanRows, aiEnabled: !!anthropic });
       }
+
+      // Manual refresh webhook — POST /api/refresh?token=SECRET
+      if (req.method === 'POST' && req.url.startsWith('/api/refresh')) {
+        const token = new URL(req.url, 'http://x').searchParams.get('token');
+        const secret = process.env.REFRESH_SECRET;
+        if (!secret || token !== secret) return send(res, 401, { error: 'unauthorized' });
+        console.log('[refresh] manual webhook triggered');
+        await rebuildDataset();
+        return send(res, 200, { ok: true, rows: state.dataset.cleanRows });
+      }
+
       if (req.method === 'GET' && req.url === '/api/metadata') {
         return send(res, 200, metadata);
       }
@@ -666,10 +724,6 @@ async function start() {
 
   server.listen(PORT, () => {
     console.log(`[server] PRISM ready at http://localhost:${PORT}/`);
-    console.log(
-      `[server] ${dataset.cleanRows.toLocaleString()} clean residential-sales rows, ` +
-        `${metadata.areas.length} areas, ${metadata.projects.length} projects`,
-    );
   });
 }
 
