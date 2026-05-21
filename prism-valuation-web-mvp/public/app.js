@@ -93,7 +93,10 @@ async function loadMetadata() {
       m.dateMin && m.dateMax
         ? ` · ${fmtDate(m.dateMin)} → ${fmtDate(m.dateMax)}`
         : '';
-    status.textContent = `${fmtInt(m.cleanRows)} clean sales${range}`;
+    const statusText = `${fmtInt(m.cleanRows)} clean sales${range}`;
+    status.textContent = statusText;
+    const mobileStatus = document.getElementById('mobileStatus');
+    if (mobileStatus) mobileStatus.textContent = statusText;
 
     $('#qualityCopy').textContent =
       `Pipeline: GROUP_EN=Sales, USAGE_EN=Residential, PROCEDURE_AREA (sqm) × 10.764 = sqft, ` +
@@ -552,6 +555,11 @@ async function loadTrends() {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
+  // Register service worker for PWA
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
+  }
+
   const hasUrlParams = [...new URLSearchParams(location.search).keys()].length > 0;
   if (!hasUrlParams) {
     loadMetadata().catch(() => {});
@@ -562,12 +570,13 @@ window.addEventListener('DOMContentLoaded', () => {
   $('#valuationForm').addEventListener('submit', runValuation);
   document.getElementById('projectInput')?.addEventListener('input', onProjectInput);
 
-  // Nav highlight follows hash
-  const nav = document.querySelectorAll('aside nav a');
+  // Nav highlight — covers both sidebar and mobile bottom nav
+  const allNavLinks = document.querySelectorAll('aside nav a, .mobile-nav-item');
   const applyHash = () => {
     const hash = location.hash || '#valuation';
-    nav.forEach((a) => a.classList.toggle('active', a.getAttribute('href') === hash));
+    allNavLinks.forEach((a) => a.classList.toggle('active', a.getAttribute('href') === hash));
   };
   window.addEventListener('hashchange', applyHash);
   applyHash();
 });
+

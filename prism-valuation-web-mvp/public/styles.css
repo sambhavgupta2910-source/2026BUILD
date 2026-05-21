@@ -779,3 +779,164 @@ a { color: inherit; text-decoration: none; }
   .trends-grid { grid-template-columns: 1fr; }
   .trends-chart-panel { grid-column: auto; }
 }
+
+/* ── Mobile header (hidden on desktop) ───────────────────────────────── */
+
+.mobile-header {
+  display: none;
+}
+
+/* ── Mobile bottom nav (hidden on desktop) ───────────────────────────── */
+
+.mobile-nav {
+  display: none;
+}
+
+/* ── Mobile breakpoint ───────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+
+  /* Show mobile header */
+  .mobile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    padding-top: max(14px, env(safe-area-inset-top));
+    background: var(--bg-elev);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+
+  .mobile-brand {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    background: linear-gradient(135deg, var(--accent-strong), #a0cfff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .mobile-header .status {
+    font-size: 11px;
+    padding: 5px 10px;
+  }
+
+  /* Show mobile bottom nav */
+  .mobile-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--bg-elev);
+    border-top: 1px solid var(--border);
+    padding-bottom: max(env(safe-area-inset-bottom), 4px);
+    z-index: 100;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.4);
+  }
+
+  .mobile-nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 4px 8px;
+    min-height: 56px;
+    gap: 4px;
+    color: var(--text-mute);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    transition: color 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .mobile-nav-item svg {
+    width: 22px;
+    height: 22px;
+    stroke-width: 1.8;
+  }
+
+  .mobile-nav-item.active {
+    color: var(--accent-strong);
+  }
+
+  /* Hide desktop sidebar */
+  .sidebar { display: none; }
+
+  /* Hide desktop topbar (mobile header replaces it) */
+  .topbar { display: none; }
+
+  /* Shell: single column */
+  .shell {
+    grid-template-columns: 1fr;
+  }
+
+  /* Workspace: full width, bottom padding for nav */
+  .workspace {
+    padding: 16px 16px max(80px, calc(56px + env(safe-area-inset-bottom) + 16px));
+    gap: 16px;
+  }
+
+  /* Main grid: single column */
+  .main-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  /* Hero card: tighter */
+  .hero-card { padding: 18px; }
+
+  .hero-value {
+    font-size: 34px;
+  }
+
+  .hero-top { margin-bottom: 14px; }
+
+  /* Market grid: single column */
+  .market-grid { grid-template-columns: 1fr; }
+
+  /* Confidence grid: 2 cols on mobile */
+  .confidence-grid { grid-template-columns: 1fr 1fr; }
+
+  /* Metric strip: 2 cols on mobile */
+  .metric-strip { grid-template-columns: 1fr 1fr; }
+
+  /* Oracle metric grid: 2 cols */
+  .oracle-metric-grid { grid-template-columns: 1fr 1fr; }
+
+  /* Table min-width relaxed */
+  .table-wrap table { min-width: 500px; }
+
+  /* Form: full tap targets */
+  .form-panel input,
+  .form-panel select {
+    min-height: 48px;
+    font-size: 16px; /* prevents iOS zoom on focus */
+  }
+
+  .form-panel button {
+    min-height: 52px;
+    font-size: 16px;
+  }
+
+  /* Panel padding tighter on mobile */
+  .panel { padding: 16px; }
+
+  /* Trends: always single column on small screen */
+  .trends-grid { grid-template-columns: 1fr; }
+  .trends-chart-panel { grid-column: auto; }
+
+  /* Off-plan cards: side by side on mobile */
+  .offplan-split { grid-template-columns: 1fr 1fr; }
+
+  /* Range: stack on very small */
+  .hero-range {
+    grid-template-columns: 1fr auto 1fr;
+  }
+}
