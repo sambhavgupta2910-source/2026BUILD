@@ -123,53 +123,102 @@ function renderResult(result) {
   $('#baseValue').textContent = fmtAed(result.baseValue);
   $('#lowValue').textContent = fmtAed(result.lowValue);
   $('#highValue').textContent = fmtAed(result.highValue);
-  $('#basePsf').textContent = `${fmtPsf(result.basePsf)} AED/sqft`;
-  $('#compCount').textContent = fmtInt(result.compCount);
-  $('#confidence').textContent = result.confidence;
-  $('#fallbackLabel').textContent = `Match: ${result.fallback.label} · ${fmtInt(result.compCount)} comps`;
+
+  const psfText = `${fmtPsf(result.basePsf)} AED/sqft`;
+  $('#basePsf').textContent = psfText;
+  const bps = document.getElementById('basePsfStrip');
+  if (bps) bps.textContent = psfText;
+
+  const compText = fmtInt(result.compCount);
+  $('#compCount').textContent = compText;
+  const ccs = document.getElementById('compCountStrip');
+  if (ccs) ccs.textContent = compText;
+
+  const confEl = $('#confidence');
+  confEl.textContent = result.confidence;
+  confEl.className = `conf-value conf-${result.confidence.toLowerCase()}`;
+
+  const ml = document.getElementById('matchLevel');
+  if (ml) ml.textContent = result.fallback.id;
+
+  $('#fallbackLabel').textContent =
+    `${result.fallback.label} · ${fmtInt(result.compCount)} comps`;
 
   const note = [];
-  if (result.resolvedArea) note.push(`Area: ${result.resolvedArea}`);
+  if (result.resolvedArea)    note.push(`Area: ${result.resolvedArea}`);
   if (result.resolvedProject) note.push(`Project: ${result.resolvedProject}`);
-  note.push(`Size used: ${Math.round(result.sizeSqft).toLocaleString('en-US')} sqft`);
-  note.push(
-    `Range: ${fmtPsf(result.lowPsf)}–${fmtPsf(result.highPsf)} AED/sqft (IQR of comparables)`,
-  );
+  note.push(`${Math.round(result.sizeSqft).toLocaleString('en-US')} sqft`);
+  note.push(`Range: ${fmtPsf(result.lowPsf)}–${fmtPsf(result.highPsf)} AED/sqft`);
   $('#advisorNote').textContent = note.join(' · ');
 
   const tbody = $('#comparablesBody');
   if (!result.comparables.length) {
     tbody.innerHTML = '<tr><td colspan="8">No comparables.</td></tr>';
-    return;
+  } else {
+    tbody.innerHTML = result.comparables
+      .map((c) => `<tr>
+        <td>${escapeAttr(fmtDate(c.date))}</td>
+        <td>${escapeAttr(c.area || '')}</td>
+        <td>${escapeAttr(c.project || '')}</td>
+        <td>${escapeAttr(c.rooms || '')}</td>
+        <td>${fmtInt(Math.round(c.sizeSqft))}</td>
+        <td>${fmtAed(c.transValue)}</td>
+        <td>${fmtPsf(c.aedPerSqft)}</td>
+        <td>${escapeAttr(result.fallback.id)}</td>
+      </tr>`)
+      .join('');
   }
-  tbody.innerHTML = result.comparables
-    .map(
-      (c) => `
-        <tr>
-          <td>${escapeAttr(fmtDate(c.date))}</td>
-          <td>${escapeAttr(c.area || '')}</td>
-          <td>${escapeAttr(c.project || '')}</td>
-          <td>${escapeAttr(c.rooms || '')}</td>
-          <td>${fmtInt(Math.round(c.sizeSqft))}</td>
-          <td>${fmtAed(c.transValue)}</td>
-          <td>${fmtPsf(c.aedPerSqft)}</td>
-          <td>${escapeAttr(result.fallback.id)}</td>
-        </tr>`,
-    )
-    .join('');
+
+  if (result.resolvedArea) loadAnalysis(result.resolvedArea);
+}
+
+// ---------------------------------------------------------------------------
+// Claude AI commentary
+// ---------------------------------------------------------------------------
+
+async function loadAnalysis(area) {
+  const block = document.getElementById('insightBlock');
+  const loading = document.getElementById('insightLoading');
+  const textEl = document.getElementById('insightText');
+  const areaEl = document.getElementById('insightArea');
+  if (!block) return;
+
+  block.hidden = false;
+  if (areaEl) areaEl.textContent = area;
+  if (loading) { loading.hidden = false; loading.textContent = 'Generating market commentary…'; }
+  if (textEl) textEl.hidden = true;
+
+  try {
+    const res = await fetch(`/api/analysis?area=${encodeURIComponent(area)}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    if (loading) loading.hidden = true;
+    if (textEl) {
+      if (data.commentary) {
+        textEl.textContent = data.commentary;
+        textEl.hidden = false;
+      } else {
+        loading.hidden = false;
+        loading.textContent = data.reason || 'AI commentary unavailable';
+      }
+    }
+  } catch (err) {
+    if (loading) { loading.hidden = false; loading.textContent = `AI unavailable: ${err.message}`; }
+  }
 }
 
 function renderError(msg) {
   $('#advisorNote').textContent = msg;
-  $('#baseValue').textContent = '—';
-  $('#lowValue').textContent = '—';
-  $('#highValue').textContent = '—';
-  $('#basePsf').textContent = '—';
-  $('#compCount').textContent = '—';
-  $('#confidence').textContent = '—';
+  ['baseValue','lowValue','highValue','basePsf','compCount'].forEach(
+    (id) => { const el = document.getElementById(id); if (el) el.textContent = '—'; }
+  );
+  const confEl = $('#confidence');
+  confEl.textContent = '—';
+  confEl.className = 'conf-value';
   $('#fallbackLabel').textContent = 'No match';
-  $('#comparablesBody').innerHTML =
-    '<tr><td colspan="8">No comparables for this query.</td></tr>';
+  $('#comparablesBody').innerHTML = '<tr><td colspan="8">No comparables for this query.</td></tr>';
+  const block = document.getElementById('insightBlock');
+  if (block) block.hidden = true;
 }
 
 async function callNodeValuation(formData) {

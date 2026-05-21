@@ -17,6 +17,7 @@ import https from 'node:https';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import Anthropic from '@anthropic-ai/sdk';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PUBLIC_DIR = path.join(__dirname, 'public');
@@ -24,6 +25,8 @@ const CACHE_DIR = path.join(__dirname, '.cache');
 
 const PORT = Number(process.env.PORT || 4173);
 const SQM_TO_SQFT = 10.764;
+const anthropic = process.env.ANTHROPIC_API_KEY ? new Anthropic() : null;
+const analysisCache = new Map();
 
 const DEFAULT_DRIVE_FILE_ID = '1mo0YAYfbBMguqk1qQ4E2XT06rxuJWzCa';
 const DEFAULT_URL = `https://drive.google.com/uc?export=download&id=${DEFAULT_DRIVE_FILE_ID}`;
@@ -363,6 +366,83 @@ function buildTrends(dataset) {
 }
 
 // ---------------------------------------------------------------------------
+// Claude market commentary — /api/analysis
+// ---------------------------------------------------------------------------
+
+function buildAreaContext(dataset, area) {
+  const rows = dataset.byArea.get(area) || [];
+  if (!rows.length) return null;
+  const sorted = [...rows].sort((a, b) => (a.date < b.date ? -1 : 1));
+  const half = Math.floor(sorted.length / 2);
+  const firstMed = median(sorted.slice(0, half).map((r) => r.aedPerSqft));
+  const lastMed = median(sorted.slice(half).map((r) => r.aedPerSqft));
+  const trend = firstMed > 0 ? ((lastMed - firstMed) / firstMed) * 100 : 0;
+  const offplanCount = rows.filter((r) => (r.offplan || '').toLowerCase().includes('off')).length;
+  const byProject = new Map();
+  for (const r of rows) {
+    const p = r.project || '';
+    if (!p) continue;
+    if (!byProject.has(p)) byProject.set(p, []);
+    byProject.get(p).push(r.aedPerSqft);
+  }
+  const topProjects = [...byProject.entries()]
+    .map(([name, psfs]) => ({ name, count: psfs.length, medianPsf: Math.round(median(psfs)) }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 3);
+  return {
+    area,
+    dateMin: (dataset.dateMin || '').slice(0, 10),
+    dateMax: (dataset.dateMax || '').slice(0, 10),
+    totalTransactions: rows.length,
+    medianPsf: Math.round(median(rows.map((r) => r.aedPerSqft))),
+    offplanPct: Math.round((offplanCount / rows.length) * 100),
+    trend: Math.round(trend * 10) / 10,
+    topProjects,
+  };
+}
+
+async function getAnalysis(dataset, area) {
+  if (!anthropic) return { commentary: null, reason: 'ANTHROPIC_API_KEY not configured' };
+  const ctx = buildAreaContext(dataset, area);
+  if (!ctx) return { commentary: null, reason: `No transaction data for area: ${area}` };
+
+  const monthKey = new Date().toISOString().slice(0, 7);
+  const cacheKey = `${area}:${monthKey}`;
+  if (analysisCache.has(cacheKey)) return analysisCache.get(cacheKey);
+
+  const topProjLines = ctx.topProjects
+    .map((p, i) => `  ${i + 1}. ${p.name} — ${p.count.toLocaleString()} txns — ${p.medianPsf.toLocaleString()} AED/sqft`)
+    .join('\n');
+
+  const userContent =
+    `Area: ${ctx.area}\n` +
+    `Date range: ${ctx.dateMin} to ${ctx.dateMax}\n` +
+    `Total residential sales: ${ctx.totalTransactions.toLocaleString()}\n` +
+    `Median price: ${ctx.medianPsf.toLocaleString()} AED/sqft\n` +
+    `Off-plan share: ${ctx.offplanPct}%\n` +
+    `Price trend (first half vs second half): ${ctx.trend > 0 ? '+' : ''}${ctx.trend}%\n` +
+    `Top projects:\n${topProjLines}`;
+
+  const msg = await anthropic.messages.create({
+    model: 'claude-haiku-4-5-20251001',
+    max_tokens: 220,
+    system:
+      'You are a senior Dubai real estate analyst writing for professional advisors on the PRISM platform. ' +
+      'Write exactly 3-4 sentences of concise, data-driven market commentary. ' +
+      'Be specific: cite the AED/sqft figures, transaction counts, and percentage changes from the data. ' +
+      'Cover: (1) overall price level and recent trend direction, (2) what the off-plan share signals about buyer composition, ' +
+      '(3) one sharp, actionable insight about this sub-market. No filler, no caveats, no disclaimers.',
+    messages: [{ role: 'user', content: userContent }],
+  });
+
+  const commentary = msg.content[0]?.text?.trim() || '';
+  const result = { commentary, dataSnapshot: ctx };
+  analysisCache.set(cacheKey, result);
+  console.log(`[analysis] generated commentary for ${area} (${commentary.length} chars)`);
+  return result;
+}
+
+// ---------------------------------------------------------------------------
 // Valuation engine — comparable-median with documented fallback widening
 // ---------------------------------------------------------------------------
 
@@ -554,11 +634,22 @@ async function start() {
 
   const server = http.createServer(async (req, res) => {
     try {
+      if (req.url === '/healthz') {
+        return send(res, 200, { ok: true, rows: dataset.cleanRows, aiEnabled: !!anthropic });
+      }
       if (req.method === 'GET' && req.url === '/api/metadata') {
         return send(res, 200, metadata);
       }
       if (req.method === 'GET' && req.url === '/api/trends') {
         return send(res, 200, trends);
+      }
+      if (req.method === 'GET' && req.url.startsWith('/api/analysis')) {
+        const qs = new URL(req.url, 'http://x').searchParams;
+        const area = qs.get('area') || '';
+        if (!area) return send(res, 400, { error: 'area parameter required' });
+        const areaKey = [...dataset.byArea.keys()].find((k) => norm(k) === norm(area)) || area;
+        const result = await getAnalysis(dataset, areaKey);
+        return send(res, 200, result);
       }
       if (req.method === 'POST' && req.url === '/api/valuation') {
         const body = await readJson(req);
