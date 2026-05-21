@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { aircraftFleet } from '../data/aircraft.js';
+import AircraftSilhouette from './AircraftSilhouette.jsx';
 
 function SkeletonCard() {
   return (
@@ -79,8 +80,8 @@ export default function FlightResults({ searchParams, loading, onSelect }) {
             ? Array.from({ length: 6 }, (_, i) => <SkeletonCard key={i} />)
             : sorted.map(ac => (
               <div key={ac.id} className="aircraft-card">
-                <div className={`aircraft-visual ${ac.categoryClass}`}>
-                  <span>{ac.icon}</span>
+                <div className={`aircraft-visual ${ac.categoryClass}`} style={{ padding: 0 }}>
+                  <AircraftSilhouette categoryClass={ac.categoryClass} />
                   <div className="aircraft-badge">{ac.category}</div>
                   {ac.bestValue && <div className="best-value-badge">★ Best Value</div>}
                 </div>

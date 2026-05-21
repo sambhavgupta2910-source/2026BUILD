@@ -5,6 +5,108 @@ function genRef() {
   return 'AX-' + Math.random().toString(36).toUpperCase().slice(2, 8);
 }
 
+function WhatsAppShare({ from, to, aircraft, searchParams, total, flightHours, ref_ }) {
+  const [generating, setGenerating] = useState(false);
+  const [cardUrl, setCardUrl] = useState(null);
+
+  async function generateCard() {
+    setGenerating(true);
+    try {
+      const departure = searchParams?.departure;
+      const dateStr = departure
+        ? new Date(departure + 'T12:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
+        : '';
+
+      const res = await fetch('/api/quote-card', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          from: from?.city,
+          to: to?.city,
+          aircraft: aircraft?.model,
+          passengers: searchParams?.pax,
+          price: total,
+          dates: dateStr,
+          tripType: (searchParams?.tripType || 'ONE WAY').toUpperCase(),
+          ref: ref_,
+        }),
+      });
+
+      if (res.ok) {
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        setCardUrl(url);
+      }
+    } catch {}
+    setGenerating(false);
+  }
+
+  const waText = encodeURIComponent(
+    `✈ APEX Charters Quote\n${from?.city || ''} → ${to?.city || ''}\n${aircraft?.model} · ${searchParams?.pax} pax\n$${total?.toLocaleString()} USD\nRef: ${ref_}\n\napex-charters.com`
+  );
+
+  return (
+    <div style={{
+      background: '#E7F8EF', border: '1.5px solid #B8DBC8',
+      borderRadius: 'var(--radius)', padding: 18, marginBottom: 20
+    }}>
+      <div style={{ fontWeight: 700, fontSize: '0.9rem', marginBottom: 12, display: 'flex', alignItems: 'center', gap: 8 }}>
+        <span style={{ fontSize: '1.2rem' }}>💬</span> Share Quote Card
+      </div>
+      <div style={{ display: 'flex', gap: 10 }}>
+        <button
+          onClick={generateCard}
+          disabled={generating}
+          style={{
+            flex: 1, padding: '11px 16px',
+            background: generating ? '#ccc' : '#0D1B3E',
+            color: 'white', borderRadius: 'var(--radius)',
+            fontWeight: 700, fontSize: '0.82rem', border: 'none',
+            cursor: generating ? 'not-allowed' : 'pointer',
+            transition: 'var(--transition)',
+          }}
+        >
+          {generating ? 'Generating card…' : cardUrl ? '↻ Regenerate Card' : '⬇ Generate Quote Card'}
+        </button>
+        {cardUrl && (
+          <a
+            href={cardUrl}
+            download={`apex-quote-${ref_}.png`}
+            style={{
+              padding: '11px 16px',
+              background: '#25D366', color: 'white',
+              borderRadius: 'var(--radius)', fontWeight: 700,
+              fontSize: '0.82rem', textDecoration: 'none',
+              display: 'flex', alignItems: 'center', gap: 6,
+            }}
+          >
+            ↓ Save
+          </a>
+        )}
+        <a
+          href={`https://wa.me/?text=${waText}`}
+          target="_blank"
+          rel="noreferrer"
+          style={{
+            padding: '11px 16px',
+            background: '#25D366', color: 'white',
+            borderRadius: 'var(--radius)', fontWeight: 700,
+            fontSize: '0.82rem', textDecoration: 'none',
+            display: 'flex', alignItems: 'center', gap: 6,
+          }}
+        >
+          Share →
+        </a>
+      </div>
+      {cardUrl && (
+        <div style={{ marginTop: 12, borderRadius: 8, overflow: 'hidden', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}>
+          <img src={cardUrl} alt="Quote card" style={{ width: '100%', display: 'block' }} />
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function QuotePanel({ quoteData, onClose, onToast }) {
   const { aircraft, searchParams, selections } = quoteData;
   const [aiText, setAiText] = useState('');
@@ -172,6 +274,16 @@ export default function QuotePanel({ quoteData, onClose, onToast }) {
                   <span className="price-val">${total.toLocaleString()}</span>
                 </div>
               </div>
+
+              {/* WhatsApp quote card share */}
+              <WhatsAppShare
+                from={from} to={to}
+                aircraft={aircraft}
+                searchParams={searchParams}
+                total={total}
+                flightHours={flightHours}
+                ref_={ref}
+              />
 
               <div className="quote-form">
                 <h4>Send me the full quote</h4>
