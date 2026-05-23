@@ -16,87 +16,52 @@ function WhatsAppShare({ from, to, aircraft, searchParams, total, flightHours, r
       const dateStr = departure
         ? new Date(departure + 'T12:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
         : '';
-
       const res = await fetch('/api/quote-card', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          from: from?.city,
-          to: to?.city,
-          aircraft: aircraft?.model,
-          passengers: searchParams?.pax,
-          price: total,
-          dates: dateStr,
-          tripType: (searchParams?.tripType || 'ONE WAY').toUpperCase(),
-          ref: ref_,
+          from: from?.city, to: to?.city, aircraft: aircraft?.model,
+          passengers: searchParams?.pax, price: total, dates: dateStr,
+          tripType: (searchParams?.tripType || 'ONE WAY').toUpperCase(), ref: ref_,
         }),
       });
-
       if (res.ok) {
         const blob = await res.blob();
-        const url = URL.createObjectURL(blob);
-        setCardUrl(url);
+        setCardUrl(URL.createObjectURL(blob));
       }
     } catch {}
     setGenerating(false);
   }
 
   const waText = encodeURIComponent(
-    `✈ APEX Charters Quote\n${from?.city || ''} → ${to?.city || ''}\n${aircraft?.model} · ${searchParams?.pax} pax\n$${total?.toLocaleString()} USD\nRef: ${ref_}\n\napex-charters.com`
+    `✈ APEX Charters Quote\n${from?.city || ''} → ${to?.city || ''}\n${aircraft?.model} · ${searchParams?.pax} pax · ~${flightHours}h\n$${total?.toLocaleString()} USD\nRef: ${ref_}\n\napex-charters.com`
   );
 
   return (
-    <div style={{
-      background: '#E7F8EF', border: '1.5px solid #B8DBC8',
-      borderRadius: 'var(--radius)', padding: 18, marginBottom: 20
-    }}>
+    <div style={{ background: '#E7F8EF', border: '1.5px solid #B8DBC8', borderRadius: 'var(--radius)', padding: 18, marginBottom: 20 }}>
       <div style={{ fontWeight: 700, fontSize: '0.9rem', marginBottom: 12, display: 'flex', alignItems: 'center', gap: 8 }}>
         <span style={{ fontSize: '1.2rem' }}>💬</span> Share Quote Card
       </div>
       <div style={{ display: 'flex', gap: 10 }}>
-        <button
-          onClick={generateCard}
-          disabled={generating}
-          style={{
-            flex: 1, padding: '11px 16px',
-            background: generating ? '#ccc' : '#0D1B3E',
-            color: 'white', borderRadius: 'var(--radius)',
-            fontWeight: 700, fontSize: '0.82rem', border: 'none',
-            cursor: generating ? 'not-allowed' : 'pointer',
-            transition: 'var(--transition)',
-          }}
-        >
-          {generating ? 'Generating card…' : cardUrl ? '↻ Regenerate Card' : '⬇ Generate Quote Card'}
+        <button onClick={generateCard} disabled={generating} style={{
+          flex: 1, padding: '11px 16px', background: generating ? '#ccc' : '#0D1B3E',
+          color: 'white', borderRadius: 'var(--radius)', fontWeight: 700, fontSize: '0.82rem',
+          border: 'none', cursor: generating ? 'not-allowed' : 'pointer',
+        }}>
+          {generating ? 'Generating…' : cardUrl ? '↻ Regenerate Card' : '⬇ Generate Quote Card'}
         </button>
         {cardUrl && (
-          <a
-            href={cardUrl}
-            download={`apex-quote-${ref_}.png`}
-            style={{
-              padding: '11px 16px',
-              background: '#25D366', color: 'white',
-              borderRadius: 'var(--radius)', fontWeight: 700,
-              fontSize: '0.82rem', textDecoration: 'none',
-              display: 'flex', alignItems: 'center', gap: 6,
-            }}
-          >
-            ↓ Save
-          </a>
+          <a href={cardUrl} download={`apex-quote-${ref_}.png`} style={{
+            padding: '11px 16px', background: '#25D366', color: 'white',
+            borderRadius: 'var(--radius)', fontWeight: 700, fontSize: '0.82rem',
+            textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 6,
+          }}>↓ Save</a>
         )}
-        <a
-          href={`https://wa.me/?text=${waText}`}
-          target="_blank"
-          rel="noreferrer"
-          style={{
-            padding: '11px 16px',
-            background: '#25D366', color: 'white',
-            borderRadius: 'var(--radius)', fontWeight: 700,
-            fontSize: '0.82rem', textDecoration: 'none',
-            display: 'flex', alignItems: 'center', gap: 6,
-          }}
-        >
-          Share →
-        </a>
+        <a href={`https://wa.me/?text=${waText}`} target="_blank" rel="noreferrer" style={{
+          padding: '11px 16px', background: '#25D366', color: 'white',
+          borderRadius: 'var(--radius)', fontWeight: 700, fontSize: '0.82rem',
+          textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 6,
+        }}>Share →</a>
       </div>
       {cardUrl && (
         <div style={{ marginTop: 12, borderRadius: 8, overflow: 'hidden', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}>
@@ -117,30 +82,51 @@ export default function QuotePanel({ quoteData, onClose, onToast }) {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [ref] = useState(genRef);
+  const [flightHours, setFlightHours] = useState(null);
+  const [distNm, setDistNm] = useState(null);
+  const [baseTotal, setBaseTotal] = useState(0);
+  const [priceLoading, setPriceLoading] = useState(true);
 
   const from = searchParams?.from;
-  const to = searchParams?.to;
+  const to   = searchParams?.to;
   const departure = searchParams?.departure;
 
-  const flightHours = Math.max(1.5, Math.floor(Math.random() * 8) + 2);
-  const baseTotal = aircraft.basePrice * flightHours;
-  const cateringCost = selections?.catering === 'michelin' ? 6500 : selections?.catering === 'premium' ? 1800 : 0;
-  const entCost = selections?.entertainment === 'cinema' ? 950 : selections?.entertainment === 'boardroom' ? 1400 : 0;
-  const transferCost = selections?.transfer === 'helicopter' ? 4800 : selections?.transfer === 'luxury' ? 1200 : 0;
+  const cateringCost  = selections?.catering === 'michelin' ? 6500 : selections?.catering === 'premium' ? 1800 : 0;
+  const entCost       = selections?.entertainment === 'cinema' ? 950 : selections?.entertainment === 'boardroom' ? 1400 : 0;
+  const transferCost  = selections?.transfer === 'helicopter' ? 4800 : selections?.transfer === 'luxury' ? 1200 : 0;
   const total = baseTotal + cateringCost + entCost + transferCost;
 
+  // Fetch real pricing based on actual route distance
+  useEffect(() => {
+    async function loadPrice() {
+      setPriceLoading(true);
+      try {
+        const res = await fetch('/api/flight-price', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ from, to, categoryClass: aircraft.categoryClass, basePrice: aircraft.basePrice }),
+        });
+        const data = await res.json();
+        setFlightHours(data.flightHours);
+        setDistNm(data.distNm);
+        setBaseTotal(data.tripCost);
+      } catch {
+        setFlightHours(3.5);
+        setBaseTotal(aircraft.basePrice * 3.5 + 2400);
+      }
+      setPriceLoading(false);
+    }
+    loadPrice();
+  }, []);
+
+  // Stream AI route analysis
   useEffect(() => {
     const stream = async () => {
       try {
         const res = await fetch('/api/quote-stream', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            from: from?.city,
-            to: to?.city,
-            aircraft: aircraft.model,
-            pax: searchParams?.pax,
-          }),
+          body: JSON.stringify({ from: from?.city, to: to?.city, aircraft: aircraft.model, pax: searchParams?.pax }),
         });
         const reader = res.body.getReader();
         const decoder = new TextDecoder();
@@ -149,8 +135,7 @@ export default function QuotePanel({ quoteData, onClose, onToast }) {
           const { done, value } = await reader.read();
           if (done) break;
           const chunk = decoder.decode(value);
-          const lines = chunk.split('\n').filter(l => l.startsWith('data: '));
-          for (const line of lines) {
+          for (const line of chunk.split('\n').filter(l => l.startsWith('data: '))) {
             const data = line.slice(6);
             if (data === '[DONE]') { setAiDone(true); return; }
             try {
@@ -161,7 +146,7 @@ export default function QuotePanel({ quoteData, onClose, onToast }) {
         }
         setAiDone(true);
       } catch {
-        setAiText(`Analyzed ${from?.city || 'origin'} → ${to?.city || 'destination'} across 340+ operators. Optimal route identified with ${aircraft.model}. Positioning costs minimized. All-in pricing confirmed — no hidden fees.`);
+        setAiText(`Analyzed ${from?.city || 'origin'} → ${to?.city || 'destination'} across 340+ operators. Optimal route identified with ${aircraft.model}. All-in pricing confirmed — no hidden fees.`);
         setAiDone(true);
       }
     };
@@ -173,15 +158,23 @@ export default function QuotePanel({ quoteData, onClose, onToast }) {
     if (!name || !email) return;
     setSubmitting(true);
     try {
-      await fetch('/api/send-quote', {
+      const res = await fetch('/api/send-quote', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, phone, ref, aircraft, searchParams, selections, total }),
+        body: JSON.stringify({ name, email, phone, ref, aircraft, searchParams, selections, total, flightHours, distNm }),
       });
-    } catch {}
+      const data = await res.json();
+      onToast({
+        type: 'success',
+        text: data.emailSent
+          ? `Quote ${ref} sent to ${email}`
+          : `Quote ${ref} confirmed — concierge will contact you shortly`,
+      });
+      setSubmitted(true);
+    } catch {
+      onToast({ type: 'error', text: 'Could not send quote. Please try again.' });
+    }
     setSubmitting(false);
-    setSubmitted(true);
-    onToast({ type: 'success', text: `Quote ${ref} sent to ${email}` });
   }
 
   return (
@@ -204,22 +197,21 @@ export default function QuotePanel({ quoteData, onClose, onToast }) {
               <div className="success-ref">{ref}</div>
               <p>
                 Your formal quote has been sent to <strong>{email}</strong>.
-                Your dedicated APEX concierge will call within <strong>15 minutes</strong> to confirm details and secure your aircraft.
+                Your dedicated APEX concierge will call within <strong>15 minutes</strong>.
               </p>
               <div style={{ marginTop: 24, fontSize: '0.85rem', color: 'var(--muted)' }}>
-                Questions? WhatsApp your concierge directly using reference <strong>{ref}</strong>.
+                Questions? WhatsApp your concierge with reference <strong>{ref}</strong>.
               </div>
             </div>
           ) : (
             <>
               {from && to && (
                 <div className="quote-flight-summary">
-                  <div className="qfs-route">
-                    {from.code} <span>→</span> {to.code}
-                  </div>
+                  <div className="qfs-route">{from.code} <span>→</span> {to.code}</div>
                   <div className="qfs-details">
                     {from.city} → {to.city} · {aircraft.model} · {searchParams?.pax} pax
                     {departure && ` · ${new Date(departure + 'T12:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}`}
+                    {distNm && ` · ${distNm.toLocaleString()} nm`}
                   </div>
                 </div>
               )}
@@ -227,24 +219,33 @@ export default function QuotePanel({ quoteData, onClose, onToast }) {
               <div className="ai-thinking">
                 <div className="ai-thinking-header">
                   ✦ APEX Intelligence
-                  {!aiDone && (
-                    <div className="ai-dots">
-                      <span /><span /><span />
-                    </div>
-                  )}
+                  {!aiDone && <div className="ai-dots"><span /><span /><span /></div>}
                   {aiDone && <span style={{ color: 'var(--sage)', fontSize: '0.82rem', fontWeight: 600 }}>✓ Analysis complete</span>}
                 </div>
-                <div className="ai-stream">
-                  {aiText || 'Analyzing routes, operators, and positioning costs…'}
-                </div>
+                <div className="ai-stream">{aiText || 'Analyzing routes, operators, and positioning costs…'}</div>
               </div>
 
               <div className="price-breakdown">
                 <h4>Price Breakdown</h4>
-                <div className="price-row">
-                  <span>{aircraft.model} — {flightHours}h est. flight time</span>
-                  <span className="price-val">${baseTotal.toLocaleString()}</span>
-                </div>
+                {priceLoading ? (
+                  <div style={{ padding: '16px 0', color: 'var(--muted)', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <span style={{ display: 'inline-block', width: 14, height: 14, border: '2px solid var(--gold-bright)', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+                    Calculating route distance…
+                  </div>
+                ) : (
+                  <div className="price-row">
+                    <span>
+                      {aircraft.model} — {flightHours}h est. flight
+                      {distNm && <span style={{ color: 'var(--muted)', fontSize: '0.78rem' }}> &nbsp;({distNm.toLocaleString()} nm great circle)</span>}
+                    </span>
+                    <span className="price-val">${baseTotal.toLocaleString()}</span>
+                  </div>
+                )}
+                {!priceLoading && (
+                  <div className="price-row" style={{ fontSize: '0.78rem', color: 'var(--muted)', paddingTop: 0 }}>
+                    <span>Includes landing fees, FBO handling &amp; navigation charges</span>
+                  </div>
+                )}
                 {cateringCost > 0 && (
                   <div className="price-row">
                     <span>{cateringOptions.find(o => o.id === selections.catering)?.title} Dining</span>
@@ -275,14 +276,10 @@ export default function QuotePanel({ quoteData, onClose, onToast }) {
                 </div>
               </div>
 
-              {/* WhatsApp quote card share */}
               <WhatsAppShare
-                from={from} to={to}
-                aircraft={aircraft}
-                searchParams={searchParams}
-                total={total}
-                flightHours={flightHours}
-                ref_={ref}
+                from={from} to={to} aircraft={aircraft}
+                searchParams={searchParams} total={total}
+                flightHours={flightHours} ref_={ref}
               />
 
               <div className="quote-form">
@@ -290,38 +287,17 @@ export default function QuotePanel({ quoteData, onClose, onToast }) {
                 <form onSubmit={handleSubmit}>
                   <div className="form-field">
                     <label>Full Name</label>
-                    <input
-                      type="text"
-                      value={name}
-                      onChange={e => setName(e.target.value)}
-                      placeholder="Your full name"
-                      required
-                    />
+                    <input type="text" value={name} onChange={e => setName(e.target.value)} placeholder="Your full name" required />
                   </div>
                   <div className="form-field">
                     <label>Email Address</label>
-                    <input
-                      type="email"
-                      value={email}
-                      onChange={e => setEmail(e.target.value)}
-                      placeholder="name@company.com"
-                      required
-                    />
+                    <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="name@company.com" required />
                   </div>
                   <div className="form-field">
                     <label>WhatsApp / Phone (optional)</label>
-                    <input
-                      type="tel"
-                      value={phone}
-                      onChange={e => setPhone(e.target.value)}
-                      placeholder="+44 7700 900000"
-                    />
+                    <input type="tel" value={phone} onChange={e => setPhone(e.target.value)} placeholder="+44 7700 900000" />
                   </div>
-                  <button
-                    type="submit"
-                    className="quote-submit"
-                    disabled={submitting || !name || !email}
-                  >
+                  <button type="submit" className="quote-submit" disabled={submitting || !name || !email || priceLoading}>
                     {submitting ? 'Sending…' : `✦ Send My Quote — ${ref}`}
                   </button>
                   <p style={{ fontSize: '0.75rem', color: 'var(--muted)', marginTop: 10, textAlign: 'center' }}>

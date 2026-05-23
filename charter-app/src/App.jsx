@@ -161,6 +161,21 @@ export default function App() {
       )}
 
       <Toast toasts={toasts} />
+
+      <div className="mobile-cta-bar">
+        <div className="mobile-cta-bar-inner">
+          <div className="mobile-cta-bar-text">
+            <span style={{ fontWeight: 700, fontSize: '0.85rem' }}>APEX Charters</span>
+            <span style={{ fontSize: '0.72rem', color: 'var(--muted)' }}>Available 24 / 7</span>
+          </div>
+          <button
+            className="mobile-cta-bar-btn"
+            onClick={() => document.getElementById('search')?.scrollIntoView({ behavior: 'smooth' })}
+          >
+            Book Flight ✦
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
