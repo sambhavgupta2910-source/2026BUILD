@@ -162,6 +162,23 @@ export default function App() {
 
       <Toast toasts={toasts} />
 
+      {/* Floating WhatsApp button */}
+      <a
+        href="https://wa.me/971545297292?text=Hi%2C%20I%27d%20like%20a%20private%20jet%20quote%20from%20APEX%20Charters"
+        target="_blank"
+        rel="noreferrer"
+        style={{
+          position: 'fixed', bottom: 90, right: 20, zIndex: 999,
+          width: 56, height: 56, borderRadius: '50%',
+          background: '#25D366', display: 'flex', alignItems: 'center', justifyContent: 'center',
+          boxShadow: '0 4px 20px rgba(37,211,102,0.5)', textDecoration: 'none',
+          fontSize: '1.6rem', transition: 'transform 0.2s',
+        }}
+        onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.1)'}
+        onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+        aria-label="Chat on WhatsApp"
+      >💬</a>
+
       <div className="mobile-cta-bar">
         <div className="mobile-cta-bar-inner">
           <div className="mobile-cta-bar-text">

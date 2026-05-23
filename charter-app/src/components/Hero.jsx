@@ -91,11 +91,15 @@ export default function Hero({ onSearch }) {
 
     setLoading(true);
     try {
+      const ctrl = new AbortController();
+      const t = setTimeout(() => ctrl.abort(), 2000);
       const res = await fetch('/api/search', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ from, to, departure, returnDate, pax, petAboard, aircraftPref, tripType }),
+        signal: ctrl.signal,
       });
+      clearTimeout(t);
       const data = await res.json();
       onSearch({ from, to, departure, returnDate, pax, petAboard, aircraftPref, tripType, ...data });
     } catch {
@@ -114,28 +118,28 @@ export default function Hero({ onSearch }) {
           ✦ AI-Powered Private Aviation
         </div>
         <h1 className="hero-title">
-          Your World.<br />
-          <em>Your Way.</em>
+          Fly Private.<br />
+          <em>Pay Honest.</em>
         </h1>
         <p className="hero-sub">
-          Access 8,000+ aircraft worldwide. Instant AI-matched quotes. No broker markups.
+          AI-matched aircraft, all-in pricing in under 4 minutes. No broker. No markup. Concierge responds in 15 minutes.
         </p>
         <div className="hero-stats">
           <div className="hero-stat">
             <strong>8,400+</strong>
-            <span>Aircraft available</span>
+            <span>Aircraft worldwide</span>
           </div>
           <div className="hero-stat">
-            <strong>190+</strong>
-            <span>Countries served</span>
-          </div>
-          <div className="hero-stat">
-            <strong>~4 min</strong>
-            <span>To your first quote</span>
+            <strong>15 min</strong>
+            <span>Concierge response</span>
           </div>
           <div className="hero-stat">
             <strong>0%</strong>
-            <span>Hidden fees</span>
+            <span>Broker markup</span>
+          </div>
+          <div className="hero-stat">
+            <strong>All-in</strong>
+            <span>Price — no hidden fees</span>
           </div>
         </div>
 
