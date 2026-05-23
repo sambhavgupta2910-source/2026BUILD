@@ -35,16 +35,16 @@ const DEFAULT_URL = `https://drive.google.com/uc?export=download&id=${DEFAULT_DR
 // CSV loading
 // ---------------------------------------------------------------------------
 
-function fetchToBuffer(url, redirects = 0) {
+function fetchToBuffer(url, redirects = 0, extraHeaders = {}) {
   return new Promise((resolve, reject) => {
     if (redirects > 5) return reject(new Error('Too many redirects'));
     const client = url.startsWith('https:') ? https : http;
     client
-      .get(url, (res) => {
+      .get(url, { headers: extraHeaders }, (res) => {
         if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
           res.resume();
           const next = new URL(res.headers.location, url).toString();
-          return resolve(fetchToBuffer(next, redirects + 1));
+          return resolve(fetchToBuffer(next, redirects + 1, extraHeaders));
         }
         if (res.statusCode !== 200) {
           res.resume();
@@ -59,13 +59,39 @@ function fetchToBuffer(url, redirects = 0) {
   });
 }
 
+async function fetchPulseCsv(apiUrl, apiKey) {
+  console.log('[data] fetching from Dubai Pulse API…');
+  const buf = await fetchToBuffer(apiUrl, 0, { 'X-Api-Key': apiKey, Accept: 'application/json' });
+  const json = JSON.parse(buf.toString('utf8'));
+  if (!json.success || !json.result?.records?.length) {
+    throw new Error(`Dubai Pulse response invalid or empty: ${buf.toString('utf8').slice(0, 200)}`);
+  }
+  const records = json.result.records;
+  const headers = Object.keys(records[0]);
+  const esc = (v) => {
+    const s = v == null ? '' : String(v);
+    return s.includes(',') || s.includes('"') || s.includes('\n') ? `"${s.replace(/"/g, '""')}"` : s;
+  };
+  console.log(`[data] Dubai Pulse returned ${records.length.toLocaleString()} records`);
+  return [headers.join(','), ...records.map((r) => headers.map((h) => esc(r[h])).join(','))].join('\r\n');
+}
+
 async function loadCsvText() {
+  // Priority 1 — local file (fastest, for development)
   const localPath = process.env.TRANSACTIONS_CSV;
   if (localPath && fs.existsSync(localPath)) {
     console.log(`[data] reading local CSV: ${localPath}`);
     return fs.readFileSync(localPath, 'utf8');
   }
 
+  // Priority 2 — Dubai Pulse CKAN API (live daily data, requires API key)
+  const pulseUrl = process.env.DUBAI_PULSE_API_URL;
+  const pulseKey = process.env.DUBAI_PULSE_API_KEY;
+  if (pulseUrl && pulseKey) {
+    return fetchPulseCsv(pulseUrl, pulseKey);
+  }
+
+  // Priority 3 — any CSV URL (Drive, S3, etc.) with local .cache/ fallback
   const url = process.env.TRANSACTIONS_URL || DEFAULT_URL;
   const cachePath = path.join(CACHE_DIR, 'transactions.csv');
   if (fs.existsSync(cachePath) && !process.env.PRISM_REFRESH) {
