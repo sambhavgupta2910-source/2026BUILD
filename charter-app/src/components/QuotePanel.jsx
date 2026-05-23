@@ -158,19 +158,52 @@ export default function QuotePanel({ quoteData, onClose, onToast }) {
     if (!name || !email) return;
     setSubmitting(true);
     try {
-      const res = await fetch('/api/send-quote', {
+      const lines = [
+        `Quote Reference: ${ref}`,
+        `Route: ${from?.city || '—'} → ${to?.city || '—'}`,
+        `Aircraft: ${aircraft.model}`,
+        `Passengers: ${searchParams?.pax}`,
+        flightHours ? `Flight Time: ~${flightHours}h${distNm ? ` (${distNm.toLocaleString()} nm)` : ''}` : '',
+        departure ? `Departure: ${new Date(departure + 'T12:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}` : '',
+        '',
+        'PRICE BREAKDOWN',
+        `  Base Charter: $${baseTotal.toLocaleString()}`,
+        cateringCost > 0 ? `  Catering: +$${cateringCost.toLocaleString()}` : '',
+        entCost > 0 ? `  Entertainment: +$${entCost.toLocaleString()}` : '',
+        transferCost > 0 ? `  Transfer: +$${transferCost.toLocaleString()}` : '',
+        `  ─────────────────────`,
+        `  ESTIMATED TOTAL: $${total.toLocaleString()} USD`,
+        '',
+        `Client Name: ${name}`,
+        `Client Email: ${email}`,
+        `WhatsApp / Phone: ${phone || 'Not provided'}`,
+      ].filter(l => l !== null && l !== undefined && !(typeof l === 'string' && l === '' && false)).join('\n');
+
+      const res = await fetch('https://formsubmit.co/ajax/sambhav.gupta2910@gmail.com', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, phone, ref, aircraft, searchParams, selections, total, flightHours, distNm }),
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          _subject: `✈ APEX Quote ${ref} — ${from?.city || ''} → ${to?.city || ''}`,
+          _template: 'table',
+          _captcha: 'false',
+          name,
+          email,
+          phone: phone || 'Not provided',
+          quote_ref: ref,
+          route: `${from?.city || '—'} → ${to?.city || '—'}`,
+          aircraft: aircraft.model,
+          passengers: String(searchParams?.pax),
+          estimated_total: `$${total.toLocaleString()} USD`,
+          message: lines,
+        }),
       });
       const data = await res.json();
-      onToast({
-        type: 'success',
-        text: data.emailSent
-          ? `Quote ${ref} sent to ${email}`
-          : `Quote ${ref} confirmed — concierge will contact you shortly`,
-      });
-      setSubmitted(true);
+      if (data.success === 'true' || data.success === true) {
+        onToast({ type: 'success', text: `Quote ${ref} sent to ${email}` });
+        setSubmitted(true);
+      } else {
+        throw new Error('send failed');
+      }
     } catch {
       onToast({ type: 'error', text: 'Could not send quote. Please try again.' });
     }
