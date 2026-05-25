@@ -741,6 +741,77 @@ async function start() {
         return send(res, result.error ? 400 : 200, result);
       }
 
+      // Weekly smart-money trends — last 7 days relative to dataset's max date
+      if (req.method === 'GET' && req.url === '/api/weekly-trends') {
+        const rows = dataset.rows;
+        const dateMax = dataset.dateMax || '';
+        const d = new Date(dateMax + 'T00:00:00Z');
+        const weekStart = new Date(d); weekStart.setUTCDate(weekStart.getUTCDate() - 6);
+        const priorStart = new Date(weekStart); priorStart.setUTCDate(priorStart.getUTCDate() - 30);
+        const weekStartStr  = weekStart.toISOString().slice(0, 10);
+        const priorStartStr = priorStart.toISOString().slice(0, 10);
+
+        const weekRows  = rows.filter((r) => r.date >= weekStartStr && r.date <= dateMax);
+        const priorRows = rows.filter((r) => r.date >= priorStartStr && r.date < weekStartStr);
+
+        const weekVolume    = weekRows.reduce((s, r) => s + r.transValue, 0);
+        const weekPsfs      = weekRows.map((r) => r.aedPerSqft);
+        const weekOffplan   = weekRows.filter((r) => (r.offplan || '').toLowerCase().includes('off')).length;
+
+        // Area breakdown
+        const byAreaW = new Map(); const byAreaP = new Map();
+        const accum = (map, r) => {
+          const k = r.area; if (!k) return;
+          if (!map.has(k)) map.set(k, { count: 0, psfs: [], volume: 0, offplan: 0 });
+          const b = map.get(k); b.count++; b.psfs.push(r.aedPerSqft); b.volume += r.transValue;
+          if ((r.offplan || '').toLowerCase().includes('off')) b.offplan++;
+        };
+        weekRows.forEach((r) => accum(byAreaW, r));
+        priorRows.forEach((r) => accum(byAreaP, r));
+
+        // Volume movers — % change vs 30-day daily average scaled to 7 days
+        const volumeMovers = [...byAreaW.entries()]
+          .filter(([, w]) => w.count >= 3)
+          .map(([area, w]) => {
+            const p = byAreaP.get(area);
+            const priorWeekEq = p ? (p.count / 30) * 7 : 0;
+            const pct = priorWeekEq > 0 ? Math.round(((w.count - priorWeekEq) / priorWeekEq) * 100) : 999;
+            return { area, weekCount: w.count, priorWeekEq: Math.round(priorWeekEq * 10) / 10, pctChange: pct, medianPsf: Math.round(median(w.psfs)), volume: Math.round(w.volume) };
+          })
+          .filter((a) => a.pctChange > 5)
+          .sort((a, b) => b.pctChange - a.pctChange)
+          .slice(0, 8);
+
+        // PSF movers — week median vs prior 30-day median
+        const psfMovers = [...byAreaW.entries()]
+          .filter(([area, w]) => w.count >= 3 && byAreaP.has(area))
+          .map(([area, w]) => {
+            const p = byAreaP.get(area);
+            const wPsf = median(w.psfs); const pPsf = median(p.psfs);
+            const pct = pPsf > 0 ? ((wPsf - pPsf) / pPsf) * 100 : 0;
+            return { area, weekPsf: Math.round(wPsf), priorPsf: Math.round(pPsf), pctChange: Math.round(pct * 10) / 10 };
+          })
+          .filter((a) => Math.abs(a.pctChange) >= 1)
+          .sort((a, b) => Math.abs(b.pctChange) - Math.abs(a.pctChange))
+          .slice(0, 8);
+
+        // Off-plan surge areas (≥70% of week's transactions off-plan)
+        const offplanSurge = [...byAreaW.entries()]
+          .filter(([, b]) => b.count >= 3)
+          .map(([area, b]) => ({ area, offplanPct: Math.round((b.offplan / b.count) * 100), count: b.count }))
+          .filter((a) => a.offplanPct >= 70)
+          .sort((a, b) => b.offplanPct - a.offplanPct)
+          .slice(0, 6);
+
+        return send(res, 200, {
+          dateRange: { from: weekStartStr, to: dateMax },
+          summary: { count: weekRows.length, volume: Math.round(weekVolume), medianPsf: Math.round(median(weekPsfs)), offplanPct: weekRows.length ? Math.round((weekOffplan / weekRows.length) * 100) : 0 },
+          volumeMovers,
+          psfMovers,
+          offplanSurge,
+        });
+      }
+
       // Communities (master projects) with stats — for the landing page
       if (req.method === 'GET' && req.url.startsWith('/api/communities')) {
         const qs = new URL(req.url, 'http://x').searchParams;

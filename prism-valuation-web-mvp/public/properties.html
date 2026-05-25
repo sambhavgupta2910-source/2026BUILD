@@ -3,30 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Dubai Properties by Area & Developer — PRISM</title>
-  <meta name="description" content="Browse Dubai real estate transactions by area and master community. Live DLD data powered by PRISM.">
+  <title>Dubai Properties by Developer &amp; Area — PRISM</title>
+  <meta name="description" content="Browse Dubai real estate by area and master community. Live DLD data. Where smart money is moving.">
   <link rel="stylesheet" href="/properties.css">
   <link rel="icon" href="/icon-192.svg">
   <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#090d14">
+  <meta name="theme-color" content="#07090f">
 </head>
 <body>
 
-<!-- ── Navigation ───────────────────────────────────────── -->
+<!-- ── Nav ──────────────────────────────────────────────── -->
 <nav class="topnav">
   <a href="/" class="nav-logo">
-    <svg width="22" height="22" viewBox="0 0 192 192" fill="none">
-      <rect x="52" y="41" width="22" height="110" rx="4" fill="#5b9cf6"/>
-      <rect x="52" y="41" width="79" height="22" rx="4" fill="#5b9cf6"/>
-      <rect x="52" y="90" width="71" height="20" rx="4" fill="#5b9cf6"/>
-      <rect x="109" y="41" width="22" height="69" rx="4" fill="#5b9cf6"/>
+    <svg width="20" height="20" viewBox="0 0 192 192" fill="none">
+      <rect x="52" y="41" width="22" height="110" rx="4" fill="#c9a96e"/>
+      <rect x="52" y="41" width="79" height="22" rx="4" fill="#c9a96e"/>
+      <rect x="52" y="90" width="71" height="20" rx="4" fill="#c9a96e"/>
+      <rect x="109" y="41" width="22" height="69" rx="4" fill="#c9a96e"/>
     </svg>
     PRISM
   </a>
   <div class="nav-links">
     <a href="/properties.html" class="active">Properties</a>
     <a href="/">Valuation</a>
-    <a href="/#trends">Market Trends</a>
+    <a href="/#trends">Market</a>
   </div>
 </nav>
 
@@ -34,9 +34,8 @@
 <section class="hero">
   <div class="hero-inner">
     <div class="hero-badge">Live DLD Data</div>
-    <h1>Dubai Real Estate<br><span class="accent">by Developer &amp; Area</span></h1>
+    <h1>Dubai Real Estate<br><span class="gold">by Developer &amp; Area</span></h1>
     <p class="hero-stats" id="heroStats">Loading market data…</p>
-
     <div class="search-bar">
       <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
@@ -51,6 +50,7 @@
 <section class="browse-section" id="areaSection">
   <div class="section-hd">
     <div>
+      <div class="section-label">Sub-location</div>
       <h2>Browse by Area</h2>
       <p class="section-sub" id="areaSubtitle">Loading…</p>
     </div>
@@ -63,7 +63,8 @@
 <section class="browse-section" id="communitySection">
   <div class="section-hd">
     <div>
-      <h2>Browse by Community</h2>
+      <div class="section-label">Master Community</div>
+      <h2>Browse by Developer</h2>
       <p class="section-sub" id="communitySubtitle">Loading…</p>
     </div>
     <button class="toggle-all" id="toggleCommunities" data-expanded="false">Show all</button>
@@ -71,10 +72,83 @@
   <div class="card-grid" id="communityGrid"></div>
 </section>
 
+<!-- ── Smart Money ────────────────────────────────────────── -->
+<section class="smart-money" id="smartMoneySection">
+  <div class="smart-money-inner">
+
+    <div class="smart-header">
+      <div class="smart-label">Weekly Intelligence</div>
+      <h2>Where Smart Money Is Moving</h2>
+      <p class="smart-date" id="smartDate">Analyzing last 7 days of DLD data…</p>
+    </div>
+
+    <!-- KPI strip -->
+    <div class="kpi-strip" id="kpiStrip">
+      <div class="kpi-box">
+        <div class="kpi-label">Transactions</div>
+        <div class="kpi-val" id="kpiCount">—</div>
+        <div class="kpi-sub">this week</div>
+      </div>
+      <div class="kpi-box">
+        <div class="kpi-label">Total Volume</div>
+        <div class="kpi-val" id="kpiVolume">—</div>
+        <div class="kpi-sub">AED</div>
+      </div>
+      <div class="kpi-box">
+        <div class="kpi-label">Median PSF</div>
+        <div class="kpi-val" id="kpiPsf">—</div>
+        <div class="kpi-sub">AED / sqft</div>
+      </div>
+      <div class="kpi-box">
+        <div class="kpi-label">Off-Plan Share</div>
+        <div class="kpi-val" id="kpiOffplan">—</div>
+        <div class="kpi-sub">of transactions</div>
+      </div>
+    </div>
+
+    <!-- Volume + PSF movers -->
+    <div class="movers-grid">
+
+      <!-- Heating up -->
+      <div class="mover-panel">
+        <div class="mover-panel-hd">
+          <div class="mover-icon heat">🔥</div>
+          <div>
+            <h3>Heating Up</h3>
+            <div class="mover-sub">Areas with volume spike vs 30-day baseline</div>
+          </div>
+        </div>
+        <div id="volumeMovers"><p class="no-data">Loading…</p></div>
+      </div>
+
+      <!-- PSF momentum -->
+      <div class="mover-panel">
+        <div class="mover-panel-hd">
+          <div class="mover-icon psf">📈</div>
+          <div>
+            <h3>PSF Momentum</h3>
+            <div class="mover-sub">Price-per-sqft shift vs prior 30 days</div>
+          </div>
+        </div>
+        <div id="psfMovers"><p class="no-data">Loading…</p></div>
+      </div>
+
+    </div>
+
+    <!-- Off-plan surge -->
+    <div class="offplan-surge">
+      <div class="offplan-hd">Off-Plan Surge — areas where ≥70% of this week's transactions are off-plan</div>
+      <div class="offplan-tags" id="offplanTags"><p class="no-data">Loading…</p></div>
+    </div>
+
+  </div>
+</section>
+
 <!-- ── Listings ──────────────────────────────────────────── -->
 <section class="listings-section" id="listingsSection">
   <div class="listings-hd">
     <div>
+      <div class="section-label">DLD Transaction Data</div>
       <h2>Property Transactions</h2>
       <p class="section-sub" id="listingsSubtitle">All residential sales</p>
     </div>
@@ -108,7 +182,7 @@
           <th>Rooms</th>
           <th class="num">Size (sqft)</th>
           <th class="num">Price (AED)</th>
-          <th class="num">AED/sqft</th>
+          <th class="num">AED / sqft</th>
           <th>Date</th>
           <th>Status</th>
         </tr>
@@ -118,15 +192,15 @@
       </tbody>
     </table>
   </div>
-
   <div class="pagination" id="pagination"></div>
 </section>
 
 <!-- ── Footer ────────────────────────────────────────────── -->
 <footer class="site-footer">
   <div class="footer-inner">
-    <span class="footer-brand">PRISM Valuation Intelligence</span>
-    <span class="footer-data">Data source: Dubai Land Department (DLD)</span>
+    <span class="footer-brand">PRISM</span>
+    <span class="footer-sep">·</span>
+    <span class="footer-data">Dubai Land Department data</span>
     <a href="/" class="footer-link">Open Valuation Tool →</a>
   </div>
 </footer>
