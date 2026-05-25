@@ -740,6 +740,74 @@ async function start() {
         const result = valuation(dataset, body);
         return send(res, result.error ? 400 : 200, result);
       }
+
+      // Communities (master projects) with stats — for the landing page
+      if (req.method === 'GET' && req.url.startsWith('/api/communities')) {
+        const qs = new URL(req.url, 'http://x').searchParams;
+        const limit = Math.min(100, Math.max(1, parseInt(qs.get('limit') || '20', 10)));
+        const byCommunity = new Map();
+        for (const r of dataset.rows) {
+          const c = r.masterProject;
+          if (!c) continue;
+          if (!byCommunity.has(c)) byCommunity.set(c, { count: 0, psfs: [], areas: new Set() });
+          const b = byCommunity.get(c);
+          b.count++;
+          b.psfs.push(r.aedPerSqft);
+          b.areas.add(r.area);
+        }
+        const communities = [...byCommunity.entries()]
+          .map(([name, b]) => ({
+            name,
+            count: b.count,
+            medianPsf: Math.round(median(b.psfs)),
+            areaCount: b.areas.size,
+          }))
+          .sort((a, b) => b.count - a.count)
+          .slice(0, limit);
+        return send(res, 200, { communities, total: byCommunity.size });
+      }
+
+      // Paginated property listings — for the landing page
+      if (req.method === 'GET' && req.url.startsWith('/api/properties')) {
+        const qs = new URL(req.url, 'http://x').searchParams;
+        const areaFilter = (qs.get('area') || '').trim();
+        const communityFilter = (qs.get('community') || '').trim();
+        const roomsFilter = (qs.get('rooms') || '').trim();
+        const offplanFilter = (qs.get('offplan') || '').trim();
+        const page = Math.max(1, parseInt(qs.get('page') || '1', 10));
+        const limit = Math.min(50, Math.max(1, parseInt(qs.get('limit') || '25', 10)));
+        const sort = qs.get('sort') || 'date';
+
+        let rows = dataset.rows;
+        if (areaFilter) rows = rows.filter((r) => norm(r.area) === norm(areaFilter));
+        if (communityFilter) rows = rows.filter((r) => norm(r.masterProject) === norm(communityFilter));
+        if (roomsFilter) rows = rows.filter((r) => r.rooms === roomsFilter);
+        if (offplanFilter) rows = rows.filter((r) => (r.offplan || '').toLowerCase().includes(offplanFilter.toLowerCase()));
+
+        const sorted = [...rows].sort((a, b) => {
+          if (sort === 'psf_asc') return a.aedPerSqft - b.aedPerSqft;
+          if (sort === 'psf_desc') return b.aedPerSqft - a.aedPerSqft;
+          if (sort === 'price_asc') return a.transValue - b.transValue;
+          if (sort === 'price_desc') return b.transValue - a.transValue;
+          return (b.date || '').localeCompare(a.date || '');
+        });
+
+        const total = sorted.length;
+        const results = sorted.slice((page - 1) * limit, page * limit).map((r) => ({
+          project: r.project,
+          community: r.masterProject,
+          area: r.area,
+          type: r.propertyType,
+          rooms: r.rooms,
+          sizeSqft: Math.round(r.areaSqft),
+          transValue: Math.round(r.transValue),
+          aedPerSqft: Math.round(r.aedPerSqft),
+          date: r.date,
+          offplan: r.offplan,
+        }));
+        return send(res, 200, { total, page, pages: Math.ceil(total / limit), limit, results });
+      }
+
       if (req.method === 'GET') return serveStatic(req, res);
       return send(res, 405, { error: 'method not allowed' });
     } catch (err) {
