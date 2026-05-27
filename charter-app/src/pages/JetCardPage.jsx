@@ -151,7 +151,7 @@ export default function JetCardPage({ onNavigateHome }) {
                 </ul>
                 <button
                   className={`pricing-cta${c.highlight ? ' pricing-cta-highlight' : ''}`}
-                  onClick={() => window.open('https://wa.me/971545297292?text=Hi%2C%20I%27m%20interested%20in%20the%20' + c.name + '%20Jet%20Card%20from%20APEX%20Charters', '_blank')}
+                  onClick={() => window.open('https://wa.me/971545297292?text=Hi%2C%20I%27m%20interested%20in%20the%20' + c.name + '%20Jet%20Card%20from%20Elevate', '_blank')}
                 >
                   Get {c.name} Card →
                 </button>
@@ -179,7 +179,7 @@ export default function JetCardPage({ onNavigateHome }) {
           <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
             <button
               className="page-cta-btn-primary"
-              onClick={() => window.open('https://wa.me/971545297292?text=Hi%2C%20I%27d%20like%20to%20buy%20a%20Jet%20Card%20with%20APEX%20Charters', '_blank')}
+              onClick={() => window.open('https://wa.me/971545297292?text=Hi%2C%20I%27d%20like%20to%20buy%20a%20Jet%20Card%20with%20Elevate', '_blank')}
             >
               💬 WhatsApp Our Team
             </button>

@@ -8,7 +8,7 @@ function genRef() {
 
 function WhatsAppShare({ from, to, aircraft, searchParams, total, flightHours, ref_ }) {
   const waText = encodeURIComponent(
-    `✈ APEX Charters Quote\n${from?.city || ''} → ${to?.city || ''}\n${aircraft?.model} · ${searchParams?.pax} pax · ~${flightHours}h\n$${total?.toLocaleString()} USD\nRef: ${ref_}`
+    `✈ Elevate Quote\n${from?.city || ''} → ${to?.city || ''}\n${aircraft?.model} · ${searchParams?.pax} pax · ~${flightHours}h\n$${total?.toLocaleString()} USD\nRef: ${ref_}`
   );
   return (
     <div style={{ background: '#E7F8EF', border: '1.5px solid #B8DBC8', borderRadius: 'var(--radius)', padding: 16, marginBottom: 20 }}>
@@ -123,7 +123,7 @@ export default function QuotePanel({ quoteData, onClose, onToast }) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({
-          _subject: `✈ APEX Quote ${ref} — ${from?.city || ''} → ${to?.city || ''}`,
+          _subject: `✈ Elevate Quote ${ref} — ${from?.city || ''} → ${to?.city || ''}`,
           _template: 'table',
           _captcha: 'false',
           name,
@@ -170,7 +170,7 @@ export default function QuotePanel({ quoteData, onClose, onToast }) {
               <div className="success-ref">{ref}</div>
               <p>
                 Your formal quote has been sent to <strong>{email}</strong>.
-                Your dedicated APEX concierge will call within <strong>15 minutes</strong>.
+                Your dedicated Elevate concierge will call within <strong>15 minutes</strong>.
               </p>
               <div style={{ marginTop: 24, fontSize: '0.85rem', color: 'var(--muted)' }}>
                 Questions? WhatsApp your concierge with reference <strong>{ref}</strong>.
@@ -191,7 +191,7 @@ export default function QuotePanel({ quoteData, onClose, onToast }) {
 
               <div className="ai-thinking">
                 <div className="ai-thinking-header">
-                  ✦ APEX Intelligence
+                  ✦ Elevate Intelligence
                   {!aiDone && <div className="ai-dots"><span /><span /><span /></div>}
                   {aiDone && <span style={{ color: 'var(--sage)', fontSize: '0.82rem', fontWeight: 600 }}>✓ Analysis complete</span>}
                 </div>

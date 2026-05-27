@@ -156,7 +156,7 @@ export default function App() {
         <div className="container">
           <div className="footer-grid">
             <div className="footer-brand">
-              <div className="nav-logo">APEX<span style={{ color: 'var(--gold-bright)' }}>.</span></div>
+              <div className="nav-logo">Elevate<span style={{ color: 'var(--gold-bright)' }}>.</span></div>
               <p style={{ marginTop: 12 }}>
                 Private aviation redefined. Transparent pricing, AI-matched aircraft,
                 and a concierge that never sleeps.
@@ -190,7 +190,7 @@ export default function App() {
             <div className="footer-col">
               <h4>Company</h4>
               <ul>
-                <li>About APEX</li>
+                <li>About Elevate</li>
                 <li>Safety Standards</li>
                 <li>Operator Partners</li>
                 <li>Press</li>
@@ -200,10 +200,10 @@ export default function App() {
           </div>
           <div className="footer-bottom">
             <span style={{ color: 'rgba(255,255,255,0.35)', fontSize: '0.8rem' }}>
-              © 2026 APEX Charters Ltd. All rights reserved. Private aviation, reinvented.
+              © 2026 Elevate Ltd. All rights reserved. Private aviation, reinvented.
             </span>
             <div className="nav-logo" style={{ fontSize: '1rem' }}>
-              APEX<span style={{ color: 'var(--gold-bright)' }}>.</span>
+              Elevate<span style={{ color: 'var(--gold-bright)' }}>.</span>
             </div>
           </div>
         </div>
@@ -221,7 +221,7 @@ export default function App() {
 
       {/* Floating WhatsApp button */}
       <a
-        href="https://wa.me/971545297292?text=Hi%2C%20I%27d%20like%20a%20private%20jet%20quote%20from%20APEX%20Charters"
+        href="https://wa.me/971545297292?text=Hi%2C%20I%27d%20like%20a%20private%20jet%20quote%20from%20Elevate"
         target="_blank"
         rel="noreferrer"
         style={{
@@ -239,7 +239,7 @@ export default function App() {
       <div className="mobile-cta-bar">
         <div className="mobile-cta-bar-inner">
           <div className="mobile-cta-bar-text">
-            <span style={{ fontWeight: 700, fontSize: '0.85rem' }}>APEX Charters</span>
+            <span style={{ fontWeight: 700, fontSize: '0.85rem' }}>Elevate</span>
             <span style={{ fontSize: '0.72rem', color: 'var(--muted)' }}>Available 24 / 7</span>
           </div>
           <button

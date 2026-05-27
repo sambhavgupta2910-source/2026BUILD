@@ -68,7 +68,7 @@ export default function FlightResults({ searchParams, loading, onSelect, onQuick
           <div className="ai-banner">
             <div className="ai-icon">✦</div>
             <div className="ai-text">
-              <strong>APEX Intelligence is working</strong>
+              <strong>Elevate Intelligence is working</strong>
               <p>Aggregating live quotes from 340+ certified operators. Comparing routes, positioning costs & fuel.</p>
             </div>
             <div className="ai-pulse" />

@@ -86,7 +86,7 @@ export default function FractionalPage({ onNavigateHome }) {
             {[
               { n: '01', title: 'Choose Your Share', body: 'Select from 1/16 to 1/2 share of a curated aircraft in your preferred category — Light, Midsize, or Ultra Long Range.' },
               { n: '02', title: 'Lock In Your Rate', body: 'Sign a 1- or 3-year agreement. Fixed monthly management fee, fixed occupied hourly rate. No fuel or catering surprises.' },
-              { n: '03', title: 'Fly On Demand', body: 'Book flights with as little as 10 hours notice. APEX guarantees availability from our 340+ certified operator network.' },
+              { n: '03', title: 'Fly On Demand', body: 'Book flights with as little as 10 hours notice. Elevate guarantees availability from our 340+ certified operator network.' },
               { n: '04', title: 'Evolve As You Grow', body: 'Step up your share tier, change aircraft category, or exit with a 90-day buyback guarantee at current market value.' },
             ].map(s => (
               <div key={s.n} className="how-step">
@@ -146,7 +146,7 @@ export default function FractionalPage({ onNavigateHome }) {
           <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
             <button
               className="page-cta-btn-primary"
-              onClick={() => window.open('https://wa.me/971545297292?text=Hi%2C%20I%27d%20like%20to%20discuss%20fractional%20ownership%20with%20APEX%20Charters', '_blank')}
+              onClick={() => window.open('https://wa.me/971545297292?text=Hi%2C%20I%27d%20like%20to%20discuss%20fractional%20ownership%20with%20Elevate', '_blank')}
             >
               💬 WhatsApp Our Team
             </button>

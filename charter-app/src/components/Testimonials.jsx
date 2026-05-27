@@ -8,7 +8,7 @@ const TESTIMONIALS = [
     aircraft: 'Global 7500',
     stars: 5,
     quote:
-      "APEX quoted us in under 4 minutes for a complex Mumbai–Dubai–London multi-leg. Every other broker took 48 hours and added mystery fees. The Global 7500 was immaculate — board room in the sky. We'll never use anyone else.",
+      "Elevate quoted us in under 4 minutes for a complex Mumbai–Dubai–London multi-leg. Every other broker took 48 hours and added mystery fees. The Global 7500 was immaculate — board room in the sky. We'll never use anyone else.",
   },
   {
     initials: 'SA',
@@ -30,7 +30,7 @@ const TESTIMONIALS = [
     aircraft: 'Phenom 300E',
     stars: 5,
     quote:
-      'Last-minute Geneva deal trip. APEX had the aircraft confirmed, catering sorted, and ground transfer arranged in under 20 minutes. The Phenom was perfect for a 3-person team. Pricing was exactly as quoted. Truly exceptional service.',
+      'Last-minute Geneva deal trip. Elevate had the aircraft confirmed, catering sorted, and ground transfer arranged in under 20 minutes. The Phenom was perfect for a 3-person team. Pricing was exactly as quoted. Truly exceptional service.',
   },
 ];
 
@@ -51,7 +51,7 @@ export default function Testimonials() {
         <div className="section-eyebrow">✦ Client Stories</div>
         <h2 style={{ marginBottom: 10 }}>Trusted by Leaders Across Industries</h2>
         <p className="text-muted" style={{ marginBottom: 48, fontSize: '1.05rem', maxWidth: 560 }}>
-          From last-minute deal trips to complex multi-leg itineraries, APEX clients fly with confidence.
+          From last-minute deal trips to complex multi-leg itineraries, Elevate clients fly with confidence.
         </p>
 
         <div className="testimonials-grid">

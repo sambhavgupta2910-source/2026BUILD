@@ -37,9 +37,9 @@ export default function Nav({ onRequestCharter, onNavigate, activePage = 'home' 
             <button
               style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
               onClick={() => handleNav('home')}
-              aria-label="APEX Charters home"
+              aria-label="Elevate home"
             >
-              <div className="nav-logo">APEX<span>.</span></div>
+              <div className="nav-logo">Elevate<span>.</span></div>
               <div className="nav-tagline">Private Charters</div>
             </button>
           </div>
@@ -107,7 +107,7 @@ export default function Nav({ onRequestCharter, onNavigate, activePage = 'home' 
         <div className="mobile-menu" onClick={close}>
           <div className="mobile-menu-inner" onClick={e => e.stopPropagation()}>
             <button className="mobile-menu-close" onClick={close}>✕</button>
-            <div className="nav-logo" style={{ marginBottom: 8 }}>APEX<span>.</span></div>
+            <div className="nav-logo" style={{ marginBottom: 8 }}>Elevate<span>.</span></div>
             <div className="nav-tagline" style={{ marginBottom: 32, color: 'var(--muted)' }}>Private Charters</div>
             <nav>
               <a href="#search" onClick={close}>Search Flights</a>

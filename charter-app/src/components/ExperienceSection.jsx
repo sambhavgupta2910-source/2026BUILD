@@ -29,7 +29,7 @@ export default function ExperienceSection() {
   return (
     <section className="experience-section" id="experience">
       <div className="container">
-        <div className="section-eyebrow">The APEX Experience</div>
+        <div className="section-eyebrow">The Elevate Experience</div>
         <h2>Every moment is curated.</h2>
         <p className="section-sub">
           From wheels-up to wheels-down, no detail is left to chance.
