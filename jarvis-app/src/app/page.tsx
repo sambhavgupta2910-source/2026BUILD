@@ -6,6 +6,7 @@ import dynamic from 'next/dynamic';
 import BrainPanel from '@/components/BrainPanel';
 import AgentGrid from '@/components/AgentGrid';
 import SetupGate from '@/components/SetupGate';
+import DashboardView from '@/components/DashboardView';
 import type { OrbState } from '@/components/JarvisOrb';
 
 // Dynamic import so Three.js only loads client-side
@@ -150,6 +151,7 @@ export default function JarvisInterface() {
   const [agentsOpen,   setAgentsOpen]   = useState(true);
   const [isMobile,     setIsMobile]     = useState(false);
   const [mobilePanel,  setMobilePanel]  = useState<'chat' | 'brain' | 'agents'>('chat');
+  const [viewMode,     setViewMode]     = useState<'orb' | 'dashboard'>('orb');
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef       = useRef<HTMLInputElement>(null);
@@ -165,6 +167,17 @@ export default function JarvisInterface() {
     mq.addEventListener('change', handler);
     return () => mq.removeEventListener('change', handler);
   }, []);
+
+  // ── View mode (persisted) ─────────────────────────────────────────────
+
+  useEffect(() => {
+    const saved = localStorage.getItem('jarvis-view');
+    if (saved === 'dashboard' || saved === 'orb') setViewMode(saved);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('jarvis-view', viewMode);
+  }, [viewMode]);
 
   useEffect(() => {
     // Speech recognition
@@ -581,92 +594,134 @@ export default function JarvisInterface() {
 
         <div className="flex items-center gap-4">
           <button
-            onClick={() => setBrainOpen(v => !v)}
-            className="hud-btn px-2.5 py-1 flex items-center gap-1.5"
-            title="Toggle brain panel"
-          >
-            <Brain size={12} />
-            <span style={{ fontSize: '0.58rem', letterSpacing: '0.08em' }}>BRAIN</span>
-            {brainOpen ? <ChevronLeft size={10} /> : <ChevronRight size={10} />}
-          </button>
-          <button
-            onClick={() => setAgentsOpen(v => !v)}
+            onClick={() => setViewMode(v => v === 'orb' ? 'dashboard' : 'orb')}
             className="hud-btn px-2.5 py-1"
-            title="Toggle agents panel"
+            title="Toggle view mode"
             style={{ fontSize: '0.58rem', letterSpacing: '0.08em' }}
           >
-            AGENTS {agentsOpen ? '◀' : '▶'}
+            {viewMode === 'orb' ? '◫ DASHBOARD' : '◉ ORB MODE'}
           </button>
+          {viewMode === 'orb' && (
+            <>
+              <button
+                onClick={() => setBrainOpen(v => !v)}
+                className="hud-btn px-2.5 py-1 flex items-center gap-1.5"
+                title="Toggle brain panel"
+              >
+                <Brain size={12} />
+                <span style={{ fontSize: '0.58rem', letterSpacing: '0.08em' }}>BRAIN</span>
+                {brainOpen ? <ChevronLeft size={10} /> : <ChevronRight size={10} />}
+              </button>
+              <button
+                onClick={() => setAgentsOpen(v => !v)}
+                className="hud-btn px-2.5 py-1"
+                title="Toggle agents panel"
+                style={{ fontSize: '0.58rem', letterSpacing: '0.08em' }}
+              >
+                AGENTS {agentsOpen ? '◀' : '▶'}
+              </button>
+            </>
+          )}
         </div>
       </motion.div>
 
-      {/* Main content grid */}
-      <div className="flex flex-1 overflow-hidden">
+      {/* Main content area — switches between ORB and DASHBOARD */}
+      <AnimatePresence mode="wait">
+        {viewMode === 'dashboard' ? (
+          <motion.div
+            key="dashboard"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="flex flex-1 flex-col overflow-hidden"
+          >
+            <DashboardView
+              onCommand={(text) => {
+                setInput(text);
+                sendMessage(text);
+              }}
+              notionConnected={notionOk}
+            />
+          </motion.div>
+        ) : (
+          <motion.div
+            key="orb"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="flex flex-1 overflow-hidden"
+          >
+            {/* ── Left: Brain Panel ── */}
+            <AnimatePresence>
+              {brainOpen && (
+                <motion.div
+                  initial={{ width: 0, opacity: 0 }}
+                  animate={{ width: 268, opacity: 1 }}
+                  exit={{ width: 0, opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="border-r overflow-hidden flex-shrink-0"
+                  style={{ borderColor: 'var(--j-glass-border)', background: 'rgba(6,13,31,0.7)' }}
+                >
+                  <BrainPanel
+                    notionConnected={notionOk}
+                    onEntryClick={onBrainEntry}
+                    className="h-full"
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
 
-        {/* ── Left: Brain Panel ── */}
-        <AnimatePresence>
-          {brainOpen && (
-            <motion.div
-              initial={{ width: 0, opacity: 0 }}
-              animate={{ width: 268, opacity: 1 }}
-              exit={{ width: 0, opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="border-r overflow-hidden flex-shrink-0"
-              style={{ borderColor: 'var(--j-glass-border)', background: 'rgba(6,13,31,0.7)' }}
-            >
-              <BrainPanel
-                notionConnected={notionOk}
-                onEntryClick={onBrainEntry}
-                className="h-full"
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
+            {/* ── Center: Orb + Chat ── */}
+            <div className="flex-1 flex flex-col overflow-hidden relative">
 
-        {/* ── Center: Orb + Chat ── */}
-        <div className="flex-1 flex flex-col overflow-hidden relative">
+              {/* Orb — always centered, behind chat */}
+              <div className="absolute inset-0 pointer-events-none">
+                {booted && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 1.2, ease: 'easeOut' }}
+                    className="w-full h-full"
+                  >
+                    <JarvisOrb orbState={orbState} />
+                  </motion.div>
+                )}
+              </div>
 
-          {/* Orb — always centered, behind chat */}
-          <div className="absolute inset-0 pointer-events-none">
-            {booted && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 1.2, ease: 'easeOut' }}
-                className="w-full h-full"
-              >
-                <JarvisOrb orbState={orbState} />
-              </motion.div>
-            )}
-          </div>
+              {/* Chat overlay — messages + input */}
+              <div className="relative z-10 flex flex-col h-full">
+                <ChatArea />
+                <CommandBar />
+              </div>
+            </div>
 
-          {/* Chat overlay — messages + input */}
-          <div className="relative z-10 flex flex-col h-full">
-            <ChatArea />
-            <CommandBar />
-          </div>
-        </div>
+            {/* ── Right: Agent Grid ── */}
+            <AnimatePresence>
+              {agentsOpen && (
+                <motion.div
+                  initial={{ width: 0, opacity: 0 }}
+                  animate={{ width: 240, opacity: 1 }}
+                  exit={{ width: 0, opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="border-l overflow-hidden flex-shrink-0 hud-panel"
+                  style={{ borderColor: 'var(--j-glass-border)', borderRadius: 0 }}
+                >
+                  <AgentGrid
+                    onAgentActivate={activateAgent}
+                    activeAgent={activeAgent}
+                    className="h-full"
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-        {/* ── Right: Agent Grid ── */}
-        <AnimatePresence>
-          {agentsOpen && (
-            <motion.div
-              initial={{ width: 0, opacity: 0 }}
-              animate={{ width: 240, opacity: 1 }}
-              exit={{ width: 0, opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="border-l overflow-hidden flex-shrink-0 hud-panel"
-              style={{ borderColor: 'var(--j-glass-border)', borderRadius: 0 }}
-            >
-              <AgentGrid
-                onAgentActivate={activateAgent}
-                activeAgent={activeAgent}
-                className="h-full"
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
+      {/* Command bar — always visible */}
+      {viewMode === 'dashboard' && <CommandBar />}
 
       {/* Status bar */}
       <StatusBar />
