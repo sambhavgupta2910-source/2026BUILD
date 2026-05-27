@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export default function Nav({ onRequestCharter }) {
+export default function Nav({ onRequestCharter, onNavigate, activePage = 'home' }) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -20,7 +20,13 @@ export default function Nav({ onRequestCharter }) {
   function handleCharter(e) {
     e.preventDefault();
     close();
-    onRequestCharter?.();
+    onNavigate?.('home');
+    setTimeout(() => onRequestCharter?.(), 50);
+  }
+
+  function handleNav(pageName) {
+    close();
+    onNavigate?.(pageName);
   }
 
   return (
@@ -28,18 +34,58 @@ export default function Nav({ onRequestCharter }) {
       <nav className={`nav${scrolled ? ' scrolled' : ''}`}>
         <div className="nav-inner">
           <div className="nav-brand">
-            <div>
+            <button
+              style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+              onClick={() => handleNav('home')}
+              aria-label="APEX Charters home"
+            >
               <div className="nav-logo">APEX<span>.</span></div>
               <div className="nav-tagline">Private Charters</div>
-            </div>
+            </button>
           </div>
 
           <ul className="nav-links">
-            <li><a href="#search">Search Flights</a></li>
-            <li><a href="#empty-legs">Empty Legs</a></li>
-            <li><a href="#fleet">Fleet</a></li>
-            <li><a href="#experience">Experience</a></li>
-            <li><a href="#pets">Pets</a></li>
+            {activePage === 'home' ? (
+              <>
+                <li><a href="#search">Search Flights</a></li>
+                <li><a href="#empty-legs">Empty Legs</a></li>
+                <li><a href="#fleet">Fleet</a></li>
+                <li><a href="#experience">Experience</a></li>
+              </>
+            ) : (
+              <li>
+                <button
+                  style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.75)', cursor: 'pointer', fontSize: '0.9rem', fontFamily: 'inherit' }}
+                  onClick={() => handleNav('home')}
+                >
+                  ← Charter Search
+                </button>
+              </li>
+            )}
+            <li>
+              <button
+                className={`nav-page-link${activePage === 'jetcard' ? ' active' : ''}`}
+                onClick={() => handleNav('jetcard')}
+              >
+                Jet Cards
+              </button>
+            </li>
+            <li>
+              <button
+                className={`nav-page-link${activePage === 'fractional' ? ' active' : ''}`}
+                onClick={() => handleNav('fractional')}
+              >
+                Fractional
+              </button>
+            </li>
+            <li>
+              <button
+                className={`nav-page-link${activePage === 'membership' ? ' active' : ''}`}
+                onClick={() => handleNav('membership')}
+              >
+                Membership
+              </button>
+            </li>
             <li>
               <a href="#search" className="nav-cta" onClick={handleCharter}>
                 Request Charter
@@ -68,7 +114,9 @@ export default function Nav({ onRequestCharter }) {
               <a href="#empty-legs" onClick={close}>Empty Legs</a>
               <a href="#fleet" onClick={close}>Fleet</a>
               <a href="#experience" onClick={close}>Experience</a>
-              <a href="#pets" onClick={close}>Pets</a>
+              <button className="mm-link" onClick={() => handleNav('jetcard')}>Jet Cards</button>
+              <button className="mm-link" onClick={() => handleNav('fractional')}>Fractional</button>
+              <button className="mm-link" onClick={() => handleNav('membership')}>Membership</button>
             </nav>
             <button className="mm-cta" onClick={handleCharter}>✦ Request Charter</button>
           </div>

@@ -18,7 +18,7 @@ function SkeletonCard() {
   );
 }
 
-export default function FlightResults({ searchParams, loading, onSelect }) {
+export default function FlightResults({ searchParams, loading, onSelect, onQuickQuote }) {
   const [sort, setSort] = useState('recommended');
   const { from, to, pax = 4, aircraftPref = 'any' } = searchParams || {};
 
@@ -116,9 +116,20 @@ export default function FlightResults({ searchParams, loading, onSelect }) {
                       <div className="amount">${ac.basePrice.toLocaleString()}</div>
                       <div className="per">/ flight hour</div>
                     </div>
-                    <button className="select-btn" onClick={() => onSelect(ac)}>
-                      Select →
-                    </button>
+                    <div className="aircraft-actions">
+                      {onQuickQuote && (
+                        <button
+                          className="quick-quote-btn"
+                          onClick={() => onQuickQuote(ac)}
+                          title="Skip personalisation and get an instant quote"
+                        >
+                          ⚡ Quick Quote
+                        </button>
+                      )}
+                      <button className="select-btn" onClick={() => onSelect(ac)}>
+                        Customise →
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
