@@ -812,6 +812,83 @@ async function start() {
         });
       }
 
+      // Off-plan launches by developer — keyword match on project/masterProject names
+      if (req.method === 'GET' && req.url === '/api/developer-launches') {
+        const DEVS = {
+          'Emaar':      ['EMAAR','DOWNTOWN DUBAI','ARABIAN RANCHES','EMAAR SOUTH','EMAAR BEACHFRONT','DUBAI HILLS ESTATE','THE VALLEY','EMAAR CREEK'],
+          'Damac':      ['DAMAC'],
+          'Sobha':      ['SOBHA'],
+          'Binghatti':  ['BINGHATTI'],
+          'Nakheel':    ['NAKHEEL','PALM JUMEIRAH','JUMEIRAH ISLANDS','JUMEIRAH VILLAGE','THE WORLD ISLANDS','PALM JEBEL'],
+          'Meraas':     ['MERAAS','BLUEWATERS','CITY WALK','LA MER','PORT DE LA MER','JUMEIRAH BAY'],
+          'Ellington':  ['ELLINGTON'],
+          'Danube':     ['DANUBE'],
+          'Azizi':      ['AZIZI'],
+          'Aldar':      ['ALDAR'],
+          'Reportage':  ['REPORTAGE'],
+          'Object1':    ['OBJECT 1','OBJECT1'],
+          'Mag':        [' MAG ','MAG 5','MAG 318','MAG CITY'],
+          'Imtiaz':     ['IMTIAZ'],
+          'Select':     ['SELECT GROUP'],
+        };
+
+        const matchDev = (r) => {
+          const hay = ((r.project || '') + ' ' + (r.masterProject || '')).toUpperCase();
+          for (const [dev, keys] of Object.entries(DEVS)) {
+            if (keys.some((k) => hay.includes(k))) return dev;
+          }
+          return null;
+        };
+
+        // Only off-plan rows
+        const opRows = dataset.rows.filter((r) => (r.offplan || '').toLowerCase().includes('off'));
+
+        // Group by developer → project
+        const byDev = new Map();
+        for (const r of opRows) {
+          const dev = matchDev(r);
+          if (!dev) continue;
+          if (!byDev.has(dev)) byDev.set(dev, new Map());
+          const devMap = byDev.get(dev);
+          const proj = r.project || r.masterProject || 'Unknown';
+          if (!devMap.has(proj)) devMap.set(proj, { count: 0, psfs: [], dates: [], area: r.area, masterProject: r.masterProject });
+          const b = devMap.get(proj);
+          b.count++; b.psfs.push(r.aedPerSqft); b.dates.push(r.date);
+        }
+
+        const cutoff90 = new Date(dataset.dateMax + 'T00:00:00Z');
+        cutoff90.setUTCDate(cutoff90.getUTCDate() - 90);
+        const cutoff90Str = cutoff90.toISOString().slice(0, 10);
+
+        const developers = [...byDev.entries()].map(([dev, projMap]) => {
+          const projects = [...projMap.entries()].map(([name, b]) => {
+            const firstDate = b.dates.reduce((m, d) => (!m || d < m ? d : m), '');
+            const lastDate  = b.dates.reduce((m, d) => (!m || d > m ? d : m), '');
+            return {
+              name, area: b.area, masterProject: b.masterProject,
+              count: b.count,
+              medianPsf: Math.round(median(b.psfs)),
+              firstDate, lastDate,
+              isNew: firstDate >= cutoff90Str,
+            };
+          }).sort((a, b) => b.lastDate.localeCompare(a.lastDate));
+
+          const allPsfs = projects.flatMap((p) => Array(p.count).fill(p.medianPsf));
+          const newCount = projects.filter((p) => p.isNew).length;
+          return {
+            developer: dev,
+            totalOffplan: projects.reduce((s, p) => s + p.count, 0),
+            projectCount: projects.length,
+            newProjectCount: newCount,
+            medianPsf: Math.round(median(allPsfs)),
+            latestActivity: projects[0]?.lastDate || '',
+            projects: projects.slice(0, 10),
+          };
+        }).sort((a, b) => b.totalOffplan - a.totalOffplan);
+
+        return send(res, 200, { developers, dateMax: dataset.dateMax });
+      }
+
       // Communities (master projects) with stats — for the landing page
       if (req.method === 'GET' && req.url.startsWith('/api/communities')) {
         const qs = new URL(req.url, 'http://x').searchParams;

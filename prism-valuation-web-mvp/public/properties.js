@@ -248,6 +248,69 @@ function renderPagination(total, page, pages) {
   });
 }
 
+// ── Developer Launches ────────────────────────────────────
+async function loadDeveloperLaunches() {
+  try {
+    const data = await fetch('/api/developer-launches').then(r => r.json());
+    renderDeveloperLaunches(data);
+  } catch {
+    document.getElementById('launchesSubtitle').textContent = 'Failed to load launch data.';
+  }
+}
+
+function renderDeveloperLaunches({ developers = [], dateMax = '' }) {
+  const sub = document.getElementById('launchesSubtitle');
+  const grid = document.getElementById('devGrid');
+  if (!developers.length) {
+    if (sub) sub.textContent = 'No off-plan data found.';
+    if (grid) grid.innerHTML = '';
+    return;
+  }
+
+  const totalProjects = developers.reduce((s, d) => s + d.projectCount, 0);
+  if (sub) sub.textContent = `${developers.length} developers · ${fmtInt(totalProjects)} active off-plan projects · data through ${fmtMonth(dateMax)}`;
+
+  grid.innerHTML = developers.map(dev => {
+    const newBadge = dev.newProjectCount > 0
+      ? `<span class="dev-new-badge">+${dev.newProjectCount} new</span>` : '';
+
+    const projectRows = dev.projects.slice(0, 5).map(p => `
+      <div class="dev-project-row">
+        <span class="dev-project-name">${esc(p.name)}</span>
+        <div class="dev-project-meta">
+          <span class="dev-project-psf">${fmtInt(p.medianPsf)} psf</span>
+          ${p.isNew ? '<span class="dev-project-new">NEW</span>' : ''}
+        </div>
+      </div>`).join('');
+
+    return `
+      <div class="dev-card">
+        <div class="dev-card-hd">
+          <div class="dev-name">${esc(dev.developer)}</div>
+          ${newBadge}
+        </div>
+        <div class="dev-stats">
+          <div>
+            <div class="dev-stat-val gold">${fmtInt(dev.totalOffplan)}</div>
+            <div class="dev-stat-label">Off-plan tx</div>
+          </div>
+          <div>
+            <div class="dev-stat-val">${dev.projectCount}</div>
+            <div class="dev-stat-label">Projects</div>
+          </div>
+          <div>
+            <div class="dev-stat-val">${fmtInt(dev.medianPsf)}</div>
+            <div class="dev-stat-label">Med PSF</div>
+          </div>
+        </div>
+        <div class="dev-projects">
+          <div class="dev-projects-hd">Active projects</div>
+          ${projectRows}
+        </div>
+      </div>`;
+  }).join('');
+}
+
 // ── Smart Money / Weekly Trends ───────────────────────────
 async function loadWeeklyTrends() {
   try {
@@ -363,6 +426,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   loadMetadata().catch(console.error);
   loadListings().catch(console.error);
+  loadDeveloperLaunches().catch(console.error);
   loadWeeklyTrends().catch(console.error);
 
   // Search

@@ -243,6 +243,78 @@ body {
   0%, 100% { opacity: 1; } 50% { opacity: 0.45; }
 }
 
+/* ── Off-Plan Launches ───────────────────────────────────── */
+.launches-section {
+  background: var(--bg-1);
+  border-top: 1px solid var(--border);
+  padding: 72px 40px 80px;
+}
+.launches-inner { max-width: 1320px; margin: 0 auto; }
+
+.dev-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.dev-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 24px;
+  transition: border-color .18s, box-shadow .18s;
+}
+.dev-card:hover {
+  border-color: rgba(201,169,110,.3);
+  box-shadow: 0 8px 28px rgba(0,0,0,.35);
+}
+
+.dev-card-hd {
+  display: flex; align-items: flex-start;
+  justify-content: space-between; gap: 12px;
+  margin-bottom: 16px;
+}
+.dev-name { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; }
+.dev-new-badge {
+  flex-shrink: 0;
+  font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  background: var(--gold-lo); color: var(--gold); border: 1px solid var(--gold-border);
+  border-radius: 20px; padding: 3px 9px;
+}
+
+.dev-stats {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 12px; margin-bottom: 20px;
+  padding: 14px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+}
+.dev-stat-val { font-size: 18px; font-weight: 700; color: var(--text); line-height: 1; }
+.dev-stat-val.gold { color: var(--gold); }
+.dev-stat-label { font-size: 10px; color: var(--muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.06em; }
+
+.dev-projects { display: flex; flex-direction: column; gap: 6px; }
+.dev-projects-hd {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 4px;
+}
+
+.dev-project-row {
+  display: flex; align-items: center;
+  justify-content: space-between; gap: 8px;
+}
+.dev-project-name {
+  font-size: 12px; color: var(--text); flex: 1;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.dev-project-meta {
+  display: flex; align-items: center; gap: 8px; flex-shrink: 0;
+}
+.dev-project-psf { font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.dev-project-new {
+  font-size: 9px; font-weight: 700; color: var(--good);
+  background: var(--good-lo); border-radius: 4px; padding: 1px 5px;
+}
+
 /* ── Smart Money Section ─────────────────────────────────── */
 .smart-money {
   background: var(--bg-1);
@@ -464,6 +536,7 @@ body {
   .nav-links a:not(.active) { display: none; }
   .hero { padding: 52px 20px 44px; }
   .browse-section { padding: 44px 20px 8px; }
+  .launches-section { padding: 44px 20px 64px; }
   .smart-money { padding: 52px 20px 64px; }
   .listings-section { padding: 44px 20px 64px; }
   .kpi-strip { grid-template-columns: 1fr 1fr; }
