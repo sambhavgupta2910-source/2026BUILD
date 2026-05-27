@@ -1,388 +1,294 @@
-import React, { useRef, useState, useMemo, useCallback } from 'react';
-import {
-  Canvas,
-  useFrame,
-  extend,
-  useThree,
-  type ThreeEvent,
-} from '@react-three/fiber';
-import { Sphere, Torus, Stars, shaderMaterial } from '@react-three/drei';
+'use client';
+import React, { useRef, useMemo } from 'react';
+import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
 export type OrbState = 'idle' | 'listening' | 'thinking' | 'responding';
 
-// State-driven config: colors [r,g,b], speeds, intensities
-const STATE: Record<OrbState, {
-  core: [number, number, number];
-  rim:  [number, number, number];
-  glow: [number, number, number];
-  pulse: number;
-  intensity: number;
-  ringSpeed: number;
-  ringOpacity: number;
-  rotMult: number;
-}> = {
-  idle: {
-    core: [0.2, 0.8, 1.0], rim: [0.0, 0.35, 1.0], glow: [0.0, 0.8, 1.0],
-    pulse: 1.5, intensity: 0.85, ringSpeed: 1.0, ringOpacity: 0.55, rotMult: 0.5,
-  },
-  listening: {
-    core: [0.15, 0.5, 1.0], rim: [0.5, 0.3, 1.0], glow: [0.3, 0.5, 1.0],
-    pulse: 5.5, intensity: 1.65, ringSpeed: 3.0, ringOpacity: 0.95, rotMult: 1.6,
-  },
-  thinking: {
-    core: [1.0, 0.45, 0.0], rim: [0.9, 0.1, 0.0], glow: [1.0, 0.38, 0.0],
-    pulse: 3.2, intensity: 1.45, ringSpeed: 3.8, ringOpacity: 0.88, rotMult: 2.2,
-  },
-  responding: {
-    core: [0.0, 1.0, 0.5], rim: [0.0, 0.7, 0.25], glow: [0.0, 0.95, 0.4],
-    pulse: 2.0, intensity: 1.3, ringSpeed: 2.1, ringOpacity: 0.78, rotMult: 1.0,
-  },
+// ─── State targets ────────────────────────────────────────────────────────
+
+const T: Record<OrbState, { r: number; g: number; b: number; speed: number }> = {
+  idle:       { r: 0,    g: 0.83, b: 1,    speed: 1.0 },
+  listening:  { r: 0.27, g: 0.53, b: 1,    speed: 2.5 },
+  thinking:   { r: 1,    g: 0.42, b: 0.2,  speed: 3.5 },
+  responding: { r: 0,    g: 1,    b: 0.53, speed: 1.8 },
 };
 
-// ─── Shaders ──────────────────────────────────────────────────────────────
+const STATE_HEX: Record<OrbState, string> = {
+  idle: '#00d4ff', listening: '#4488ff', thinking: '#ff6b35', responding: '#00ff88',
+};
 
-const EnergyCoreMaterial = shaderMaterial(
-  {
-    time: 0,
-    intensity: 1.0,
-    pulseFreq: 2.0,
-    coreColor: new THREE.Color(0.2, 0.8, 1.0),
-    rimColor: new THREE.Color(0.0, 0.4, 1.0),
-  },
-  `varying vec2 vUv;
-   varying vec3 vNormal;
-   varying vec3 vViewPosition;
-   void main() {
-     vUv = uv;
-     vNormal = normalize(normalMatrix * normal);
-     vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-     vViewPosition = -mvPosition.xyz;
-     gl_Position = projectionMatrix * mvPosition;
-   }`,
-  `uniform float time;
-   uniform float intensity;
-   uniform float pulseFreq;
-   uniform vec3 coreColor;
-   uniform vec3 rimColor;
-   varying vec2 vUv;
-   varying vec3 vNormal;
-   varying vec3 vViewPosition;
-   void main() {
-     vec3 normal = normalize(vNormal);
-     vec3 viewDir = normalize(vViewPosition);
-     float fresnel = 1.0 - abs(dot(normal, viewDir));
-     fresnel = pow(fresnel, 2.0);
-     float pulse = sin(time * pulseFreq) * 0.5 + 0.5;
-     pulse = pow(pulse, 3.0);
-     float noise = sin(vUv.x * 10.0 + time) * sin(vUv.y * 10.0 + time * 1.3) * 0.1;
-     vec3 color = mix(coreColor, rimColor, fresnel);
-     color += pulse * 0.8;
-     color += noise;
-     float alpha = fresnel * intensity + pulse * 0.3;
-     gl_FragColor = vec4(color, alpha);
-   }`
-);
+// ─── Geometry helpers ─────────────────────────────────────────────────────
 
-const HologramRingMaterial = shaderMaterial(
-  { time: 0, opacity: 0.6, speed: 1.0, glowColor: new THREE.Color(0.0, 0.8, 1.0), wireColor: new THREE.Color(0.2, 1.0, 0.8) },
-  `varying vec2 vUv;
-   varying vec3 vNormal;
-   void main() {
-     vUv = uv;
-     vNormal = normalize(normalMatrix * normal);
-     gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-   }`,
-  `uniform float time;
-   uniform float opacity;
-   uniform float speed;
-   uniform vec3 glowColor;
-   uniform vec3 wireColor;
-   varying vec2 vUv;
-   varying vec3 vNormal;
-   void main() {
-     float wire = sin(vUv.x * 40.0 + time * speed) * sin(vUv.y * 40.0 + time * speed * 0.7);
-     wire = smoothstep(0.8, 1.0, wire);
-     float pulse = sin(vUv.x * 6.28 - time * speed * 2.0) * 0.5 + 0.5;
-     pulse = pow(pulse, 4.0);
-     vec3 color = mix(glowColor, wireColor, wire);
-     color += pulse * wireColor * 2.0;
-     float alpha = (wire + pulse) * opacity;
-     gl_FragColor = vec4(color, alpha);
-   }`
-);
-
-const ParticleMaterial = shaderMaterial(
-  { time: 0, size: 1.0, color: new THREE.Color(0.3, 0.8, 1.0) },
-  `uniform float time;
-   uniform float size;
-   attribute float phase;
-   attribute float speed;
-   varying float vAlpha;
-   void main() {
-     vec3 pos = position;
-     float angle = time * speed + phase;
-     pos.x = cos(angle) * length(position);
-     pos.z = sin(angle) * length(position);
-     pos.y += sin(time * 2.0 + phase) * 0.5;
-     vAlpha = sin(time + phase) * 0.5 + 0.5;
-     vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
-     gl_PointSize = size * (300.0 / -mvPosition.z);
-     gl_Position = projectionMatrix * mvPosition;
-   }`,
-  `uniform vec3 color;
-   varying float vAlpha;
-   void main() {
-     vec2 center = gl_PointCoord - 0.5;
-     float dist = length(center);
-     if (dist > 0.5) discard;
-     float alpha = (1.0 - dist * 2.0) * vAlpha;
-     vec3 finalColor = color * (2.0 - dist);
-     gl_FragColor = vec4(finalColor, alpha);
-   }`
-);
-
-extend({ EnergyCoreMaterial, HologramRingMaterial, ParticleMaterial });
-
-type CoreMat  = THREE.ShaderMaterial & { time: number; intensity: number; pulseFreq: number; coreColor: THREE.Color; rimColor: THREE.Color };
-type RingMat  = THREE.ShaderMaterial & { time: number; opacity: number; speed: number; glowColor: THREE.Color; wireColor: THREE.Color };
-type PartMat  = THREE.ShaderMaterial & { time: number; size: number; color: THREE.Color };
-
-declare module '@react-three/fiber' {
-  interface ThreeElements {
-    energyCoreMaterial: Partial<CoreMat> & { ref?: React.Ref<CoreMat>; transparent?: boolean; side?: THREE.Side; blending?: THREE.Blending };
-    hologramRingMaterial: Partial<RingMat> & { ref?: React.Ref<RingMat>; transparent?: boolean; side?: THREE.Side; blending?: THREE.Blending };
-    particleMaterial: Partial<PartMat> & { ref?: React.Ref<PartMat>; transparent?: boolean; blending?: THREE.Blending };
+function buildTicks(radius: number, count: number, len: number): THREE.BufferGeometry {
+  const pts: number[] = [];
+  for (let i = 0; i < count; i++) {
+    const a = (i / count) * Math.PI * 2;
+    const c = Math.cos(a), s = Math.sin(a);
+    pts.push(c * radius, s * radius, 0, c * (radius + len), s * (radius + len), 0);
   }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pts, 3));
+  return g;
 }
 
-// ─── Components ───────────────────────────────────────────────────────────
+function buildArc(radius: number, span: number, segs = 80): THREE.BufferGeometry {
+  const pts: number[] = [];
+  for (let i = 0; i <= segs; i++) {
+    const a = (i / segs) * span;
+    pts.push(Math.cos(a) * radius, Math.sin(a) * radius, 0);
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pts, 3));
+  return g;
+}
 
-const ParticleSystem: React.FC<{ count: number; radius: number }> = ({ count, radius }) => {
-  const mesh = useRef<THREE.Points>(null!);
-  const matRef = useRef<PartMat | null>(null);
+function buildRadials(count: number, r1: number, r2: number): THREE.BufferGeometry {
+  const pts: number[] = [];
+  for (let i = 0; i < count; i++) {
+    const a = (i / count) * Math.PI * 2;
+    pts.push(Math.cos(a) * r1, Math.sin(a) * r1, 0, Math.cos(a) * r2, Math.sin(a) * r2, 0);
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pts, 3));
+  return g;
+}
 
-  const particles = useMemo(() => {
-    const positions = new Float32Array(count * 3);
-    const phases = new Float32Array(count);
-    const speeds = new Float32Array(count);
-    for (let i = 0; i < count; i++) {
-      const angle = (i / count) * Math.PI * 2;
-      const r = radius + (Math.random() - 0.5) * 2;
-      positions[i * 3]     = Math.cos(angle) * r;
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 4;
-      positions[i * 3 + 2] = Math.sin(angle) * r;
-      phases[i] = Math.random() * Math.PI * 2;
-      speeds[i] = 0.5 + Math.random() * 0.5;
+// ─── Three.js scene ───────────────────────────────────────────────────────
+
+const JarvisScene: React.FC<{ orbState: OrbState }> = ({ orbState }) => {
+  const col   = useRef(new THREE.Color(0, 0.83, 1));
+  const speed = useRef(1.0);
+
+  // Object refs
+  const globe    = useRef<THREE.Mesh>(null!);
+  const core     = useRef<THREE.Mesh>(null!);
+  const arc1     = useRef<THREE.Mesh>(null!);
+  const arc2     = useRef<THREE.Mesh>(null!);
+  const arc3     = useRef<THREE.Mesh>(null!);
+  const midRing  = useRef<THREE.Mesh>(null!);
+  const outerRing = useRef<THREE.Mesh>(null!);
+  const tiltRing = useRef<THREE.Mesh>(null!);
+  const scanLine = useRef<THREE.Group>(null!);
+  const scan2    = useRef<THREE.Group>(null!);
+
+  // Materials — one per mesh (different opacity), all share color updates
+  const mats = useMemo(() => ({
+    globe:      new THREE.MeshBasicMaterial({ color: 0x00d4ff, wireframe: true, transparent: true, opacity: 0.16 }),
+    core:       new THREE.MeshBasicMaterial({ color: 0x00d4ff, transparent: true, opacity: 1.0 }),
+    arc1:       new THREE.MeshBasicMaterial({ color: 0x00d4ff, transparent: true, opacity: 0.95 }),
+    arc2:       new THREE.MeshBasicMaterial({ color: 0x00d4ff, transparent: true, opacity: 0.75 }),
+    arc3:       new THREE.MeshBasicMaterial({ color: 0x00d4ff, transparent: true, opacity: 0.55 }),
+    midRing:    new THREE.MeshBasicMaterial({ color: 0x00d4ff, transparent: true, opacity: 0.70 }),
+    outerRing:  new THREE.MeshBasicMaterial({ color: 0x00d4ff, transparent: true, opacity: 0.40 }),
+    tiltRing:   new THREE.MeshBasicMaterial({ color: 0x00d4ff, transparent: true, opacity: 0.30 }),
+    ticks36:    new THREE.LineBasicMaterial({ color: 0x00d4ff, transparent: true, opacity: 0.50 }),
+    ticks12:    new THREE.LineBasicMaterial({ color: 0x00d4ff, transparent: true, opacity: 0.75 }),
+    ticks72:    new THREE.LineBasicMaterial({ color: 0x00d4ff, transparent: true, opacity: 0.30 }),
+    radials:    new THREE.LineBasicMaterial({ color: 0x00d4ff, transparent: true, opacity: 0.12 }),
+    scan:       new THREE.LineBasicMaterial({ color: 0x00d4ff, transparent: true, opacity: 0.95 }),
+    scan2:      new THREE.LineBasicMaterial({ color: 0x00d4ff, transparent: true, opacity: 0.55 }),
+  }), []);
+
+  // Stable geometries
+  const ticks36  = useMemo(() => buildTicks(2.1, 36, 0.14), []);
+  const ticks12  = useMemo(() => buildTicks(2.1, 12, 0.24), []);
+  const ticks72  = useMemo(() => buildTicks(2.88, 72, 0.08), []);
+  const radials  = useMemo(() => buildRadials(12, 0.95, 2.1), []);
+  const scanGeo  = useMemo(() => buildArc(2.24, Math.PI * 0.38), []);
+  const scanGeo2 = useMemo(() => buildArc(2.24, Math.PI * 0.12), []);
+
+  // THREE.Line objects (stable, not re-created)
+  const scanObj  = useMemo(() => new THREE.Line(scanGeo,  mats.scan),  [scanGeo,  mats]);
+  const scan2Obj = useMemo(() => new THREE.Line(scanGeo2, mats.scan2), [scanGeo2, mats]);
+
+  useFrame(({ clock }) => {
+    const t = clock.getElapsedTime();
+    const tgt = T[orbState];
+
+    // Smooth color + speed
+    col.current.lerp(new THREE.Color(tgt.r, tgt.g, tgt.b), 0.045);
+    speed.current = THREE.MathUtils.lerp(speed.current, tgt.speed, 0.045);
+    const s = speed.current;
+
+    // Sync all material colors
+    Object.values(mats).forEach(m => (m as THREE.MeshBasicMaterial).color.copy(col.current));
+
+    // Globe slow rotation
+    if (globe.current) {
+      globe.current.rotation.y = t * 0.10;
+      globe.current.rotation.x = t * 0.04;
     }
-    return { positions, phases, speeds };
-  }, [count, radius]);
 
-  useFrame(({ clock }) => {
-    if (matRef.current) matRef.current.time = clock.getElapsedTime();
-  });
+    // Arc reactor pulse + spin
+    if (core.current) {
+      const p = 0.88 + Math.sin(t * s * 1.8) * 0.12;
+      core.current.scale.setScalar(p);
+    }
+    if (arc1.current) arc1.current.rotation.z =  t * s * 1.3;
+    if (arc2.current) arc2.current.rotation.z = -t * s * 0.8;
+    if (arc3.current) arc3.current.rotation.z =  t * s * 0.5;
 
-  return (
-    <points ref={mesh}>
-      <bufferGeometry>
-        <bufferAttribute args={[particles.positions, 3]} attach="attributes-position" />
-        <bufferAttribute args={[particles.phases, 1]}    attach="attributes-phase" />
-        <bufferAttribute args={[particles.speeds, 1]}    attach="attributes-speed" />
-      </bufferGeometry>
-      <particleMaterial ref={matRef} size={4} transparent blending={THREE.AdditiveBlending} />
-    </points>
-  );
-};
+    // Precision rings
+    if (midRing.current)   midRing.current.rotation.z   =  t * s * 0.18;
+    if (outerRing.current) outerRing.current.rotation.z = -t * s * 0.09;
+    if (tiltRing.current)  tiltRing.current.rotation.z  =  t * s * 0.32;
 
-const EnergyRings: React.FC<{ hovered: boolean; orbState: OrbState }> = ({ hovered, orbState }) => {
-  const rings   = useRef<(THREE.Mesh | null)[]>([]);
-  const matRefs = useRef<(RingMat | null)[]>([]);
-
-  const ringConfigs = useMemo(() => [
-    { radius: 2.2,  thickness: 0.020, speed: 1.0,   axis: [1, 0, 0]      as const, angle: 0 },
-    { radius: 2.6,  thickness: 0.015, speed: -0.7,  axis: [0, 1, 0]      as const, angle: Math.PI / 3 },
-    { radius: 3.0,  thickness: 0.010, speed: 0.5,   axis: [0.7, 0.7, 0]  as const, angle: Math.PI / 2 },
-    { radius: 3.4,  thickness: 0.008, speed: -0.3,  axis: [0, 0, 1]      as const, angle: Math.PI / 4 },
-  ], []);
-
-  const currentGlow = useRef(new THREE.Color(...STATE.idle.glow));
-  const currentWire = useRef(new THREE.Color(0.2, 1.0, 0.8));
-
-  useFrame(({ clock }) => {
-    const time = clock.getElapsedTime();
-    const cfg = STATE[orbState];
-    const targetGlow = new THREE.Color(...cfg.glow);
-    const targetWire = new THREE.Color(...cfg.core).multiplyScalar(1.4);
-    currentGlow.current.lerp(targetGlow, 0.04);
-    currentWire.current.lerp(targetWire, 0.04);
-
-    rings.current.forEach((ring, i) => {
-      if (!ring || !matRefs.current[i]) return;
-      const rc = ringConfigs[i];
-      const q = new THREE.Quaternion();
-      q.setFromAxisAngle(new THREE.Vector3(...rc.axis).normalize(), rc.angle + time * rc.speed);
-      ring.quaternion.copy(q);
-      const mat = matRefs.current[i]!;
-      mat.time    = time;
-      mat.opacity = THREE.MathUtils.lerp(mat.opacity, (hovered ? cfg.ringOpacity + 0.1 : cfg.ringOpacity), 0.06);
-      mat.speed   = THREE.MathUtils.lerp(mat.speed, cfg.ringSpeed * Math.abs(rc.speed), 0.06);
-      mat.glowColor.lerp(currentGlow.current, 0.06);
-      mat.wireColor.lerp(currentWire.current, 0.06);
-    });
+    // Scan sweep
+    if (scanLine.current)  scanLine.current.rotation.z  =  t * s * 0.95;
+    if (scan2.current)     scan2.current.rotation.z     = -t * s * 0.6;
   });
 
   return (
     <>
-      {ringConfigs.map((rc, i) => (
-        <Torus
-          key={i}
-          ref={(el: THREE.Mesh | null) => { rings.current[i] = el; }}
-          args={[rc.radius, rc.thickness, 8, 64]}
-        >
-          <hologramRingMaterial
-            ref={(el: RingMat | null) => { matRefs.current[i] = el; }}
-            transparent
-            side={THREE.DoubleSide}
-            blending={THREE.AdditiveBlending}
-          />
-        </Torus>
-      ))}
-    </>
-  );
-};
+      {/* Wireframe globe — the signature JARVIS element */}
+      <mesh ref={globe} material={mats.globe} position={[0, 0, -0.3]}>
+        <sphereGeometry args={[1.85, 20, 14]} />
+      </mesh>
 
-const DataCore: React.FC<{ orbState: OrbState }> = ({ orbState }) => {
-  const coreRef = useRef<THREE.Mesh>(null!);
-  const matRef  = useRef<CoreMat | null>(null);
-  const currentCore = useRef(new THREE.Color(...STATE.idle.core));
-  const currentRim  = useRef(new THREE.Color(...STATE.idle.rim));
+      {/* Radial lines (inner grid) */}
+      <lineSegments geometry={radials} material={mats.radials} />
 
-  useFrame(({ clock }) => {
-    const time = clock.getElapsedTime();
-    const cfg = STATE[orbState];
+      {/* Arc reactor — bright center disk */}
+      <mesh ref={core} material={mats.core}>
+        <circleGeometry args={[0.18, 32]} />
+      </mesh>
 
-    currentCore.current.lerp(new THREE.Color(...cfg.core), 0.05);
-    currentRim.current.lerp(new THREE.Color(...cfg.rim), 0.05);
+      {/* Arc reactor rings (concentric, each spins differently) */}
+      <mesh ref={arc1} material={mats.arc1}>
+        <torusGeometry args={[0.38, 0.022, 8, 64]} />
+      </mesh>
+      <mesh ref={arc2} material={mats.arc2}>
+        <torusGeometry args={[0.58, 0.013, 8, 64]} />
+      </mesh>
+      <mesh ref={arc3} material={mats.arc3}>
+        <torusGeometry args={[0.80, 0.009, 8, 64]} />
+      </mesh>
 
-    if (coreRef.current) {
-      coreRef.current.rotation.y = time * 0.5 * cfg.rotMult;
-      coreRef.current.rotation.x = Math.sin(time * 0.3) * 0.1;
-      const scale = 1 + Math.sin(time * 2) * (orbState === 'listening' ? 0.12 : 0.05);
-      coreRef.current.scale.setScalar(scale);
-    }
-    if (matRef.current) {
-      matRef.current.time = time;
-      matRef.current.pulseFreq  = THREE.MathUtils.lerp(matRef.current.pulseFreq,  cfg.pulse,     0.05);
-      matRef.current.intensity  = THREE.MathUtils.lerp(matRef.current.intensity,  cfg.intensity, 0.05);
-      matRef.current.coreColor.lerp(currentCore.current, 0.08);
-      matRef.current.rimColor.lerp(currentRim.current, 0.08);
-    }
-  });
+      {/* Precision mid ring with tick marks */}
+      <mesh ref={midRing} material={mats.midRing}>
+        <torusGeometry args={[2.24, 0.013, 8, 128]} />
+      </mesh>
+      <lineSegments geometry={ticks36} material={mats.ticks36} />
+      <lineSegments geometry={ticks12} material={mats.ticks12} />
 
-  return (
-    <Sphere ref={coreRef} args={[0.8, 32, 32]}>
-      <energyCoreMaterial
-        ref={matRef}
-        transparent
-        side={THREE.DoubleSide}
-        blending={THREE.AdditiveBlending}
-      />
-    </Sphere>
-  );
-};
-
-const HolographicBackground: React.FC = () => {
-  const ref = useRef<THREE.Mesh>(null!);
-  useFrame(({ clock }) => {
-    const t = clock.getElapsedTime();
-    if (ref.current) {
-      ref.current.rotation.y = t * 0.05;
-      ref.current.rotation.x = t * 0.03;
-    }
-  });
-  return (
-    <Sphere ref={ref} args={[15, 16, 16]} position={[0, 0, 0]}>
-      <meshBasicMaterial color={0x001122} transparent opacity={0.02} side={THREE.BackSide} />
-    </Sphere>
-  );
-};
-
-const OrbContent: React.FC<{ orbState: OrbState }> = ({ orbState }) => {
-  const group = useRef<THREE.Group>(null!);
-  const [hovered, setHovered] = useState(false);
-  const { viewport } = useThree();
-
-  const handlePointerMove = useCallback(
-    (e: ThreeEvent<PointerEvent>) => {
-      if (group.current) {
-        group.current.rotation.y += (e.point.x / viewport.width) * 2 * 0.01;
-        group.current.rotation.x += (e.point.y / viewport.height) * 2 * 0.01;
-      }
-    },
-    [viewport]
-  );
-
-  useFrame(({ clock }) => {
-    const t = clock.getElapsedTime();
-    if (group.current) {
-      group.current.position.y = Math.sin(t * 0.8) * 0.15;
-      group.current.position.x = Math.cos(t * 0.5) * 0.1;
-    }
-  });
-
-  return (
-    <>
-      <HolographicBackground />
-      <group
-        ref={group}
-        onPointerOver={() => setHovered(true)}
-        onPointerOut={() => setHovered(false)}
-        onPointerMove={handlePointerMove}
-      >
-        <DataCore orbState={orbState} />
-        <EnergyRings hovered={hovered} orbState={orbState} />
-        <ParticleSystem count={50} radius={4}   />
-        <ParticleSystem count={30} radius={5.5} />
-        <ParticleSystem count={20} radius={7}   />
-        <group rotation={[Math.PI / 2, 0, 0]}>
-          <ParticleSystem count={25} radius={3.5} />
-        </group>
+      {/* Scan sweep arcs */}
+      <group ref={scanLine}>
+        <primitive object={scanObj} />
       </group>
+      <group ref={scan2}>
+        <primitive object={scan2Obj} />
+      </group>
+
+      {/* Outer precision ring + ticks */}
+      <mesh ref={outerRing} material={mats.outerRing}>
+        <torusGeometry args={[2.96, 0.008, 8, 128]} />
+      </mesh>
+      <lineSegments geometry={ticks72} material={mats.ticks72} />
+
+      {/* Tilted orbital ring */}
+      <mesh ref={tiltRing} rotation={[Math.PI / 5, 0, 0]} material={mats.tiltRing}>
+        <torusGeometry args={[2.6, 0.007, 8, 128]} />
+      </mesh>
     </>
   );
 };
 
-// ─── Main export ─────────────────────────────────────────────────────────
+// ─── HTML data overlays ───────────────────────────────────────────────────
 
-interface JarvisOrbProps {
-  orbState?: OrbState;
-}
+const READOUTS_LEFT = [
+  { label: 'NEURAL LINK',  val: 'ACTIVE'  },
+  { label: 'ARC OUTPUT',   val: '97.3%'   },
+  { label: 'SHIELD INT',   val: '100%'    },
+  { label: 'THREAT LVL',   val: 'NONE'    },
+];
+const READOUTS_RIGHT = [
+  { label: 'TARGETING',    val: 'ONLINE'  },
+  { label: 'JARVIS',       val: 'ONLINE'  },
+  { label: 'SYSTEMS',      val: 'NOMINAL' },
+  { label: 'LAT / LON',    val: '25.2°N'  },
+];
+
+const STATE_LABEL: Record<OrbState, string> = {
+  idle: 'STANDBY', listening: 'LISTENING', thinking: 'PROCESSING', responding: 'SPEAKING',
+};
+
+// ─── Main export ──────────────────────────────────────────────────────────
+
+interface JarvisOrbProps { orbState?: OrbState }
 
 const JarvisOrb: React.FC<JarvisOrbProps> = ({ orbState = 'idle' }) => {
-  const lightColor = {
-    idle:       0x00aaff,
-    listening:  0x4455ff,
-    thinking:   0xff6600,
-    responding: 0x00ff88,
-  }[orbState];
+  const hex = STATE_HEX[orbState];
 
   return (
     <div className="w-full h-full relative overflow-hidden" style={{ background: 'transparent' }}>
+      {/* Three.js canvas */}
       <Canvas
-        camera={{ position: [0, 0, 8], fov: 45 }}
-        gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
-        onCreated={({ gl }) => {
-          gl.setClearColor(0x000000, 0);
-        }}
+        camera={{ position: [0, 0, 7.5], fov: 38 }}
+        gl={{ antialias: true, alpha: true }}
+        onCreated={({ gl }) => gl.setClearColor(0x000000, 0)}
       >
-        <ambientLight intensity={0.2} color={0x004466} />
-        <pointLight position={[0, 0, 0]}   intensity={2.0} color={lightColor} />
-        <pointLight position={[5, 5, 5]}   intensity={0.8} color={0x0088cc} />
-        <pointLight position={[-5, -5, -5]} intensity={0.5} color={0x4400aa} />
-        <fog attach="fog" args={[0x001122, 8, 20]} />
-        <OrbContent orbState={orbState} />
-        <Stars radius={50} depth={30} count={800} factor={2} fade speed={0.4} saturation={0.8} />
+        <ambientLight intensity={0.05} />
+        <JarvisScene orbState={orbState} />
       </Canvas>
+
+      {/* Left data column */}
+      <div className="absolute left-0 top-0 h-full flex flex-col justify-center gap-3 px-3 pointer-events-none"
+        style={{ width: '22%' }}>
+        {READOUTS_LEFT.map(({ label, val }) => (
+          <div key={label} style={{ borderLeft: `1px solid ${hex}44`, paddingLeft: 8 }}>
+            <div style={{ fontSize: '0.42rem', letterSpacing: '0.16em', color: `${hex}88`, fontFamily: 'monospace' }}>
+              {label}
+            </div>
+            <div style={{ fontSize: '0.58rem', letterSpacing: '0.1em', color: hex, fontFamily: 'monospace', marginTop: 1 }}>
+              {val}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Right data column */}
+      <div className="absolute right-0 top-0 h-full flex flex-col justify-center gap-3 px-3 pointer-events-none"
+        style={{ width: '22%' }}>
+        {READOUTS_RIGHT.map(({ label, val }) => (
+          <div key={label} style={{ borderRight: `1px solid ${hex}44`, paddingRight: 8, textAlign: 'right' }}>
+            <div style={{ fontSize: '0.42rem', letterSpacing: '0.16em', color: `${hex}88`, fontFamily: 'monospace' }}>
+              {label}
+            </div>
+            <div style={{ fontSize: '0.58rem', letterSpacing: '0.1em', color: hex, fontFamily: 'monospace', marginTop: 1 }}>
+              {val}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Bottom center state label */}
+      <div className="absolute bottom-3 left-1/2 pointer-events-none"
+        style={{ transform: 'translateX(-50%)', textAlign: 'center' }}>
+        <div style={{
+          fontSize: '0.52rem', letterSpacing: '0.3em', color: hex,
+          fontFamily: 'monospace', textShadow: `0 0 12px ${hex}`,
+        }}>
+          ● {STATE_LABEL[orbState]}
+        </div>
+      </div>
+
+      {/* Corner brackets */}
+      {[
+        { top: 8, left: 8 },
+        { top: 8, right: 8 },
+        { bottom: 8, left: 8 },
+        { bottom: 8, right: 8 },
+      ].map((pos, i) => (
+        <div key={i} className="absolute pointer-events-none" style={{
+          ...pos,
+          width: 14, height: 14,
+          borderTop:    i < 2  ? `1px solid ${hex}` : 'none',
+          borderBottom: i >= 2 ? `1px solid ${hex}` : 'none',
+          borderLeft:   i % 2 === 0 ? `1px solid ${hex}` : 'none',
+          borderRight:  i % 2 !== 0 ? `1px solid ${hex}` : 'none',
+        }} />
+      ))}
     </div>
   );
 };
