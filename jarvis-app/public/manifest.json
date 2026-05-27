@@ -1,0 +1,21 @@
+{
+  "name": "JARVIS — Sambhav OS",
+  "short_name": "JARVIS",
+  "description": "AI Operating System. Notion Brain. Zero latency.",
+  "theme_color": "#050508",
+  "background_color": "#050508",
+  "display": "standalone",
+  "orientation": "any",
+  "start_url": "/",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/jarvis-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["productivity", "utilities"],
+  "lang": "en"
+}

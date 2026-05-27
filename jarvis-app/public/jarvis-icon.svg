@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" fill="#050508"/>
+  <!-- Outer ring -->
+  <circle cx="256" cy="256" r="220" fill="none" stroke="#00d4ff" stroke-width="2" opacity="0.6"/>
+  <!-- Middle ring -->
+  <circle cx="256" cy="256" r="170" fill="none" stroke="#00d4ff" stroke-width="1" opacity="0.3"/>
+  <!-- Inner glow ring -->
+  <circle cx="256" cy="256" r="110" fill="none" stroke="#00d4ff" stroke-width="1.5" opacity="0.5"/>
+  <!-- Arc reactor core -->
+  <circle cx="256" cy="256" r="64" fill="#001122" stroke="#00d4ff" stroke-width="2" opacity="0.9"/>
+  <circle cx="256" cy="256" r="48" fill="#002244" opacity="0.8"/>
+  <circle cx="256" cy="256" r="30" fill="#00d4ff" opacity="0.9"/>
+  <circle cx="256" cy="256" r="20" fill="white" opacity="0.95"/>
+  <!-- Cross lines -->
+  <line x1="256" y1="36" x2="256" y2="192" stroke="#00d4ff" stroke-width="1" opacity="0.4"/>
+  <line x1="256" y1="320" x2="256" y2="476" stroke="#00d4ff" stroke-width="1" opacity="0.4"/>
+  <line x1="36" y1="256" x2="192" y2="256" stroke="#00d4ff" stroke-width="1" opacity="0.4"/>
+  <line x1="320" y1="256" x2="476" y2="256" stroke="#00d4ff" stroke-width="1" opacity="0.4"/>
+  <!-- Diagonal lines -->
+  <line x1="100" y1="100" x2="192" y2="192" stroke="#00d4ff" stroke-width="0.8" opacity="0.25"/>
+  <line x1="320" y1="320" x2="412" y2="412" stroke="#00d4ff" stroke-width="0.8" opacity="0.25"/>
+  <line x1="412" y1="100" x2="320" y2="192" stroke="#00d4ff" stroke-width="0.8" opacity="0.25"/>
+  <line x1="192" y1="320" x2="100" y2="412" stroke="#00d4ff" stroke-width="0.8" opacity="0.25"/>
+  <!-- Glow effect -->
+  <circle cx="256" cy="256" r="64" fill="none" stroke="#00d4ff" stroke-width="20" opacity="0.08"/>
+  <circle cx="256" cy="256" r="64" fill="none" stroke="#00d4ff" stroke-width="10" opacity="0.12"/>
+</svg>

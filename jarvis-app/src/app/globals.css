@@ -1,0 +1,275 @@
+@import "tailwindcss";
+
+/* ============================================================
+   JARVIS — SAMBHAV OS  |  Bloomberg Terminal × Iron Man HUD
+   ============================================================ */
+
+:root {
+  --j-void:        #020408;
+  --j-black:       #050508;
+  --j-navy:        #060d1f;
+  --j-surface:     #0a1628;
+
+  --j-cyan:        #00d4ff;
+  --j-cyan-dim:    rgba(0, 212, 255, 0.50);
+  --j-cyan-glow:   rgba(0, 212, 255, 0.15);
+  --j-cyan-border: rgba(0, 212, 255, 0.18);
+
+  --j-orange:      #ff6b35;
+  --j-orange-glow: rgba(255, 107, 53, 0.18);
+
+  --j-green:       #00ff88;
+  --j-green-glow:  rgba(0, 255, 136, 0.15);
+
+  --j-red:         #ff3355;
+
+  --j-text-hi:     #d0eaf8;
+  --j-text-mid:    #5a8fa8;
+  --j-text-lo:     #243848;
+
+  --j-glass:        rgba(6, 13, 31, 0.88);
+  --j-glass-border: rgba(0, 212, 255, 0.12);
+  --j-glass-hover:  rgba(0, 212, 255, 0.07);
+
+  --j-radius: 3px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--j-black);
+  color: var(--j-text-hi);
+  font-family: var(--font-geist-mono), 'Courier New', monospace;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--j-cyan-border); border-radius: 2px; }
+
+/* ── HUD grid overlay ── */
+.hud-grid {
+  background-image:
+    linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* ── Scan line ── */
+.scan-line::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--j-cyan-dim), transparent);
+  animation: scan 6s linear infinite;
+  pointer-events: none;
+}
+@keyframes scan {
+  0%   { transform: translateY(0); opacity: 0; }
+  5%   { opacity: 1; }
+  95%  { opacity: 1; }
+  100% { transform: translateY(100vh); opacity: 0; }
+}
+
+/* ── Glassmorphism panel ── */
+.hud-panel {
+  background: var(--j-glass);
+  border: 1px solid var(--j-glass-border);
+  border-radius: var(--j-radius);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.hud-panel-glow {
+  box-shadow:
+    0 0 0 1px var(--j-cyan-border),
+    0 0 20px var(--j-cyan-glow),
+    inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+/* ── Corner brackets ── */
+.hud-corner {
+  position: relative;
+}
+.hud-corner::before,
+.hud-corner::after {
+  content: '';
+  position: absolute;
+  width: 12px; height: 12px;
+  border-color: var(--j-cyan);
+  border-style: solid;
+  opacity: 0.6;
+}
+.hud-corner::before {
+  top: 0; left: 0;
+  border-width: 1px 0 0 1px;
+}
+.hud-corner::after {
+  bottom: 0; right: 0;
+  border-width: 0 1px 1px 0;
+}
+
+/* ── Data label ── */
+.hud-label {
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--j-text-mid);
+}
+
+/* ── Pulse dot ── */
+.pulse-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--j-green);
+  box-shadow: 0 0 6px var(--j-green);
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(0.8); }
+}
+
+.pulse-dot-cyan {
+  background: var(--j-cyan);
+  box-shadow: 0 0 6px var(--j-cyan);
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+/* ── Glow text ── */
+.glow-cyan  { text-shadow: 0 0 12px var(--j-cyan); }
+.glow-orange { text-shadow: 0 0 12px var(--j-orange); }
+.glow-green  { text-shadow: 0 0 12px var(--j-green); }
+
+/* ── Agent panel colors ── */
+.agent-prism    { --agent-color: #00d4ff; --agent-glow: rgba(0,212,255,0.15); }
+.agent-elevate  { --agent-color: #a855f7; --agent-glow: rgba(168,85,247,0.15); }
+.agent-trading  { --agent-color: #fbbf24; --agent-glow: rgba(251,191,36,0.15); }
+.agent-aviation { --agent-color: #ff6b35; --agent-glow: rgba(255,107,53,0.15); }
+
+/* ── Boot animation ── */
+@keyframes boot-fade {
+  0%   { opacity: 0; transform: scale(0.96); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.boot-in {
+  animation: boot-fade 0.6s ease-out both;
+}
+
+/* ── Chat message ── */
+.msg-jarvis {
+  background: linear-gradient(135deg, rgba(0,212,255,0.05), rgba(0,40,80,0.6));
+  border: 1px solid rgba(0,212,255,0.15);
+  border-left: 2px solid var(--j-cyan);
+}
+.msg-user {
+  background: linear-gradient(135deg, rgba(0,40,80,0.5), rgba(0,20,50,0.8));
+  border: 1px solid rgba(0,212,255,0.1);
+  border-right: 2px solid var(--j-cyan-dim);
+}
+
+/* ── Thinking dots ── */
+@keyframes dot-bounce {
+  0%, 80%, 100% { transform: scale(0); opacity: 0.3; }
+  40%            { transform: scale(1);   opacity: 1; }
+}
+.thinking-dot:nth-child(1) { animation: dot-bounce 1.4s 0.0s infinite; }
+.thinking-dot:nth-child(2) { animation: dot-bounce 1.4s 0.2s infinite; }
+.thinking-dot:nth-child(3) { animation: dot-bounce 1.4s 0.4s infinite; }
+
+/* ── Gradient borders ── */
+.gradient-border {
+  position: relative;
+}
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, var(--j-cyan-border), transparent, var(--j-cyan-border));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* ── Input ── */
+.hud-input {
+  background: rgba(0, 212, 255, 0.03);
+  border: 1px solid var(--j-cyan-border);
+  border-radius: var(--j-radius);
+  color: var(--j-text-hi);
+  font-family: inherit;
+  transition: all 0.2s;
+}
+.hud-input:focus {
+  outline: none;
+  border-color: var(--j-cyan);
+  box-shadow: 0 0 0 1px var(--j-cyan-border), 0 0 16px var(--j-cyan-glow);
+}
+.hud-input::placeholder { color: var(--j-text-mid); opacity: 0.6; }
+
+/* ── Button ── */
+.hud-btn {
+  background: rgba(0, 212, 255, 0.06);
+  border: 1px solid var(--j-cyan-border);
+  border-radius: var(--j-radius);
+  color: var(--j-cyan);
+  font-family: inherit;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.hud-btn:hover:not(:disabled) {
+  background: rgba(0, 212, 255, 0.12);
+  border-color: var(--j-cyan);
+  box-shadow: 0 0 12px var(--j-cyan-glow);
+}
+.hud-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+.hud-btn-primary {
+  background: linear-gradient(135deg, rgba(0,212,255,0.2), rgba(0,100,200,0.2));
+  border-color: var(--j-cyan);
+  color: var(--j-cyan);
+}
+.hud-btn-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, rgba(0,212,255,0.3), rgba(0,100,200,0.3));
+  box-shadow: 0 0 20px var(--j-cyan-glow);
+}
+
+.hud-btn-danger {
+  background: rgba(255, 51, 85, 0.06);
+  border-color: rgba(255,51,85,0.3);
+  color: var(--j-red);
+}
+
+/* ── Listening button ── */
+.mic-active {
+  background: rgba(255, 51, 85, 0.15) !important;
+  border-color: var(--j-red) !important;
+  color: var(--j-red) !important;
+  box-shadow: 0 0 16px rgba(255,51,85,0.3) !important;
+  animation: mic-pulse 1s ease-in-out infinite;
+}
+@keyframes mic-pulse {
+  0%, 100% { box-shadow: 0 0 16px rgba(255,51,85,0.3); }
+  50%       { box-shadow: 0 0 28px rgba(255,51,85,0.5); }
+}
+
+/* ── Status badge ── */
+.status-online  { color: var(--j-green); }
+.status-offline { color: var(--j-red); }
+.status-loading { color: var(--j-orange); }
+
+/* ── Mobile adaptations ── */
+@media (max-width: 767px) {
+  .hud-grid { background-size: 24px 24px; }
+}
