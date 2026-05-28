@@ -5,5 +5,10 @@
   "type": "module",
   "scripts": {
     "start": "node server.js"
+  },
+  "dependencies": {
+    "apify-client": "^2.23.3",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1"
   }
 }
