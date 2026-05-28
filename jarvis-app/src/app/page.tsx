@@ -12,6 +12,76 @@ import type { OrbState } from '@/components/JarvisOrb';
 // Dynamic import so Three.js only loads client-side
 const JarvisOrb = dynamic(() => import('@/components/JarvisOrb'), { ssr: false });
 
+// ─── CommandBar (must live outside JarvisInterface to preserve input focus) ──
+
+interface CommandBarProps {
+  activeAgent: string | undefined;
+  onClearAgent: () => void;
+  inputRef: React.RefObject<HTMLInputElement | null>;
+  input: string;
+  setInput: (v: string) => void;
+  onKeyDown: (e: React.KeyboardEvent) => void;
+  isListening: boolean;
+  groqOk: boolean;
+  isLoading: boolean;
+  onToggleListen: () => void;
+  onSubmit: () => void;
+}
+
+const CommandBar: React.FC<CommandBarProps> = ({
+  activeAgent, onClearAgent, inputRef, input, setInput,
+  onKeyDown, isListening, groqOk, isLoading, onToggleListen, onSubmit,
+}) => (
+  <div
+    className="px-4 py-3 border-t"
+    style={{ borderColor: 'var(--j-glass-border)', background: 'rgba(5,5,8,0.92)', backdropFilter: 'blur(12px)' }}
+  >
+    {activeAgent && (
+      <div className="flex items-center gap-2 mb-2">
+        <span style={{ fontSize: '0.58rem', letterSpacing: '0.1em', color: 'var(--j-orange)' }}>
+          ◈ {activeAgent.toUpperCase()} MODE
+        </span>
+        <button
+          onClick={onClearAgent}
+          style={{ fontSize: '0.55rem', color: 'var(--j-text-lo)', background: 'none', border: 'none', cursor: 'pointer', letterSpacing: '0.08em' }}
+          onMouseOver={e => (e.currentTarget.style.color = 'var(--j-red)')}
+          onMouseOut={e => (e.currentTarget.style.color = 'var(--j-text-lo)')}
+        >
+          ✕ CLEAR
+        </button>
+      </div>
+    )}
+    <div className="flex items-center gap-2">
+      <input
+        ref={inputRef}
+        type="text"
+        value={input}
+        onChange={e => setInput(e.target.value)}
+        onKeyDown={onKeyDown}
+        placeholder={isListening ? 'LISTENING...' : groqOk ? 'ASK JARVIS ANYTHING...' : 'CONFIGURE GROQ API KEY FIRST'}
+        className="hud-input flex-1 px-4 py-2.5"
+        style={{ fontSize: '0.78rem' }}
+        disabled={isLoading || !groqOk}
+      />
+      <button
+        onClick={onToggleListen}
+        className={`hud-btn p-2.5 ${isListening ? 'mic-active' : ''}`}
+        disabled={isLoading}
+        title="Voice input"
+      >
+        {isListening ? <MicOff size={16} /> : <Mic size={16} />}
+      </button>
+      <button
+        onClick={onSubmit}
+        className="hud-btn hud-btn-primary p-2.5"
+        disabled={isLoading || !input.trim() || !groqOk}
+      >
+        <Send size={16} />
+      </button>
+    </div>
+  </div>
+);
+
 // ─── Types ────────────────────────────────────────────────────────────────
 
 interface SpeechRecognition extends EventTarget {
@@ -392,58 +462,21 @@ export default function JarvisInterface() {
     </div>
   );
 
-  // ─── Command bar ─────────────────────────────────────────────────────────
+  // ─── Command bar props (CommandBar defined at module level) ─────────────
 
-  const CommandBar = () => (
-    <div
-      className="px-4 py-3 border-t"
-      style={{ borderColor: 'var(--j-glass-border)', background: 'rgba(5,5,8,0.92)', backdropFilter: 'blur(12px)' }}
-    >
-      {activeAgent && (
-        <div className="flex items-center gap-2 mb-2">
-          <span style={{ fontSize: '0.58rem', letterSpacing: '0.1em', color: 'var(--j-orange)' }}>
-            ◈ {activeAgent.toUpperCase()} MODE
-          </span>
-          <button
-            onClick={() => { setActiveAgent(undefined); setAgentPrompt(''); }}
-            style={{ fontSize: '0.55rem', color: 'var(--j-text-lo)', background: 'none', border: 'none', cursor: 'pointer', letterSpacing: '0.08em' }}
-            onMouseOver={e => (e.currentTarget.style.color = 'var(--j-red)')}
-            onMouseOut={e => (e.currentTarget.style.color = 'var(--j-text-lo)')}
-          >
-            ✕ CLEAR
-          </button>
-        </div>
-      )}
-      <div className="flex items-center gap-2">
-        <input
-          ref={inputRef}
-          type="text"
-          value={input}
-          onChange={e => setInput(e.target.value)}
-          onKeyDown={handleKeyDown}
-          placeholder={isListening ? 'LISTENING...' : groqOk ? 'ASK JARVIS ANYTHING...' : 'CONFIGURE GROQ API KEY FIRST'}
-          className="hud-input flex-1 px-4 py-2.5"
-          style={{ fontSize: '0.78rem' }}
-          disabled={isLoading || !groqOk}
-        />
-        <button
-          onClick={toggleListening}
-          className={`hud-btn p-2.5 ${isListening ? 'mic-active' : ''}`}
-          disabled={isLoading}
-          title="Voice input"
-        >
-          {isListening ? <MicOff size={16} /> : <Mic size={16} />}
-        </button>
-        <button
-          onClick={handleSubmit}
-          className="hud-btn hud-btn-primary p-2.5"
-          disabled={isLoading || !input.trim() || !groqOk}
-        >
-          <Send size={16} />
-        </button>
-      </div>
-    </div>
-  );
+  const cmdBarProps: CommandBarProps = {
+    activeAgent,
+    onClearAgent: () => { setActiveAgent(undefined); setAgentPrompt(''); },
+    inputRef,
+    input,
+    setInput,
+    onKeyDown: handleKeyDown,
+    isListening,
+    groqOk,
+    isLoading,
+    onToggleListen: toggleListening,
+    onSubmit: handleSubmit,
+  };
 
   // ─── Chat area ─────────────────────────────────────────────────────────
 
@@ -522,7 +555,7 @@ export default function JarvisInterface() {
           {mobilePanel === 'chat' && (
             <>
               <ChatArea />
-              <CommandBar />
+              <CommandBar {...cmdBarProps} />
               <StatusBar />
             </>
           )}
@@ -693,7 +726,7 @@ export default function JarvisInterface() {
               {/* Chat overlay — messages + input */}
               <div className="relative z-10 flex flex-col h-full">
                 <ChatArea />
-                <CommandBar />
+                <CommandBar {...cmdBarProps} />
               </div>
             </div>
 
@@ -721,7 +754,7 @@ export default function JarvisInterface() {
       </AnimatePresence>
 
       {/* Command bar — always visible */}
-      {viewMode === 'dashboard' && <CommandBar />}
+      {viewMode === 'dashboard' && <CommandBar {...cmdBarProps} />}
 
       {/* Status bar */}
       <StatusBar />
