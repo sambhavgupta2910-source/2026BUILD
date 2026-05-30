@@ -3,17 +3,22 @@
 
 :root {
   /* Brand: deep midnight navy + warm champagne gold */
-  --bg:        #07090f;
-  --surface:   #0e1118;
-  --surface2:  #141720;
+  --bg:        #060c12;
+  --surface:   #0c1219;
+  --surface2:  #111820;
   --border:    rgba(255,255,255,.07);
   --gold:      #C8A96A;
   --gold-hi:   #E8C87A;
   --gold-lo:   rgba(200,169,106,.12);
   --gold-bdr:  rgba(200,169,106,.28);
+  /* Ocean teal — from LinkedIn banner */
+  --teal:      #0EA5B8;
+  --teal-hi:   #1BBFD4;
+  --teal-lo:   rgba(14,165,184,.1);
+  --teal-bdr:  rgba(14,165,184,.25);
   --text:      #ecedf4;
   --muted:     #7c8299;
-  --accent:    #3a7bd5;
+  --accent:    #0EA5B8;
   --green:     #4ade80;
   --red:       #f87171;
   --top-h:     56px;
@@ -31,10 +36,10 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(-
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   height: calc(var(--top-h) + var(--safe-top));
   padding-top: var(--safe-top);
-  background: rgba(5,8,16,.92);
-  backdrop-filter: blur(16px) saturate(1.5);
-  -webkit-backdrop-filter: blur(16px) saturate(1.5);
-  border-bottom: 1px solid var(--border);
+  background: rgba(6,12,18,.94);
+  backdrop-filter: blur(20px) saturate(1.6);
+  -webkit-backdrop-filter: blur(20px) saturate(1.6);
+  border-bottom: 1px solid rgba(14,165,184,.15);
   display: flex; align-items: center; padding-inline: 16px; gap: 10px;
 }
 .top-bar-logo { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
@@ -110,28 +115,30 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(-
 .advisor-strip {
   display: flex; align-items: center; gap: 10px;
   margin: 12px 16px 8px;
-  background: var(--surface);
-  border: 1px solid var(--gold-bdr);
+  background: linear-gradient(135deg, rgba(14,165,184,.08) 0%, var(--surface) 100%);
+  border: 1px solid var(--teal-bdr);
   border-radius: 12px;
   padding: 10px 14px;
 }
 .advisor-avatar {
-  width: 36px; height: 36px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--gold-hi), var(--gold));
-  color: #07090f; font-size: 13px; font-weight: 900;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--teal-hi), #0A7A8A);
+  color: #fff; font-size: 14px; font-weight: 900;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0; letter-spacing: .02em;
+  border: 2px solid var(--teal-bdr);
+  box-shadow: 0 0 12px rgba(14,165,184,.2);
 }
 .advisor-info { flex: 1; }
 .advisor-name { font-size: 13px; font-weight: 700; letter-spacing: .01em; }
 .advisor-cred { font-size: 11px; color: var(--muted); margin-top: 1px; }
-.advisor-tag { font-size: 9px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--gold); background: var(--gold-lo); border: 1px solid var(--gold-bdr); border-radius: 20px; padding: 3px 8px; white-space: nowrap; }
+.advisor-tag { font-size: 9px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--teal-hi); background: var(--teal-lo); border: 1px solid var(--teal-bdr); border-radius: 20px; padding: 3px 8px; white-space: nowrap; }
 
 /* ── DISCOVER HERO ── */
 .discover-hero {
   margin: 12px 16px 0;
-  background: linear-gradient(135deg, #1a3a5c 0%, #0d1f35 60%, #050810 100%);
-  border: 1px solid rgba(77,142,240,.2);
+  background: linear-gradient(145deg, #072028 0%, #0a1a24 50%, #060c12 100%);
+  border: 1px solid rgba(14,165,184,.2);
   border-radius: var(--radius);
   padding: 20px;
   position: relative;
@@ -141,7 +148,16 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(-
 .discover-hero::before {
   content: '';
   position: absolute; top: 0; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, transparent, var(--gold), var(--gold-hi), var(--gold), transparent);
+  background: linear-gradient(90deg, transparent, var(--teal), var(--gold-hi), var(--teal), transparent);
+}
+/* Ocean wave shimmer in bottom-right corner */
+.discover-hero::after {
+  content: '';
+  position: absolute; bottom: -20px; right: -20px;
+  width: 180px; height: 180px;
+  background: radial-gradient(circle, rgba(14,165,184,.12) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
 }
 .dh-eyebrow { font-size: 9px; font-weight: 700; letter-spacing: .18em; color: var(--gold); text-transform: uppercase; margin-bottom: 6px; opacity: .8; }
 .dh-badge { display: inline-flex; align-items: center; background: var(--gold-lo); border: 1px solid var(--gold-bdr); border-radius: 20px; padding: 3px 10px; font-size: 10px; color: var(--gold); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 10px; }
@@ -237,7 +253,7 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(-
 .mover-badge.up { color: var(--green); }
 .mover-badge.dn { color: var(--red); }
 .surge-tags { padding: 0 16px; display: flex; flex-wrap: wrap; gap: 8px; }
-.surge-tag { background: rgba(251,191,36,.08); border: 1px solid rgba(251,191,36,.2); border-radius: 20px; padding: 6px 12px; font-size: 12px; color: #fbbf24; }
+.surge-tag { background: var(--teal-lo); border: 1px solid var(--teal-bdr); border-radius: 20px; padding: 6px 12px; font-size: 12px; color: var(--teal-hi); }
 
 /* ── AREAS ── */
 .area-search-wrap { padding: 12px 16px 4px; }
@@ -306,7 +322,7 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(-
 
 /* ── DLD CONTEXT BLOCK ── */
 .dld-context { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 16px; }
-.dld-context-title { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: var(--gold); letter-spacing: .04em; text-transform: uppercase; margin-bottom: 8px; }
+.dld-context-title { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: var(--teal); letter-spacing: .04em; text-transform: uppercase; margin-bottom: 8px; }
 .dld-context-body { font-size: 13px; line-height: 1.6; color: var(--muted); }
 .dld-stats { display: flex; gap: 16px; margin-top: 8px; }
 .dld-stat { font-size: 12px; }
