@@ -17,15 +17,14 @@ import https from 'node:https';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import Anthropic from '@anthropic-ai/sdk';
-
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PUBLIC_DIR = path.join(__dirname, 'public');
 const CACHE_DIR = path.join(__dirname, '.cache');
 
 const PORT = Number(process.env.PORT || 4173);
 const SQM_TO_SQFT = 10.764;
-const anthropic = process.env.ANTHROPIC_API_KEY ? new Anthropic() : null;
+const XAI_API_KEY = process.env.XAI_API_KEY || null;
+const AGENT_WHATSAPP = (process.env.AGENT_WHATSAPP || '').replace(/\D/g, '');
 const analysisCache = new Map();
 
 const DEFAULT_DRIVE_FILE_ID = '1mo0YAYfbBMguqk1qQ4E2XT06rxuJWzCa';
@@ -428,7 +427,7 @@ function buildAreaContext(dataset, area) {
 }
 
 async function getAnalysis(dataset, area) {
-  if (!anthropic) return { commentary: null, reason: 'ANTHROPIC_API_KEY not configured' };
+  if (!XAI_API_KEY) return { commentary: null, reason: 'XAI_API_KEY not configured' };
   const ctx = buildAreaContext(dataset, area);
   if (!ctx) return { commentary: null, reason: `No transaction data for area: ${area}` };
 
@@ -449,22 +448,38 @@ async function getAnalysis(dataset, area) {
     `Price trend (first half vs second half): ${ctx.trend > 0 ? '+' : ''}${ctx.trend}%\n` +
     `Top projects:\n${topProjLines}`;
 
-  const msg = await anthropic.messages.create({
-    model: 'claude-haiku-4-5-20251001',
-    max_tokens: 220,
-    system:
-      'You are a senior Dubai real estate analyst writing for professional advisors on the PRISM platform. ' +
-      'Write exactly 3-4 sentences of concise, data-driven market commentary. ' +
-      'Be specific: cite the AED/sqft figures, transaction counts, and percentage changes from the data. ' +
-      'Cover: (1) overall price level and recent trend direction, (2) what the off-plan share signals about buyer composition, ' +
-      '(3) one sharp, actionable insight about this sub-market. No filler, no caveats, no disclaimers.',
-    messages: [{ role: 'user', content: userContent }],
+  const xaiRes = await fetch('https://api.x.ai/v1/chat/completions', {
+    method: 'POST',
+    headers: { 'Authorization': `Bearer ${XAI_API_KEY}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'grok-3-mini',
+      max_tokens: 220,
+      messages: [
+        {
+          role: 'system',
+          content:
+            'You are a senior Dubai real estate analyst writing for professional advisors on the PRISM platform. ' +
+            'Write exactly 3-4 sentences of concise, data-driven market commentary. ' +
+            'Be specific: cite the AED/sqft figures, transaction counts, and percentage changes from the data. ' +
+            'Cover: (1) overall price level and recent trend direction, (2) what the off-plan share signals about buyer composition, ' +
+            '(3) one sharp, actionable insight about this sub-market. No filler, no caveats, no disclaimers.',
+        },
+        { role: 'user', content: userContent },
+      ],
+    }),
   });
 
-  const commentary = msg.content[0]?.text?.trim() || '';
+  if (!xaiRes.ok) {
+    const err = await xaiRes.text().catch(() => '');
+    console.error(`[analysis] xAI error ${xaiRes.status}:`, err.slice(0, 200));
+    return { commentary: null, reason: `xAI error ${xaiRes.status}` };
+  }
+
+  const xaiData = await xaiRes.json();
+  const commentary = xaiData.choices?.[0]?.message?.content?.trim() || '';
   const result = { commentary, dataSnapshot: ctx };
   analysisCache.set(cacheKey, result);
-  console.log(`[analysis] generated commentary for ${area} (${commentary.length} chars)`);
+  console.log(`[analysis] generated commentary for ${area} via Grok (${commentary.length} chars)`);
   return result;
 }
 
@@ -708,7 +723,12 @@ async function start() {
     const { dataset, metadata, trends } = state;
     try {
       if (req.url === '/healthz') {
-        return send(res, 200, { ok: true, rows: dataset.cleanRows, aiEnabled: !!anthropic });
+        return send(res, 200, { ok: true, rows: dataset.cleanRows, aiEnabled: !!XAI_API_KEY });
+      }
+
+      // Public config — agent WhatsApp number for lead redirect
+      if (req.url === '/api/config') {
+        return send(res, 200, { agentWhatsapp: AGENT_WHATSAPP });
       }
 
       // Manual refresh webhook — POST /api/refresh?token=SECRET

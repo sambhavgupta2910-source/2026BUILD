@@ -21,6 +21,10 @@ let filteredListings = [];
 let activeDevFilter  = 'All';
 let currentListing   = null;
 let myLeads = JSON.parse(localStorage.getItem('prism_leads') || '[]');
+let agentWhatsapp   = '';
+
+// Load agent WhatsApp number from server config
+fetch('/api/config').then((r) => r.json()).then((d) => { agentWhatsapp = d.agentWhatsapp || ''; }).catch(() => {});
 
 // ── Navigation ────────────────────────────────────────────
 function showScreen(id) {
@@ -369,6 +373,15 @@ document.getElementById('leadSubmit').addEventListener('click', async () => {
       document.getElementById('leadSuccess').style.display = 'flex';
       myLeads.push({ ...body, project: currentListing?.project, developer: currentListing?.developer, date: new Date().toISOString() });
       localStorage.setItem('prism_leads', JSON.stringify(myLeads));
+
+      // WhatsApp button — show link to agent's WhatsApp with pre-filled message
+      const waBtn = document.getElementById('waOpenBtn');
+      if (agentWhatsapp && waBtn) {
+        const proj = currentListing?.project || 'a property';
+        const msg = `Hi, I'm interested in ${proj}${body.unitType ? ` (${body.unitType})` : ''}${body.budget ? `. Budget: ${body.budget}` : ''}. Please share more details. — ${body.name}`;
+        waBtn.href = `https://wa.me/${agentWhatsapp}?text=${encodeURIComponent(msg)}`;
+        waBtn.style.display = 'flex';
+      }
     } else {
       alert(data.error || 'Failed. Please try again.');
       document.getElementById('leadSubmit').textContent = 'Register Interest';

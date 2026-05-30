@@ -299,7 +299,9 @@ select.lead-input { appearance: none; -webkit-appearance: none; background-image
 select.lead-input option { background: #0d1220; }
 .lead-submit { width: 100%; background: var(--gold); color: #050810; border: none; border-radius: 10px; padding: 14px; font-size: 16px; font-weight: 800; cursor: pointer; margin-top: 4px; letter-spacing: .02em; transition: opacity .15s; }
 .lead-submit:active { opacity: .8; }
-.lead-success { display: flex; align-items: center; gap: 10px; background: rgba(74,222,128,.08); border: 1px solid rgba(74,222,128,.2); border-radius: 10px; padding: 12px 14px; margin-top: 8px; font-size: 14px; color: var(--green); }
+.lead-success { display: flex; flex-direction: column; gap: 10px; background: rgba(74,222,128,.08); border: 1px solid rgba(74,222,128,.2); border-radius: 10px; padding: 14px; margin-top: 8px; }
+.ls-check { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--green); }
+.wa-open-btn { display: flex; align-items: center; justify-content: center; gap: 8px; background: #25d366; color: #fff; border-radius: 10px; padding: 12px; font-size: 15px; font-weight: 700; text-decoration: none; cursor: pointer; }
 
 /* ── NEW THIS WEEK CARDS ── */
 .new-card {
