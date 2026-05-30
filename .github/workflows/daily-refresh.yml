@@ -1,0 +1,49 @@
+name: Daily transaction refresh
+
+on:
+  schedule:
+    # 20:00 UTC = 00:00 UAE (UTC+4) — runs just after midnight Dubai time
+    - cron: '0 20 * * *'
+  # Allow triggering manually from the GitHub Actions tab
+  workflow_dispatch:
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: prism-valuation-web-mvp/package.json
+
+      - name: Download from Dubai Pulse → upload to Drive → trigger PRISM reload
+        working-directory: prism-valuation-web-mvp
+        run: node scripts/fetch-pulse.js
+        env:
+          # Dubai Pulse CKAN datastore_search URL for the DLD transactions resource
+          # Example: https://dubaipulse.gov.ae/api/3/action/datastore_search?resource_id=<id>&limit=1000000
+          DUBAI_PULSE_API_URL: ${{ secrets.DUBAI_PULSE_API_URL }}
+
+          # API key obtained from dubaipulse.gov.ae registration
+          DUBAI_PULSE_API_KEY: ${{ secrets.DUBAI_PULSE_API_KEY }}
+
+          # Service account credentials (base64-encoded JSON from GCP console)
+          # Role needed: Drive > drive.file scope on the transactions file
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+
+          # Google Drive file ID to overwrite (from the share URL)
+          DRIVE_FILE_ID: ${{ secrets.DRIVE_FILE_ID }}
+
+          # Railway deployment URL e.g. https://prism-production.railway.app
+          PRISM_URL: ${{ secrets.PRISM_URL }}
+
+          # Must match REFRESH_SECRET on the Railway server
+          REFRESH_SECRET: ${{ secrets.REFRESH_SECRET }}
+
+      - name: Report result
+        if: always()
+        run: echo "Pipeline finished at $(date -u) UTC"

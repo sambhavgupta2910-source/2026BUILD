@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="PRISM">
+  <meta name="theme-color" content="#050810">
+  <title>PRISM — Dubai Off-Plan</title>
+  <link rel="stylesheet" href="/app.native.css">
+  <link rel="icon" href="/icon-192.svg">
+  <link rel="apple-touch-icon" href="/icon-192.svg">
+  <link rel="manifest" href="/manifest.json">
+</head>
+<body>
+
+<!-- TOP BAR -->
+<header class="top-bar" id="topBar">
+  <div class="top-bar-logo">
+    <svg width="18" height="18" viewBox="0 0 192 192" fill="none">
+      <rect x="52" y="41" width="22" height="110" rx="4" fill="#c9a96e"/>
+      <rect x="52" y="41" width="79" height="22" rx="4" fill="#c9a96e"/>
+      <rect x="52" y="90" width="71" height="20" rx="4" fill="#c9a96e"/>
+      <rect x="109" y="41" width="22" height="69" rx="4" fill="#c9a96e"/>
+    </svg>
+    <span>PRISM</span>
+  </div>
+  <h1 class="top-bar-title" id="topBarTitle">Discover</h1>
+  <button class="top-bar-action" id="topBarSearch" aria-label="Search">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+    </svg>
+  </button>
+</header>
+
+<!-- SEARCH OVERLAY -->
+<div class="search-overlay" id="searchOverlay">
+  <div class="search-box">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+    </svg>
+    <input id="searchInput" type="search" placeholder="Developer, area or project…" autocomplete="off">
+    <button id="searchCancel">Cancel</button>
+  </div>
+  <div class="search-results" id="searchResults"></div>
+</div>
+
+<!-- SCREENS CONTAINER -->
+<div class="screens" id="screens">
+
+  <!-- DISCOVER -->
+  <section class="screen active" id="screen-discover">
+    <div class="screen-scroll">
+      <div class="discover-hero" id="discoverHero">
+        <div class="dh-badge">Featured Launch</div>
+        <div class="dh-project" id="dhProject">Loading…</div>
+        <div class="dh-dev" id="dhDev"></div>
+        <div class="dh-price" id="dhPrice"></div>
+        <div class="dh-tags" id="dhTags"></div>
+        <button class="dh-cta" id="dhCta">View Details →</button>
+      </div>
+
+      <!-- NEW THIS WEEK -->
+      <div id="newThisWeekSection">
+        <div class="section-header">
+          <span class="section-title">🔴 New This Week</span>
+          <span class="section-sub">Just launched</span>
+        </div>
+        <div class="hscroll"><div class="hscroll-inner" id="newThisWeek"></div></div>
+      </div>
+
+      <div class="section-header">
+        <span class="section-title">Hot Launches</span>
+        <span class="section-sub">Selling fast right now</span>
+      </div>
+      <div class="hscroll"><div class="hscroll-inner" id="hotLaunches"></div></div>
+
+      <div class="section-header">
+        <span class="section-title">Market Proof</span>
+        <span class="section-sub">DLD closed transactions — data-backed</span>
+      </div>
+      <div class="proof-grid" id="proofGrid"></div>
+
+      <!-- DLD NEW PROJECT REGISTRATIONS -->
+      <div class="section-wrap">
+        <div class="section-header">
+          <span class="section-title">New DLD Registrations</span>
+          <span class="section-sub">Projects first seen in the last 14 days</span>
+        </div>
+        <div class="dld-launch-list" id="dldNewLaunches">
+          <div class="loading-msg" style="padding:16px 0">Loading…</div>
+        </div>
+      </div>
+
+      <div class="section-header">
+        <span class="section-title">Browse by Developer</span>
+      </div>
+      <div class="hscroll"><div class="hscroll-inner" id="devChips"></div></div>
+
+      <div style="height:16px"></div>
+    </div>
+  </section>
+
+  <!-- OFF-PLAN LISTINGS -->
+  <section class="screen" id="screen-offplan">
+    <div class="screen-scroll">
+      <div class="filter-bar">
+        <div class="hscroll"><div class="hscroll-inner" id="devFilterChips"></div></div>
+      </div>
+      <div class="listings-grid" id="listingsGrid">
+        <div class="loading-msg">Loading launches…</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRENDS -->
+  <section class="screen" id="screen-trends">
+    <div class="screen-scroll">
+      <div class="trends-header">
+        <div class="trends-week" id="trendsWeek">Loading…</div>
+        <div class="trends-label">DLD Market Intelligence</div>
+      </div>
+      <div class="kpi-row" id="kpiRow"></div>
+      <div class="section-header">
+        <span class="section-title">Heating Up</span>
+        <span class="section-sub">Volume surge vs prior 30 days</span>
+      </div>
+      <div class="mover-list" id="heatingUp"></div>
+      <div class="section-header">
+        <span class="section-title">PSF Movers</span>
+        <span class="section-sub">Price per sqft shift this week</span>
+      </div>
+      <div class="mover-list" id="psfMovers"></div>
+      <div class="section-header">
+        <span class="section-title">Off-Plan Surge Areas</span>
+        <span class="section-sub">Areas where 70%+ of deals are off-plan</span>
+      </div>
+      <div class="surge-tags" id="surgeTags"></div>
+      <div style="height:16px"></div>
+    </div>
+  </section>
+
+  <!-- AREAS -->
+  <section class="screen" id="screen-areas">
+    <div class="screen-scroll">
+      <div class="area-search-wrap">
+        <input id="areaSearch" type="text" placeholder="Filter areas…" autocomplete="off" class="area-search">
+      </div>
+      <div class="area-grid" id="areaGrid"></div>
+      <div style="height:16px"></div>
+    </div>
+  </section>
+
+  <!-- MY LEADS -->
+  <section class="screen" id="screen-inquiries">
+    <div class="screen-scroll">
+      <div class="inq-hero">
+        <div class="inq-hero-title">My Leads</div>
+        <div class="inq-hero-sub">Properties you've expressed interest in</div>
+      </div>
+      <div id="inquiryList" class="inq-list"></div>
+    </div>
+  </section>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav" id="bottomNav">
+  <button class="bnav-btn active" data-screen="discover">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+      <circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/>
+    </svg>
+    <span>Discover</span>
+  </button>
+  <button class="bnav-btn" data-screen="offplan">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+      <rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+      <line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/>
+    </svg>
+    <span>Off-Plan</span>
+  </button>
+  <button class="bnav-btn" data-screen="trends">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+      <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>
+    </svg>
+    <span>Trends</span>
+  </button>
+  <button class="bnav-btn" data-screen="areas">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+    </svg>
+    <span>Areas</span>
+  </button>
+  <button class="bnav-btn" data-screen="inquiries">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+    </svg>
+    <span>My Leads</span>
+  </button>
+</nav>
+
+<!-- PROJECT DETAIL SHEET -->
+<div class="sheet-backdrop" id="sheetBackdrop"></div>
+<div class="project-sheet" id="projectSheet">
+  <div class="sheet-handle"></div>
+  <div class="sheet-scroll">
+    <div class="sheet-hero" id="sheetHero">
+      <div class="sheet-status" id="sheetStatus"></div>
+      <div class="sheet-title" id="sheetTitle"></div>
+      <div class="sheet-dev" id="sheetDev"></div>
+    </div>
+    <div class="sheet-body">
+      <div class="sheet-price-row">
+        <div class="sheet-kpi">
+          <div class="sheet-kpi-val" id="sheetPriceFrom"></div>
+          <div class="sheet-kpi-label">Starting From</div>
+        </div>
+        <div class="sheet-kpi">
+          <div class="sheet-kpi-val" id="sheetHandover"></div>
+          <div class="sheet-kpi-label">Handover</div>
+        </div>
+        <div class="sheet-kpi">
+          <div class="sheet-kpi-val" id="sheetPP"></div>
+          <div class="sheet-kpi-label">Payment Plan</div>
+        </div>
+      </div>
+
+      <div class="sheet-desc" id="sheetDesc"></div>
+      <div class="sheet-units" id="sheetUnits"></div>
+      <div class="sheet-tags-row" id="sheetTagsRow"></div>
+
+      <div class="dld-context" id="dldContext">
+        <div class="dld-context-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#c9a96e" stroke-width="2">
+            <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/>
+          </svg>
+          DLD Market Context
+        </div>
+        <div class="dld-context-body" id="dldContextBody">Loading market data…</div>
+      </div>
+
+      <div class="lead-form" id="leadForm">
+        <div class="lead-form-title">Register Interest</div>
+        <div class="lead-form-sub">Our advisor will WhatsApp you within 24 hours</div>
+        <input class="lead-input" id="leadName" type="text" placeholder="Your name" autocomplete="name">
+        <div class="lead-input-wrap">
+          <span class="lead-prefix">+971</span>
+          <input class="lead-input with-prefix" id="leadWhatsapp" type="tel" placeholder="WhatsApp number" autocomplete="tel">
+        </div>
+        <select class="lead-input" id="leadUnit">
+          <option value="">Preferred unit type</option>
+        </select>
+        <select class="lead-input" id="leadBudget">
+          <option value="">Budget range</option>
+          <option value="Under AED 1M">Under AED 1M</option>
+          <option value="AED 1M – 2M">AED 1M – 2M</option>
+          <option value="AED 2M – 5M">AED 2M – 5M</option>
+          <option value="AED 5M – 10M">AED 5M – 10M</option>
+          <option value="AED 10M+">AED 10M+</option>
+        </select>
+        <button class="lead-submit" id="leadSubmit">Register Interest</button>
+        <div class="lead-success" id="leadSuccess" style="display:none">
+          <div class="ls-check">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2.5">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            <span>Received! Our advisor will contact you within 24 hours.</span>
+          </div>
+          <a id="waOpenBtn" class="wa-open-btn" target="_blank" style="display:none">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+              <path d="M12.002 2C6.478 2 2 6.478 2 12.002c0 1.85.497 3.58 1.364 5.067L2 22l5.07-1.33A9.955 9.955 0 0 0 12.002 22C17.522 22 22 17.522 22 12.002 22 6.478 17.522 2 12.002 2z"/>
+            </svg>
+            Chat on WhatsApp
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="/app.native.js"></script>
+</body>
+</html>

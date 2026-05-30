@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Dubai Properties — PRISM</title>
+  <meta name="description" content="Browse Dubai real estate by area and developer. Live DLD data.">
+  <link rel="stylesheet" href="/properties.css">
+  <link rel="icon" href="/icon-192.svg">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#07090f">
+</head>
+<body>
+
+<!-- ── Nav ──────────────────────────────────────────────── -->
+<nav class="topnav">
+  <a href="/" class="nav-logo">
+    <svg width="20" height="20" viewBox="0 0 192 192" fill="none">
+      <rect x="52" y="41" width="22" height="110" rx="4" fill="#c9a96e"/>
+      <rect x="52" y="41" width="79" height="22" rx="4" fill="#c9a96e"/>
+      <rect x="52" y="90" width="71" height="20" rx="4" fill="#c9a96e"/>
+      <rect x="109" y="41" width="22" height="69" rx="4" fill="#c9a96e"/>
+    </svg>
+    PRISM
+  </a>
+  <div class="nav-links">
+    <a href="/properties.html" class="active">Properties</a>
+    <a href="/">Valuation</a>
+    <a href="/#trends">Market</a>
+  </div>
+  <button class="search-trigger" id="searchTrigger" aria-label="Search">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+    </svg>
+  </button>
+</nav>
+
+<!-- ── Search overlay ────────────────────────────────────── -->
+<div class="search-overlay" id="searchOverlay">
+  <div class="search-overlay-inner">
+    <div class="search-bar-wrap">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="so-icon">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      <input id="searchInput" type="text" placeholder="Search area, community or project…" autocomplete="off" spellcheck="false">
+      <button id="searchClose" class="so-close">✕</button>
+    </div>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</div>
+
+<!-- ── Hero ─────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">Live DLD Data</div>
+    <h1>Dubai Real Estate<br><span class="gold">Intelligence</span></h1>
+    <p class="hero-stats" id="heroStats">Loading market data…</p>
+    <button class="hero-search-btn" id="heroSearchBtn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      Search area, community or project…
+    </button>
+  </div>
+</section>
+
+<!-- ── Tab bar ───────────────────────────────────────────── -->
+<div class="tab-bar" id="tabBar">
+  <div class="tab-inner">
+    <button class="tab active" data-tab="areas">Areas</button>
+    <button class="tab" data-tab="developers">Developers</button>
+    <button class="tab" data-tab="launches">Off-Plan</button>
+    <button class="tab" data-tab="smart">Smart Money</button>
+    <button class="tab" data-tab="listings">Listings</button>
+  </div>
+</div>
+
+<!-- ── Areas panel ───────────────────────────────────────── -->
+<div class="panel active" id="panel-areas">
+  <div class="panel-inner">
+    <div class="panel-hd">
+      <div>
+        <div class="panel-label">Sub-location</div>
+        <h2>Browse by Area</h2>
+        <p class="panel-sub" id="areaSubtitle">Loading…</p>
+      </div>
+      <button class="toggle-all" id="toggleAreas">Show all</button>
+    </div>
+    <div class="card-grid" id="areaGrid"></div>
+  </div>
+</div>
+
+<!-- ── Developers panel ──────────────────────────────────── -->
+<div class="panel" id="panel-developers">
+  <div class="panel-inner">
+    <div class="panel-hd">
+      <div>
+        <div class="panel-label">Master Community</div>
+        <h2>Browse by Developer</h2>
+        <p class="panel-sub" id="communitySubtitle">Loading…</p>
+      </div>
+      <button class="toggle-all" id="toggleCommunities">Show all</button>
+    </div>
+    <div class="card-grid" id="communityGrid"></div>
+  </div>
+</div>
+
+<!-- ── Off-Plan Launches panel ───────────────────────────── -->
+<div class="panel" id="panel-launches">
+  <div class="panel-inner">
+    <div class="panel-hd">
+      <div>
+        <div class="panel-label">New to Market</div>
+        <h2>Off-Plan by Developer</h2>
+        <p class="panel-sub" id="launchesSubtitle">Loading…</p>
+      </div>
+    </div>
+    <div class="dev-grid" id="devGrid"></div>
+  </div>
+</div>
+
+<!-- ── Smart Money panel ─────────────────────────────────── -->
+<div class="panel" id="panel-smart">
+  <div class="panel-inner">
+    <div class="smart-header">
+      <div class="panel-label">Weekly Intelligence</div>
+      <h2>Where Smart Money Is Moving</h2>
+      <p class="panel-sub" id="smartDate">Loading last 7 days…</p>
+    </div>
+
+    <div class="kpi-strip" id="kpiStrip">
+      <div class="kpi-box"><div class="kpi-label">Transactions</div><div class="kpi-val" id="kpiCount">—</div><div class="kpi-sub">this week</div></div>
+      <div class="kpi-box"><div class="kpi-label">Volume</div><div class="kpi-val" id="kpiVolume">—</div><div class="kpi-sub">AED</div></div>
+      <div class="kpi-box"><div class="kpi-label">Median PSF</div><div class="kpi-val" id="kpiPsf">—</div><div class="kpi-sub">AED/sqft</div></div>
+      <div class="kpi-box"><div class="kpi-label">Off-Plan</div><div class="kpi-val" id="kpiOffplan">—</div><div class="kpi-sub">of sales</div></div>
+    </div>
+
+    <div class="movers-grid">
+      <div class="mover-panel">
+        <div class="mover-panel-hd">
+          <div class="mover-icon heat">🔥</div>
+          <div><h3>Heating Up</h3><div class="mover-sub">Volume spike vs 30-day baseline</div></div>
+        </div>
+        <div id="volumeMovers"><p class="no-data">Loading…</p></div>
+      </div>
+      <div class="mover-panel">
+        <div class="mover-panel-hd">
+          <div class="mover-icon psf">📈</div>
+          <div><h3>PSF Momentum</h3><div class="mover-sub">Price shift vs prior 30 days</div></div>
+        </div>
+        <div id="psfMovers"><p class="no-data">Loading…</p></div>
+      </div>
+    </div>
+
+    <div class="offplan-surge">
+      <div class="offplan-hd">Off-Plan Surge — areas where ≥70% of this week's sales are off-plan</div>
+      <div class="offplan-tags" id="offplanTags"><p class="no-data">Loading…</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Listings panel ────────────────────────────────────── -->
+<div class="panel" id="panel-listings">
+  <div class="panel-inner">
+
+    <!-- Filter sheet trigger (mobile) -->
+    <div class="listings-topbar">
+      <div>
+        <div class="panel-label">DLD Transaction Data</div>
+        <h2>Property Transactions</h2>
+        <p class="panel-sub" id="listingsSubtitle">All residential sales</p>
+      </div>
+      <button class="filter-trigger" id="filterTrigger">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/>
+        </svg>
+        Filters
+      </button>
+    </div>
+
+    <!-- Active filter chips -->
+    <div class="filter-chips" id="filterChips"></div>
+
+    <!-- Filter sheet (slide-up on mobile, inline on desktop) -->
+    <div class="filter-sheet" id="filterSheet">
+      <div class="filter-sheet-hd">
+        <span>Filters</span>
+        <button class="filter-sheet-close" id="filterSheetClose">Done</button>
+      </div>
+      <div class="filter-sheet-body">
+        <div class="filter-group">
+          <label>Area</label>
+          <select id="filterArea"><option value="">All Areas</option></select>
+        </div>
+        <div class="filter-group">
+          <label>Community</label>
+          <select id="filterCommunity"><option value="">All Communities</option></select>
+        </div>
+        <div class="filter-group">
+          <label>Rooms</label>
+          <select id="filterRooms"><option value="">All</option></select>
+        </div>
+        <div class="filter-group">
+          <label>Status</label>
+          <select id="filterOffplan">
+            <option value="">All</option>
+            <option value="Off-Plan">Off-Plan</option>
+            <option value="Ready">Ready</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Sort by</label>
+          <select id="sortBy">
+            <option value="date">Newest first</option>
+            <option value="price_desc">Price ↓</option>
+            <option value="price_asc">Price ↑</option>
+            <option value="psf_desc">PSF ↓</option>
+            <option value="psf_asc">PSF ↑</option>
+          </select>
+        </div>
+        <button class="reset-btn" id="resetFilters">Reset all filters</button>
+      </div>
+    </div>
+    <div class="filter-sheet-backdrop" id="filterBackdrop"></div>
+
+    <!-- Desktop inline filters -->
+    <div class="filter-inline">
+      <select id="filterAreaD"><option value="">All Areas</option></select>
+      <select id="filterCommunityD"><option value="">All Communities</option></select>
+      <select id="filterRoomsD"><option value="">All Rooms</option></select>
+      <select id="filterOffplanD">
+        <option value="">All</option>
+        <option value="Off-Plan">Off-Plan</option>
+        <option value="Ready">Ready</option>
+      </select>
+      <select id="sortByD">
+        <option value="date">Newest</option>
+        <option value="price_desc">Price ↓</option>
+        <option value="price_asc">Price ↑</option>
+        <option value="psf_desc">PSF ↓</option>
+        <option value="psf_asc">PSF ↑</option>
+      </select>
+      <button class="reset-btn" id="resetFiltersD">Reset</button>
+    </div>
+
+    <!-- Table (desktop) / Cards (mobile) -->
+    <div class="table-wrap" id="tableWrap">
+      <table class="prop-table">
+        <thead>
+          <tr>
+            <th>Project</th>
+            <th>Community</th>
+            <th>Area</th>
+            <th>Rooms</th>
+            <th class="num">Size sqft</th>
+            <th class="num">Price AED</th>
+            <th class="num">PSF</th>
+            <th>Date</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="listingsBody">
+          <tr><td colspan="9" class="loading-cell">Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- Mobile card list -->
+    <div class="listing-cards" id="listingCards"></div>
+
+    <div class="pagination" id="pagination"></div>
+  </div>
+</div>
+
+<!-- ── Footer ────────────────────────────────────────────── -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span class="footer-brand">PRISM</span>
+    <span class="footer-sep">·</span>
+    <span class="footer-data">Dubai Land Department</span>
+    <a href="/" class="footer-link">Valuation Tool →</a>
+  </div>
+</footer>
+
+<script src="/properties.js"></script>
+</body>
+</html>

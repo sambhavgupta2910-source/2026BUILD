@@ -2,12 +2,29 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>PRISM Valuation Intelligence</title>
+
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#090d14" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="PRISM" />
+    <link rel="apple-touch-icon" href="/icon-192.svg" />
+
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
+    <!-- Mobile-only top bar -->
+    <header class="mobile-header">
+      <div class="mobile-brand">PRISM</div>
+      <div class="status" id="mobileStatus">Loading…</div>
+    </header>
+
     <main class="shell">
+
+      <!-- ── Sidebar ─────────────────────────────────────────────────── -->
       <aside class="sidebar">
         <div>
           <div class="brand">PRISM</div>
@@ -16,152 +33,235 @@
         <nav>
           <a class="active" href="#valuation">Valuation</a>
           <a href="#comparables">Comparables</a>
+          <a href="#trends">Trends</a>
           <a href="#market">Market</a>
           <a href="#quality">Confidence</a>
         </nav>
-        <div class="unit-lock">
-          <span>Unit basis</span>
-          <strong>AED/sqft</strong>
+        <div class="sidebar-footer">
+          <div class="unit-lock">
+            <span>Unit basis</span>
+            <strong>AED / sqft</strong>
+          </div>
+          <div class="oracle-url-wrap">
+            <span>Oracle backend</span>
+            <input id="oracleUrl" type="text" value="http://localhost:8000" spellcheck="false" />
+          </div>
         </div>
       </aside>
 
+      <!-- ── Workspace ───────────────────────────────────────────────── -->
       <section class="workspace">
+
         <header class="topbar">
           <div>
             <h1>Property valuation workspace</h1>
-            <p>Sales-only valuation with sqm source areas converted once to sqft.</p>
+            <p>DLD transactions · Sales · Residential · AED/sqft</p>
           </div>
-          <div class="status" id="loadStatus">Loading data</div>
+          <div class="status" id="loadStatus">Loading data…</div>
         </header>
 
+        <!-- VALUATION ────────────────────────────────────────────────── -->
         <section class="grid main-grid" id="valuation">
+
+          <!-- Form -->
           <form class="panel form-panel" id="valuationForm">
             <div class="panel-title">
               <h2>Subject property</h2>
               <span>Advisor input</span>
             </div>
 
-            <label>
-              Area / community
+            <label>Area / community
               <input list="areas" name="area" placeholder="BUSINESS BAY" required />
             </label>
-            <label>
-              Project
-              <input list="projects" name="project" placeholder="THE CRESTMARK" />
+            <label>Project
+              <input list="projects" name="project" id="projectInput"
+                     placeholder="THE CRESTMARK" autocomplete="off" />
             </label>
+            <div class="oracle-search-chip" id="oracleSearchChip" hidden></div>
+
             <div class="two-col">
-              <label>
-                Property type
+              <label>Property type
                 <input list="propertyTypes" name="propertyType" value="Unit" />
               </label>
-              <label>
-                Subtype
+              <label>Subtype
                 <input list="propertySubtypes" name="propertySubtype" value="Flat" />
               </label>
             </div>
             <div class="two-col">
-              <label>
-                Rooms
+              <label>Rooms
                 <input list="rooms" name="rooms" placeholder="1 B/R" />
               </label>
-              <label>
-                Usage
-                <input list="usage" name="usage" value="Residential" />
-              </label>
-            </div>
-            <div class="two-col">
-              <label>
-                Off-plan
-                <input list="offplan" name="offplan" placeholder="Ready / Off-Plan" />
-              </label>
-              <label>
-                Tenure
-                <input list="freehold" name="freehold" placeholder="Free Hold" />
+              <label>Off-plan
+                <input list="offplan" name="offplan" placeholder="Off-Plan / Ready" />
               </label>
             </div>
             <div class="size-row">
-              <label>
-                Size
+              <label>Size
                 <input name="size" type="number" min="1" step="0.01" value="900" required />
               </label>
-              <label>
-                Size unit
+              <label>Unit
                 <select name="sizeUnit">
                   <option value="sqft">sqft</option>
                   <option value="sqm">sqm</option>
                 </select>
               </label>
             </div>
+
+            <div class="oracle-divider">Oracle inputs</div>
+            <label>Listing price (AED)
+              <input name="listingPrice" type="number" min="0" step="10000" placeholder="3500000" />
+            </label>
+            <div class="two-col">
+              <label>Bedrooms
+                <input name="bedrooms" type="number" min="0" max="10" placeholder="1" />
+              </label>
+              <label>Floor
+                <input name="floor" type="number" min="0" max="200" placeholder="10" />
+              </label>
+            </div>
+            <div class="two-col">
+              <label>Brand
+                <input list="brands" name="brand" value="None" />
+              </label>
+              <label>View
+                <input list="views" name="view" value="Standard" />
+              </label>
+            </div>
+            <label>Unit category
+              <select name="unitCategory">
+                <option value="Standard">Standard</option>
+                <option value="Premium">Premium</option>
+                <option value="Luxury">Luxury</option>
+                <option value="Ultra-Luxury">Ultra-Luxury</option>
+              </select>
+            </label>
+
             <button type="submit">Run valuation</button>
           </form>
 
-          <section class="panel results-panel">
-            <div class="panel-title">
-              <h2>Valuation result</h2>
-              <span id="basisLabel">AED/sqft</span>
-            </div>
-            <div class="estimate">
-              <span>Base estimate</span>
-              <strong id="baseValue">-</strong>
-            </div>
-            <div class="range">
-              <div>
-                <span>Low</span>
-                <strong id="lowValue">-</strong>
+          <!-- Results column -->
+          <div class="results-col">
+
+            <!-- Hero estimate card -->
+            <div class="hero-card panel">
+              <div class="hero-top">
+                <div class="hero-main">
+                  <div class="hero-label">Base estimate</div>
+                  <div class="hero-value" id="baseValue">—</div>
+                  <div class="hero-psf" id="basePsf">—</div>
+                </div>
+                <div class="hero-confidence">
+                  <div class="conf-label">Confidence</div>
+                  <div class="conf-value" id="confidence">—</div>
+                </div>
               </div>
-              <div>
-                <span>High</span>
-                <strong id="highValue">-</strong>
+              <div class="hero-range">
+                <div class="hero-range-item">
+                  <span>Low (P25)</span>
+                  <strong id="lowValue">—</strong>
+                </div>
+                <div class="hero-range-divider"></div>
+                <div class="hero-range-item">
+                  <span>High (P75)</span>
+                  <strong id="highValue">—</strong>
+                </div>
               </div>
+              <div class="hero-meta">
+                <span id="compCount">—</span> comparables
+              </div>
+              <div class="advisor-note" id="advisorNote">Enter a property and run valuation.</div>
             </div>
-            <div class="metric-strip">
-              <div>
-                <span>Base AED/sqft</span>
-                <strong id="basePsf">-</strong>
+
+            <!-- AI Insight block -->
+            <div class="insight-block" id="insightBlock" hidden>
+              <div class="insight-header">
+                <span class="insight-badge">PRISM AI</span>
+                <span class="insight-area" id="insightArea"></span>
               </div>
-              <div>
-                <span>Comparable count</span>
-                <strong id="compCount">-</strong>
-              </div>
-              <div>
-                <span>Confidence</span>
-                <strong id="confidence">-</strong>
-              </div>
+              <div class="insight-loading" id="insightLoading">Generating market commentary…</div>
+              <p class="insight-text" id="insightText" hidden></p>
             </div>
-            <div class="advisor-note" id="advisorNote">
-              Enter a property and run valuation.
-            </div>
-          </section>
+
+            <!-- Comparable detail -->
+            <section class="panel comp-detail-panel">
+              <div class="panel-title">
+                <h2>PRISM comparable</h2>
+                <span id="basisLabel">AED/sqft</span>
+              </div>
+              <div class="metric-strip">
+                <div><span>Base AED/sqft</span><strong id="basePsfStrip">—</strong></div>
+                <div><span>Match level</span><strong id="matchLevel">—</strong></div>
+                <div><span>Comparables</span><strong id="compCountStrip">—</strong></div>
+              </div>
+            </section>
+
+            <!-- Oracle panel -->
+            <section class="panel oracle-panel" id="oraclePanel">
+              <div class="panel-title">
+                <h2>Oracle AI estimate</h2>
+                <span id="oracleBadge">Enter fields → run</span>
+              </div>
+              <div class="estimate oracle-estimate">
+                <span>Fair value</span>
+                <strong id="oracleFairValue">—</strong>
+              </div>
+              <div class="range">
+                <div><span>Confidence low</span><strong id="oracleConfLow">—</strong></div>
+                <div><span>Confidence high</span><strong id="oracleConfHigh">—</strong></div>
+              </div>
+              <div class="oracle-metric-grid">
+                <div><span>Fair AED/sqft</span><strong id="oracleFairPsf">—</strong></div>
+                <div><span>Brand premium</span><strong id="oracleBrandPremium">—</strong></div>
+                <div><span>Premium %</span><strong id="oraclePremiumPct">—</strong></div>
+                <div><span>Gross yield</span><strong id="oracleYield">—</strong></div>
+                <div><span>Total return</span><strong id="oracleReturn">—</strong></div>
+                <div><span>Est. DOM</span><strong id="oracleDom">—</strong></div>
+              </div>
+              <div class="oracle-liquidity">
+                <div class="oracle-liquidity-row">
+                  <span>Sell in 30 days</span>
+                  <strong id="oracleSell30">—</strong>
+                </div>
+                <div class="oracle-liquidity-row">
+                  <span>Sell in 90 days</span>
+                  <strong id="oracleSell90">—</strong>
+                </div>
+                <div class="oracle-liquidity-row">
+                  <span>Overpricing risk</span>
+                  <strong id="oracleRisk">—</strong>
+                </div>
+                <div class="oracle-liquidity-row">
+                  <span>Liquidity score</span>
+                  <div class="liquidity-bar-wrap">
+                    <div class="liquidity-bar" id="oracleLiqBar"></div>
+                  </div>
+                  <strong id="oracleLiqScore">—</strong>
+                </div>
+              </div>
+            </section>
+
+          </div>
         </section>
 
+        <!-- DATA CONFIDENCE ──────────────────────────────────────────── -->
         <section class="panel" id="quality">
           <div class="panel-title">
             <h2>Data confidence</h2>
-            <span>Unit-safe checks</span>
+            <span>Unit-safe pipeline checks</span>
           </div>
           <div class="confidence-grid">
-            <div>
-              <span>Source rows</span>
-              <strong id="rowCount">-</strong>
-            </div>
-            <div>
-              <span>Clean Sales rows</span>
-              <strong id="cleanSales">-</strong>
-            </div>
-            <div>
-              <span>Median AED/sqft</span>
-              <strong id="medianPsf">-</strong>
-            </div>
-            <div>
-              <span>Adjusted rows</span>
-              <strong id="winsorizedRows">-</strong>
-            </div>
+            <div><span>Source rows</span><strong id="rowCount">—</strong></div>
+            <div><span>Clean sales rows</span><strong id="cleanSales">—</strong></div>
+            <div><span>Median AED/sqft</span><strong id="medianPsf">—</strong></div>
+            <div><span>Adjusted rows</span><strong id="winsorizedRows">—</strong></div>
           </div>
           <p class="quality-copy" id="qualityCopy">
-            Raw DLD area fields are treated as square meters, converted once to sqft, and client outputs stay in AED/sqft.
+            Raw DLD area fields treated as sqm, converted once to sqft.
+            AED/sqft = TRANS_VALUE ÷ sqft. Rows outside 50–20,000 AED/sqft dropped.
           </p>
         </section>
 
+        <!-- COMPARABLES TABLE ───────────────────────────────────────── -->
         <section class="panel" id="comparables">
           <div class="panel-title">
             <h2>Comparable transactions</h2>
@@ -171,41 +271,88 @@
             <table>
               <thead>
                 <tr>
-                  <th>Date</th>
-                  <th>Area</th>
-                  <th>Project</th>
-                  <th>Rooms</th>
-                  <th>Size sqft</th>
-                  <th>Value AED</th>
-                  <th>AED/sqft</th>
-                  <th>Adjusted</th>
+                  <th>Date</th><th>Area</th><th>Project</th><th>Rooms</th>
+                  <th>Size sqft</th><th>Value AED</th><th>AED/sqft</th><th>Match</th>
                 </tr>
               </thead>
               <tbody id="comparablesBody">
-                <tr>
-                  <td colspan="8">Run a valuation to see comparable transactions.</td>
-                </tr>
+                <tr><td colspan="8">Run a valuation to see comparable transactions.</td></tr>
               </tbody>
             </table>
           </div>
         </section>
 
+        <!-- TRENDS ──────────────────────────────────────────────────── -->
+        <section class="grid trends-grid" id="trends">
+          <section class="panel trends-chart-panel">
+            <div class="panel-title">
+              <h2>Monthly transaction trends</h2>
+              <span id="trendsDateRange">—</span>
+            </div>
+            <div id="trendsChart" class="trends-chart-wrap">
+              <div class="rank-empty">Loading trends…</div>
+            </div>
+          </section>
+          <section class="panel">
+            <div class="panel-title">
+              <h2>Off-plan vs ready</h2>
+              <span>Sales split</span>
+            </div>
+            <div id="offplanSplit" class="offplan-split"></div>
+          </section>
+          <section class="panel">
+            <div class="panel-title">
+              <h2>Period statistics</h2>
+              <span id="trendsRange">—</span>
+            </div>
+            <div class="confidence-grid">
+              <div><span>Total sales</span><strong id="trendsTotalCount">—</strong></div>
+              <div><span>Total volume</span><strong id="trendsTotalValue">—</strong></div>
+              <div><span>Peak month</span><strong id="trendsPeakMonth">—</strong></div>
+              <div><span>Peak AED/sqft</span><strong id="trendsPeakPsf">—</strong></div>
+            </div>
+          </section>
+        </section>
+
+        <!-- SUB-LOCATIONS ───────────────────────────────────────────── -->
+        <section class="panel" id="sublocations">
+          <div class="panel-title">
+            <h2>Sub-location performance</h2>
+            <span>AREA_EN · top 25 by volume</span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Area</th><th>Transactions</th>
+                  <th>Median AED/sqft</th><th>Off-Plan %</th><th>Price trend</th>
+                </tr>
+              </thead>
+              <tbody id="areaStatsBody">
+                <tr><td colspan="5">Loading sub-location data…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- MARKET ──────────────────────────────────────────────────── -->
         <section class="grid market-grid" id="market">
           <section class="panel">
             <div class="panel-title">
               <h2>Top areas</h2>
-              <span>By Sales count</span>
+              <span>By sales count</span>
             </div>
             <div id="topAreas" class="rank-list"></div>
           </section>
           <section class="panel">
             <div class="panel-title">
               <h2>Top projects</h2>
-              <span>By Sales count</span>
+              <span>By sales count</span>
             </div>
             <div id="topProjects" class="rank-list"></div>
           </section>
         </section>
+
       </section>
     </main>
 
@@ -217,6 +364,45 @@
     <datalist id="usage"></datalist>
     <datalist id="offplan"></datalist>
     <datalist id="freehold"></datalist>
+    <datalist id="oracleProjects"></datalist>
+    <datalist id="brands">
+      <option value="None"></option><option value="Armani"></option>
+      <option value="Bulgari"></option><option value="Four Seasons"></option>
+      <option value="Dorchester"></option><option value="Ritz-Carlton"></option>
+      <option value="W Hotels"></option><option value="Versace"></option>
+      <option value="Lamborghini"></option><option value="Bugatti"></option>
+      <option value="Cavalli"></option>
+    </datalist>
+    <datalist id="views">
+      <option value="Standard"></option><option value="Sea View"></option>
+      <option value="Burj View"></option><option value="Golf View"></option>
+      <option value="Canal View"></option><option value="Marina View"></option>
+      <option value="Park View"></option><option value="City View"></option>
+    </datalist>
+
+    <!-- Mobile bottom nav -->
+    <nav class="mobile-nav" aria-label="Main navigation">
+      <a href="#valuation" class="mobile-nav-item active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12L12 3l9 9"/><path d="M9 21V12h6v9"/></svg>
+        <span>Valuation</span>
+      </a>
+      <a href="#comparables" class="mobile-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        <span>Comps</span>
+      </a>
+      <a href="#trends" class="mobile-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        <span>Trends</span>
+      </a>
+      <a href="#market" class="mobile-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2M8 21v-4a2 2 0 0 1 4 0v4"/></svg>
+        <span>Market</span>
+      </a>
+      <a href="#quality" class="mobile-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span>Quality</span>
+      </a>
+    </nav>
 
     <script src="/app.js"></script>
   </body>
