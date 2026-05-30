@@ -1,27 +1,30 @@
-/* ── PRISM Native — Off-Plan Portal ───────────────────────── */
+/* ── Elevate Homes — Dubai Investment Insights ────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg:        #050810;
-  --surface:   #0d1220;
-  --surface2:  #131929;
+  /* Brand: deep midnight navy + warm champagne gold */
+  --bg:        #07090f;
+  --surface:   #0e1118;
+  --surface2:  #141720;
   --border:    rgba(255,255,255,.07);
-  --gold:      #c9a96e;
-  --gold-lo:   rgba(201,169,110,.12);
-  --gold-bdr:  rgba(201,169,110,.25);
-  --text:      #e8e8f0;
-  --muted:     #7a8099;
-  --accent:    #4d8ef0;
+  --gold:      #C8A96A;
+  --gold-hi:   #E8C87A;
+  --gold-lo:   rgba(200,169,106,.12);
+  --gold-bdr:  rgba(200,169,106,.28);
+  --text:      #ecedf4;
+  --muted:     #7c8299;
+  --accent:    #3a7bd5;
   --green:     #4ade80;
   --red:       #f87171;
-  --top-h:     52px;
+  --top-h:     56px;
   --bot-h:     64px;
   --safe-top:  env(safe-area-inset-top, 0px);
   --safe-bot:  env(safe-area-inset-bottom, 0px);
   --radius:    14px;
+  --font:      -apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sans-serif;
 }
 
-html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(--text); font-family: -apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif; font-size: 15px; -webkit-font-smoothing: antialiased; }
+html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(--text); font-family: var(--font); font-size: 15px; -webkit-font-smoothing: antialiased; }
 
 /* ── TOP BAR ── */
 .top-bar {
@@ -34,8 +37,10 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(-
   border-bottom: 1px solid var(--border);
   display: flex; align-items: center; padding-inline: 16px; gap: 10px;
 }
-.top-bar-logo { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
-.top-bar-logo span { font-size: 13px; font-weight: 700; letter-spacing: .12em; color: var(--gold); }
+.top-bar-logo { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.top-bar-logo-text { display: flex; flex-direction: column; line-height: 1; gap: 1px; }
+.logo-elevate { font-size: 13px; font-weight: 800; letter-spacing: .14em; color: var(--gold); }
+.logo-homes { font-size: 7px; font-weight: 600; letter-spacing: .22em; color: var(--muted); text-transform: uppercase; }
 .top-bar-title { flex: 1; text-align: center; font-size: 16px; font-weight: 600; letter-spacing: .01em; }
 .top-bar-action { background: none; border: none; color: var(--text); padding: 6px; cursor: pointer; display: flex; align-items: center; }
 
@@ -101,6 +106,27 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(-
 .hscroll::-webkit-scrollbar { display: none; }
 .hscroll-inner { display: flex; gap: 10px; padding: 4px 16px 12px; }
 
+/* ── ADVISOR TRUST STRIP ── */
+.advisor-strip {
+  display: flex; align-items: center; gap: 10px;
+  margin: 12px 16px 8px;
+  background: var(--surface);
+  border: 1px solid var(--gold-bdr);
+  border-radius: 12px;
+  padding: 10px 14px;
+}
+.advisor-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold-hi), var(--gold));
+  color: #07090f; font-size: 13px; font-weight: 900;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; letter-spacing: .02em;
+}
+.advisor-info { flex: 1; }
+.advisor-name { font-size: 13px; font-weight: 700; letter-spacing: .01em; }
+.advisor-cred { font-size: 11px; color: var(--muted); margin-top: 1px; }
+.advisor-tag { font-size: 9px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--gold); background: var(--gold-lo); border: 1px solid var(--gold-bdr); border-radius: 20px; padding: 3px 8px; white-space: nowrap; }
+
 /* ── DISCOVER HERO ── */
 .discover-hero {
   margin: 12px 16px 0;
@@ -115,15 +141,16 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(-
 .discover-hero::before {
   content: '';
   position: absolute; top: 0; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, var(--gold), var(--accent), var(--gold));
+  background: linear-gradient(90deg, transparent, var(--gold), var(--gold-hi), var(--gold), transparent);
 }
+.dh-eyebrow { font-size: 9px; font-weight: 700; letter-spacing: .18em; color: var(--gold); text-transform: uppercase; margin-bottom: 6px; opacity: .8; }
 .dh-badge { display: inline-flex; align-items: center; background: var(--gold-lo); border: 1px solid var(--gold-bdr); border-radius: 20px; padding: 3px 10px; font-size: 10px; color: var(--gold); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 10px; }
 .dh-project { font-size: 22px; font-weight: 800; letter-spacing: -.02em; line-height: 1.1; margin-bottom: 4px; }
 .dh-dev { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
 .dh-price { font-size: 18px; font-weight: 700; color: var(--gold); margin-bottom: 8px; }
 .dh-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
 .dh-tag { font-size: 11px; background: rgba(255,255,255,.06); border-radius: 20px; padding: 3px 10px; color: var(--muted); }
-.dh-cta { background: var(--gold); color: #050810; border: none; border-radius: 8px; padding: 10px 20px; font-size: 14px; font-weight: 700; cursor: pointer; letter-spacing: .02em; }
+.dh-cta { background: linear-gradient(135deg, var(--gold-hi), var(--gold)); color: #07090f; border: none; border-radius: 8px; padding: 10px 20px; font-size: 14px; font-weight: 800; cursor: pointer; letter-spacing: .04em; box-shadow: 0 4px 16px rgba(200,169,106,.25); }
 
 /* ── HOT LAUNCH CARDS (horizontal scroll) ── */
 .hot-card {
@@ -191,7 +218,7 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(-
 .lc-tag { font-size: 10px; background: rgba(255,255,255,.05); border-radius: 20px; padding: 3px 8px; color: var(--muted); }
 .lc-footer { display: flex; align-items: center; justify-content: space-between; }
 .lc-price { font-size: 16px; font-weight: 800; color: var(--gold); }
-.lc-cta { background: var(--gold); color: #050810; border: none; border-radius: 8px; padding: 8px 14px; font-size: 12px; font-weight: 700; cursor: pointer; }
+.lc-cta { background: linear-gradient(135deg, var(--gold-hi), var(--gold)); color: #07090f; border: none; border-radius: 8px; padding: 8px 14px; font-size: 12px; font-weight: 800; cursor: pointer; letter-spacing: .03em; }
 .lc-dld { font-size: 11px; color: var(--muted); margin-top: 6px; }
 
 /* ── TRENDS ── */
@@ -297,7 +324,7 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(-
 .lead-input.with-prefix { padding-left: 52px; margin-bottom: 0; }
 select.lead-input { appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237a8099' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; }
 select.lead-input option { background: #0d1220; }
-.lead-submit { width: 100%; background: var(--gold); color: #050810; border: none; border-radius: 10px; padding: 14px; font-size: 16px; font-weight: 800; cursor: pointer; margin-top: 4px; letter-spacing: .02em; transition: opacity .15s; }
+.lead-submit { width: 100%; background: linear-gradient(135deg, var(--gold-hi), var(--gold)); color: #07090f; border: none; border-radius: 10px; padding: 14px; font-size: 16px; font-weight: 800; cursor: pointer; margin-top: 4px; letter-spacing: .04em; transition: opacity .15s; box-shadow: 0 4px 20px rgba(200,169,106,.2); }
 .lead-submit:active { opacity: .8; }
 .lead-success { display: flex; flex-direction: column; gap: 10px; background: rgba(74,222,128,.08); border: 1px solid rgba(74,222,128,.2); border-radius: 10px; padding: 14px; margin-top: 8px; }
 .ls-check { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--green); }

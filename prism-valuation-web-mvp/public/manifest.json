@@ -1,11 +1,11 @@
 {
-  "name": "PRISM Valuation Intelligence",
-  "short_name": "PRISM",
-  "description": "Dubai property valuation for advisors",
-  "start_url": "/",
+  "name": "Elevate Homes",
+  "short_name": "Elevate",
+  "description": "Elevated investment insights for Dubai real estate",
+  "start_url": "/app.native.html",
   "display": "standalone",
-  "background_color": "#090d14",
-  "theme_color": "#090d14",
+  "background_color": "#07090f",
+  "theme_color": "#07090f",
   "orientation": "portrait-primary",
   "icons": [
     { "src": "/icon-192.svg", "sizes": "192x192", "type": "image/svg+xml", "purpose": "any" },

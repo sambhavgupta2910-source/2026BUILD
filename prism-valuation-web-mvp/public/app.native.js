@@ -1,4 +1,4 @@
-/* PRISM Native — Off-Plan Portal */
+/* Elevate Homes — Dubai Investment Insights */
 
 const fmtM   = (v) => v >= 1e9 ? `${(v/1e9).toFixed(1)}B` : v >= 1e6 ? `${(v/1e6).toFixed(1)}M` : Number(v).toLocaleString();
 const fmtN   = (v) => Number(v).toLocaleString();
@@ -20,7 +20,7 @@ let allListings     = [];
 let filteredListings = [];
 let activeDevFilter  = 'All';
 let currentListing   = null;
-let myLeads = JSON.parse(localStorage.getItem('prism_leads') || '[]');
+let myLeads = JSON.parse(localStorage.getItem('elevate_leads') || '[]');
 let agentWhatsapp   = '';
 
 // Load agent WhatsApp number from server config
@@ -372,7 +372,7 @@ document.getElementById('leadSubmit').addEventListener('click', async () => {
       document.getElementById('leadSubmit').style.display = 'none';
       document.getElementById('leadSuccess').style.display = 'flex';
       myLeads.push({ ...body, project: currentListing?.project, developer: currentListing?.developer, date: new Date().toISOString() });
-      localStorage.setItem('prism_leads', JSON.stringify(myLeads));
+      localStorage.setItem('elevate_leads', JSON.stringify(myLeads));
 
       // WhatsApp button — show link to agent's WhatsApp with pre-filled message
       const waBtn = document.getElementById('waOpenBtn');

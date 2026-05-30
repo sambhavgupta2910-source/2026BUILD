@@ -6,9 +6,9 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="PRISM">
-  <meta name="theme-color" content="#050810">
-  <title>PRISM — Dubai Off-Plan</title>
+  <meta name="apple-mobile-web-app-title" content="Elevate">
+  <meta name="theme-color" content="#07090f">
+  <title>Elevate Homes — Dubai Investment Insights</title>
   <link rel="stylesheet" href="/app.native.css">
   <link rel="icon" href="/icon-192.svg">
   <link rel="apple-touch-icon" href="/icon-192.svg">
@@ -19,13 +19,19 @@
 <!-- TOP BAR -->
 <header class="top-bar" id="topBar">
   <div class="top-bar-logo">
-    <svg width="18" height="18" viewBox="0 0 192 192" fill="none">
-      <rect x="52" y="41" width="22" height="110" rx="4" fill="#c9a96e"/>
-      <rect x="52" y="41" width="79" height="22" rx="4" fill="#c9a96e"/>
-      <rect x="52" y="90" width="71" height="20" rx="4" fill="#c9a96e"/>
-      <rect x="109" y="41" width="22" height="69" rx="4" fill="#c9a96e"/>
+    <!-- Elevate "E" with upward arrow accent -->
+    <svg width="22" height="22" viewBox="0 0 100 100" fill="none">
+      <rect x="18" y="20" width="12" height="60" rx="3" fill="#C8A96A"/>
+      <rect x="18" y="20" width="50" height="12" rx="3" fill="#C8A96A"/>
+      <rect x="18" y="44" width="38" height="11" rx="3" fill="#C8A96A"/>
+      <rect x="18" y="68" width="50" height="12" rx="3" fill="#C8A96A"/>
+      <polygon points="78,48 68,62 88,62" fill="#E8C87A"/>
+      <rect x="75" y="30" width="6" height="22" rx="2" fill="#E8C87A"/>
     </svg>
-    <span>PRISM</span>
+    <div class="top-bar-logo-text">
+      <span class="logo-elevate">ELEVATE</span>
+      <span class="logo-homes">HOMES</span>
+    </div>
   </div>
   <h1 class="top-bar-title" id="topBarTitle">Discover</h1>
   <button class="top-bar-action" id="topBarSearch" aria-label="Search">
@@ -53,7 +59,18 @@
   <!-- DISCOVER -->
   <section class="screen active" id="screen-discover">
     <div class="screen-scroll">
+      <!-- Advisor trust strip -->
+      <div class="advisor-strip">
+        <div class="advisor-avatar">SG</div>
+        <div class="advisor-info">
+          <div class="advisor-name">Sambhav Gupta</div>
+          <div class="advisor-cred">AED 50M+ Sold · Sobha Realty · Dubai</div>
+        </div>
+        <div class="advisor-tag">Your Advisor</div>
+      </div>
+
       <div class="discover-hero" id="discoverHero">
+        <div class="dh-eyebrow">Elevate Homes · Where Smart Money Moves</div>
         <div class="dh-badge">Featured Launch</div>
         <div class="dh-project" id="dhProject">Loading…</div>
         <div class="dh-dev" id="dhDev"></div>
@@ -242,8 +259,8 @@
       </div>
 
       <div class="lead-form" id="leadForm">
-        <div class="lead-form-title">Register Interest</div>
-        <div class="lead-form-sub">Our advisor will WhatsApp you within 24 hours</div>
+        <div class="lead-form-title">Speak with Sambhav</div>
+        <div class="lead-form-sub">AED 50M+ sold in 2025 · Sobha Realty advisor · WhatsApp response within 24h</div>
         <input class="lead-input" id="leadName" type="text" placeholder="Your name" autocomplete="name">
         <div class="lead-input-wrap">
           <span class="lead-prefix">+971</span>

@@ -1068,7 +1068,7 @@ async function start() {
   });
 
   server.listen(PORT, () => {
-    console.log(`[server] PRISM ready at http://localhost:${PORT}/`);
+    console.log(`[server] Elevate Homes ready at http://localhost:${PORT}/`);
   });
 }
 
