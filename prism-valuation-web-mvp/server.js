@@ -956,6 +956,45 @@ async function start() {
         return send(res, 200, { total, page, pages: Math.ceil(total / limit), limit, results });
       }
 
+      // Off-plan listings catalogue — reads from public/offplan-listings.json
+      if (req.method === 'GET' && req.url.startsWith('/api/listings')) {
+        const qs = new URL(req.url, 'http://x').searchParams;
+        const devFilter = (qs.get('developer') || '').trim().toLowerCase();
+        const featuredOnly = qs.get('featured') === 'true';
+        const listingsPath = path.join(PUBLIC_DIR, 'offplan-listings.json');
+        const raw = fs.readFileSync(listingsPath, 'utf8');
+        let listings = JSON.parse(raw);
+        if (devFilter) listings = listings.filter((l) => l.developer.toLowerCase() === devFilter);
+        if (featuredOnly) listings = listings.filter((l) => l.featured);
+        // Enrich each listing with live DLD area stats
+        for (const l of listings) {
+          const areaRows = dataset.byArea.get(
+            [...dataset.byArea.keys()].find((k) => norm(k) === norm(l.dldAreaKey || l.area)) || ''
+          );
+          if (areaRows && areaRows.length) {
+            l.dldMedianPsf = Math.round(median(areaRows.map((r) => r.aedPerSqft)));
+            l.dldTransactions = areaRows.length;
+            const off = areaRows.filter((r) => (r.offplan || '').toLowerCase().includes('off')).length;
+            l.dldOffplanPct = Math.round((off / areaRows.length) * 100);
+          }
+        }
+        return send(res, 200, { listings, total: listings.length });
+      }
+
+      // Lead capture — POST /api/inquiry
+      if (req.method === 'POST' && req.url === '/api/inquiry') {
+        const body = await readJson(req);
+        const { listingId, name, whatsapp, unitType, budget, message } = body;
+        if (!name || !whatsapp) return send(res, 400, { error: 'name and whatsapp required' });
+        const timestamp = new Date().toISOString();
+        const row = [timestamp, listingId || '', name, whatsapp, unitType || '', budget || '', (message || '').replace(/,/g, ' ')].join(',');
+        console.log(`[inquiry] ${row}`);
+        const leadsPath = path.join(__dirname, 'leads.csv');
+        const header = !fs.existsSync(leadsPath) ? 'timestamp,listingId,name,whatsapp,unitType,budget,message\n' : '';
+        fs.appendFileSync(leadsPath, header + row + '\n');
+        return send(res, 200, { ok: true, message: 'Inquiry received. Our team will contact you on WhatsApp within 24 hours.' });
+      }
+
       if (req.method === 'GET') return serveStatic(req, res);
       return send(res, 405, { error: 'method not allowed' });
     } catch (err) {
