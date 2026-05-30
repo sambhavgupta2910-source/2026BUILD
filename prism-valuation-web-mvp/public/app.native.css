@@ -301,6 +301,102 @@ select.lead-input option { background: #0d1220; }
 .lead-submit:active { opacity: .8; }
 .lead-success { display: flex; align-items: center; gap: 10px; background: rgba(74,222,128,.08); border: 1px solid rgba(74,222,128,.2); border-radius: 10px; padding: 12px 14px; margin-top: 8px; font-size: 14px; color: var(--green); }
 
+/* ── NEW THIS WEEK CARDS ── */
+.new-card {
+  flex-shrink: 0; width: 220px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  cursor: pointer;
+}
+.new-card:active { opacity: .85; }
+.nc-img {
+  height: 110px;
+  position: relative;
+  display: flex; flex-direction: column; justify-content: space-between;
+  padding: 8px 10px;
+}
+.nc-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,.15) 0%, rgba(0,0,0,.55) 100%);
+}
+.nc-new-badge {
+  position: relative; z-index: 1;
+  display: inline-flex; align-self: flex-start;
+  background: rgba(201,169,110,.9);
+  color: #050810;
+  font-size: 9px; font-weight: 900; letter-spacing: .08em;
+  padding: 3px 8px; border-radius: 20px;
+}
+.nc-content { position: relative; z-index: 1; }
+.nc-dev { font-size: 9px; font-weight: 800; letter-spacing: .08em; color: var(--gold); text-transform: uppercase; margin-bottom: 2px; }
+.nc-name { font-size: 14px; font-weight: 800; line-height: 1.1; text-shadow: 0 1px 3px rgba(0,0,0,.6); }
+.nc-body { padding: 8px 10px 10px; }
+.nc-area { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+.nc-price { font-size: 13px; font-weight: 800; color: var(--gold); }
+.nc-pp { font-size: 10px; font-weight: 400; color: var(--muted); }
+
+/* ── LISTING CARD OVERLAYS ── */
+.lc-hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,.1) 0%, rgba(0,0,0,.65) 100%);
+}
+.lc-hero { position: relative; }
+.lc-new-ribbon {
+  display: inline-flex; margin-top: 6px;
+  background: var(--gold); color: #050810;
+  font-size: 9px; font-weight: 900; letter-spacing: .08em;
+  padding: 2px 8px; border-radius: 20px;
+}
+
+/* ── HOT CARD OVERLAY ── */
+.hc-top { position: relative; }
+.hc-top-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,.1), rgba(0,0,0,.55));
+  pointer-events: none;
+}
+.hc-top .hc-status { position: absolute; top: 8px; right: 8px; }
+.hc-top .hc-dev-badge { position: absolute; bottom: 8px; left: 10px; }
+
+/* ── DISCOVER HERO OVERLAY ── */
+.discover-hero::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(5,8,16,.3) 0%, rgba(5,8,16,.75) 100%);
+  border-radius: var(--radius);
+  pointer-events: none;
+}
+.discover-hero > * { position: relative; z-index: 1; }
+
+/* ── SHEET HERO OVERLAY ── */
+.sheet-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(5,8,16,.3) 0%, rgba(5,8,16,.75) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── DLD NEW LAUNCHES LIST ── */
+.section-wrap { }
+.dld-launch-list { padding: 0 16px; display: flex; flex-direction: column; gap: 8px; margin-bottom: 4px; }
+.dld-launch-card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--gold-bdr);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+.dlc-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 3px; }
+.dlc-name { font-size: 13px; font-weight: 700; }
+.dlc-badge { font-size: 9px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--gold); background: var(--gold-lo); border: 1px solid var(--gold-bdr); border-radius: 20px; padding: 2px 7px; }
+.dlc-area { font-size: 11px; color: var(--muted); margin-bottom: 5px; }
+.dlc-meta { display: flex; gap: 10px; flex-wrap: wrap; font-size: 11px; color: var(--muted); }
+.dlc-meta span { }
+.dlc-date { color: var(--gold); font-weight: 600; }
+
 /* ── DESKTOP ── */
 @media (min-width: 768px) {
   html, body { overflow: auto; }

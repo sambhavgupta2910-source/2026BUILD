@@ -956,6 +956,50 @@ async function start() {
         return send(res, 200, { total, page, pages: Math.ceil(total / limit), limit, results });
       }
 
+      // New DLD project registrations — projects first seen in the last N days of data
+      if (req.method === 'GET' && req.url.startsWith('/api/new-launches')) {
+        const qs = new URL(req.url, 'http://x').searchParams;
+        const days = Math.min(60, Math.max(1, parseInt(qs.get('days') || '14', 10)));
+        const dateMax = dataset.dateMax || '';
+        const cutoff = new Date(dateMax + 'T00:00:00Z');
+        cutoff.setUTCDate(cutoff.getUTCDate() - days);
+        const cutoffStr = cutoff.toISOString().slice(0, 10);
+
+        // For each project, find the very first date it appears in the dataset
+        const projectFirst = new Map();
+        for (const r of dataset.rows) {
+          if (!r.project || !r.date) continue;
+          const key = (r.project || '').trim().toUpperCase();
+          if (!projectFirst.has(key) || r.date < projectFirst.get(key).firstDate) {
+            projectFirst.set(key, { firstDate: r.date, area: r.area, masterProject: r.masterProject, project: r.project });
+          }
+        }
+
+        // Projects whose first transaction falls inside our window = genuinely new
+        const newProjects = [...projectFirst.values()]
+          .filter((p) => p.firstDate >= cutoffStr)
+          .sort((a, b) => b.firstDate.localeCompare(a.firstDate));
+
+        // Enrich with stats
+        const enriched = newProjects.slice(0, 20).map((p) => {
+          const key = p.project.trim().toUpperCase();
+          const rows = dataset.rows.filter((r) => (r.project || '').trim().toUpperCase() === key);
+          const offplan = rows.filter((r) => (r.offplan || '').toLowerCase().includes('off')).length;
+          return {
+            project: p.project,
+            area: p.area,
+            community: p.masterProject,
+            firstSeen: p.firstDate,
+            transactionCount: rows.length,
+            medianPsf: Math.round(median(rows.map((r) => r.aedPerSqft))),
+            offplanPct: rows.length ? Math.round((offplan / rows.length) * 100) : 0,
+            daysAgo: Math.round((new Date(dateMax) - new Date(p.firstDate)) / 86400000),
+          };
+        });
+
+        return send(res, 200, { newProjects: enriched, dateMax, cutoffDate: cutoffStr, days });
+      }
+
       // Off-plan listings catalogue — reads from public/offplan-listings.json
       if (req.method === 'GET' && req.url.startsWith('/api/listings')) {
         const qs = new URL(req.url, 'http://x').searchParams;

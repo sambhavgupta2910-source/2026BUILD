@@ -14,7 +14,9 @@
     "tags": ["Waterfront", "Creek View", "Emaar Premium"],
     "status": "Selling Fast",
     "featured": true,
-    "color": "#1a3a5c"
+    "launchDate": "2026-05-28",
+    "color": "#1a3a5c",
+    "image": "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=800&h=500&fit=crop&q=80"
   },
   {
     "id": "emaar-golf-heights",
@@ -31,7 +33,9 @@
     "tags": ["Golf View", "Family Community", "High ROI"],
     "status": "Available",
     "featured": false,
-    "color": "#1a3d2b"
+    "launchDate": "2026-05-10",
+    "color": "#1a3d2b",
+    "image": "https://images.unsplash.com/photo-1540979388789-6cee28a1cdc9?w=800&h=500&fit=crop&q=80"
   },
   {
     "id": "emaar-palmiera",
@@ -48,7 +52,9 @@
     "tags": ["Luxury Villas", "Private Pool", "Lagoon"],
     "status": "Limited Units",
     "featured": true,
-    "color": "#2d1a00"
+    "launchDate": "2026-05-27",
+    "color": "#2d1a00",
+    "image": "https://images.unsplash.com/photo-1617791160536-598cf32026fb?w=800&h=500&fit=crop&q=80"
   },
   {
     "id": "damac-lagoons-venice",
@@ -65,7 +71,9 @@
     "tags": ["Lagoon", "Townhouses", "Mediterranean"],
     "status": "Selling Fast",
     "featured": true,
-    "color": "#1a2a5c"
+    "launchDate": "2026-05-29",
+    "color": "#1a2a5c",
+    "image": "https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=800&h=500&fit=crop&q=80"
   },
   {
     "id": "damac-safa-one",
@@ -82,7 +90,9 @@
     "tags": ["Canal View", "Branded Residences", "Ready Soon"],
     "status": "Final Units",
     "featured": false,
-    "color": "#3a1a2e"
+    "launchDate": "2026-04-15",
+    "color": "#3a1a2e",
+    "image": "https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=800&h=500&fit=crop&q=80"
   },
   {
     "id": "sobha-hartland-ii",
@@ -99,7 +109,9 @@
     "tags": ["Lagoon", "Green Community", "High Quality"],
     "status": "Available",
     "featured": true,
-    "color": "#1a3322"
+    "launchDate": "2026-05-30",
+    "color": "#1a3322",
+    "image": "https://images.unsplash.com/photo-1580674684087-4b2d1b35da2d?w=800&h=500&fit=crop&q=80"
   },
   {
     "id": "sobha-skyscape-aura",
@@ -116,7 +128,9 @@
     "tags": ["Burj View", "Furnished Option", "High Floor"],
     "status": "Launching",
     "featured": false,
-    "color": "#1a2a3a"
+    "launchDate": "2026-05-26",
+    "color": "#1a2a3a",
+    "image": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=500&fit=crop&q=80"
   },
   {
     "id": "binghatti-mercedes",
@@ -133,7 +147,9 @@
     "tags": ["Branded", "Downtown", "Icon"],
     "status": "Final Units",
     "featured": true,
-    "color": "#1a1a1a"
+    "launchDate": "2026-04-01",
+    "color": "#1a1a1a",
+    "image": "https://images.unsplash.com/photo-1582266255765-df4e5e3d7a69?w=800&h=500&fit=crop&q=80"
   },
   {
     "id": "binghatti-hills",
@@ -150,7 +166,9 @@
     "tags": ["High Yield", "Ready Soon", "Investment"],
     "status": "Ready Soon",
     "featured": false,
-    "color": "#2a1a00"
+    "launchDate": "2026-03-20",
+    "color": "#2a1a00",
+    "image": "https://images.unsplash.com/photo-1536420111649-c5b4b33f2fcd?w=800&h=500&fit=crop&q=80"
   },
   {
     "id": "nakheel-como",
@@ -167,7 +185,9 @@
     "tags": ["Palm", "Ultra-Luxury", "Sea View"],
     "status": "Limited Units",
     "featured": true,
-    "color": "#003344"
+    "launchDate": "2026-05-22",
+    "color": "#003344",
+    "image": "https://images.unsplash.com/photo-1628609666572-03bc47c17a03?w=800&h=500&fit=crop&q=80"
   },
   {
     "id": "meraas-bluewaters-bay",
@@ -184,7 +204,9 @@
     "tags": ["Island", "Beach Access", "Ain Dubai View"],
     "status": "Selling Fast",
     "featured": false,
-    "color": "#001a33"
+    "launchDate": "2026-05-15",
+    "color": "#001a33",
+    "image": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=500&fit=crop&q=80"
   },
   {
     "id": "ellington-the-quayside",
@@ -201,7 +223,9 @@
     "tags": ["Canal Front", "Design-Led", "High Finish"],
     "status": "Available",
     "featured": false,
-    "color": "#2a1a1a"
+    "launchDate": "2026-05-05",
+    "color": "#2a1a1a",
+    "image": "https://images.unsplash.com/photo-1586348943529-beaae6c28db9?w=800&h=500&fit=crop&q=80"
   },
   {
     "id": "danube-sportz",
@@ -218,7 +242,9 @@
     "tags": ["Affordable", "1% Plan", "High Amenity"],
     "status": "Selling Fast",
     "featured": false,
-    "color": "#1a1a3a"
+    "launchDate": "2026-04-28",
+    "color": "#1a1a3a",
+    "image": "https://images.unsplash.com/photo-1549497538-303791108f95?w=800&h=500&fit=crop&q=80"
   },
   {
     "id": "aldar-haven",
@@ -235,6 +261,8 @@
     "tags": ["Wellness", "Nature", "Aldar Quality"],
     "status": "Available",
     "featured": false,
-    "color": "#1a2a1a"
+    "launchDate": "2026-05-30",
+    "color": "#1a2a1a",
+    "image": "https://images.unsplash.com/photo-1574169208507-84376144848b?w=800&h=500&fit=crop&q=80"
   }
 ]
