@@ -8,9 +8,11 @@ import AgentGrid from '@/components/AgentGrid';
 import SetupGate from '@/components/SetupGate';
 import DashboardView from '@/components/DashboardView';
 import type { OrbState } from '@/components/JarvisOrb';
+import { ClapDetector } from '@/lib/clap-detect';
 
 // Dynamic import so Three.js only loads client-side
 const JarvisOrb = dynamic(() => import('@/components/JarvisOrb'), { ssr: false });
+const BriefingView = dynamic(() => import('@/components/BriefingView'), { ssr: false });
 
 // ─── CommandBar (must live outside JarvisInterface to preserve input focus) ──
 
@@ -221,12 +223,16 @@ export default function JarvisInterface() {
   const [agentsOpen,   setAgentsOpen]   = useState(true);
   const [isMobile,     setIsMobile]     = useState(false);
   const [mobilePanel,  setMobilePanel]  = useState<'chat' | 'brain' | 'agents'>('chat');
-  const [viewMode,     setViewMode]     = useState<'orb' | 'dashboard'>('orb');
+  const [viewMode,     setViewMode]     = useState<'orb' | 'dashboard' | 'briefing'>('orb');
+  const [clapReady,    setClapReady]    = useState(false);
+  const [activating,   setActivating]   = useState(false);
 
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  const inputRef       = useRef<HTMLInputElement>(null);
-  const recognitionRef = useRef<SpeechRecognition | null>(null);
-  const synthRef       = useRef<SpeechSynthesis | null>(null);
+  const messagesEndRef   = useRef<HTMLDivElement>(null);
+  const inputRef         = useRef<HTMLInputElement>(null);
+  const recognitionRef   = useRef<SpeechRecognition | null>(null);
+  const synthRef         = useRef<SpeechSynthesis | null>(null);
+  const clapRef          = useRef<ClapDetector | null>(null);
+  const clapHandlerRef   = useRef<() => void>(() => {});
 
   // ── Init ──────────────────────────────────────────────────────────────
 
@@ -242,7 +248,7 @@ export default function JarvisInterface() {
 
   useEffect(() => {
     const saved = localStorage.getItem('jarvis-view');
-    if (saved === 'dashboard' || saved === 'orb') setViewMode(saved);
+    if (saved === 'dashboard' || saved === 'orb' || saved === 'briefing') setViewMode(saved);
   }, []);
 
   useEffect(() => {
@@ -277,6 +283,21 @@ export default function JarvisInterface() {
         boot(data.groq);
       })
       .catch(() => boot(false));
+
+    // Clap detection — start passively after first user gesture
+    const startClap = () => {
+      if (clapRef.current) return;
+      const detector = new ClapDetector(() => clapHandlerRef.current());
+      detector.start()
+        .then(() => { clapRef.current = detector; setClapReady(true); })
+        .catch(() => {});
+      window.removeEventListener('click', startClap);
+    };
+    window.addEventListener('click', startClap);
+    return () => {
+      window.removeEventListener('click', startClap);
+      clapRef.current?.stop();
+    };
   }, []);
 
   const boot = (hasGroq: boolean) => {
@@ -284,7 +305,7 @@ export default function JarvisInterface() {
       const greeting = getGreeting();
       speak(greeting);
       const suffix = hasGroq
-        ? '\n\nSystems online. How can I help?'
+        ? '\n\nSystems online. Double-clap to activate briefing.'
         : '\n\nGroq API key not configured — please follow setup instructions.';
       setMessages([{
         id: 'boot',
@@ -383,6 +404,23 @@ export default function JarvisInterface() {
     }
   }, [groqOk, isLoading, agentPrompt]);
 
+  // sendMessage must be declared before handleClapWake (dependency order)
+  const handleClapWake = useCallback(() => {
+    if (isLoading) return;
+    setActivating(true);
+    setViewMode('briefing');
+    speak('Activating briefing, sir.');
+    setOrbState('thinking');
+    setTimeout(() => {
+      setActivating(false);
+      sendMessage(
+        'Give me my full business briefing. Cover in this order: (1) PRISM — Dubai real estate deals, pipeline, active clients; (2) ELEVATE — LinkedIn content, brand growth, community size; (3) Trading — current macro positions, P&L, gold/silver; (4) Aviation — active charter/MRO operations, upcoming flights. For each: status, revenue, top priority. Be direct, executive style, no filler.'
+      );
+    }, 1200);
+  }, [isLoading, sendMessage]);
+  // Keep ref in sync so clap detector always calls the latest version
+  useEffect(() => { clapHandlerRef.current = handleClapWake; }, [handleClapWake]);
+
   const handleSubmit = () => {
     if (input.trim()) sendMessage(input);
   };
@@ -459,6 +497,12 @@ export default function JarvisInterface() {
         {activeAgent ? `◈ ${activeAgent.toUpperCase()} ACTIVE` : 'JARVIS — SAMBHAV OS'}
       </div>
       <div>{new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })} UTC</div>
+      <div className="flex items-center gap-1.5">
+        <div style={{ width: 5, height: 5, borderRadius: '50%', background: clapReady ? 'var(--j-green)' : 'rgba(255,255,255,0.15)' }} />
+        <span style={{ color: clapReady ? 'var(--j-text-mid)' : 'var(--j-text-lo)' }}>
+          {activating ? '◈ ACTIVATING...' : clapReady ? '👏 CLAP×2 TO BRIEF' : 'CLAP.STANDBY'}
+        </span>
+      </div>
     </div>
   );
 
@@ -626,14 +670,24 @@ export default function JarvisInterface() {
         </div>
 
         <div className="flex items-center gap-4">
-          <button
-            onClick={() => setViewMode(v => v === 'orb' ? 'dashboard' : 'orb')}
-            className="hud-btn px-2.5 py-1"
-            title="Toggle view mode"
-            style={{ fontSize: '0.58rem', letterSpacing: '0.08em' }}
-          >
-            {viewMode === 'orb' ? '◫ DASHBOARD' : '◉ ORB MODE'}
-          </button>
+          <div className="flex gap-1">
+            {(['orb', 'dashboard', 'briefing'] as const).map(mode => (
+              <button
+                key={mode}
+                onClick={() => setViewMode(mode)}
+                className="hud-btn px-2.5 py-1"
+                style={{
+                  fontSize: '0.58rem',
+                  letterSpacing: '0.08em',
+                  background: viewMode === mode ? 'rgba(0,212,255,0.12)' : 'transparent',
+                  color: viewMode === mode ? 'var(--j-cyan)' : 'var(--j-text-mid)',
+                  borderColor: viewMode === mode ? 'var(--j-cyan-border)' : 'transparent',
+                }}
+              >
+                {mode === 'orb' ? '◉ ORB' : mode === 'dashboard' ? '◫ DATA' : '◈ BRIEF'}
+              </button>
+            ))}
+          </div>
           {viewMode === 'orb' && (
             <>
               <button
@@ -658,9 +712,25 @@ export default function JarvisInterface() {
         </div>
       </motion.div>
 
-      {/* Main content area — switches between ORB and DASHBOARD */}
+      {/* Main content area — switches between ORB, DASHBOARD, and BRIEFING */}
       <AnimatePresence mode="wait">
-        {viewMode === 'dashboard' ? (
+        {viewMode === 'briefing' ? (
+          <motion.div
+            key="briefing"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
+            className="flex flex-1 flex-col overflow-hidden"
+          >
+            <BriefingView
+              active={orbState !== 'idle'}
+              lastMessage={messages.filter(m => m.sender === 'jarvis').slice(-1)[0]?.text}
+              groqOk={groqOk}
+              notionOk={notionOk}
+            />
+          </motion.div>
+        ) : viewMode === 'dashboard' ? (
           <motion.div
             key="dashboard"
             initial={{ opacity: 0 }}
@@ -753,8 +823,8 @@ export default function JarvisInterface() {
         )}
       </AnimatePresence>
 
-      {/* Command bar — always visible */}
-      {viewMode === 'dashboard' && <CommandBar {...cmdBarProps} />}
+      {/* Command bar — visible in dashboard and briefing views */}
+      {(viewMode === 'dashboard' || viewMode === 'briefing') && <CommandBar {...cmdBarProps} />}
 
       {/* Status bar */}
       <StatusBar />
