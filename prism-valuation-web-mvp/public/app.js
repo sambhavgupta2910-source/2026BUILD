@@ -580,3 +580,117 @@ window.addEventListener('DOMContentLoaded', () => {
   applyHash();
 });
 
+
+// ---------------------------------------------------------------------------
+// Lead capture modal
+// ---------------------------------------------------------------------------
+
+let _agentWhatsapp = '';
+(async () => {
+  try {
+    const r = await fetch('/api/config');
+    if (r.ok) { const d = await r.json(); _agentWhatsapp = d.agentWhatsapp || ''; }
+  } catch { /* ignore */ }
+})();
+
+function openLeadModal(context) {
+  const overlay = document.getElementById('leadModalOverlay');
+  if (!overlay) return;
+
+  // Reset success state
+  document.getElementById('leadSuccess').hidden = true;
+  document.getElementById('leadForm').hidden = false;
+  document.getElementById('leadSubmitBtn').disabled = false;
+  document.getElementById('leadSubmitBtn').textContent = 'Send Inquiry';
+
+  // Prefill area from valuation form if context is 'valuation'
+  if (context === 'valuation') {
+    const areaInput = document.querySelector('#valuationForm [name="area"]');
+    const leadArea = document.getElementById('leadArea');
+    if (areaInput && leadArea && areaInput.value) leadArea.value = areaInput.value;
+
+    const baseVal = document.getElementById('baseValue')?.textContent;
+    const msgEl = document.getElementById('leadMessage');
+    if (msgEl && baseVal && baseVal !== '—') {
+      msgEl.value = `PRISM estimated my property at ${baseVal}. I'd like a full appraisal.`;
+    }
+  }
+
+  overlay.hidden = false;
+  document.body.style.overflow = 'hidden';
+  overlay.querySelector('input[name="name"]')?.focus();
+}
+
+function closeLeadModal() {
+  const overlay = document.getElementById('leadModalOverlay');
+  if (overlay) overlay.hidden = true;
+  document.body.style.overflow = '';
+}
+
+// Close on backdrop click
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('leadModalOverlay')?.addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) closeLeadModal();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLeadModal();
+  });
+});
+
+async function submitLead(e) {
+  e.preventDefault();
+  const form = document.getElementById('leadForm');
+  const btn = document.getElementById('leadSubmitBtn');
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+
+  const fd = new FormData(form);
+  const body = {};
+  fd.forEach((v, k) => { body[k] = v; });
+
+  try {
+    const res = await fetch('/api/inquiry', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    const data = await res.json();
+
+    form.hidden = true;
+    const successEl = document.getElementById('leadSuccess');
+    const msgEl = document.getElementById('leadSuccessMsg');
+    if (msgEl) msgEl.textContent = data.message || 'Inquiry received! We\'ll be in touch soon.';
+
+    const waBtn = document.getElementById('leadWaBtn');
+    if (waBtn) {
+      const phone = _agentWhatsapp || '971500000000';
+      const waText = encodeURIComponent(
+        `Hi, I submitted an inquiry on PRISM for ${body.intent === 'sell' ? 'selling' : body.intent === 'buy' ? 'buying' : 'investing in'} a property` +
+        (body.area ? ` in ${body.area}` : '') + '. I\'d love to discuss further.'
+      );
+      waBtn.href = `https://wa.me/${phone}?text=${waText}`;
+    }
+
+    successEl.hidden = false;
+  } catch (err) {
+    btn.disabled = false;
+    btn.textContent = 'Send Inquiry';
+    alert('Failed to submit. Please try again.');
+  }
+}
+
+// Show post-valuation CTA after result renders
+const _origRenderResult = typeof renderResult !== 'undefined' ? renderResult : null;
+// Hook into renderResult via wrapper — done after DOMContentLoaded so app.js has loaded
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('valuationForm');
+  if (form) {
+    form.addEventListener('submit', () => {
+      // Show CTA ~800ms after submit (after results render)
+      setTimeout(() => {
+        const cta = document.getElementById('leadValuationCta');
+        if (cta) cta.hidden = false;
+      }, 1200);
+    });
+  }
+});

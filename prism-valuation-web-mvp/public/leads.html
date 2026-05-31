@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PRISM · Leads</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <style>
+      .leads-shell { max-width: 1100px; margin: 0 auto; padding: 32px 24px 64px; }
+      .leads-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; flex-wrap: wrap; gap: 16px; }
+      .leads-header h1 { font-size: 22px; font-weight: 700; margin: 0; }
+      .leads-header a { font-size: 13px; color: var(--text-dim); }
+      .leads-header a:hover { color: var(--accent-strong); }
+      .leads-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 28px; }
+      .leads-stat { background: var(--bg-elev); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px; display: flex; flex-direction: column; gap: 4px; }
+      .leads-stat span { font-size: 10px; color: var(--text-mute); text-transform: uppercase; letter-spacing: 0.14em; }
+      .leads-stat strong { font-size: 26px; font-weight: 700; }
+      .grade-A { color: var(--good); }
+      .grade-B { color: var(--accent-strong); }
+      .grade-C { color: var(--warn); }
+      .grade-D { color: var(--text-mute); }
+      .grade-badge { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; }
+      .grade-badge.grade-A { background: rgba(78,203,168,0.15); color: var(--good); }
+      .grade-badge.grade-B { background: rgba(91,156,246,0.15); color: var(--accent-strong); }
+      .grade-badge.grade-C { background: rgba(240,180,64,0.15); color: var(--warn); }
+      .grade-badge.grade-D { background: rgba(90,112,153,0.15); color: var(--text-mute); }
+      .intent-badge { font-size: 11px; padding: 2px 8px; border-radius: 999px; font-weight: 500; }
+      .intent-sell { background: rgba(78,203,168,0.1); color: var(--good); }
+      .intent-buy  { background: rgba(91,156,246,0.1); color: var(--accent-strong); }
+      .intent-invest { background: rgba(240,180,64,0.1); color: var(--warn); }
+      .intent-rent { background: rgba(90,112,153,0.1); color: var(--text-dim); }
+      .wa-link { display: inline-flex; align-items: center; gap: 5px; padding: 5px 10px; background: rgba(37,211,102,0.12); color: #25D366; border-radius: var(--radius-sm); font-size: 12px; font-weight: 600; text-decoration: none; white-space: nowrap; }
+      .wa-link:hover { background: rgba(37,211,102,0.22); }
+      .leads-empty { padding: 48px; text-align: center; color: var(--text-mute); font-size: 14px; }
+      .token-gate { max-width: 400px; margin: 80px auto; background: var(--bg-elev); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px; display: flex; flex-direction: column; gap: 16px; }
+      .token-gate h2 { font-size: 18px; font-weight: 700; margin: 0; }
+      .token-gate p { font-size: 13px; color: var(--text-dim); margin: 0; }
+      .token-gate input { background: var(--bg); border: 1px solid var(--border-strong); color: var(--text); padding: 10px 13px; border-radius: var(--radius-sm); font-size: 14px; font-family: inherit; }
+      .token-gate input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(91,156,246,0.14); }
+      .token-gate button { background: var(--accent); color: #07111f; border: none; padding: 11px; font-size: 14px; font-weight: 700; border-radius: var(--radius-sm); cursor: pointer; }
+      .token-gate .error { color: var(--bad); font-size: 13px; display: none; }
+      .filter-bar { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+      .filter-btn { padding: 6px 14px; border-radius: 999px; border: 1px solid var(--border); background: var(--bg-elev); color: var(--text-dim); font-size: 12px; cursor: pointer; transition: all 0.15s; }
+      .filter-btn:hover, .filter-btn.active { border-color: var(--accent); color: var(--accent-strong); background: var(--accent-glow); }
+      @media (max-width: 700px) { .leads-stats { grid-template-columns: 1fr 1fr; } }
+    </style>
+  </head>
+  <body>
+    <div class="leads-shell" id="app">
+      <!-- Token gate -->
+      <div class="token-gate" id="tokenGate">
+        <div class="brand">PRISM</div>
+        <h2>Leads Dashboard</h2>
+        <p>Enter your LEADS_TOKEN to access captured inquiries.</p>
+        <input type="password" id="tokenInput" placeholder="Access token" />
+        <button onclick="loadLeads()">Access Dashboard</button>
+        <div class="error" id="tokenError">Invalid token or no leads found.</div>
+      </div>
+
+      <!-- Dashboard (hidden until authenticated) -->
+      <div id="dashboard" hidden>
+        <div class="leads-header">
+          <div>
+            <div class="brand" style="font-size:18px">PRISM</div>
+            <h1>Lead Inquiries</h1>
+          </div>
+          <div style="display:flex;gap:12px;align-items:center">
+            <span class="status" id="lastRefresh">—</span>
+            <a href="/">← Valuation</a>
+            <button class="filter-btn" onclick="loadLeads()">Refresh</button>
+          </div>
+        </div>
+
+        <div class="leads-stats">
+          <div class="leads-stat"><span>Total leads</span><strong id="statTotal">—</strong></div>
+          <div class="leads-stat"><span>Grade A</span><strong id="statA" class="grade-A">—</strong></div>
+          <div class="leads-stat"><span>Sellers</span><strong id="statSell" style="color:var(--good)">—</strong></div>
+          <div class="leads-stat"><span>Today</span><strong id="statToday" style="color:var(--accent-strong)">—</strong></div>
+        </div>
+
+        <div class="filter-bar">
+          <button class="filter-btn active" onclick="applyFilter('all', this)">All</button>
+          <button class="filter-btn" onclick="applyFilter('A', this)">Grade A</button>
+          <button class="filter-btn" onclick="applyFilter('B', this)">Grade B</button>
+          <button class="filter-btn" onclick="applyFilter('sell', this)">Sellers</button>
+          <button class="filter-btn" onclick="applyFilter('buy', this)">Buyers</button>
+          <button class="filter-btn" onclick="applyFilter('invest', this)">Investors</button>
+        </div>
+
+        <div class="panel">
+          <div class="table-wrap">
+            <table id="leadsTable">
+              <thead>
+                <tr>
+                  <th>Grade</th>
+                  <th>Time</th>
+                  <th>Name</th>
+                  <th>Intent</th>
+                  <th>Area</th>
+                  <th>Budget</th>
+                  <th>Message</th>
+                  <th>Contact</th>
+                </tr>
+              </thead>
+              <tbody id="leadsBody">
+                <tr><td colspan="8" class="leads-empty">Loading…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let _allLeads = [];
+      let _token = '';
+      let _activeFilter = 'all';
+
+      function escHtml(s) {
+        return String(s || '').replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+      }
+
+      function fmtTime(iso) {
+        if (!iso) return '—';
+        try {
+          const d = new Date(iso);
+          return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' }) +
+            ' ' + d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+        } catch { return iso.slice(0, 16); }
+      }
+
+      function buildWaLink(whatsapp) {
+        const num = (whatsapp || '').replace(/\D/g, '');
+        if (!num) return '—';
+        return `<a class="wa-link" href="https://wa.me/${num}" target="_blank" rel="noopener">WhatsApp</a>`;
+      }
+
+      function intentBadge(intent) {
+        const cls = { sell:'intent-sell', buy:'intent-buy', invest:'intent-invest', rent:'intent-rent' }[intent] || '';
+        const label = { sell:'Sell', buy:'Buy', invest:'Invest', rent:'Rent' }[intent] || escHtml(intent) || '—';
+        return `<span class="intent-badge ${cls}">${label}</span>`;
+      }
+
+      function renderLeads(leads) {
+        const tbody = document.getElementById('leadsBody');
+        if (!leads.length) {
+          tbody.innerHTML = '<tr><td colspan="8" class="leads-empty">No leads match this filter.</td></tr>';
+          return;
+        }
+        tbody.innerHTML = leads.map((l) => `
+          <tr>
+            <td><span class="grade-badge grade-${escHtml(l.grade)}">${escHtml(l.grade)}</span></td>
+            <td style="white-space:nowrap;font-size:12px;color:var(--text-dim)">${fmtTime(l.timestamp)}</td>
+            <td style="font-weight:600">${escHtml(l.name)}</td>
+            <td>${intentBadge(l.intent)}</td>
+            <td style="font-size:13px">${escHtml(l.area) || '—'}</td>
+            <td style="font-size:12px;white-space:nowrap">${escHtml(l.budget) || '—'}</td>
+            <td style="font-size:12px;color:var(--text-dim);max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${escHtml(l.message)}">${escHtml(l.message) || '—'}</td>
+            <td>${buildWaLink(l.whatsapp)}</td>
+          </tr>`).join('');
+      }
+
+      function applyFilter(filter, btn) {
+        _activeFilter = filter;
+        document.querySelectorAll('.filter-btn').forEach((b) => b.classList.remove('active'));
+        if (btn) btn.classList.add('active');
+        let filtered = _allLeads;
+        if (filter === 'A' || filter === 'B' || filter === 'C' || filter === 'D') {
+          filtered = _allLeads.filter((l) => l.grade === filter);
+        } else if (filter !== 'all') {
+          filtered = _allLeads.filter((l) => l.intent === filter);
+        }
+        renderLeads(filtered);
+      }
+
+      async function loadLeads() {
+        const tokenInput = document.getElementById('tokenInput');
+        if (tokenInput && tokenInput.value) _token = tokenInput.value.trim();
+
+        try {
+          const url = `/api/leads${_token ? `?token=${encodeURIComponent(_token)}` : ''}`;
+          const res = await fetch(url);
+          if (res.status === 401) {
+            document.getElementById('tokenError').style.display = 'block';
+            return;
+          }
+          const data = await res.json();
+
+          document.getElementById('tokenGate').hidden = true;
+          document.getElementById('dashboard').hidden = false;
+
+          _allLeads = data.leads || [];
+
+          const today = new Date().toISOString().slice(0, 10);
+          document.getElementById('statTotal').textContent = _allLeads.length;
+          document.getElementById('statA').textContent = _allLeads.filter((l) => l.grade === 'A').length;
+          document.getElementById('statSell').textContent = _allLeads.filter((l) => l.intent === 'sell').length;
+          document.getElementById('statToday').textContent = _allLeads.filter((l) => l.timestamp.startsWith(today)).length;
+          document.getElementById('lastRefresh').textContent = 'Updated ' + new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+
+          applyFilter(_activeFilter, null);
+        } catch (err) {
+          document.getElementById('tokenError').style.display = 'block';
+          document.getElementById('tokenError').textContent = 'Error: ' + err.message;
+        }
+      }
+
+      // Auto-load if token is in URL
+      const urlToken = new URLSearchParams(location.search).get('token');
+      if (urlToken) { _token = urlToken; loadLeads(); }
+    </script>
+  </body>
+</html>

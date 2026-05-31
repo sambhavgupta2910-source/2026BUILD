@@ -1048,15 +1048,48 @@ async function start() {
       // Lead capture — POST /api/inquiry
       if (req.method === 'POST' && req.url === '/api/inquiry') {
         const body = await readJson(req);
-        const { listingId, name, whatsapp, unitType, budget, message } = body;
+        const { listingId, name, whatsapp, intent, area, budget, message } = body;
         if (!name || !whatsapp) return send(res, 400, { error: 'name and whatsapp required' });
         const timestamp = new Date().toISOString();
-        const row = [timestamp, listingId || '', name, whatsapp, unitType || '', budget || '', (message || '').replace(/,/g, ' ')].join(',');
+        const esc = (v) => String(v || '').replace(/,/g, ' ').replace(/\n/g, ' ');
+        const row = [timestamp, esc(listingId), esc(name), esc(whatsapp), esc(intent), esc(area), esc(budget), esc(message)].join(',');
         console.log(`[inquiry] ${row}`);
         const leadsPath = path.join(__dirname, 'leads.csv');
-        const header = !fs.existsSync(leadsPath) ? 'timestamp,listingId,name,whatsapp,unitType,budget,message\n' : '';
+        const header = !fs.existsSync(leadsPath) ? 'timestamp,listingId,name,whatsapp,intent,area,budget,message\n' : '';
         fs.appendFileSync(leadsPath, header + row + '\n');
         return send(res, 200, { ok: true, message: 'Inquiry received. Our team will contact you on WhatsApp within 24 hours.' });
+      }
+
+      // Leads dashboard — GET /api/leads?token=XXX
+      if (req.method === 'GET' && req.url.startsWith('/api/leads')) {
+        const LEADS_TOKEN = process.env.LEADS_TOKEN || '';
+        const urlParams = new URLSearchParams(req.url.split('?')[1] || '');
+        if (LEADS_TOKEN && urlParams.get('token') !== LEADS_TOKEN) {
+          return send(res, 401, { error: 'unauthorized' });
+        }
+        const leadsPath = path.join(__dirname, 'leads.csv');
+        if (!fs.existsSync(leadsPath)) return send(res, 200, { leads: [] });
+        const lines = fs.readFileSync(leadsPath, 'utf8').trim().split('\n');
+        const headers = lines[0].split(',');
+        const leads = lines.slice(1).reverse().map((line) => {
+          const vals = line.split(',');
+          const obj = {};
+          headers.forEach((h, i) => { obj[h] = vals[i] || ''; });
+          // Score lead A-D
+          const budgetStr = obj.budget || '';
+          const intentStr = (obj.intent || '').toLowerCase();
+          let score = 0;
+          if (budgetStr.includes('10M')) score += 4;
+          else if (budgetStr.includes('5M')) score += 3;
+          else if (budgetStr.includes('2M') || budgetStr.includes('5M')) score += 2;
+          else if (budgetStr.includes('1M')) score += 1;
+          if (intentStr === 'sell') score += 3;
+          else if (intentStr === 'invest') score += 2;
+          else if (intentStr === 'buy') score += 1;
+          obj.grade = score >= 6 ? 'A' : score >= 4 ? 'B' : score >= 2 ? 'C' : 'D';
+          return obj;
+        });
+        return send(res, 200, { leads, total: leads.length });
       }
 
       if (req.method === 'GET') return serveStatic(req, res);

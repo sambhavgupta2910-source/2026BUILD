@@ -37,6 +37,7 @@
           <a href="#market">Market</a>
           <a href="#quality">Confidence</a>
         </nav>
+        <button class="advisor-cta-btn" id="openLeadModal" onclick="openLeadModal()">Talk to an Advisor</button>
         <div class="sidebar-footer">
           <div class="unit-lock">
             <span>Unit basis</span>
@@ -170,6 +171,13 @@
                 <span id="compCount">—</span> comparables
               </div>
               <div class="advisor-note" id="advisorNote">Enter a property and run valuation.</div>
+              <div class="lead-valuation-cta" id="leadValuationCta" hidden>
+                <div class="lead-valuation-cta-text">
+                  <strong>Ready to act on this?</strong>
+                  <span>Our advisors can list, market, or source a buyer for this property within days.</span>
+                </div>
+                <button onclick="openLeadModal('valuation')" class="lead-cta-inline-btn">Free Appraisal</button>
+              </div>
             </div>
 
             <!-- AI Insight block -->
@@ -403,6 +411,58 @@
         <span>Quality</span>
       </a>
     </nav>
+
+    <!-- Lead capture modal -->
+    <div class="lead-modal-overlay" id="leadModalOverlay" hidden>
+      <div class="lead-modal" role="dialog" aria-modal="true" aria-labelledby="leadModalTitle">
+        <button class="lead-modal-close" onclick="closeLeadModal()" aria-label="Close">&times;</button>
+        <div class="lead-modal-header">
+          <span class="insight-badge">Free Consultation</span>
+          <h2 id="leadModalTitle">Talk to a Dubai Property Advisor</h2>
+          <p>Our team responds within 2 hours on WhatsApp.</p>
+        </div>
+        <form class="lead-modal-form" id="leadForm" onsubmit="submitLead(event)">
+          <div class="lead-form-row">
+            <label>Your name <input type="text" name="name" placeholder="Ahmed Al Mansouri" required /></label>
+            <label>WhatsApp number <input type="tel" name="whatsapp" placeholder="+971 50 000 0000" required /></label>
+          </div>
+          <label>I'm looking to
+            <select name="intent">
+              <option value="sell">Sell a property</option>
+              <option value="buy">Buy a property</option>
+              <option value="invest">Invest in Dubai real estate</option>
+              <option value="rent">Rent out / manage a property</option>
+            </select>
+          </label>
+          <div class="lead-form-row">
+            <label>Area of interest <input type="text" name="area" id="leadArea" placeholder="Downtown Dubai, JVC…" list="areas" /></label>
+            <label>Budget / price range
+              <select name="budget">
+                <option value="">Select…</option>
+                <option value="Under AED 500K">Under AED 500K</option>
+                <option value="AED 500K – 1M">AED 500K – 1M</option>
+                <option value="AED 1M – 2M">AED 1M – 2M</option>
+                <option value="AED 2M – 5M">AED 2M – 5M</option>
+                <option value="AED 5M – 10M">AED 5M – 10M</option>
+                <option value="AED 10M+">AED 10M+</option>
+              </select>
+            </label>
+          </div>
+          <label>Message (optional)
+            <textarea name="message" id="leadMessage" rows="3" placeholder="Tell us more about what you're looking for…"></textarea>
+          </label>
+          <div class="lead-form-actions">
+            <button type="submit" class="lead-submit-btn" id="leadSubmitBtn">Send Inquiry</button>
+          </div>
+          <div class="lead-success" id="leadSuccess" hidden>
+            <p id="leadSuccessMsg">Inquiry received! We'll reach you on WhatsApp shortly.</p>
+            <a class="lead-wa-btn" id="leadWaBtn" href="#" target="_blank" rel="noopener">
+              Open WhatsApp Chat
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
 
     <script src="/app.js"></script>
   </body>
