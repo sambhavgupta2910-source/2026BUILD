@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bar Empire</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0f0f1a;
+  --card: #1a1a2e;
+  --card2: #12122a;
+  --gold: #c9a84c;
+  --gold2: #f0c96e;
+  --text: #e8e0d0;
+  --muted: #8a8070;
+  --pos: #4caf7d;
+  --neg: #e05252;
+  --border: #2a2a4a;
+  --btn: #252540;
+  --btnhov: #303060;
+}
+body { background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, sans-serif; font-size: 14px; min-height: 100vh; display: flex; flex-direction: column; }
+/* HUD */
+#hud { background: var(--card2); border-bottom: 1px solid var(--border); padding: 8px 12px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; z-index: 10; }
+.hud-stat { display: flex; flex-direction: column; align-items: center; min-width: 60px; }
+.hud-label { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+.hud-val { font-size: 15px; font-weight: 700; color: var(--gold); }
+.hud-val.pos { color: var(--pos); }
+.hud-val.neg { color: var(--neg); }
+.hud-sep { width: 1px; background: var(--border); align-self: stretch; }
+.hud-right { margin-left: auto; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.eco-badge, .trend-badge { font-size: 10px; padding: 3px 8px; border-radius: 10px; font-weight: 600; }
+.eco-Boom { background: #2a4a2a; color: var(--pos); }
+.eco-Stable { background: #2a2a4a; color: #8ab4f8; }
+.eco-Downturn { background: #4a2a2a; color: var(--neg); }
+.trend-badge { background: #3a2a1a; color: var(--gold); max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* Speed controls */
+#speed-bar { background: var(--card2); border-bottom: 1px solid var(--border); padding: 4px 12px; display: flex; gap: 6px; align-items: center; }
+.spd-btn { background: var(--btn); border: 1px solid var(--border); color: var(--text); padding: 4px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; transition: all 0.15s; }
+.spd-btn:hover { background: var(--btnhov); border-color: var(--gold); }
+.spd-btn.active { background: var(--gold); color: #0f0f1a; border-color: var(--gold); font-weight: 700; }
+#week-display { margin-left: auto; font-size: 12px; color: var(--muted); }
+/* Main content */
+#main { flex: 1; overflow-y: auto; padding: 12px; padding-bottom: 70px; }
+/* Tab bar */
+#tab-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--card2); border-top: 1px solid var(--border); display: flex; z-index: 10; }
+.tab-btn { flex: 1; padding: 10px 4px 8px; text-align: center; cursor: pointer; font-size: 10px; color: var(--muted); border: none; background: none; transition: color 0.2s; }
+.tab-btn .tab-icon { font-size: 18px; display: block; }
+.tab-btn.active { color: var(--gold); }
+/* Panels */
+.panel { display: none; animation: fadeIn 0.2s ease; }
+.panel.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+/* Cards */
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 12px; margin-bottom: 10px; }
+.card-title { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+.card-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.card-name { font-weight: 700; color: var(--gold2); font-size: 15px; }
+/* Buttons */
+.btn { background: var(--btn); border: 1px solid var(--border); color: var(--text); padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 12px; transition: all 0.15s; }
+.btn:hover { background: var(--btnhov); border-color: var(--gold); }
+.btn:disabled { opacity: 0.4; cursor: default; }
+.btn-gold { background: var(--gold); color: #0f0f1a; border-color: var(--gold); font-weight: 700; }
+.btn-gold:hover { background: var(--gold2); border-color: var(--gold2); }
+.btn-sm { padding: 3px 8px; font-size: 11px; }
+/* Tables */
+table { width: 100%; border-collapse: collapse; font-size: 12px; }
+th { color: var(--muted); font-size: 10px; text-transform: uppercase; padding: 4px 6px; text-align: left; border-bottom: 1px solid var(--border); }
+td { padding: 6px 6px; border-bottom: 1px solid #1e1e38; }
+tr:last-child td { border-bottom: none; }
+.num { text-align: right; font-variant-numeric: tabular-nums; }
+/* Toggle */
+.toggle-wrap { display: flex; align-items: center; gap: 6px; }
+.toggle { position: relative; width: 34px; height: 18px; }
+.toggle input { opacity: 0; width: 0; height: 0; }
+.toggle-slider { position: absolute; cursor: pointer; inset: 0; background: #333; border-radius: 18px; transition: 0.2s; }
+.toggle-slider::before { content: ''; position: absolute; width: 14px; height: 14px; left: 2px; bottom: 2px; background: #888; border-radius: 50%; transition: 0.2s; }
+.toggle input:checked + .toggle-slider { background: var(--gold); }
+.toggle input:checked + .toggle-slider::before { transform: translateX(16px); background: #0f0f1a; }
+/* Slider */
+input[type=range] { width: 100%; accent-color: var(--gold); cursor: pointer; }
+/* Stats row */
+.stat-row { display: flex; gap: 8px; margin-bottom: 6px; flex-wrap: wrap; }
+.stat-chip { background: var(--card2); border: 1px solid var(--border); border-radius: 6px; padding: 4px 8px; font-size: 11px; }
+.stat-chip span { color: var(--gold); font-weight: 600; }
+/* Progress bar */
+.prog-bar { background: #111122; border-radius: 4px; height: 6px; overflow: hidden; margin: 2px 0; }
+.prog-fill { height: 100%; border-radius: 4px; background: var(--gold); transition: width 0.3s; }
+/* Bar chart */
+.bar-chart { display: flex; align-items: flex-end; gap: 3px; height: 80px; padding: 4px 0; }
+.bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.bar-seg { width: 100%; border-radius: 2px 2px 0 0; min-height: 2px; transition: height 0.3s; }
+.bar-lbl { font-size: 8px; color: var(--muted); writing-mode: vertical-rl; transform: rotate(180deg); }
+/* Toast */
+#toast { position: fixed; top: 80px; left: 50%; transform: translateX(-50%); background: var(--card); border: 1px solid var(--gold); border-radius: 10px; padding: 10px 16px; min-width: 240px; max-width: 340px; z-index: 100; transition: opacity 0.4s; opacity: 0; pointer-events: none; box-shadow: 0 4px 24px #0008; }
+#toast.show { opacity: 1; }
+.toast-title { font-weight: 700; color: var(--gold2); font-size: 13px; margin-bottom: 4px; }
+.toast-body { font-size: 12px; color: var(--text); line-height: 1.4; }
+/* Select */
+select { background: var(--btn); border: 1px solid var(--border); color: var(--text); padding: 4px 8px; border-radius: 6px; font-size: 12px; cursor: pointer; }
+select:focus { outline: 1px solid var(--gold); }
+/* Grid */
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+/* Responsive */
+@media (min-width: 600px) {
+  .grid2 { grid-template-columns: repeat(3, 1fr); }
+  #hud { padding: 8px 20px; }
+}
+@media (min-width: 900px) {
+  #main { max-width: 860px; margin: 0 auto; }
+}
+.green { color: var(--pos); }
+.red { color: var(--neg); }
+.gold { color: var(--gold); }
+.muted { color: var(--muted); }
+.bold { font-weight: 700; }
+.badge { display: inline-block; font-size: 9px; padding: 2px 6px; border-radius: 8px; margin-left: 4px; }
+.badge-maturing { background: #2a2a1a; color: #c9a84c; }
+.badge-ready { background: #1a3a1a; color: var(--pos); }
+hr.divider { border: none; border-top: 1px solid var(--border); margin: 8px 0; }
+</style>
+</head>
+<body>
+
+<!-- HUD -->
+<div id="hud">
+  <div class="hud-stat">
+    <div class="hud-label">Cash</div>
+    <div class="hud-val" id="h-cash">$60,000</div>
+  </div>
+  <div class="hud-sep"></div>
+  <div class="hud-stat">
+    <div class="hud-label">Net Worth</div>
+    <div class="hud-val" id="h-nw">$60,000</div>
+  </div>
+  <div class="hud-sep"></div>
+  <div class="hud-stat">
+    <div class="hud-label">Reputation</div>
+    <div class="hud-val" id="h-rep">42</div>
+  </div>
+  <div class="hud-sep"></div>
+  <div class="hud-stat">
+    <div class="hud-label">Awareness</div>
+    <div class="hud-val" id="h-aw">25</div>
+  </div>
+  <div class="hud-right">
+    <span class="eco-badge eco-Stable" id="h-eco">Stable</span>
+    <span class="trend-badge" id="h-trend">Balanced Scene</span>
+  </div>
+</div>
+
+<!-- Speed bar -->
+<div id="speed-bar">
+  <button class="spd-btn active" id="spd-0" onclick="setSpeed(0)">⏸ Pause</button>
+  <button class="spd-btn" id="spd-1" onclick="setSpeed(1)">1×</button>
+  <button class="spd-btn" id="spd-2" onclick="setSpeed(2)">2×</button>
+  <button class="spd-btn" id="spd-3" onclick="setSpeed(3)">3×</button>
+  <span id="week-display" class="muted">Week 1 — Spring</span>
+  <button class="btn btn-sm" style="margin-left:auto;" onclick="saveGame()">💾 Save</button>
+  <button class="btn btn-sm" onclick="newGame()">🔄 New</button>
+</div>
+
+<!-- Main panels -->
+<div id="main">
+  <div id="panel-city" class="panel active"></div>
+  <div id="panel-menu" class="panel"></div>
+  <div id="panel-supply" class="panel"></div>
+  <div id="panel-prod" class="panel"></div>
+  <div id="panel-finance" class="panel"></div>
+</div>
+
+<!-- Tab bar -->
+<div id="tab-bar">
+  <button class="tab-btn active" onclick="switchTab('city',this)"><span class="tab-icon">🏙️</span>City</button>
+  <button class="tab-btn" onclick="switchTab('menu',this)"><span class="tab-icon">🍺</span>Menu</button>
+  <button class="tab-btn" onclick="switchTab('supply',this)"><span class="tab-icon">📦</span>Supply</button>
+  <button class="tab-btn" onclick="switchTab('prod',this)"><span class="tab-icon">🏭</span>Production</button>
+  <button class="tab-btn" onclick="switchTab('finance',this)"><span class="tab-icon">📊</span>Finance</button>
+</div>
+
+<!-- Toast -->
+<div id="toast">
+  <div class="toast-title" id="toast-title">Week Complete</div>
+  <div class="toast-body" id="toast-body"></div>
+</div>
+
+<script>
+// ============================================================
+// DETERMINISTIC RNG — mulberry32
+// ============================================================
+class Rng {
+  constructor(seed) { this._a = seed >>> 0; }
+  next() {
+    this._a = (this._a + 0x6D2B79F5) >>> 0;
+    let t = this._a;
+    t = Math.imul(t ^ (t >>> 15), 1 | t);
+    t ^= t + Math.imul(t ^ (t >>> 7), 61 | t);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  }
+  range(a, b) { return a + this.next() * (b - a); }
+  int(n) { return Math.floor(this.next() * n); }
+}
+
+// ============================================================
+// GAME DATA
+// ============================================================
+const Categories = ['Beer','Wine','Scotch','Spirits','Mixers'];
+const SupplyTiers = ['Standard','Premium','Reserve','TopShelf'];
+const Economies = ['Boom','Stable','Downturn'];
+
+const Drinks = [
+  { id:'draft',    name:'Craft Draft',        appeal:1.05, fairBase:7.0,  primary:'Beer',    primaryUse:1.0, secondary:null,      secondaryUse:0,   laborCost:0.6, seasonAffinity:'summer' },
+  { id:'houserw',  name:'House Red/White',     appeal:1.15, fairBase:11.0, primary:'Wine',    primaryUse:1.0, secondary:null,      secondaryUse:0,   laborCost:0.7, seasonAffinity:null },
+  { id:'reserve',  name:'Reserve Vintage',     appeal:1.30, fairBase:22.0, primary:'Wine',    primaryUse:1.0, secondary:null,      secondaryUse:0,   laborCost:0.9, seasonAffinity:null },
+  { id:'dram',     name:'Single Malt Dram',    appeal:1.25, fairBase:18.0, primary:'Scotch',  primaryUse:1.0, secondary:null,      secondaryUse:0,   laborCost:0.8, seasonAffinity:'winter' },
+  { id:'raredram', name:'Rare Aged Malt',      appeal:1.45, fairBase:42.0, primary:'Scotch',  primaryUse:1.0, secondary:null,      secondaryUse:0,   laborCost:1.0, seasonAffinity:null },
+  { id:'cocktail', name:'Signature Cocktail',  appeal:1.35, fairBase:16.0, primary:'Spirits', primaryUse:1.0, secondary:'Mixers',  secondaryUse:1.0, laborCost:1.4, seasonAffinity:null },
+  { id:'highball', name:'Highball',            appeal:1.10, fairBase:12.0, primary:'Spirits', primaryUse:0.7, secondary:'Mixers',  secondaryUse:1.2, laborCost:0.9, seasonAffinity:'summer' },
+];
+
+const SupplyDefs = [
+  { category:'Beer',    tier:'Standard', baseCost:1.8,  quality:0.50 },
+  { category:'Beer',    tier:'Premium',  baseCost:2.9,  quality:0.70 },
+  { category:'Wine',    tier:'Standard', baseCost:3.5,  quality:0.55 },
+  { category:'Wine',    tier:'Premium',  baseCost:6.0,  quality:0.75 },
+  { category:'Wine',    tier:'Reserve',  baseCost:11.0, quality:0.90 },
+  { category:'Scotch',  tier:'Premium',  baseCost:7.5,  quality:0.72 },
+  { category:'Scotch',  tier:'Reserve',  baseCost:14.0, quality:0.88 },
+  { category:'Scotch',  tier:'TopShelf', baseCost:26.0, quality:1.00 },
+  { category:'Spirits', tier:'Standard', baseCost:2.5,  quality:0.55 },
+  { category:'Spirits', tier:'Premium',  baseCost:4.5,  quality:0.78 },
+  { category:'Mixers',  tier:'Standard', baseCost:0.6,  quality:0.60 },
+  { category:'Mixers',  tier:'Premium',  baseCost:1.1,  quality:0.80 },
+];
+
+const ProductionLines = [
+  { id:'brewery', name:'Craft Brewery',     category:'Beer',   capex:120000, weeklyOutput:900, prodCostPerUnit:0.9, quality:0.74, maturationWeeks:3,   agingUplift:0.0 },
+  { id:'wineest', name:'Wine Estate',       category:'Wine',   capex:480000, weeklyOutput:420, prodCostPerUnit:1.8, quality:0.85, maturationWeeks:52,  agingUplift:0.05 },
+  { id:'distill', name:'Scotch Distillery', category:'Scotch', capex:900000, weeklyOutput:260, prodCostPerUnit:2.6, quality:0.90, maturationWeeks:156, agingUplift:0.10 },
+];
+
+const VenueTiers = [
+  { tier:1, name:'Pop-up Bar', capacityMult:1.0, appealMult:1.0, upgradeCost:0 },
+  { tier:2, name:'Bar',        capacityMult:1.6, appealMult:1.2, upgradeCost:85000 },
+  { tier:3, name:'Flagship',   capacityMult:2.4, appealMult:1.5, upgradeCost:320000 },
+];
+
+const Districts = [
+  { id:'riverside', name:'Riverside Strip', traffic:900,  rent:1600, affluence:1.00, competition:2, fitout:0 },
+  { id:'market',    name:'Market Lane',     traffic:1250, rent:2200, affluence:1.05, competition:3, fitout:42000 },
+  { id:'harbor',    name:'Harbour Front',   traffic:1700, rent:3400, affluence:1.25, competition:5, fitout:120000 },
+];
+
+const Trends = [
+  { id:'balanced',  name:'Balanced Scene',      boosts:{}, note:'No strong pull.' },
+  { id:'cocktail',  name:'Craft-Cocktail Boom', boosts:{cocktail:1.7, highball:1.3}, note:'Mixology is everywhere.' },
+  { id:'malt',      name:'Single-Malt Surge',   boosts:{dram:1.6, raredram:1.8}, note:'Whisky connoisseurs out in force.' },
+  { id:'natural',   name:'Natural-Wine Wave',   boosts:{houserw:1.4, reserve:1.6}, note:'Wine-forward crowd.' },
+  { id:'craftbeer', name:'Craft-Beer Hype',     boosts:{draft:1.8}, note:'Taprooms are the move.' },
+  { id:'lowno',     name:'Premiumization',      boosts:{reserve:1.5, raredram:1.6, cocktail:1.3}, note:'Drink less, drink better.' },
+];
+
+const EquipQ   = [1.00, 1.10, 1.18, 1.30];
+const EquipCap = [1.00, 1.18, 1.45, 1.70];
+const TrainQ   = [1.00, 1.12, 1.22, 1.34];
+const TrainCap = [1.00, 1.10, 1.18, 1.28];
+const TrainWage= [700,  860,  1040, 1280];
+
+// ============================================================
+// HELPERS
+// ============================================================
+function clamp(x, a, b) { return Math.max(a, Math.min(b, x)); }
+function season(wk) { let m = wk % 52; return m < 13 ? 'spring' : m < 26 ? 'summer' : m < 39 ? 'autumn' : 'winter'; }
+function fmt$(n) { return '$' + Math.round(n).toLocaleString(); }
+function fmtN(n, d=0) { return n.toFixed(d); }
+function drink(id) { return Drinks.find(d => d.id === id); }
+function district(id) { return Districts.find(d => d.id === id); }
+function trend(id) { return Trends.find(t => t.id === id); }
+function line(id) { return ProductionLines.find(l => l.id === id); }
+function supplyFor(cat, tier) {
+  return SupplyDefs.find(s => s.category === cat && s.tier === tier) ||
+         SupplyDefs.find(s => s.category === cat);
+}
+function venueTier(t) { return VenueTiers.find(v => v.tier === t); }
+
+// ============================================================
+// GAME STATE
+// ============================================================
+function newGameState(seed = 12345) {
+  const s = {
+    week: 1, cash: 60000, debt: 0, reputation: 42, awareness: 25,
+    equipment: 1, training: 1, marketing: 800,
+    sourcingTier: { Beer:'Standard', Wine:'Premium', Scotch:'Premium', Spirits:'Premium', Mixers:'Standard' },
+    ownedLines: [], maturing: [],
+    ownInventory: { Beer:0, Wine:0, Scotch:0, Spirits:0, Mixers:0 },
+    ownInvQuality: { Beer:0, Wine:0, Scotch:0, Spirits:0, Mixers:0 },
+    menu: {}, venues: [],
+    economy: 'Stable', trendId: 'balanced', trendTimer: 6,
+    marketIndex: { Beer:1.0, Wine:1.0, Scotch:1.0, Spirits:1.0, Mixers:1.0 },
+    competitorPressure: 1.0,
+    history: [], seed
+  };
+  for (const d of Drinks)
+    s.menu[d.id] = { on: (d.id !== 'raredram' && d.id !== 'reserve'), price: Math.round(d.fairBase * 1.05 * 10) / 10 };
+  s.venues.push({ districtId: 'riverside', tier: 1, staff: 3, ownsPremises: false, premisesValue: 0 });
+  return s;
+}
+
+// ============================================================
+// SIMULATION ENGINE
+// ============================================================
+class SimulationEngine {
+  constructor(state) {
+    this.S = state;
+    this._rng = new Rng(state.seed);
+  }
+
+  equipFactorQ()   { return EquipQ[this.S.equipment - 1]; }
+  equipFactorCap() { return EquipCap[this.S.equipment - 1]; }
+  trainFactorQ()   { return TrainQ[this.S.training - 1]; }
+  trainFactorCap() { return TrainCap[this.S.training - 1]; }
+  econMult()       { return this.S.economy === 'Boom' ? 1.26 : this.S.economy === 'Downturn' ? 0.71 : 1.0; }
+
+  categoryQuality(cat) {
+    if (this.S.ownInventory[cat] > 0.001) return this.S.ownInvQuality[cat];
+    const sup = supplyFor(cat, this.S.sourcingTier[cat]);
+    return sup ? sup.quality : 0.5;
+  }
+
+  tick() {
+    this._runProduction();
+    this._evolveMarket();
+
+    const S = this.S;
+    const eqtr = 0.30 * (this.trainFactorQ() - 0.95) + 0.28 * (this.equipFactorQ() - 0.95) + 0.18;
+    const orders = {};
+    const categoryDemand = { Beer:0, Wine:0, Scotch:0, Spirits:0, Mixers:0 };
+    let appealSum = 0, appealN = 0, serviceSum = 0;
+    const sea = season(S.week);
+    const trendBoosts = trend(S.trendId)?.boosts ?? {};
+
+    for (const v of S.venues) {
+      const dist = district(v.districtId);
+      const vt = venueTier(v.tier);
+      const compMult = 1.0 / (1.0 + dist.competition * 0.11 * S.competitorPressure);
+      const seasonMult = sea === 'summer' ? 1.06 : sea === 'winter' ? 0.98 : 1.0;
+      const visitors = dist.traffic * this.econMult() * seasonMult
+        * (0.50 + 0.50 * S.awareness / 100)
+        * (0.58 + 0.42 * S.reputation / 100)
+        * compMult * vt.appealMult;
+
+      const live = Object.entries(S.menu).filter(([,m]) => m.on).map(([id]) => drink(id)).filter(Boolean);
+      const weights = {};
+      let wSum = 0, paSum = 0;
+      for (const dr of live) {
+        const dq = clamp(0.45 * this.categoryQuality(dr.primary) + eqtr, 0.2, 1.0);
+        const fair = dr.fairBase * (0.62 + 0.85 * dq) * dist.affluence;
+        const price = S.menu[dr.id].price;
+        const pa = clamp(Math.pow(fair / Math.max(price, 0.5), 1.7), 0.05, 1.7);
+        const seasonM = dr.seasonAffinity === sea ? 1.25 : dr.seasonAffinity ? 0.85 : 1.0;
+        const trendM = trendBoosts[dr.id] ?? 1.0;
+        const w = Math.max(0.001, dr.appeal * pa * seasonM * trendM);
+        weights[dr.id] = w; wSum += w; paSum += pa; appealSum += pa; appealN++;
+      }
+      const conversion = clamp(0.45 + 0.40 * (paSum / Math.max(1, live.length)), 0.30, 0.95);
+      const capacity = v.staff * 95 * vt.capacityMult * this.equipFactorCap() * this.trainFactorCap();
+      const rawDemand = visitors * conversion;
+      const scale = rawDemand > capacity ? capacity / rawDemand : 1.0;
+      serviceSum += clamp(scale, 0, 1);
+
+      for (const dr of live) {
+        const o = rawDemand * (weights[dr.id] / wSum) * scale;
+        orders[dr.id] = (orders[dr.id] || 0) + o;
+        categoryDemand[dr.primary] += o * dr.primaryUse;
+        if (dr.secondary) categoryDemand[dr.secondary] += o * dr.secondaryUse;
+      }
+    }
+
+    // consume supply
+    let cogs = 0, shortfall = false;
+    for (const cat of Categories) {
+      const need = categoryDemand[cat];
+      if (need <= 0) continue;
+      const own = Math.min(need, S.ownInventory[cat]);
+      const sourced = need - own;
+      const ownLine = ProductionLines.find(l => l.category === cat && S.ownedLines.includes(l.id));
+      if (own > 0 && ownLine) { cogs += own * ownLine.prodCostPerUnit; S.ownInventory[cat] -= own; }
+      if (sourced > 0) {
+        const sup = supplyFor(cat, S.sourcingTier[cat]);
+        cogs += sourced * (sup ? sup.baseCost : 3.0) * S.marketIndex[cat];
+        if (S.ownedLines.some(id => line(id)?.category === cat)) shortfall = true;
+      }
+    }
+
+    // revenue + labor
+    let revenue = 0, units = 0;
+    for (const [id, qty] of Object.entries(orders)) {
+      const dr = drink(id);
+      revenue += qty * S.menu[id].price;
+      cogs += qty * dr.laborCost;
+      units += Math.round(qty);
+    }
+
+    // opex
+    const rent = S.venues.filter(v => !v.ownsPremises).reduce((s, v) => s + district(v.districtId).rent, 0);
+    const wages = S.venues.reduce((s, v) => s + v.staff, 0) * TrainWage[S.training - 1];
+    const interest = S.debt * 0.012;
+    const opex = rent + wages + S.marketing + interest;
+    const gross = revenue - cogs;
+    const net = gross - opex;
+
+    S.cash += net;
+    if (S.cash < 0) { S.debt += -S.cash; S.cash = 0; }
+
+    // reputation + awareness
+    const valuePerc = appealN > 0 ? clamp(appealSum / appealN, 0, 1.7) / 1.4 : 0.5;
+    const servicePerc = S.venues.length > 0 ? serviceSum / S.venues.length : 1;
+    const activeMenu = Object.entries(S.menu).filter(([,m]) => m.on).map(([id]) => drink(id)).filter(Boolean);
+    const avgQ = activeMenu.length > 0
+      ? activeMenu.reduce((s, d) => s + this.categoryQuality(d.primary), 0) / activeMenu.length
+      : 0.5;
+    const repTarget = clamp(100 * (0.35 + 0.40 * valuePerc * avgQ + 0.25 * servicePerc), 5, 100);
+    S.reputation = clamp(S.reputation + (repTarget - S.reputation) * 0.28, 1, 100);
+    S.awareness = clamp(S.awareness * 0.90 + Math.sqrt(S.marketing / 200) * 2.2, 0, 100);
+
+    const r = { week: S.week, revenue, cogs, gross, opex, net, rent, wages, marketing: S.marketing, interest, units, reputation: S.reputation, shortfall };
+    S.history.push(r);
+    S.week++;
+    return r;
+  }
+
+  _runProduction() {
+    const S = this.S;
+    for (const id of S.ownedLines) {
+      const l = line(id);
+      S.maturing.push({ category: l.category, units: l.weeklyOutput, quality: l.quality, startWeek: S.week, readyWeek: S.week + l.maturationWeeks });
+    }
+    const ready = S.maturing.filter(b => b.readyWeek <= S.week);
+    for (const b of ready) {
+      const l = ProductionLines.find(pl => pl.category === b.category);
+      const agingYears = (S.week - b.startWeek) / 52;
+      const q = clamp(b.quality + l.agingUplift * agingYears, 0, 1.0);
+      const existing = S.ownInventory[b.category];
+      const newQ = existing > 0
+        ? (S.ownInvQuality[b.category] * existing + q * b.units) / (existing + b.units)
+        : q;
+      S.ownInventory[b.category] = existing + b.units;
+      S.ownInvQuality[b.category] = newQ;
+    }
+    S.maturing = S.maturing.filter(b => b.readyWeek > S.week);
+  }
+
+  _evolveMarket() {
+    const S = this.S;
+    const rr = this._rng.next();
+    const prevEco = S.economy;
+    const prevTrend = S.trendId;
+
+    if (S.economy === 'Stable') {
+      if (rr < 0.06) S.economy = 'Boom';
+      else if (rr < 0.13) S.economy = 'Downturn';
+    } else if (S.economy === 'Boom') {
+      if (rr < 0.22) S.economy = 'Stable';
+    } else {
+      if (rr < 0.20) S.economy = 'Stable';
+    }
+
+    S.trendTimer--;
+    if (S.trendTimer <= 0) {
+      const ids = Trends.map(t => t.id).filter(i => i !== S.trendId);
+      S.trendId = ids[this._rng.int(ids.length)];
+      S.trendTimer = 5 + this._rng.int(6);
+    }
+
+    const drift = S.economy === 'Boom' ? 0.006 : S.economy === 'Downturn' ? -0.005 : 0.001;
+    for (const cat of Categories)
+      S.marketIndex[cat] = clamp(S.marketIndex[cat] * (1 + drift + (this._rng.next() - 0.5) * 0.05), 0.55, 2.4);
+    S.competitorPressure = clamp(S.competitorPressure + (this._rng.next() - 0.45) * 0.04, 0.7, 1.8);
+
+    return { ecoChanged: prevEco !== S.economy, trendChanged: prevTrend !== S.trendId };
+  }
+
+  buildLine(lineId) {
+    const l = line(lineId);
+    if (!l || this.S.ownedLines.includes(lineId) || this.S.cash < l.capex) return false;
+    this.S.cash -= l.capex;
+    this.S.ownedLines.push(lineId);
+    return true;
+  }
+
+  openVenue(districtId) {
+    const dist = district(districtId);
+    if (!dist) return false;
+    if (this.S.venues.some(v => v.districtId === districtId)) return false;
+    if (this.S.cash < dist.fitout) return false;
+    this.S.cash -= dist.fitout;
+    this.S.venues.push({ districtId, tier: 1, staff: 3, ownsPremises: false, premisesValue: 0 });
+    return true;
+  }
+
+  upgradeVenue(districtId) {
+    const v = this.S.venues.find(v => v.districtId === districtId);
+    if (!v || v.tier >= 3) return false;
+    const nextTier = venueTier(v.tier + 1);
+    if (this.S.cash < nextTier.upgradeCost) return false;
+    this.S.cash -= nextTier.upgradeCost;
+    v.tier++;
+    return true;
+  }
+
+  addStaff(districtId, delta) {
+    const v = this.S.venues.find(v => v.districtId === districtId);
+    if (!v) return;
+    v.staff = Math.max(1, Math.min(20, v.staff + delta));
+  }
+
+  netWorth() {
+    const S = this.S;
+    const inv = Object.values(S.ownInventory).reduce((s, v) => s + v * 2, 0);
+    const lines = S.ownedLines.reduce((s, id) => s + (line(id)?.capex || 0) * 0.5, 0);
+    return S.cash - S.debt + inv + lines;
+  }
+}
+
+// ============================================================
+// GAME LOOP
+// ============================================================
+let engine, lastTick, speed = 0;
+const SPEEDS = [null, 3000, 1500, 500]; // ms per week
+
+function initGame(state) {
+  engine = new SimulationEngine(state);
+  lastTick = performance.now();
+  renderAll();
+}
+
+function newGame() {
+  if (!confirm('Start a new game? (current progress will be lost)')) return;
+  localStorage.removeItem('barempire_save');
+  initGame(newGameState());
+}
+
+function saveGame() {
+  try {
+    localStorage.setItem('barempire_save', JSON.stringify(engine.S));
+    showToast('Game Saved', 'Progress saved to local storage.');
+  } catch(e) { showToast('Save Failed', e.message); }
+}
+
+function loadGame() {
+  try {
+    const raw = localStorage.getItem('barempire_save');
+    if (raw) return JSON.parse(raw);
+  } catch(e) {}
+  return null;
+}
+
+function setSpeed(s) {
+  speed = s;
+  document.querySelectorAll('.spd-btn').forEach((b, i) => b.classList.toggle('active', i === s));
+}
+
+// rAF loop
+function loop(now) {
+  requestAnimationFrame(loop);
+  if (speed > 0) {
+    const interval = SPEEDS[speed];
+    if (now - lastTick >= interval) {
+      lastTick = now;
+      doTick();
+    }
+  }
+}
+
+function doTick() {
+  const S = engine.S;
+  const prevEco = S.economy;
+  const prevTrend = S.trendId;
+  const r = engine.tick();
+  updateHUD();
+  renderActivePanel();
+
+  // Toast
+  let events = [];
+  if (S.economy !== prevEco) events.push(`Economy: ${prevEco} → ${S.economy}`);
+  if (S.trendId !== prevTrend) events.push(`New trend: ${trend(S.trendId)?.name}`);
+  const sign = r.net >= 0 ? '+' : '';
+  const col = r.net >= 0 ? 'green' : 'red';
+  let body = `Revenue ${fmt$(r.revenue)} | Net <span class="${col}">${sign}${fmt$(r.net)}</span> | Rep ${r.reputation.toFixed(0)}`;
+  if (events.length) body += '<br>' + events.join(' • ');
+  showToast(`Week ${r.week} Complete`, body);
+}
+
+// ============================================================
+// HUD
+// ============================================================
+function updateHUD() {
+  const S = engine.S;
+  const nw = engine.netWorth();
+  document.getElementById('h-cash').textContent = fmt$(S.cash);
+  document.getElementById('h-nw').textContent = fmt$(nw);
+  document.getElementById('h-nw').className = 'hud-val ' + (nw >= 0 ? 'pos' : 'neg');
+  document.getElementById('h-rep').textContent = S.reputation.toFixed(0);
+  document.getElementById('h-aw').textContent = S.awareness.toFixed(0);
+  const eBadge = document.getElementById('h-eco');
+  eBadge.textContent = S.economy;
+  eBadge.className = 'eco-badge eco-' + S.economy;
+  document.getElementById('h-trend').textContent = trend(S.trendId)?.name ?? S.trendId;
+  document.getElementById('week-display').textContent = `Week ${S.week} — ${cap(season(S.week))}`;
+}
+
+function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+
+// ============================================================
+// TAB SWITCHING
+// ============================================================
+let currentTab = 'city';
+function switchTab(tab, btn) {
+  currentTab = tab;
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + tab).classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderActivePanel();
+}
+
+function renderActivePanel() {
+  const renders = { city: renderCity, menu: renderMenu, supply: renderSupply, prod: renderProd, finance: renderFinance };
+  renders[currentTab]?.();
+}
+
+function renderAll() {
+  updateHUD();
+  renderCity();
+}
+
+// ============================================================
+// CITY TAB
+// ============================================================
+function renderCity() {
+  const S = engine.S;
+  let html = '<div class="card-title" style="padding:0 2px 6px;font-size:12px;color:var(--muted);">Bayside City — Your Venues & Districts</div>';
+  for (const dist of Districts) {
+    const v = S.venues.find(v => v.districtId === dist.id);
+    const vt = v ? venueTier(v.tier) : null;
+    const hasVenue = !!v;
+    const canOpen = !hasVenue && S.cash >= dist.fitout;
+    const canUpgrade = v && v.tier < 3 && S.cash >= venueTier(v.tier + 1).upgradeCost;
+
+    html += `<div class="card">
+      <div class="card-head">
+        <div class="card-name">${dist.name}</div>
+        ${hasVenue ? `<span class="badge badge-ready">${vt.name}</span>` : '<span class="muted" style="font-size:11px;">No venue</span>'}
+      </div>
+      <div class="stat-row">
+        <div class="stat-chip">Traffic <span>${dist.traffic.toLocaleString()}</span>/wk</div>
+        <div class="stat-chip">Rent <span>${fmt$(dist.rent)}</span>/wk</div>
+        <div class="stat-chip">Affluence <span>${dist.affluence.toFixed(2)}×</span></div>
+        <div class="stat-chip">Competition <span>${dist.competition}</span></div>
+      </div>`;
+    if (hasVenue) {
+      html += `<div class="stat-row">
+        <div class="stat-chip">Staff <span>${v.staff}</span></div>
+        <div class="stat-chip">Tier <span>${v.tier}/3</span></div>
+        <div class="stat-chip">Capacity <span>~${Math.round(v.staff * 95 * vt.capacityMult * EquipCap[S.equipment-1] * TrainCap[S.training-1])}</span>/wk</div>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;">
+        <button class="btn btn-sm" onclick="addStaff('${dist.id}',-1)">− Staff</button>
+        <button class="btn btn-sm" onclick="addStaff('${dist.id}',1)">+ Staff</button>
+        ${v.tier < 3 ? `<button class="btn btn-sm ${canUpgrade ? 'btn-gold' : ''}" onclick="upgradeVenue('${dist.id}')" ${canUpgrade ? '' : 'disabled'}>Upgrade → ${venueTier(v.tier+1).name} (${fmt$(venueTier(v.tier+1).upgradeCost)})</button>` : '<span class="badge badge-ready">Max Tier</span>'}
+      </div>`;
+    } else {
+      html += `<div style="margin-top:8px;">
+        <button class="btn ${canOpen ? 'btn-gold' : ''}" onclick="openVenue('${dist.id}')" ${canOpen ? '' : 'disabled'}>
+          Open Venue${dist.fitout > 0 ? ` — Fitout ${fmt$(dist.fitout)}` : ' — Free!'}
+        </button>
+      </div>`;
+    }
+    html += '</div>';
+  }
+
+  // Global settings
+  html += `<div class="card">
+    <div class="card-title">Operations</div>
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:10px;">
+      <div style="flex:1;min-width:180px;">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">Weekly Marketing: <span class="gold">${fmt$(S.marketing)}</span></div>
+        <input type="range" min="0" max="5000" step="100" value="${S.marketing}" oninput="setMarketing(this.value)" style="width:100%;">
+        <div style="font-size:10px;color:var(--muted);">Awareness: ${S.awareness.toFixed(0)}</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <div>
+        <div style="font-size:11px;color:var(--muted)">Equipment (Tier ${S.equipment}/4)</div>
+        <div class="prog-bar" style="width:120px;"><div class="prog-fill" style="width:${(S.equipment/4)*100}%"></div></div>
+        <button class="btn btn-sm" style="margin-top:4px;" onclick="upgradeEquip()" ${S.equipment>=4||S.cash<[0,15000,45000,120000][S.equipment]?'disabled':''}>
+          Upgrade (${fmt$([0,15000,45000,120000][S.equipment]??0)})
+        </button>
+      </div>
+      <div>
+        <div style="font-size:11px;color:var(--muted)">Training (Tier ${S.training}/4)</div>
+        <div class="prog-bar" style="width:120px;"><div class="prog-fill" style="width:${(S.training/4)*100}%"></div></div>
+        <button class="btn btn-sm" style="margin-top:4px;" onclick="upgradeTraining()" ${S.training>=4||S.cash<[0,10000,30000,80000][S.training]?'disabled':''}>
+          Upgrade (${fmt$([0,10000,30000,80000][S.training]??0)})
+        </button>
+      </div>
+    </div>
+  </div>`;
+
+  document.getElementById('panel-city').innerHTML = html;
+}
+
+function openVenue(id) { if (engine.openVenue(id)) { updateHUD(); renderCity(); } else showToast('Cannot Open','Insufficient funds.'); }
+function upgradeVenue(id) { if (engine.upgradeVenue(id)) { updateHUD(); renderCity(); } else showToast('Cannot Upgrade','Insufficient funds.'); }
+function addStaff(id, delta) { engine.addStaff(id, delta); renderCity(); }
+function setMarketing(v) { engine.S.marketing = parseFloat(v); renderCity(); }
+function upgradeEquip() {
+  const costs = [0,15000,45000,120000];
+  const S = engine.S;
+  if (S.equipment >= 4) return;
+  const cost = costs[S.equipment];
+  if (S.cash < cost) { showToast('Insufficient Funds', `Need ${fmt$(cost)}`); return; }
+  S.cash -= cost; S.equipment++; updateHUD(); renderCity();
+}
+function upgradeTraining() {
+  const costs = [0,10000,30000,80000];
+  const S = engine.S;
+  if (S.training >= 4) return;
+  const cost = costs[S.training];
+  if (S.cash < cost) { showToast('Insufficient Funds', `Need ${fmt$(cost)}`); return; }
+  S.cash -= cost; S.training++; updateHUD(); renderCity();
+}
+
+// ============================================================
+// MENU TAB
+// ============================================================
+function renderMenu() {
+  const S = engine.S;
+  const sea = season(S.week);
+  const trendBoosts = trend(S.trendId)?.boosts ?? {};
+  let html = `<div class="card">
+    <div class="card-title">Drink Menu — ${Object.values(S.menu).filter(m=>m.on).length} items active</div>
+    <table>
+      <thead><tr><th>Drink</th><th>On</th><th>Price</th><th class="num">Fair</th><th class="num">Margin%</th><th>Trend</th></tr></thead>
+      <tbody>`;
+  for (const dr of Drinks) {
+    const mi = S.menu[dr.id];
+    const dq = clamp(0.45 * engine.categoryQuality(dr.primary) + (0.30*(TrainQ[S.training-1]-0.95)+0.28*(EquipQ[S.equipment-1]-0.95)+0.18), 0.2, 1.0);
+    const fairPrice = dr.fairBase * (0.62 + 0.85 * dq) * 1.0; // riverside base
+    const sup = supplyFor(dr.primary, S.sourcingTier[dr.primary]);
+    const matCost = (sup ? sup.baseCost * S.marketIndex[dr.primary] : 3.0) * dr.primaryUse + dr.laborCost;
+    const margin = mi.price > 0 ? ((mi.price - matCost) / mi.price * 100) : 0;
+    const trendM = trendBoosts[dr.id] ?? 1.0;
+    const seasonNote = dr.seasonAffinity === sea ? '🔥' : (dr.seasonAffinity && dr.seasonAffinity !== sea) ? '❄️' : '';
+    html += `<tr>
+      <td><div style="font-weight:600;">${dr.name}</div><div style="font-size:10px;color:var(--muted);">${dr.primary}${dr.secondary?'+'+dr.secondary:''}</div></td>
+      <td><label class="toggle"><input type="checkbox" ${mi.on?'checked':''} onchange="toggleDrink('${dr.id}',this.checked)"><span class="toggle-slider"></span></label></td>
+      <td style="min-width:100px;">
+        <div style="font-size:13px;font-weight:700;color:var(--gold)">${fmt$(mi.price)}</div>
+        <input type="range" min="${(dr.fairBase*0.5).toFixed(1)}" max="${(dr.fairBase*2).toFixed(1)}" step="0.5" value="${mi.price}" style="width:90px;" oninput="setDrinkPrice('${dr.id}',this.value)">
+      </td>
+      <td class="num" style="color:var(--muted);font-size:11px;">${fmt$(fairPrice)}</td>
+      <td class="num" style="${margin>30?'color:var(--pos)':margin<10?'color:var(--neg)':''};">${margin.toFixed(0)}%</td>
+      <td style="font-size:11px;">${trendM>1?`<span class="green">×${trendM.toFixed(1)}</span>`:'—'} ${seasonNote}</td>
+    </tr>`;
+  }
+  html += '</tbody></table></div>';
+  document.getElementById('panel-menu').innerHTML = html;
+}
+
+function toggleDrink(id, on) { engine.S.menu[id].on = on; renderMenu(); }
+function setDrinkPrice(id, val) { engine.S.menu[id].price = parseFloat(val); renderMenu(); }
+
+// ============================================================
+// SUPPLY TAB
+// ============================================================
+function renderSupply() {
+  const S = engine.S;
+  let html = `<div class="card"><div class="card-title">Open-Market Sourcing Policy</div>`;
+  for (const cat of Categories) {
+    const availTiers = SupplyDefs.filter(s => s.category === cat);
+    const current = supplyFor(cat, S.sourcingTier[cat]);
+    const ownLine = ProductionLines.find(l => l.category === cat && S.ownedLines.includes(l.id));
+    html += `<div style="margin-bottom:14px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+        <div style="font-weight:700;color:var(--gold2);min-width:70px;">${cat}</div>
+        <select onchange="setSourcing('${cat}',this.value)">
+          ${availTiers.map(s => `<option value="${s.tier}" ${s.tier===S.sourcingTier[cat]?'selected':''}>${s.tier} — ${fmt$(s.baseCost)}/unit, Q ${(s.quality*100).toFixed(0)}%</option>`).join('')}
+        </select>
+        ${ownLine ? `<span class="badge badge-ready">Own Line</span>` : ''}
+      </div>
+      <div class="stat-row">
+        <div class="stat-chip">Cost <span>${fmt$(current.baseCost * S.marketIndex[cat])}/unit</span></div>
+        <div class="stat-chip">Quality <span>${(current.quality*100).toFixed(0)}%</span></div>
+        <div class="stat-chip">Market idx <span>${S.marketIndex[cat].toFixed(2)}×</span></div>
+        ${S.ownInventory[cat] > 0 ? `<div class="stat-chip">Own Stock <span>${Math.round(S.ownInventory[cat]).toLocaleString()} units</span></div>` : ''}
+        ${S.ownInvQuality[cat] > 0 ? `<div class="stat-chip">Own Q <span>${(S.ownInvQuality[cat]*100).toFixed(0)}%</span></div>` : ''}
+      </div>
+    </div>`;
+  }
+  html += '</div>';
+  document.getElementById('panel-supply').innerHTML = html;
+}
+
+function setSourcing(cat, tier) { engine.S.sourcingTier[cat] = tier; renderSupply(); }
+
+// ============================================================
+// PRODUCTION TAB
+// ============================================================
+function renderProd() {
+  const S = engine.S;
+  let html = '';
+  for (const l of ProductionLines) {
+    const owned = S.ownedLines.includes(l.id);
+    const canBuild = !owned && S.cash >= l.capex;
+    const maturing = S.maturing.filter(b => b.category === l.category);
+    const totalMat = maturing.reduce((s, b) => s + b.units, 0);
+    const nextReady = maturing.length ? Math.min(...maturing.map(b => b.readyWeek)) : null;
+
+    html += `<div class="card">
+      <div class="card-head">
+        <div class="card-name">${l.name}</div>
+        ${owned ? '<span class="badge badge-ready">OWNED</span>' : '<span class="badge badge-maturing">NOT BUILT</span>'}
+      </div>
+      <div class="stat-row">
+        <div class="stat-chip">Capex <span>${fmt$(l.capex)}</span></div>
+        <div class="stat-chip">Output <span>${l.weeklyOutput}/wk</span></div>
+        <div class="stat-chip">Matures <span>${l.maturationWeeks}wk</span></div>
+        <div class="stat-chip">Prod Cost <span>${fmt$(l.prodCostPerUnit)}/unit</span></div>
+        <div class="stat-chip">Quality <span>${(l.quality*100).toFixed(0)}%</span></div>
+      </div>`;
+    if (!owned) {
+      html += `<button class="btn ${canBuild?'btn-gold':''}" onclick="buildLine('${l.id}')" ${canBuild?'':'disabled'}>
+        Build (${fmt$(l.capex)})${!canBuild && S.cash < l.capex ? ' — Need '+fmt$(l.capex - S.cash)+' more' : ''}
+      </button>`;
+    } else {
+      html += `<div style="font-size:11px;color:var(--muted);margin-bottom:6px;">Producing ${l.weeklyOutput} units/wk → ready in ${l.maturationWeeks} weeks</div>`;
+      if (S.ownInventory[l.category] > 0) {
+        html += `<div style="margin-bottom:8px;padding:6px 10px;background:var(--card2);border-radius:6px;">
+          <span class="green bold">${Math.round(S.ownInventory[l.category]).toLocaleString()} units ready</span>
+          <span class="muted" style="font-size:11px;margin-left:6px;">Avg quality ${(S.ownInvQuality[l.category]*100).toFixed(0)}%</span>
+        </div>`;
+      }
+      if (maturing.length) {
+        html += `<div style="font-size:11px;color:var(--muted);margin-bottom:4px;">Maturing batches (${maturing.length}, ~${Math.round(totalMat).toLocaleString()} units):</div>`;
+        // Show first few batches
+        const shown = maturing.slice(0, 5);
+        for (const b of shown) {
+          const weeksLeft = b.readyWeek - S.week;
+          const pct = Math.max(0, 100 - weeksLeft / l.maturationWeeks * 100);
+          html += `<div style="margin-bottom:4px;">
+            <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:2px;">
+              <span>${Math.round(b.units).toLocaleString()} units</span>
+              <span class="muted">${weeksLeft}wk left</span>
+            </div>
+            <div class="prog-bar"><div class="prog-fill" style="width:${pct.toFixed(0)}%;background:${pct>80?'var(--pos)':'var(--gold)'}"></div></div>
+          </div>`;
+        }
+        if (maturing.length > 5) html += `<div class="muted" style="font-size:10px;">+${maturing.length-5} more batches…</div>`;
+      }
+    }
+    html += '</div>';
+  }
+  document.getElementById('panel-prod').innerHTML = html;
+}
+
+function buildLine(id) {
+  if (engine.buildLine(id)) { updateHUD(); renderProd(); showToast('Construction Started', `${line(id).name} is being built! Batches will start maturing.`); }
+  else showToast('Cannot Build', 'Insufficient funds.');
+}
+
+// ============================================================
+// FINANCE TAB
+// ============================================================
+function renderFinance() {
+  const S = engine.S;
+  const hist = S.history.slice(-10).reverse();
+  const maxRev = Math.max(...S.history.slice(-10).map(r => r.revenue), 1);
+  const maxNet = Math.max(...S.history.slice(-10).map(r => Math.abs(r.net)), 1);
+
+  // Totals
+  const totalRev = S.history.reduce((s,r) => s+r.revenue, 0);
+  const totalNet = S.history.reduce((s,r) => s+r.net, 0);
+  const totalUnits = S.history.reduce((s,r) => s+r.units, 0);
+
+  let html = `<div class="card">
+    <div class="card-title">Running Totals (${S.history.length} weeks)</div>
+    <div class="stat-row">
+      <div class="stat-chip">Revenue <span>${fmt$(totalRev)}</span></div>
+      <div class="stat-chip">Net <span style="color:${totalNet>=0?'var(--pos)':'var(--neg)'}">${fmt$(totalNet)}</span></div>
+      <div class="stat-chip">Units Sold <span>${totalUnits.toLocaleString()}</span></div>
+      <div class="stat-chip">Debt <span style="color:${S.debt>0?'var(--neg)':'var(--pos)'}">${fmt$(S.debt)}</span></div>
+    </div>
+  </div>`;
+
+  if (S.history.length > 1) {
+    // Revenue bar chart
+    const chartData = S.history.slice(-10);
+    html += `<div class="card">
+      <div class="card-title">Revenue vs Net (last 10 weeks)</div>
+      <div class="bar-chart">`;
+    for (const r of chartData) {
+      const revH = Math.max(2, (r.revenue / maxRev) * 70);
+      const netH = Math.max(2, (Math.abs(r.net) / maxNet) * 70);
+      const netColor = r.net >= 0 ? 'var(--pos)' : 'var(--neg)';
+      html += `<div class="bar-col">
+        <div style="display:flex;gap:1px;align-items:flex-end;height:72px;">
+          <div class="bar-seg" style="height:${revH}px;background:var(--gold);width:45%;opacity:0.7;"></div>
+          <div class="bar-seg" style="height:${netH}px;background:${netColor};width:45%;"></div>
+        </div>
+        <div class="bar-lbl">${r.week}</div>
+      </div>`;
+    }
+    html += `</div>
+      <div style="font-size:10px;color:var(--muted);margin-top:4px;">
+        <span style="color:var(--gold)">■</span> Revenue &nbsp;&nbsp;
+        <span style="color:var(--pos)">■</span> Net profit &nbsp;&nbsp;
+        <span style="color:var(--neg)">■</span> Net loss
+      </div>
+    </div>`;
+  }
+
+  html += `<div class="card">
+    <div class="card-title">Weekly P&L (last 10 weeks)</div>
+    <div style="overflow-x:auto;">
+    <table>
+      <thead><tr><th>Wk</th><th class="num">Revenue</th><th class="num">COGS</th><th class="num">Gross</th><th class="num">OpEx</th><th class="num">Net</th></tr></thead>
+      <tbody>`;
+  for (const r of hist) {
+    const nc = r.net >= 0 ? 'green' : 'red';
+    html += `<tr>
+      <td>${r.week}</td>
+      <td class="num">${fmt$(r.revenue)}</td>
+      <td class="num red">${fmt$(r.cogs)}</td>
+      <td class="num ${r.gross>=0?'green':'red'}">${fmt$(r.gross)}</td>
+      <td class="num red">${fmt$(r.opex)}</td>
+      <td class="num ${nc} bold">${fmt$(r.net)}</td>
+    </tr>`;
+  }
+  if (hist.length === 0) html += '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:16px;">No history yet — advance time to see results.</td></tr>';
+  html += `</tbody></table></div>`;
+
+  // Opex breakdown for last week
+  if (hist.length > 0) {
+    const last = hist[0];
+    html += `<hr class="divider"><div style="font-size:11px;color:var(--muted);">Last week opex breakdown:</div>
+      <div class="stat-row" style="margin-top:6px;">
+        <div class="stat-chip">Rent <span class="red">${fmt$(last.rent)}</span></div>
+        <div class="stat-chip">Wages <span class="red">${fmt$(last.wages)}</span></div>
+        <div class="stat-chip">Marketing <span class="red">${fmt$(last.marketing)}</span></div>
+        ${last.interest>0?`<div class="stat-chip">Interest <span class="red">${fmt$(last.interest)}</span></div>`:''}
+      </div>`;
+  }
+  html += '</div>';
+
+  document.getElementById('panel-finance').innerHTML = html;
+}
+
+// ============================================================
+// TOAST
+// ============================================================
+let toastTimer;
+function showToast(title, body) {
+  const el = document.getElementById('toast');
+  document.getElementById('toast-title').textContent = title;
+  document.getElementById('toast-body').innerHTML = body;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 3500);
+}
+
+// ============================================================
+// INIT
+// ============================================================
+const saved = loadGame();
+if (saved) {
+  initGame(saved);
+  showToast('Game Loaded', 'Welcome back, Empire builder!');
+} else {
+  initGame(newGameState());
+  showToast('Welcome to Bar Empire!', 'Your Riverside Pop-up Bar is open. Advance time to start earning!');
+}
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>
