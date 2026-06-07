@@ -152,8 +152,8 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 8px 0; }
 
 <!-- Speed bar -->
 <div id="speed-bar">
-  <button class="spd-btn active" id="spd-0" onclick="setSpeed(0)">⏸ Pause</button>
-  <button class="spd-btn" id="spd-1" onclick="setSpeed(1)">1×</button>
+  <button class="spd-btn" id="spd-0" onclick="setSpeed(0)">⏸ Pause</button>
+  <button class="spd-btn active" id="spd-1" onclick="setSpeed(1)">1×</button>
   <button class="spd-btn" id="spd-2" onclick="setSpeed(2)">2×</button>
   <button class="spd-btn" id="spd-3" onclick="setSpeed(3)">3×</button>
   <span id="week-display" class="muted">Week 1 — Spring</span>
@@ -526,7 +526,7 @@ class SimulationEngine {
 // ============================================================
 // GAME LOOP
 // ============================================================
-let engine, lastTick, speed = 0;
+let engine, lastTick, speed = 1;
 const SPEEDS = [null, 3000, 1500, 500]; // ms per week
 
 function initGame(state) {
@@ -979,7 +979,7 @@ if (saved) {
   showToast('Game Loaded', 'Welcome back, Empire builder!');
 } else {
   initGame(newGameState());
-  showToast('Welcome to Bar Empire!', 'Your Riverside Pop-up Bar is open. Advance time to start earning!');
+  showToast('Welcome to Bar Empire!', 'Your Riverside Pop-up Bar is open and trading — time is flowing. Pause anytime to make changes.');
 }
 requestAnimationFrame(loop);
 </script>
