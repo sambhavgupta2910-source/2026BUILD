@@ -1,0 +1,20 @@
+{
+  "name": "sambhav-content-engine",
+  "version": "2.0.0",
+  "description": "LinkedIn content automation — topic to live post in 3-5 min",
+  "main": "sambhav-content-engine-v2.js",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "start": "node sambhav-content-engine-v2.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "@notionhq/client": "^2.2.15",
+    "dotenv": "^16.4.5",
+    "openai": "^4.77.0",
+    "form-data": "^4.0.0",
+    "node-fetch": "^3.3.2"
+  }
+}

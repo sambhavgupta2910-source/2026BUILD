@@ -1,116 +1,70 @@
-# LinkedIn Content Writing Skill
+# LinkedIn Content Writing Skill (Sambhav Content Engine v2)
 
-Write high-performing LinkedIn content for the user based on their topic, goal, and audience.
+Write and publish LinkedIn content using the Sambhav Content Engine v2 — topic to live post in 3-5 minutes.
 
-## How to use
+## Quick commands
 
-When the user invokes `/linkedin-content`, ask them for:
-1. **Topic** — what they want to post about (e.g., a project milestone, an insight, a lesson learned, a product launch)
-2. **Goal** — what they want readers to do or feel (e.g., start a conversation, drive profile visits, showcase expertise, attract talent)
-3. **Tone** — how they want to come across (e.g., professional, conversational, bold, vulnerable, data-driven)
-4. **Format** — post type (short hook post, long-form story, listicle, carousel script, article intro)
-5. **Audience** — who they're speaking to (e.g., founders, PMs, engineers, investors, recruiters)
-
-If the user has already provided any of these in their message, skip asking for them.
-
-## Writing principles
-
-Apply these principles to every piece of content:
-
-### Hook first
-- The first 1–2 lines must stop the scroll. Use curiosity, a bold claim, a surprising stat, a contrarian take, or a relatable pain point.
-- Avoid starting with "I" — it performs worse.
-- No "excited to announce" or "thrilled to share" openers.
-
-### Structure for skimmability
-- Use short paragraphs (1–3 lines max).
-- Use line breaks liberally — dense walls of text kill engagement.
-- For lists, lead each item with a strong word.
-- End sections with a bridge line that pulls the reader forward.
-
-### Voice and authenticity
-- Write in first person. Specific > generic.
-- Real details (numbers, names, dates, places) beat vague claims.
-- Show the behind-the-scenes: the problem, the decision, the outcome.
-- Avoid corporate jargon: "synergies", "leverage", "at the end of the day", "game-changer".
-
-### Call to action
-- End with a single, clear CTA. Examples:
-  - "What's your take? Drop it below."
-  - "Tag someone building in this space."
-  - "Save this if it's useful — I'll post more like it."
-  - "Follow for weekly breakdowns on [topic]."
-- Never ask two questions at once.
-
-### Hashtags
-- Add 3–5 relevant hashtags at the end, not inline.
-- Choose hashtags with active communities (e.g., #startups, #productmanagement, #venturecapital, #buildinpublic).
-
-## Format templates
-
-### Short hook post (best for engagement)
-```
-[Hook line — 1 sentence, bold/surprising/relatable]
-
-[Context — 2–3 sentences expanding on the hook]
-
-[Key insight or lesson — 2–4 short lines or a micro-list]
-
-[CTA — 1 sentence]
-
-#hashtag1 #hashtag2 #hashtag3
+### Write + publish (full pipeline)
+```bash
+node sambhav-content-engine/sambhav-content-engine-v2.js "Your topic here"
 ```
 
-### Story post (best for reach)
-```
-[Hook — set up the tension or contrast]
-
-Here's what happened:
-
-[The situation — brief]
-[The challenge — specific]
-[What you tried]
-[What worked (or failed)]
-[The outcome — with a real number or result if possible]
-
-The lesson: [1 clear takeaway]
-
-[CTA]
-
-#hashtag1 #hashtag2 #hashtag3
+### Write + preview only (no publish)
+```bash
+node sambhav-content-engine/sambhav-content-engine-v2.js "Your topic here" --dry-run
 ```
 
-### Listicle post (best for saves and shares)
-```
-[Hook — e.g., "X things I wish I knew before doing Y:"]
-
-1. [Item] — [1-sentence explanation]
-2. [Item] — [1-sentence explanation]
-3. [Item] — [1-sentence explanation]
-...
-
-[Closing line that reframes or elevates the list]
-
-[CTA]
-
-#hashtag1 #hashtag2 #hashtag3
+### Post without image (faster, no DALL-E cost)
+```bash
+node sambhav-content-engine/sambhav-content-engine-v2.js "Your topic here" --no-image
 ```
 
-### Carousel script (best for impressions)
-Provide a slide-by-slide script:
-- **Slide 1:** Cover / hook (6 words max headline)
-- **Slides 2–8:** One insight per slide, headline + 1–2 supporting lines
-- **Last slide:** CTA + follow prompt
+## What the engine does automatically
 
-## Output format
+1. **Detects pillar** — real estate, trading, founder, aviation, or AI
+2. **Generates 20 hashtags** — 10 pillar-specific + 10 universal
+3. **Creates DALL-E image** — branded per pillar
+4. **Writes post in your voice** — founder-tone, data-backed, no AI language
+5. **Runs voice check** — flags and auto-rewrites banned words
+6. **Shows preview** — you approve before anything goes live
+7. **Posts to LinkedIn via Publora** — image + caption + hashtags atomically
+8. **Logs to Notion AI Brain** — full audit trail
 
-Always deliver:
-1. **The post** — ready to copy-paste, with line breaks formatted for LinkedIn
-2. **Variants** (if time allows) — offer a shorter and longer version, or A/B hook options
-3. **Posting tip** — one tactical note (best time to post, whether to tag anyone, whether to post natively vs. share a link)
+## First-time setup (15 min)
 
-## Example invocation
+```bash
+cd sambhav-content-engine
+cp .env.template .env
+# Fill in your 4 keys in .env (Anthropic, OpenAI, Publora, Notion)
+npm install
+node sambhav-content-engine-v2.js "test" --dry-run
+```
 
-User: `/linkedin-content I want to post about our PRISM valuation tool launch, targeting real estate fund managers, professional tone, short post`
+## Pillar keyword triggers
 
-Claude should produce a scroll-stopping hook post ready to publish, optimized for the real estate / proptech LinkedIn audience.
+| Pillar | Keywords |
+|--------|----------|
+| real-estate | property, dubai, cap rate, developer, HNWI, yield, DLD, RERA |
+| trading | gold, oil, Fed, macro, inflation, equities, commodity |
+| founder | founder, lesson, team, sales, negotiation, build, startup |
+| aviation | aircraft, MRO, spare parts, engine, propeller, hangar |
+| ai | AI, Claude, automation, workflow, Notion, content engine |
+
+## Voice profile summary
+
+Write like a serious investor-founder: Naval Ravikant's leverage thinking + Benjamin Graham's market discipline + Ryan Serhant's sales clarity + Dubai market expertise.
+
+**Banned:** leverage, synergy, paradigm, delve, game-changer, disruptive, transformative, holistic, seamlessly, excited to share, humbled, let that sink in.
+
+**Required:** Specific data. Short paragraphs. Strong hook (no "I" opener). Clean close.
+
+## When the user gives you a topic
+
+Run the engine directly:
+
+```bash
+node sambhav-content-engine/sambhav-content-engine-v2.js "[topic they gave you]"
+```
+
+If they want to review before publishing, add `--dry-run`.
+If they say "post it" or "publish", run without flags and confirm with Y at the prompt.
