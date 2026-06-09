@@ -484,6 +484,219 @@ async function getAnalysis(dataset, area) {
 }
 
 // ---------------------------------------------------------------------------
+// Deal check — DLD comp scoring + AI analyst note + social post
+// ---------------------------------------------------------------------------
+
+async function getDealCheck(dataset, body) {
+  const listPrice = toNumber(body.price);
+  if (!Number.isFinite(listPrice) || listPrice <= 0) {
+    return { error: 'price must be a positive number' };
+  }
+
+  const val = valuation(dataset, {
+    area: body.area || '',
+    project: body.project || '',
+    size: body.size,
+    sizeUnit: body.sizeUnit || 'sqft',
+    rooms: body.rooms || '',
+    propertySubtype: body.propertySubtype || '',
+  });
+  if (val.error) return { error: val.error };
+
+  const fairValue = Math.round(val.baseValue);
+  const discountPct = ((listPrice - fairValue) / fairValue) * 100;
+  const verdict = discountPct <= -8 ? 'Strong Buy' : discountPct <= 5 ? 'Fair Value' : 'Overpriced';
+
+  const base = {
+    verdict,
+    discountPct: Math.round(discountPct * 10) / 10,
+    fairValue,
+    dldMedianPsf: Math.round(val.basePsf),
+    compCount: val.compCount,
+    confidence: val.confidence,
+    fallback: val.fallback,
+  };
+
+  if (!XAI_API_KEY) return { ...base, analystNote: null, socialPost: null };
+
+  const projectLabel = (val.resolvedProject || body.project || val.resolvedArea || body.area || '').trim();
+  const userContent =
+    `Property: ${projectLabel}, ${val.resolvedArea || body.area}\n` +
+    `Rooms: ${body.rooms || 'not specified'}\n` +
+    `Size: ${Math.round(val.sizeSqft)} sqft\n` +
+    `List price: AED ${listPrice.toLocaleString()}\n` +
+    `DLD fair value: AED ${fairValue.toLocaleString()} (${Math.round(val.basePsf).toLocaleString()} AED/sqft median)\n` +
+    `Comparables: ${val.compCount} transactions (${val.confidence} confidence — ${val.fallback.label})\n` +
+    `Verdict: ${verdict} (${discountPct > 0 ? '+' : ''}${Math.round(discountPct * 10) / 10}% vs DLD median)`;
+
+  try {
+    const xaiRes = await fetch('https://api.x.ai/v1/chat/completions', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${XAI_API_KEY}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'grok-3-mini',
+        max_tokens: 450,
+        messages: [
+          {
+            role: 'system',
+            content:
+              'You are Sambhav Gupta, Senior Investment Analyst at Sobha Realty Dubai. ' +
+              'Return ONLY valid JSON with two keys: ' +
+              '"analystNote" (3-4 sentences, data-backed, cite AED figures and % gap, actionable investment framing, no disclaimers) and ' +
+              '"socialPost" (≤60 words, punchy hook + key stat + verdict + CTA, ready to paste on LinkedIn or Instagram).',
+          },
+          { role: 'user', content: userContent },
+        ],
+      }),
+    });
+
+    if (!xaiRes.ok) return { ...base, analystNote: null, socialPost: null };
+
+    const xaiData = await xaiRes.json();
+    const raw = (xaiData.choices?.[0]?.message?.content || '{}').trim();
+    const jsonStr = raw.replace(/^```json?\s*/i, '').replace(/\s*```$/i, '');
+    const parsed = JSON.parse(jsonStr);
+    console.log(`[deal-check] ${verdict} — ${projectLabel} (${Math.round(discountPct * 10) / 10}%)`);
+    return { ...base, analystNote: parsed.analystNote || null, socialPost: parsed.socialPost || null };
+  } catch (err) {
+    console.error('[deal-check]', err.message);
+    return { ...base, analystNote: null, socialPost: null };
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Higgsfield video — submit job, poll via /api/video-status
+// ---------------------------------------------------------------------------
+
+async function startHiggsfieldVideo(videoPrompt) {
+  const apiKey = process.env.HIGGSFIELD_API_KEY;
+  if (!apiKey) return null;
+  try {
+    const res = await fetch('https://platform.higgsfield.ai/v1/generate', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt: videoPrompt, aspect_ratio: '9:16', resolution: '720p', duration: 5 }),
+    });
+    if (!res.ok) {
+      const err = await res.text().catch(() => '');
+      console.error('[higgsfield] submit error:', err.slice(0, 200));
+      return null;
+    }
+    const data = await res.json();
+    const requestId = data.request_id || data.id;
+    if (requestId) console.log(`[higgsfield] video job submitted: ${requestId}`);
+    return requestId || null;
+  } catch (err) {
+    console.error('[higgsfield] submit failed:', err.message);
+    return null;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Content draft — multi-platform social content from DLD insight + Higgsfield
+// ---------------------------------------------------------------------------
+
+async function getContentDraft(dataset, topic) {
+  if (!XAI_API_KEY) return { error: 'XAI_API_KEY not configured' };
+
+  // Find matching area data for richer context
+  const topicNorm = norm(topic);
+  let areaStats = null;
+  for (const [area, rows] of dataset.byArea.entries()) {
+    if (norm(area).includes(topicNorm.split(' ')[0]) || topicNorm.includes(norm(area))) {
+      const offplanCount = rows.filter((r) => (r.offplan || '').toLowerCase().includes('off')).length;
+      const sorted = [...rows].sort((a, b) => (a.date < b.date ? -1 : 1));
+      const half = Math.floor(sorted.length / 2);
+      const firstMed = median(sorted.slice(0, half).map((r) => r.aedPerSqft));
+      const lastMed = median(sorted.slice(half).map((r) => r.aedPerSqft));
+      const trend = firstMed > 0 ? ((lastMed - firstMed) / firstMed) * 100 : 0;
+      areaStats = {
+        area,
+        transactions: rows.length,
+        medianPsf: Math.round(median(rows.map((r) => r.aedPerSqft))),
+        offplanPct: Math.round((offplanCount / rows.length) * 100),
+        trend: Math.round(trend * 10) / 10,
+        dateRange: `${(dataset.dateMin || '').slice(0, 10)} to ${(dataset.dateMax || '').slice(0, 10)}`,
+      };
+      break;
+    }
+  }
+
+  const dataContext = areaStats
+    ? `DLD data: ${areaStats.area} — ${areaStats.transactions.toLocaleString()} residential sales, ` +
+      `median ${areaStats.medianPsf.toLocaleString()} AED/sqft, ${areaStats.offplanPct}% off-plan, ` +
+      `trend ${areaStats.trend > 0 ? '+' : ''}${areaStats.trend}%, range ${areaStats.dateRange}`
+    : `Topic: ${topic} (no DLD area data matched — use general Dubai real estate market knowledge)`;
+
+  const prompt =
+    `Content topic: "${topic}"\n${dataContext}\n\n` +
+    `Return ONLY valid JSON with these exact keys:\n` +
+    `{\n` +
+    `  "linkedin": "200-word analyst post. First line is a strong data hook — not 'I am excited'. ` +
+    `2-3 real data insights. End with one sharp question to drive comments.",\n` +
+    `  "x_thread": ["Tweet 1: hook ≤280 chars", "Tweet 2: key data/insight ≤280 chars", "Tweet 3: takeaway + follow CTA ≤280 chars"],\n` +
+    `  "ig_caption": "Punchy caption ≤60 words with line breaks. End with 20 Dubai real estate hashtags.",\n` +
+    `  "yt_script": "60-second spoken script. Hook in first 3 seconds. Data point. Insight. CTA at end.",\n` +
+    `  "video_prompt": "Cinematic AI video prompt. Specific Dubai location, time of day, camera movement, mood. ≤25 words."\n` +
+    `}`;
+
+  try {
+    const grokRes = await fetch('https://api.x.ai/v1/chat/completions', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${XAI_API_KEY}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'grok-3-mini',
+        max_tokens: 1400,
+        messages: [
+          {
+            role: 'system',
+            content:
+              'You are Sambhav Gupta, Senior Investment Analyst at Sobha Realty Dubai with 4,119 LinkedIn followers. ' +
+              'Write in a confident, data-backed, founder-analyst voice. No buzzwords, no clichés. ' +
+              'Return ONLY valid JSON — no markdown fences, no commentary outside the JSON.',
+          },
+          { role: 'user', content: prompt },
+        ],
+      }),
+    });
+
+    if (!grokRes.ok) {
+      const err = await grokRes.text().catch(() => '');
+      console.error('[content-draft] Grok error:', err.slice(0, 200));
+      return { error: `Grok error ${grokRes.status}` };
+    }
+
+    const grokData = await grokRes.json();
+    const raw = (grokData.choices?.[0]?.message?.content || '{}').trim();
+    const jsonStr = raw.replace(/^```json?\s*/i, '').replace(/\s*```$/i, '');
+    const parsed = JSON.parse(jsonStr);
+
+    console.log(`[content-draft] generated for topic: ${topic}`);
+
+    const result = {
+      topic,
+      areaStats,
+      linkedin: parsed.linkedin || null,
+      x_thread: parsed.x_thread || null,
+      ig_caption: parsed.ig_caption || null,
+      yt_script: parsed.yt_script || null,
+      video_prompt: parsed.video_prompt || null,
+      video_job_id: null,
+    };
+
+    // Start Higgsfield video in background — client polls /api/video-status?id=...
+    if (parsed.video_prompt) {
+      result.video_job_id = await startHiggsfieldVideo(parsed.video_prompt);
+    }
+
+    return result;
+  } catch (err) {
+    console.error('[content-draft]', err.message);
+    return { error: err.message };
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Valuation engine — comparable-median with documented fallback widening
 // ---------------------------------------------------------------------------
 
@@ -1057,6 +1270,43 @@ async function start() {
         const header = !fs.existsSync(leadsPath) ? 'timestamp,listingId,name,whatsapp,unitType,budget,message\n' : '';
         fs.appendFileSync(leadsPath, header + row + '\n');
         return send(res, 200, { ok: true, message: 'Inquiry received. Our team will contact you on WhatsApp within 24 hours.' });
+      }
+
+      // Deal check — POST /api/deal-check
+      if (req.method === 'POST' && req.url === '/api/deal-check') {
+        const body = await readJson(req);
+        const result = await getDealCheck(dataset, body);
+        return send(res, result.error ? 400 : 200, result);
+      }
+
+      // Content draft — GET /api/content-draft?topic=Business+Bay+PSF
+      if (req.method === 'GET' && req.url.startsWith('/api/content-draft')) {
+        const topic = new URL(req.url, 'http://x').searchParams.get('topic') || '';
+        if (!topic) return send(res, 400, { error: 'topic parameter required' });
+        const result = await getContentDraft(dataset, topic);
+        return send(res, result.error ? 503 : 200, result);
+      }
+
+      // Higgsfield video status — GET /api/video-status?id=...
+      if (req.method === 'GET' && req.url.startsWith('/api/video-status')) {
+        const id = new URL(req.url, 'http://x').searchParams.get('id');
+        if (!id) return send(res, 400, { error: 'id parameter required' });
+        const apiKey = process.env.HIGGSFIELD_API_KEY;
+        if (!apiKey) return send(res, 503, { error: 'HIGGSFIELD_API_KEY not configured' });
+        try {
+          const statusRes = await fetch(`https://platform.higgsfield.ai/requests/${id}/status`, {
+            headers: { Authorization: `Bearer ${apiKey}` },
+          });
+          if (!statusRes.ok) return send(res, statusRes.status, { error: `Higgsfield error ${statusRes.status}` });
+          const data = await statusRes.json();
+          return send(res, 200, {
+            id,
+            status: data.status,
+            url: data.url || data.video_url || data.output_url || null,
+          });
+        } catch (err) {
+          return send(res, 500, { error: err.message });
+        }
       }
 
       if (req.method === 'GET') return serveStatic(req, res);
