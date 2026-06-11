@@ -1,0 +1,30 @@
+name: Content Engine - Publish Approved
+
+on:
+  schedule:
+    # Daily at 06:00 UTC (10:00 Dubai time) - publishes anything you approved overnight
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+jobs:
+  publish-approved:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: sambhav-content-engine
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - run: npm install
+
+      - name: Publish approved drafts
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          PUBLORA_TOKEN: ${{ secrets.PUBLORA_TOKEN }}
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_CONTENT_CALENDAR_DB_ID: ${{ secrets.NOTION_CONTENT_CALENDAR_DB_ID }}
+        run: node sambhav-content-engine-v2.js publish-approved

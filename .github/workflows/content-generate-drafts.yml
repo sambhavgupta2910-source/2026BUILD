@@ -1,0 +1,34 @@
+name: Content Engine - Generate Drafts
+
+on:
+  schedule:
+    # Mon, Wed, Fri at 05:00 UTC (09:00 Dubai time)
+    - cron: '0 5 * * 1,3,5'
+  workflow_dispatch:
+    inputs:
+      count:
+        description: 'Number of draft ideas to generate'
+        required: false
+        default: '3'
+
+jobs:
+  generate-drafts:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: sambhav-content-engine
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - run: npm install
+
+      - name: Generate drafts for review
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_CONTENT_CALENDAR_DB_ID: ${{ secrets.NOTION_CONTENT_CALENDAR_DB_ID }}
+        run: node sambhav-content-engine-v2.js generate "${{ github.event.inputs.count || '3' }}"
