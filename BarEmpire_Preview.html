@@ -1031,7 +1031,7 @@ function drawVenue(c,lot,v,nf,now,stats,S){
     drawPin(c,ctr.x+24,box.At.y+8,'#e05252','!',now);
   }
   // scaffolding pin while an upgrade is under construction
-  const proj=S&&S.projects.find(p=>p.type==='upgrade'&&p.districtId===lot.districtId);
+  const proj=S&&S.projects&&S.projects.find(p=>p.type==='upgrade'&&p.districtId===lot.districtId);
   if (proj) drawPin(c,ctr.x-24,box.At.y+8,'#f0c96e','🏗'+proj.weeksLeft,now);
   return {top:{x:box.At.x,y:box.At.y}};
 }
@@ -1045,7 +1045,7 @@ function drawEmptyLot(c,lot,d,nf,now,S){
   c.lineTo(Cc.x,Cc.y); c.lineTo(iso(lot.gx,lot.gy+(VENUE_FD[1]||1)).x,iso(lot.gx,lot.gy+(VENUE_FD[1]||1)).y); c.closePath(); c.stroke();
   c.setLineDash([]);
   const ctr=iso(lot.gx+1,lot.gy+0.5);
-  const proj=S&&S.projects.find(p=>p.type==='venue'&&p.districtId===lot.districtId);
+  const proj=S&&S.projects&&S.projects.find(p=>p.type==='venue'&&p.districtId===lot.districtId);
   if (proj) drawPin(c,ctr.x,ctr.y-40,'#f0c96e','🏗'+proj.weeksLeft,now);
   else drawPin(c,ctr.x,ctr.y-40,'#c9a84c','+',now);
 }
@@ -1060,7 +1060,7 @@ function drawPad(c,padId,pad,built,nf,now,S){
     const A=iso(pad.gx,pad.gy),B=iso(pad.gx+pad.fw,pad.gy),Cc=iso(pad.gx+pad.fw,pad.gy+pad.fd),D=iso(pad.gx,pad.gy+pad.fd);
     c.beginPath(); c.moveTo(A.x,A.y); c.lineTo(B.x,B.y); c.lineTo(Cc.x,Cc.y); c.lineTo(D.x,D.y); c.closePath(); c.stroke();
     c.setLineDash([]);
-    const proj=S&&S.projects.find(p=>p.type==='line'&&p.lineId===padId);
+    const proj=S&&S.projects&&S.projects.find(p=>p.type==='line'&&p.lineId===padId);
     if (proj) drawPin(c,ctr.x,ctr.y-30,'#f0c96e','🏗'+proj.weeksLeft,now);
     else drawPin(c,ctr.x,ctr.y-30,'#7a5fc9',l.icon,now);
     return;
@@ -1882,12 +1882,25 @@ function uiNewGame(fromOver){
 function autosave(){
   try{ localStorage.setItem(SAVE_KEY,JSON.stringify({v:2,S:engine.S,ts:Date.now()})); }catch(e){}
 }
+// fill fields added after a save was written so old saves keep working
+function migrateSave(S){
+  if (!S.stocks) S.stocks={};
+  for (const st of DATA.stocks) if (!S.stocks[st.id]) S.stocks[st.id]={price:st.base,shares:0};
+  if (!S.properties) S.properties={};
+  for (const pr of DATA.properties) if (S.properties[pr.id]===undefined) S.properties[pr.id]=false;
+  if (!Array.isArray(S.projects)) S.projects=[];
+  if (!S.lineBonuses) S.lineBonuses={};
+  if (typeof S.wageBonus!=='number') S.wageBonus=0;
+  if (S.pendingEvent===undefined) S.pendingEvent=null;
+  if (typeof S.eventCooldown!=='number') S.eventCooldown=2;
+  return S;
+}
 function loadSave(){
   try{
     const raw=localStorage.getItem(SAVE_KEY);
     if (!raw) return null;
     const j=JSON.parse(raw);
-    if (j&&j.v===2&&j.S&&j.S.week) return j.S;
+    if (j&&j.v===2&&j.S&&j.S.week) return migrateSave(j.S);
   }catch(e){}
   return null;
 }
