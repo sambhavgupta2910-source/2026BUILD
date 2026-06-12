@@ -157,6 +157,7 @@ tr:last-child td{border-bottom:none}
   <button class="cmd" data-d="production" onclick="openDrawer('production')"><span class="ic">🏭</span>Produce</button>
   <button class="cmd" data-d="brand" onclick="openDrawer('brand')"><span class="ic">⭐</span>Brand</button>
   <button class="cmd" data-d="finance" onclick="openDrawer('finance')"><span class="ic">📈</span>Finance</button>
+  <button class="cmd" data-d="invest" onclick="openDrawer('invest')"><span class="ic">💹</span>Invest</button>
   <button class="cmd" data-d="goals" onclick="openDrawer('goals')"><span class="ic">🎯</span>Goals</button>
 </div>
 
@@ -273,6 +274,21 @@ const DATA = {
   equipCost: [0,25000,60000,140000],
   trainCost: [0,15000,40000,90000],
   premisesMult: 115, // buy premises at rent x this (removes rent for good)
+  stocks: [
+    {id:'PROOF', name:'Proof Holdings',   sector:'Hospitality', base:42,  vol:0.045},
+    {id:'GCSK',  name:'Golden Cask Group',sector:'Spirits',     base:88,  vol:0.035},
+    {id:'HRBL',  name:'Harbour Logistics',sector:'Shipping',    base:31,  vol:0.05},
+    {id:'CRST',  name:'Crestline Retail', sector:'Retail',      base:55,  vol:0.04},
+    {id:'BWTC',  name:'Bayside Water Co', sector:'Utilities',   base:19,  vol:0.02},
+  ],
+  properties: [
+    {id:'flat_riverside',  name:'Riverside Walk-up',     district:'riverside', price:45000,  rent:520},
+    {id:'house_riverside', name:'Riverside Townhouse',   district:'riverside', price:140000, rent:1600},
+    {id:'flat_market',     name:'Market Lane Apartments',district:'market',    price:95000,  rent:1150},
+    {id:'retail_market',   name:'Market Retail Unit',    district:'market',    price:180000, rent:2100},
+    {id:'office_harbor',   name:'Harbour Office Suite',  district:'harbor',    price:220000, rent:2600},
+    {id:'penthouse_harbor',name:'Harbour Penthouse',     district:'harbor',    price:480000, rent:5200},
+  ],
 };
 const EQUIP_Q  =[1.00,1.10,1.18,1.30], EQUIP_CAP=[1.00,1.18,1.45,1.70];
 const TRAIN_Q  =[1.00,1.12,1.22,1.34], TRAIN_CAP=[1.00,1.10,1.18,1.28];
@@ -320,6 +336,8 @@ function newGameState(seed){
   for (const c of CATS){ s.marketIndex[c]=1; s.ownInv[c]=0; s.ownInvQ[c]=0; }
   for (const d of DATA.drinks)
     s.menu[d.id] = {on:(d.id!=='raredram'&&d.id!=='reserve'), price:Math.round(d.fair*1.05*10)/10};
+  s.stocks={}; for (const st of DATA.stocks) s.stocks[st.id]={price:st.base, shares:0};
+  s.properties={}; for (const pr of DATA.properties) s.properties[pr.id]=false;
   return s;
 }
 
@@ -416,7 +434,8 @@ class SimEngine {
     const wages = S.venues.reduce((a,v)=>a+v.staff,0)*TRAIN_WAGE[S.training-1];
     const interest = S.debt*0.012;
     const opex = rent+wages+S.marketing+interest;
-    const gross=revenue-cogs, net=gross-opex;
+    const rentIncome = DATA.properties.filter(pr=>S.properties[pr.id]).reduce((a,pr)=>a+pr.rent,0);
+    const gross=revenue-cogs, net=gross-opex+rentIncome;
     S.cash+=net;
     if (S.cash<0){ S.debt+=-S.cash; S.cash=0; }
     if (S.debt>0 && S.cash>S.debt*2){
@@ -435,7 +454,7 @@ class SimEngine {
     S.awareness = clamp(S.awareness*0.90+Math.sqrt(S.marketing/200)*2.2,0,100);
 
     const r={week:S.week,revenue,cogs,gross,opex,net,rent,wages,marketing:S.marketing,
-             interest,units,reputation:S.reputation,shortfall};
+             interest,rentIncome,units,reputation:S.reputation,shortfall};
     S.history.push(r); if (S.history.length>64) S.history.shift();
     S.week++;
     this.venueStats=vstats; this.lastOrders=orders; this.lastEvents=ev;
@@ -493,6 +512,14 @@ class SimEngine {
     for (const c of CATS)
       S.marketIndex[c]=clamp(S.marketIndex[c]*(1+drift+(this.rng()-0.5)*0.05),0.55,2.4);
     S.competitorPressure=clamp(S.competitorPressure+(this.rng()-0.45)*0.04,0.7,1.8);
+
+    // stock market drift (PROOF tracks own net worth growth a little, others random-walk)
+    const stockDrift=S.economy==='Boom'?0.006:S.economy==='Downturn'?-0.006:0.0008;
+    for (const st of DATA.stocks){
+      const cur=S.stocks[st.id];
+      const bias = st.id==='PROOF' ? clamp((this.netWorth()/300000-1)*0.002,-0.01,0.01) : 0;
+      cur.price=clamp(cur.price*(1+stockDrift+bias+(this.rng()-0.5)*st.vol), st.base*0.2, st.base*6);
+    }
   }
 
   // -------------------------------------------------- player actions
@@ -542,7 +569,26 @@ class SimEngine {
     const inv=CATS.reduce((a,c)=>a+S.ownInv[c]*2,0);
     const prem=S.venues.reduce((a,v)=>a+(v.premisesValue||0),0);
     const lines=S.ownedLines.reduce((a,id)=>a+lineById(id).capex*0.5,0);
-    return S.cash-S.debt+inv+prem+lines;
+    const stocks=DATA.stocks.reduce((a,st)=>a+S.stocks[st.id].price*S.stocks[st.id].shares,0);
+    const props=DATA.properties.filter(pr=>S.properties[pr.id]).reduce((a,pr)=>a+pr.price,0);
+    return S.cash-S.debt+inv+prem+lines+stocks+props;
+  }
+  buyStock(id,qty){
+    const S=this.S, st=DATA.stocks.find(x=>x.id===id), cur=st&&S.stocks[id];
+    if (!st || qty<=0) return false;
+    const cost=cur.price*qty;
+    if (S.cash<cost) return false;
+    S.cash-=cost; cur.shares+=qty; return true;
+  }
+  sellStock(id,qty){
+    const S=this.S, cur=S.stocks[id];
+    if (!cur || qty<=0 || cur.shares<qty) return false;
+    S.cash+=cur.price*qty; cur.shares-=qty; return true;
+  }
+  buyProperty(id){
+    const S=this.S, pr=DATA.properties.find(x=>x.id===id);
+    if (!pr || S.properties[id] || S.cash<pr.price) return false;
+    S.cash-=pr.price; S.properties[id]=true; return true;
   }
   // est. unit cost of a drink for menu UI
   drinkCost(dr){
@@ -556,38 +602,44 @@ class SimEngine {
   }
 }
 // ============================================================================
-// CITY WORLD — geometry, procedural decor, canvas renderer
+// CITY WORLD — isometric grid, procedural decor, canvas renderer
 // ============================================================================
+const COLS=12, DROWS=6, NDIST=3, GROWS=NDIST*DROWS; // 12 x 18 grid
+const TILE_W=76, TILE_H=42, OX=684, OY=150;
+const DIST_IDS=['riverside','market','harbor'];
+function districtRow(d){ return {back0:d*DROWS+0, back1:d*DROWS+1, road:d*DROWS+2, front:d*DROWS+3, plaza:d*DROWS+4, road2:d*DROWS+5}; }
+function iso(gx,gy){ return {x:OX+(gx-gy)*(TILE_W/2), y:OY+(gx+gy)*(TILE_H/2)}; }
+
 const CITY = {
-  W:1500, H:2300,
-  bands: [
-    {id:'riverside', label:'RIVERSIDE STRIP',
-     main:{base:600, hMin:130,hMax:220, segs:[[40,600],[820,1460]]},
-     back:{base:380, hMin:70, hMax:130, segs:[[40,1460]]},
-     road:{y:622,h:68}, walkN:611, walkS:701, pal:0},
-    {id:'market', label:'MARKET LANE',
-     main:{base:1290, hMin:170,hMax:280, segs:[[40,600],[820,1110]]},
-     back:{base:1050, hMin:80, hMax:150, segs:[[40,1110]]},
-     road:{y:1312,h:68}, walkN:1301, walkS:1391, pal:1},
-    {id:'harbor', label:'HARBOUR FRONT',
-     main:{base:1980, hMin:210,hMax:340, segs:[[40,600],[820,1460]]},
-     back:{base:1700, hMin:60, hMax:120, segs:[[40,1460]]},
-     road:{y:2002,h:74}, walkN:1991, walkS:2098, pal:2},
-  ],
-  lots:{ riverside:{x:620,w:180,base:600,band:0},
-         market:   {x:620,w:180,base:1290,band:1},
-         harbor:   {x:620,w:180,base:1980,band:2} },
-  pads:{ brewery:{x:1150,y:880, w:310,h:120},
-         wineest:{x:1150,y:1020,w:310,h:120},
-         distill:{x:1150,y:1160,w:310,h:120} },
+  W: OX+(COLS+GROWS)*(TILE_W/2)+40,
+  H: OY+(COLS+GROWS)*(TILE_H/2)+160,
+  lots:{}, pads:{},
 };
-const VENUE_H=[0,86,150,240], VENUE_W=[0,110,170,185];
+DIST_IDS.forEach((id,d)=>{
+  const r=districtRow(d);
+  CITY.lots[id]={gx:4,gy:r.front,fw:2,fd:1};
+});
+['brewery','wineest','distill'].forEach((id,d)=>{
+  const r=districtRow(d);
+  CITY.pads[id]={gx:0,gy:r.front,fw:3,fd:1};
+});
+const VENUE_FW=[0,2,2,2], VENUE_FD=[0,1,1,1], VENUE_H=[0,46,80,124];
 const PALETTES=[
   {walls:['#e7c9a1','#d9b48b','#c9d4b8','#e3d3b5','#d4a98c','#e0c0a8'], win:'#7e93a8', winLit:'#ffd98a'},
   {walls:['#c98e6a','#b97e5e','#d9a878','#a98a74','#c4a284','#b58a6b'], win:'#6e8398', winLit:'#ffcf78'},
   {walls:['#9fb6c8','#8aa6bb','#b8c8d8','#7e98ad','#a8bcd0','#90a8be'], win:'#5e7b95', winLit:'#ffe3a0'},
 ];
 const MUTE=['#b8a98f','#a89a82','#9fa68e','#b0a18a'];
+
+// ----------------------------------------------------------- color helpers
+function shade(hex,f){ // f<1 darker, f>1 lighter
+  const n=parseInt(hex.slice(1),16);
+  let r=(n>>16)&255, g=(n>>8)&255, b=n&255;
+  r=Math.max(0,Math.min(255,Math.round(r*f)));
+  g=Math.max(0,Math.min(255,Math.round(g*f)));
+  b=Math.max(0,Math.min(255,Math.round(b*f)));
+  return 'rgb('+r+','+g+','+b+')';
+}
 
 // procedural decor buildings (deterministic visual seed)
 let DECOR=[];
@@ -597,27 +649,28 @@ function genCity(){
   const vrng=()=>{ vr=(vr+0x6D2B79F5)>>>0; let t=vr;
     t=Math.imul(t^(t>>>15),1|t); t^=t+Math.imul(t^(t>>>7),61|t);
     return ((t^(t>>>14))>>>0)/4294967296; };
-  CITY.bands.forEach((band,bi)=>{
-    // backdrop row (muted, behind)
-    for (const [x0,x1] of band.back.segs){
-      let x=x0;
-      while (x<x1-70){
-        const w=60+vrng()*70, h=band.back.hMin+vrng()*(band.back.hMax-band.back.hMin);
-        DECOR.push({x,w,base:band.back.base,h,c:MUTE[(vrng()*MUTE.length)|0],back:true,band:bi,seed:(x|0)});
-        x+=w+8+vrng()*14;
+  DIST_IDS.forEach((distId,d)=>{
+    const r=districtRow(d), pal=PALETTES[d];
+    // back skyline rows
+    for (const gy of [r.back0,r.back1]){
+      let gx=0;
+      while (gx<COLS){
+        const fw=(vrng()<0.55)?1:2, h=70+vrng()*100+(gy===r.back0?40:0);
+        if (gx+fw>COLS) break;
+        DECOR.push({gx,gy,fw,fd:1,h,
+          c:pal.walls[(vrng()*pal.walls.length)|0], win:pal.win, winLit:pal.winLit,
+          shop:vrng()<0.4, seed:(gx*7+gy*13)|0});
+        gx+=fw;
       }
     }
-    // main row facades
-    const pal=PALETTES[band.pal];
-    for (const [x0,x1] of band.main.segs){
-      let x=x0;
-      while (x<x1-80){
-        const w=85+vrng()*65, h=band.main.hMin+vrng()*(band.main.hMax-band.main.hMin);
-        DECOR.push({x,w,base:band.main.base,h,c:pal.walls[(vrng()*pal.walls.length)|0],
-          win:pal.win,winLit:pal.winLit,back:false,band:bi,seed:(x*7|0),
-          shop:vrng()<0.5,awning:vrng()<0.35,ac:vrng()<0.4});
-        x+=w+10+vrng()*16;
-      }
+    // front row shop cells (skip pad cols 0-2 and venue cols 4-5)
+    for (let gx=0;gx<COLS;gx++){
+      if (gx>=0&&gx<3) continue; // pad
+      if (gx>=4&&gx<6) continue; // venue
+      const h=40+vrng()*46;
+      DECOR.push({gx,gy:r.front,fw:1,fd:1,h,
+        c:pal.walls[(vrng()*pal.walls.length)|0], win:pal.win, winLit:pal.winLit,
+        shop:vrng()<0.6, seed:(gx*11+r.front*3)|0});
     }
   });
 }
@@ -642,249 +695,154 @@ function duskFactor(p){
   return Math.max(0, 0.14-Math.min(d1,d2)*1.6)/0.14;
 }
 
-// ----------------------------------------------------------- draw pieces
-function drawDecorB(c,b,nf){
-  const y=b.base-b.h;
-  if (b.back){
-    c.fillStyle=b.c; c.globalAlpha=0.8; c.fillRect(b.x,y,b.w,b.h); c.globalAlpha=1;
-    c.fillStyle='rgba(20,22,40,.18)'; c.fillRect(b.x,y,b.w,5);
-    return;
-  }
-  // shadow
-  c.fillStyle='rgba(20,20,35,.18)'; c.fillRect(b.x+4,b.base-3,b.w,6);
-  c.fillStyle=b.c; rr(c,b.x,y,b.w,b.h,3); c.fill();
-  // parapet
-  c.fillStyle='rgba(0,0,0,.16)'; c.fillRect(b.x,y,b.w,6);
-  // windows
-  const cols=Math.max(1,((b.w-22)/24)|0), rows=Math.max(1,((b.h-40)/30)|0);
-  const gx=(b.w-cols*15)/(cols+1), gy=(b.h-34-rows*18)/(rows+1);
-  for (let r2=0;r2<rows;r2++) for (let k=0;k<cols;k++){
-    const wx=b.x+gx+k*(15+gx), wy=y+8+gy+r2*(18+gy);
-    const lit=nf>0.45 && h2(b.seed+k,r2)<0.62;
-    c.fillStyle=lit?b.winLit:b.win;
-    c.globalAlpha=lit?0.95:0.85; c.fillRect(wx,wy,15,18); c.globalAlpha=1;
-  }
-  // ground floor: door + maybe shopfront
-  c.fillStyle='rgba(35,30,28,.85)';
-  c.fillRect(b.x+b.w*0.5-9,b.base-26,18,26);
-  if (b.shop){
-    c.fillStyle=nf>0.45?'rgba(255,214,140,.8)':'rgba(225,235,245,.7)';
-    c.fillRect(b.x+8,b.base-26,b.w*0.5-22,22);
-    c.fillStyle=['#b0563f','#3f7a68','#54618f','#8f5470'][b.seed%4];
-    c.fillRect(b.x+6,b.base-34,b.w*0.55,8);
-  }
-  if (b.awning){
-    c.fillStyle='#b0563f'; const aw=b.w*0.4;
-    c.fillRect(b.x+b.w-aw-8,b.base-32,aw,7);
-    c.fillStyle='rgba(255,255,255,.25)';
-    for (let i=0;i<4;i++) c.fillRect(b.x+b.w-aw-8+i*aw/4,b.base-32,aw/8,7);
-  }
-  if (b.ac){ c.fillStyle='#8b8b95'; c.fillRect(b.x+b.w-20,y+10,12,8); }
+// ----------------------------------------------------------- iso primitives
+// draw a flat ground diamond (tile)
+function drawIsoTile(c,gx,gy,fw,fd,color){
+  const A=iso(gx,gy), B=iso(gx+fw,gy), Cc=iso(gx+fw,gy+fd), D=iso(gx,gy+fd);
+  c.fillStyle=color;
+  c.beginPath(); c.moveTo(A.x,A.y); c.lineTo(B.x,B.y); c.lineTo(Cc.x,Cc.y); c.lineTo(D.x,D.y); c.closePath(); c.fill();
+}
+// draw an extruded iso box (ground footprint gx,gy,fw,fd; height h px)
+function drawIsoBox(c,gx,gy,fw,fd,h,topColor,rightColor,leftColor){
+  const A=iso(gx,gy), B=iso(gx+fw,gy), Cc=iso(gx+fw,gy+fd), D=iso(gx,gy+fd);
+  const At={x:A.x,y:A.y-h}, Bt={x:B.x,y:B.y-h}, Ct={x:Cc.x,y:Cc.y-h}, Dt={x:D.x,y:D.y-h};
+  // ground shadow
+  c.fillStyle='rgba(15,15,30,.16)';
+  c.beginPath(); c.moveTo(A.x,A.y); c.lineTo(B.x,B.y); c.lineTo(Cc.x,Cc.y); c.lineTo(D.x,D.y); c.closePath(); c.fill();
+  // right face (B-C edge)
+  c.fillStyle=rightColor;
+  c.beginPath(); c.moveTo(B.x,B.y); c.lineTo(Cc.x,Cc.y); c.lineTo(Ct.x,Ct.y); c.lineTo(Bt.x,Bt.y); c.closePath(); c.fill();
+  // left face (D-C edge)
+  c.fillStyle=leftColor;
+  c.beginPath(); c.moveTo(D.x,D.y); c.lineTo(Cc.x,Cc.y); c.lineTo(Ct.x,Ct.y); c.lineTo(Dt.x,Dt.y); c.closePath(); c.fill();
+  // top face
+  c.fillStyle=topColor;
+  c.beginPath(); c.moveTo(At.x,At.y); c.lineTo(Bt.x,Bt.y); c.lineTo(Ct.x,Ct.y); c.lineTo(Dt.x,Dt.y); c.closePath(); c.fill();
+  return {A,B,C:Cc,D,At,Bt,Ct,Dt};
+}
+// bounding box of a footprint+height (for hit testing / culling)
+function isoBounds(gx,gy,fw,fd,h){
+  const A=iso(gx,gy), B=iso(gx+fw,gy), Cc=iso(gx+fw,gy+fd), D=iso(gx,gy+fd);
+  return {minX:Math.min(A.x,B.x,Cc.x,D.x), maxX:Math.max(A.x,B.x,Cc.x,D.x),
+          minY:Math.min(A.y,B.y,Cc.y,D.y)-h, maxY:Math.max(A.y,B.y,Cc.y,D.y),
+          top:iso(gx+fw/2,gy+fd/2)};
 }
 
-function drawTree(c,x,y,s){
-  c.fillStyle='#6b4a32'; c.fillRect(x-2,y-s*0.5,4,s*0.5);
-  c.fillStyle='#5d8a4e'; c.beginPath(); c.arc(x,y-s*0.62,s*0.42,0,7); c.fill();
-  c.fillStyle='#6fa05c'; c.beginPath(); c.arc(x-s*0.2,y-s*0.5,s*0.3,0,7); c.fill();
-  c.beginPath(); c.arc(x+s*0.22,y-s*0.55,s*0.28,0,7); c.fill();
+// ----------------------------------------------------------- map pins (Coffee Inc 2 style)
+function drawPin(c,x,y,color,label,now){
+  const bob=Math.sin((now||0)/350+x*0.01)*2.5;
+  const py=y+bob;
+  c.fillStyle='rgba(15,15,30,.25)'; c.beginPath(); c.ellipse(x,y+4,7,2.5,0,0,7); c.fill();
+  c.save(); c.translate(x,py-14);
+  c.fillStyle=color;
+  c.beginPath(); c.arc(0,0,9,0,7); c.fill();
+  c.beginPath(); c.moveTo(-6,6); c.lineTo(0,16); c.lineTo(6,6); c.closePath(); c.fill();
+  c.fillStyle='#fff'; c.font='800 10px system-ui'; c.textAlign='center'; c.textBaseline='middle';
+  c.fillText(label,0,0.5);
+  c.restore();
+  c.textBaseline='alphabetic';
 }
-function drawLamp(c,x,y,nf){
+
+function drawTree(c,gx,gy,s){
+  const p=iso(gx,gy);
+  c.fillStyle='#6b4a32'; c.fillRect(p.x-2,p.y-s*0.5,4,s*0.5);
+  c.fillStyle='#5d8a4e'; c.beginPath(); c.arc(p.x,p.y-s*0.62,s*0.42,0,7); c.fill();
+  c.fillStyle='#6fa05c'; c.beginPath(); c.arc(p.x-s*0.2,p.y-s*0.5,s*0.3,0,7); c.fill();
+  c.beginPath(); c.arc(p.x+s*0.22,p.y-s*0.55,s*0.28,0,7); c.fill();
+}
+function drawLamp(c,gx,gy,nf){
+  const p=iso(gx,gy);
   c.strokeStyle='#3a3f4a'; c.lineWidth=2.5;
-  c.beginPath(); c.moveTo(x,y); c.lineTo(x,y-26); c.stroke();
+  c.beginPath(); c.moveTo(p.x,p.y); c.lineTo(p.x,p.y-26); c.stroke();
   c.fillStyle=nf>0.4?'#ffd98a':'#c8ccd4';
-  c.beginPath(); c.arc(x,y-28,3.4,0,7); c.fill();
+  c.beginPath(); c.arc(p.x,p.y-28,3.4,0,7); c.fill();
   if (nf>0.4){
     c.fillStyle='rgba(255,210,130,'+(0.16*nf)+')';
-    c.beginPath(); c.arc(x,y-28,16,0,7); c.fill();
-    c.fillStyle='rgba(255,210,130,'+(0.10*nf)+')';
-    c.beginPath(); c.ellipse(x,y-2,20,7,0,0,7); c.fill();
+    c.beginPath(); c.arc(p.x,p.y-28,16,0,7); c.fill();
+  }
+}
+
+// ----------------------------------------------------------- decor buildings
+function drawDecorB(c,b,nf){
+  const pal={win:b.win,winLit:b.winLit};
+  const box=drawIsoBox(c,b.gx,b.gy,b.fw,b.fd,b.h, b.c, shade(b.c,0.72), shade(b.c,0.5));
+  // windows on right face
+  const fcols=Math.max(1,Math.round(b.fw*2)), frows=Math.max(1,Math.round(b.h/26));
+  for (let r2=0;r2<frows;r2++) for (let k=0;k<fcols;k++){
+    const t1=(k+0.5)/fcols, t2=(r2+0.5)/frows;
+    const wx=box.Bt.x+(box.Ct.x-box.Bt.x)*t1;
+    const lit=nf>0.45 && h2(b.seed+k,r2)<0.6;
+    c.fillStyle=lit?b.winLit:b.win; c.globalAlpha=lit?0.9:0.7;
+    c.fillRect(wx-2.5,box.Bt.y+(box.B.y-box.Bt.y)*t2-3,5,6);
+    c.globalAlpha=1;
   }
 }
 
 // player venue facades --------------------------------------------------
 function drawVenue(c,lot,v,nf,now,stats){
-  const cx=lot.x+lot.w/2, base=lot.base, tier=v.tier;
-  const w=VENUE_W[tier], h=VENUE_H[tier], x=cx-w/2, y=base-h;
-  c.fillStyle='rgba(15,15,30,.25)'; c.fillRect(x+5,base-3,w,7); // shadow
-  if (tier===1){
-    // pop-up kiosk: cart + big umbrella + chalkboard
-    c.fillStyle='#5d4a38'; rr(c,x+10,base-52,w-20,52,5); c.fill();
-    c.fillStyle='#7a6248'; c.fillRect(x+10,base-52,w-20,10);
-    c.fillStyle=nf>0.4?'#ffd98a':'#efe6d2'; c.fillRect(x+22,base-40,w-44,16); // counter glow
-    c.strokeStyle='#8a7458'; c.lineWidth=3;
-    c.beginPath(); c.moveTo(cx,base-50); c.lineTo(cx,base-86); c.stroke();
-    c.fillStyle='#c9a84c';
-    c.beginPath(); c.moveTo(cx-44,base-72); c.quadraticCurveTo(cx,base-104,cx+44,base-72);
-    c.lineTo(cx+34,base-68); c.quadraticCurveTo(cx,base-94,cx-34,base-68); c.closePath(); c.fill();
-    c.fillStyle='#a8893d';
-    c.beginPath(); c.moveTo(cx-44,base-72); c.quadraticCurveTo(cx,base-104,cx+44,base-72);
-    c.quadraticCurveTo(cx,base-88,cx-44,base-72); c.fill();
-    c.fillStyle='#2e2a26'; c.fillRect(x-2,base-30,16,30);
-    c.fillStyle='#f0e8d8'; c.font='700 7px system-ui'; c.textAlign='center';
-    c.fillText('BAR',x+6,base-16);
-  } else if (tier===2){
-    c.fillStyle='#4a3a52'; rr(c,x,y,w,h,4); c.fill();
-    c.fillStyle='rgba(0,0,0,.2)'; c.fillRect(x,y,w,7);
-    c.fillStyle='#c9a84c'; c.fillRect(x,y+7,w,3);
-    // big warm window + door
-    c.fillStyle=nf>0.3?'rgba(255,205,120,.92)':'rgba(240,228,200,.85)';
-    rr(c,x+12,base-64,w*0.52,52,4); c.fill();
-    c.strokeStyle='rgba(60,45,60,.5)'; c.lineWidth=2;
-    c.strokeRect(x+12,base-64,w*0.52,52);
-    c.beginPath(); c.moveTo(x+12+w*0.26,base-64); c.lineTo(x+12+w*0.26,base-12); c.stroke();
-    c.fillStyle='#2e2433'; rr(c,x+w-44,base-58,30,58,3); c.fill();
-    c.fillStyle='#c9a84c'; c.beginPath(); c.arc(x+w-22,base-30,2.4,0,7); c.fill();
-    // awning
-    c.fillStyle='#7a2e3a'; c.fillRect(x+8,base-74,w*0.58,9);
-    c.fillStyle='rgba(255,255,255,.22)';
-    for (let i=0;i<5;i++) c.fillRect(x+8+i*w*0.58/5,base-74,w*0.058,9);
-    // upper windows
-    for (let i=0;i<3;i++){
-      const wx=x+14+i*((w-28)/3);
-      c.fillStyle=nf>0.45?'#ffd98a':'#8e9bb0';
-      c.fillRect(wx,y+18,(w-28)/3-8,24);
-    }
-    // hanging sign
-    c.strokeStyle='#8a7458'; c.lineWidth=2;
-    c.beginPath(); c.moveTo(x+w-6,base-86); c.lineTo(x+w+10,base-86); c.stroke();
-    if (nf>0.3){ c.shadowColor='#ffce6a'; c.shadowBlur=10; }
-    c.fillStyle='#c9a84c'; c.beginPath(); c.arc(x+w+10,base-78,9,0,7); c.fill();
-    c.shadowBlur=0;
-    c.fillStyle='#171221'; c.font='800 10px Georgia'; c.textAlign='center';
-    c.fillText('P',x+w+10,base-74.5);
-  } else {
-    // flagship: two floors + terrace + neon
-    c.fillStyle='#3c3146'; rr(c,x,y,w,h,5); c.fill();
-    c.fillStyle='#c9a84c'; c.fillRect(x,y,w,4);
-    c.fillStyle='rgba(201,168,76,.5)'; c.fillRect(x,y+h*0.42,w,3); // floor line
-    // ground glass front
-    c.fillStyle=nf>0.3?'rgba(255,205,120,.95)':'rgba(240,230,205,.9)';
-    rr(c,x+10,base-70,w-52,58,4); c.fill();
-    c.strokeStyle='rgba(50,40,58,.55)'; c.lineWidth=2;
-    for (let i=1;i<4;i++){ c.beginPath();
-      c.moveTo(x+10+i*(w-52)/4,base-70); c.lineTo(x+10+i*(w-52)/4,base-12); c.stroke(); }
-    c.fillStyle='#241c2e'; rr(c,x+w-36,base-62,26,62,3); c.fill();
-    c.fillStyle='#c9a84c'; c.beginPath(); c.arc(x+w-18,base-32,2.6,0,7); c.fill();
-    // terrace on floor line
-    c.fillStyle='#55465e'; c.fillRect(x-8,y+h*0.42-4,w+16,6);
-    for (const ux of [x+18,x+w/2,x+w-22]){
-      c.strokeStyle='#8a7458'; c.lineWidth=2;
-      c.beginPath(); c.moveTo(ux,y+h*0.42-4); c.lineTo(ux,y+h*0.42-22); c.stroke();
-      c.fillStyle='#b0563f';
-      c.beginPath(); c.moveTo(ux-13,y+h*0.42-18); c.quadraticCurveTo(ux,y+h*0.42-32,ux+13,y+h*0.42-18); c.closePath(); c.fill();
-    }
-    // upper windows
-    for (let i=0;i<4;i++){
-      const wx=x+14+i*((w-28)/4);
-      c.fillStyle=nf>0.45?'#ffd98a':'#93a0b5';
-      c.fillRect(wx,y+16,(w-28)/4-8,30);
-    }
-    // neon sign panel
-    if (nf>0.25){ c.shadowColor='#ffce6a'; c.shadowBlur=14; }
-    c.fillStyle='#171221'; rr(c,cx-44,y-20,88,24,5); c.fill();
-    c.shadowBlur=0;
-    c.strokeStyle='#c9a84c'; c.lineWidth=1.5; rr(c,cx-44,y-20,88,24,5); c.stroke();
-    c.fillStyle=nf>0.25?'#ffd98a':'#c9a84c';
-    c.font='italic 800 13px Georgia'; c.textAlign='center';
-    c.fillText('PROOF',cx,y-3);
-  }
-  // queue figures when under-staffed
+  const tier=v.tier, fw=VENUE_FW[tier], fd=VENUE_FD[tier], h=VENUE_H[tier];
+  const top= tier===1 ? '#7a6248' : tier===2 ? '#4a3a52' : '#3c3146';
+  const box=drawIsoBox(c,lot.gx,lot.gy,fw,fd,h, top, shade(top,0.78), shade(top,0.55));
+  const ctr=iso(lot.gx+fw/2,lot.gy+fd/2);
+  // glowing window on front-right face
+  c.fillStyle=nf>0.35?'rgba(255,205,120,.92)':'rgba(240,228,200,.85)';
+  c.fillRect((box.B.x+box.Bt.x)/2-10,(box.B.y+box.Bt.y)/2-6,20,12);
+  // roof sign
+  if (nf>0.25){ c.shadowColor='#ffce6a'; c.shadowBlur=12; }
+  c.fillStyle='#171221'; rr(c,box.At.x-32,box.At.y-22,64,18,5); c.fill();
+  c.shadowBlur=0;
+  c.strokeStyle='#c9a84c'; c.lineWidth=1.2; rr(c,box.At.x-32,box.At.y-22,64,18,5); c.stroke();
+  c.fillStyle=nf>0.25?'#ffd98a':'#c9a84c'; c.font='italic 800 11px Georgia'; c.textAlign='center';
+  c.fillText('PROOF '+'★'.repeat(tier),box.At.x,box.At.y-9);
+  // queue pin when under-staffed
   if (stats && stats.serviceLevel<0.94){
-    const q=Math.min(6,Math.round((1-stats.serviceLevel)*11));
-    for (let i=0;i<q;i++){
-      const qx=cx+w/2+12+i*11, qy=base-2;
-      c.fillStyle=['#c97f5f','#5f86c9','#7a5fc9','#5fc98e','#c9b25f','#c95f74'][i%6];
-      rr(c,qx-3,qy-12,6,10,2); c.fill();
-      c.fillStyle='#e8b88a'; c.beginPath(); c.arc(qx,qy-15,3,0,7); c.fill();
-    }
-    c.fillStyle='rgba(224,82,82,.92)'; c.font='700 9px system-ui'; c.textAlign='center';
-    c.fillText('QUEUE',cx+w/2+38,base-26);
+    drawPin(c,ctr.x+24,box.At.y+8,'#e05252','!',now);
   }
+  return {top:{x:box.At.x,y:box.At.y}};
 }
 
 function drawEmptyLot(c,lot,d,nf,now){
-  const x=lot.x,w=lot.w,base=lot.base;
-  c.fillStyle='#8f8a7c'; rr(c,x,base-110,w,110,4); c.fill();
+  drawIsoTile(c,lot.gx,lot.gy,VENUE_FW[1]||2,VENUE_FD[1]||1,'#8f8a7c');
+  const A=iso(lot.gx,lot.gy), Cc=iso(lot.gx+(VENUE_FW[1]||2),lot.gy+(VENUE_FD[1]||1));
   c.strokeStyle='rgba(201,168,76,'+(0.55+0.35*Math.sin(now/400))+')';
-  c.lineWidth=2.5; c.setLineDash([9,7]); rr(c,x+3,base-107,w-6,104,4); c.stroke(); c.setLineDash([]);
-  // sign board
-  const cx=x+w/2;
-  c.fillStyle='#6b5a40'; c.fillRect(cx-3,base-58,6,38);
-  c.fillStyle='#1d1a2a'; rr(c,cx-52,base-96,104,42,5); c.fill();
-  c.strokeStyle='#c9a84c'; c.lineWidth=1.5; rr(c,cx-52,base-96,104,42,5); c.stroke();
-  c.fillStyle='#f0c96e'; c.font='800 12px system-ui'; c.textAlign='center';
-  c.fillText('FOR LEASE',cx,base-79);
-  c.fillStyle='#cfc5ae'; c.font='600 10px system-ui';
-  c.fillText(d.fitout>0?('fit-out '+fmt$(d.fitout)):'ready now',cx,base-64);
+  c.lineWidth=2; c.setLineDash([6,5]);
+  c.beginPath(); c.moveTo(A.x,A.y); c.lineTo(iso(lot.gx+(VENUE_FW[1]||2),lot.gy).x,iso(lot.gx+(VENUE_FW[1]||2),lot.gy).y);
+  c.lineTo(Cc.x,Cc.y); c.lineTo(iso(lot.gx,lot.gy+(VENUE_FD[1]||1)).x,iso(lot.gx,lot.gy+(VENUE_FD[1]||1)).y); c.closePath(); c.stroke();
+  c.setLineDash([]);
+  const ctr=iso(lot.gx+1,lot.gy+0.5);
+  drawPin(c,ctr.x,ctr.y-40,'#c9a84c','+',now);
 }
 
 // production pads --------------------------------------------------------
 function drawPad(c,padId,pad,built,nf,now,S){
-  const {x,y,w,h}=pad;
-  c.fillStyle='#7d7668'; rr(c,x,y,w,h,5); c.fill();
-  c.strokeStyle='rgba(60,56,46,.6)'; c.lineWidth=1.5; rr(c,x,y,w,h,5); c.stroke();
-  const l=lineById(padId), cx=x+w/2, base=y+h-8;
+  const l=lineById(padId);
   if (!built){
-    c.strokeStyle='rgba(201,168,76,.4)'; c.setLineDash([7,6]);
-    rr(c,x+4,y+4,w-8,h-8,4); c.stroke(); c.setLineDash([]);
-    c.fillStyle='#c9b88a'; c.font='800 11px system-ui'; c.textAlign='center';
-    c.fillText(l.icon+' '+l.name.toUpperCase(),cx,y+h/2-8);
-    c.fillStyle='#9a907c'; c.font='600 10px system-ui';
-    c.fillText('build for '+fmt$(l.capex),cx,y+h/2+8);
+    drawIsoTile(c,pad.gx,pad.gy,pad.fw,pad.fd,'#9a9486');
+    const ctr=iso(pad.gx+pad.fw/2,pad.gy+pad.fd/2);
+    c.strokeStyle='rgba(201,168,76,.45)'; c.setLineDash([6,5]);
+    const A=iso(pad.gx,pad.gy),B=iso(pad.gx+pad.fw,pad.gy),Cc=iso(pad.gx+pad.fw,pad.gy+pad.fd),D=iso(pad.gx,pad.gy+pad.fd);
+    c.beginPath(); c.moveTo(A.x,A.y); c.lineTo(B.x,B.y); c.lineTo(Cc.x,Cc.y); c.lineTo(D.x,D.y); c.closePath(); c.stroke();
+    c.setLineDash([]);
+    drawPin(c,ctr.x,ctr.y-30,'#7a5fc9',l.icon,now);
     return;
   }
-  if (padId==='brewery'){
-    c.fillStyle='#8a5a3c'; rr(c,x+16,base-58,150,58,4); c.fill();
-    c.fillStyle='#6e4630'; c.fillRect(x+16,base-58,150,9);
-    for (const kx of [x+50,x+105]){
-      c.fillStyle='#c98a3c'; c.beginPath(); c.arc(kx,base-26,17,0,7); c.fill();
-      c.fillStyle='#e8b86a'; c.beginPath(); c.arc(kx-5,base-31,5,0,7); c.fill();
-      c.fillStyle='#8a5a28'; c.fillRect(kx-3,base-52,6,12);
-    }
-    c.fillStyle='#b8b2a6'; rr(c,x+190,base-66,30,66,14); c.fill();
-    c.fillStyle='#8f8a7c'; c.fillRect(x+196,base-66,18,8);
-    c.fillStyle='#5a4632'; c.fillRect(x+240,base-70,9,46);
-  } else if (padId==='wineest'){
-    for (let i=0;i<4;i++){
-      c.strokeStyle='#4e7a40'; c.lineWidth=5;
-      c.beginPath(); c.moveTo(x+14,y+22+i*22); c.lineTo(x+150,y+22+i*22); c.stroke();
-      c.strokeStyle='#6fa05c'; c.lineWidth=2.5;
-      c.beginPath(); c.moveTo(x+14,y+20+i*22); c.lineTo(x+150,y+20+i*22); c.stroke();
-    }
-    c.fillStyle='#d9c8a8'; rr(c,x+180,base-52,90,52,4); c.fill();
-    c.fillStyle='#a8523c'; c.beginPath();
-    c.moveTo(x+172,base-52); c.lineTo(x+225,base-76); c.lineTo(x+278,base-52); c.closePath(); c.fill();
-    c.fillStyle='#5a3c28';
-    for (let i=0;i<3;i++){ c.beginPath(); c.arc(x+196+i*16,base-7,7,0,7); c.fill();
-      c.fillStyle='#7a5438'; c.beginPath(); c.arc(x+196+i*16,base-7,4.5,0,7); c.fill(); c.fillStyle='#5a3c28'; }
-  } else {
-    c.fillStyle='#9a948a'; rr(c,x+16,base-60,140,60,3); c.fill();
-    c.fillStyle='#7d7668'; c.fillRect(x+16,base-60,140,8);
-    // pagoda vent
-    c.fillStyle='#5a5248';
-    c.beginPath(); c.moveTo(x+58,base-60); c.lineTo(x+86,base-88) ; c.lineTo(x+114,base-60); c.closePath(); c.fill();
-    c.beginPath(); c.moveTo(x+68,base-76); c.lineTo(x+86,base-96); c.lineTo(x+104,base-76); c.closePath(); c.fill();
-    // cask stack
-    c.fillStyle='#7a5438';
-    for (const [bx,by] of [[x+190,base-12],[x+212,base-12],[x+234,base-12],[x+201,base-30],[x+223,base-30]]){
-      c.beginPath(); c.arc(bx,by,10,0,7); c.fill();
-      c.strokeStyle='#5a3c28'; c.lineWidth=2; c.beginPath(); c.arc(bx,by,10,0,7); c.stroke();
-      c.fillStyle='#8f6444'; c.beginPath(); c.arc(bx,by,5.5,0,7); c.fill(); c.fillStyle='#7a5438';
-    }
-    c.fillStyle='#4a4238'; c.fillRect(x+136,base-78,8,30);
-  }
-  // name + aging chip
-  c.fillStyle='rgba(20,18,32,.88)'; rr(c,cx-60,y-12,120,18,9); c.fill();
-  c.fillStyle='#f0c96e'; c.font='700 10px system-ui'; c.textAlign='center';
+  const colors = padId==='brewery' ? '#8a5a3c' : padId==='wineest' ? '#6f8a5a' : '#9a948a';
+  const box=drawIsoBox(c,pad.gx,pad.gy,pad.fw,pad.fd,58,colors,shade(colors,0.75),shade(colors,0.52));
+  // chimney/vent
+  c.fillStyle=shade(colors,0.4); c.fillRect(box.At.x+10,box.At.y-26,8,26);
   const nb=S? S.maturing.filter(b=>b.lineId===padId).length : 0;
-  c.fillText(l.icon+' '+l.name+(nb?(' · '+nb+' aging'):''),cx,y+1);
+  const ctr=iso(pad.gx+pad.fw/2,pad.gy+pad.fd/2);
+  c.fillStyle='rgba(20,18,32,.88)'; rr(c,box.At.x-46,box.At.y-18,92,18,9); c.fill();
+  c.fillStyle='#f0c96e'; c.font='700 10px system-ui'; c.textAlign='center';
+  c.fillText(l.icon+' '+l.name+(nb?(' · '+nb+' aging'):''),box.At.x,box.At.y-5);
+  return {top:{x:box.At.x,y:box.At.y}, smoke:{x:box.At.x+14,y:box.At.y-26}};
 }
 // ============================================================================
-// SCENE RENDER + LIVING CITY (agents, cars, particles) + CAMERA/INPUT
+// SCENE RENDER + LIVING CITY (agents, cars, particles) + CAMERA/INPUT  (ISO)
 // ============================================================================
 let canvas=null, ctx=null;
 const VIEW={w:0,h:0,dpr:1};
-const cam={x:710,y:430,z:0.9};
+const cam={x:CITY.W/2,y:CITY.H/2-60,z:0.9};
 let agents=[], cars=[], motes=[], smokes=[], confetti=[];
 let bandRates=[0.4,0.4,0.4], venueStatMap={};
 let firstSessionPulse=true;
@@ -916,30 +874,29 @@ function zoomBy(f,px,py){
 function refreshBandRates(){
   venueStatMap={};
   for (const vs of engine.venueStats) venueStatMap[vs.districtId]=vs;
-  CITY.bands.forEach((b,i)=>{
-    const vs=venueStatMap[b.id];
+  DIST_IDS.forEach((id,i)=>{
+    const vs=venueStatMap[id];
     bandRates[i]= vs ? clamp(vs.visitors/1400,0.3,1.8)
-                     : clamp(districtById(b.id).traffic/3200,0.15,0.5);
+                     : clamp(districtById(id).traffic/3200,0.15,0.5);
   });
 }
 const spawnAcc=[0,0,0];
 function updateAgents(dt){
-  CITY.bands.forEach((band,bi)=>{
+  DIST_IDS.forEach((distId,bi)=>{
+    const r=districtRow(bi);
     spawnAcc[bi]+=bandRates[bi]*dt;
     while (spawnAcc[bi]>1 && agents.length<70){
       spawnAcc[bi]-=1;
-      const lane=Math.random()<0.5?0:1;
       const dir=Math.random()<0.5?1:-1;
-      const y=(lane===0?band.walkN:band.walkS)+Math.random()*6-3;
-      const v=engine.venueAt(band.id);
-      const vs=venueStatMap[band.id];
-      const toVenue = v && lane===0 && Math.random()<0.42;
+      const gyOff=Math.random()*0.7+0.15;
+      const v=engine.venueAt(distId);
+      const toVenue = v && Math.random()<0.42;
       agents.push({
-        x:dir>0?-12:CITY.W+12, y, dir, band:bi, lane,
-        speed:26+Math.random()*22, state:'walk',
+        gx:dir>0?-1:COLS+1, gy:r.plaza+gyOff, dir, band:bi,
+        speed:0.55+Math.random()*0.45, state:'walk',
         shirt:['#c97f5f','#5f86c9','#7a5fc9','#5fc98e','#c9b25f','#c95f74','#8a8f9a','#bf8fc9'][(Math.random()*8)|0],
         skin:['#e8b88a','#c9956a','#a87850','#8a6240'][(Math.random()*4)|0],
-        target: toVenue ? CITY.lots[band.id].x+CITY.lots[band.id].w/2+(Math.random()*24-12) : null,
+        target: toVenue ? CITY.lots[distId].gx+VENUE_FW[1]/2 : null,
         alpha:1,
       });
     }
@@ -947,35 +904,36 @@ function updateAgents(dt){
   for (let i=agents.length-1;i>=0;i--){
     const a=agents[i];
     if (a.state==='walk'){
-      a.x+=a.dir*a.speed*dt;
-      if (a.target!==null && Math.abs(a.x-a.target)<5){
+      a.gx+=a.dir*a.speed*dt;
+      if (a.target!==null && Math.abs(a.gx-a.target)<0.08){
         a.state='enter';
-        if (Math.random()<0.35) motes.push({x:a.x,y:a.y-26,vy:-16,a:1,t:'+$',c:'#4caf7d'});
+        if (Math.random()<0.35){ const p=iso(a.gx,a.gy); motes.push({x:p.x,y:p.y-26,vy:-16,a:1,t:'+$',c:'#4caf7d'}); }
       }
-      if (a.x<-20||a.x>CITY.W+20){ agents.splice(i,1); continue; }
+      if (a.gx<-1.5||a.gx>COLS+1.5){ agents.splice(i,1); continue; }
     } else {
-      a.y-=10*dt; a.alpha-=dt*1.6;
+      a.gy-=0.012*dt*60/16; a.alpha-=dt*1.6;
       if (a.alpha<=0){ agents.splice(i,1); continue; }
     }
   }
 }
 function initCars(){
   cars=[];
-  CITY.bands.forEach((band,bi)=>{
+  DIST_IDS.forEach((distId,bi)=>{
+    const r=districtRow(bi);
     for (let i=0;i<3;i++){
       const dir=i%2===0?1:-1;
       cars.push({band:bi, dir,
-        y:band.road.y+(dir>0?17:band.road.h-17),
-        x:Math.random()*CITY.W, speed:60+Math.random()*55,
+        gy:r.road+(dir>0?0.28:0.72),
+        gx:Math.random()*COLS, speed:0.7+Math.random()*0.5,
         c:['#c94f4f','#4f7ec9','#d9b048','#5aa56a','#8a6ab8','#d97f3e','#c9c9c9','#3f3f46'][(Math.random()*8)|0]});
     }
   });
 }
 function updateCars(dt){
   for (const car of cars){
-    car.x+=car.dir*car.speed*dt;
-    if (car.dir>0 && car.x>CITY.W+40) car.x=-40;
-    if (car.dir<0 && car.x<-40) car.x=CITY.W+40;
+    car.gx+=car.dir*car.speed*dt;
+    if (car.dir>0 && car.gx>COLS+1) car.gx=-1;
+    if (car.dir<0 && car.gx<-1) car.gx=COLS+1;
   }
 }
 function updateParticles(dt,now){
@@ -986,10 +944,8 @@ function updateParticles(dt,now){
   // factory smoke
   if (engine && Math.random()<dt*3){
     for (const id of engine.S.ownedLines){
-      const p=CITY.pads[id];
-      const sx = id==='brewery'?p.x+244: id==='wineest'?p.x+225: p.x+140;
-      const sy = id==='brewery'?p.y+p.h-78: id==='wineest'?p.y+p.h-60: p.y+p.h-86;
-      smokes.push({x:sx+Math.random()*6-3,y:sy,r:3,a:0.5});
+      const pad=CITY.pads[id]; const top=iso(pad.gx+pad.fw/2,pad.gy+pad.fd/2);
+      smokes.push({x:top.x+14+Math.random()*6-3,y:top.y-86,r:3,a:0.5});
     }
   }
   for (let i=smokes.length-1;i>=0;i--){
@@ -1017,63 +973,46 @@ function render(now){
   c.translate(VIEW.w/2,VIEW.h/2); c.scale(cam.z,cam.z); c.translate(-cam.x,-cam.y);
   c.textAlign='center';
 
-  // ground zones
-  c.fillStyle='#9aa886'; c.fillRect(0,120,CITY.W,62);          // river bank
-  c.fillStyle='#86a86e'; c.fillRect(0,712,CITY.W,148);          // plaza 1
-  c.fillStyle='#86a86e'; c.fillRect(0,1402,CITY.W,158);         // plaza 2
-  c.fillStyle='#b8a988'; c.fillRect(0,2120,CITY.W,40);          // boardwalk
-  // water: river + harbour
-  for (const [wy,wh] of [[0,120],[2160,140]]){
-    const g=c.createLinearGradient(0,wy,0,wy+wh);
-    const dk=nf*0.55;
-    g.addColorStop(0,'rgb('+(70-40*dk)+','+(130-60*dk)+','+(160-50*dk)+')');
-    g.addColorStop(1,'rgb('+(50-28*dk)+','+(105-50*dk)+','+(140-45*dk)+')');
-    c.fillStyle=g; c.fillRect(0,wy,CITY.W,wh);
-    c.strokeStyle='rgba(255,255,255,'+(0.22-0.12*nf)+')'; c.lineWidth=1.5;
-    for (let i=0;i<10;i++){
-      const sx=(h2(i,wy)*CITY.W+now/55)%CITY.W, sy=wy+12+h2(i*3,wy)* (wh-24);
-      c.beginPath(); c.moveTo(sx,sy); c.lineTo(sx+16,sy); c.stroke();
+  // base ground wash for full grid
+  drawIsoTile(c,0,0,COLS,GROWS,'#9aa886');
+
+  // per-district zones: back rows (skyline ground), road, front row, plaza, road2
+  DIST_IDS.forEach((distId,d)=>{
+    const r=districtRow(d);
+    drawIsoTile(c,0,r.back0,COLS,2,'#b8a988');                 // skyline block ground
+    drawIsoTile(c,0,r.road,COLS,1,'#4a4d55');                  // main street
+    drawIsoTile(c,0,r.front,COLS,1,'#9aa886');                 // front lots ground
+    drawIsoTile(c,0,r.plaza,COLS,1,'#86a86e');                 // plaza/park
+    drawIsoTile(c,0,r.road2,COLS,1, d===1?'#4a4d55':'#5e8aa8'); // road or water edge
+  });
+  // river strip above riverside, harbor water below
+  drawIsoTile(c,0,-1,COLS,1,'#5e8aa8');
+
+  // road lane markings
+  DIST_IDS.forEach((distId,d)=>{
+    const r=districtRow(d);
+    for (const rowGy of [r.road, ...(d===1?[r.road2]:[])]){
+      c.strokeStyle='rgba(220,214,190,.45)'; c.lineWidth=2; c.setLineDash([10,8]);
+      const A=iso(0,rowGy+0.5), B=iso(COLS,rowGy+0.5);
+      c.beginPath(); c.moveTo(A.x,A.y); c.lineTo(B.x,B.y); c.stroke();
+      c.setLineDash([]);
     }
-  }
-  // boat in harbour
-  const bx=((now/110)%(CITY.W+300))-150, by=2215+Math.sin(now/900)*3;
-  c.fillStyle='#7a5438'; rr(c,bx,by,46,12,5); c.fill();
-  c.strokeStyle='#5a4632'; c.lineWidth=2; c.beginPath(); c.moveTo(bx+23,by); c.lineTo(bx+23,by-24); c.stroke();
-  c.fillStyle='#ece4d4'; c.beginPath(); c.moveTo(bx+25,by-24); c.lineTo(bx+40,by-8); c.lineTo(bx+25,by-8); c.closePath(); c.fill();
-  // pier
-  c.fillStyle='#8a7458'; c.fillRect(700,2120,70,120);
-  c.strokeStyle='rgba(60,48,36,.4)';
-  for (let i=0;i<6;i++){ c.beginPath(); c.moveTo(700,2140+i*18); c.lineTo(770,2140+i*18); c.stroke(); }
+    // district label
+    const lab=iso(1.2,r.road+0.5);
+    c.fillStyle='rgba(240,236,220,.4)'; c.font='800 14px system-ui'; c.textAlign='left';
+    c.fillText(distId.toUpperCase(),lab.x,lab.y+4);
+    c.textAlign='center';
+  });
 
-  // roads + sidewalks per band
-  for (const band of CITY.bands){
-    c.fillStyle='#c4beb0';
-    c.fillRect(0,band.walkN-11,CITY.W,22);
-    c.fillRect(0,band.walkS-11,CITY.W,22);
-    c.fillStyle='#4a4d55'; c.fillRect(0,band.road.y,CITY.W,band.road.h);
-    c.strokeStyle='rgba(220,214,190,.5)'; c.lineWidth=2.5; c.setLineDash([18,16]);
-    c.beginPath(); c.moveTo(0,band.road.y+band.road.h/2); c.lineTo(CITY.W,band.road.y+band.road.h/2); c.stroke();
-    c.setLineDash([]);
-    c.fillStyle='rgba(230,226,210,.55)';
-    for (const cwx of [470,950]) for (let i=0;i<6;i++)
-      c.fillRect(cwx+i*9,band.road.y+4,5,band.road.h-8);
-    // district label on road
-    c.fillStyle='rgba(240,236,220,.34)'; c.font='800 17px system-ui';
-    c.fillText(band.label,250,band.road.y+band.road.h/2+6);
-  }
+  // trees in plaza rows
+  DIST_IDS.forEach((distId,d)=>{
+    const r=districtRow(d);
+    for (let gx=6.5; gx<COLS; gx+=1.6) drawTree(c,gx+h2(gx,d)*0.3,r.plaza+0.5,22+h2(gx,d+5)*10);
+  });
 
-  // trees & lamps & fountain
-  for (let x=70;x<CITY.W;x+=130) drawTree(c,x+h2(x,1)*36,166,26+h2(x,2)*10);
-  for (let x=90;x<CITY.W;x+=150){ drawTree(c,x+h2(x,3)*40,800,30+h2(x,4)*12); drawTree(c,x+h2(x,5)*40,1505,30+h2(x,6)*12); }
-  // fountain
-  c.fillStyle='#9fb4c4'; c.beginPath(); c.arc(420,786,26,0,7); c.fill();
-  c.strokeStyle='#7e98ad'; c.lineWidth=3; c.beginPath(); c.arc(420,786,26,0,7); c.stroke();
-  c.fillStyle='rgba(255,255,255,.6)';
-  c.beginPath(); c.arc(420,786,6+Math.sin(now/300)*2,0,7); c.fill();
-
-  // decor buildings (backs then mains, per band order = already y-sorted enough)
-  for (const b of DECOR) if (b.back) drawDecorB(c,b,nf);
-  for (const b of DECOR) if (!b.back) drawDecorB(c,b,nf);
+  // decor buildings: back rows then front-row shops
+  for (const b of DECOR) if (b.gy%DROWS<2) drawDecorB(c,b,nf);
+  for (const b of DECOR) if (b.gy%DROWS===3) drawDecorB(c,b,nf);
 
   // production pads
   for (const id of Object.keys(CITY.pads))
@@ -1087,33 +1026,37 @@ function render(now){
   }
   // first-session pulse ring on starting bar
   if (firstSessionPulse && engine.S.week<4){
-    const lot=CITY.lots.riverside, r=46+Math.sin(now/300)*8;
+    const lot=CITY.lots.riverside, top=iso(lot.gx+1,lot.gy+0.5);
+    const rad=46+Math.sin(now/300)*8;
     c.strokeStyle='rgba(240,201,110,'+(0.5+0.3*Math.sin(now/300))+')'; c.lineWidth=3;
-    c.beginPath(); c.arc(lot.x+lot.w/2,lot.base-44,r,0,7); c.stroke();
+    c.beginPath(); c.arc(top.x,top.y-40,rad,0,7); c.stroke();
   }
 
-  // lamps along north sidewalks
-  for (const band of CITY.bands)
-    for (let x=80;x<CITY.W;x+=190) drawLamp(c,x,band.walkN+10,nf);
+  // lamps along plaza edges
+  DIST_IDS.forEach((distId,d)=>{
+    const r=districtRow(d);
+    for (let gx=0.5; gx<COLS; gx+=2.2) drawLamp(c,gx,r.plaza,nf);
+  });
 
   // cars
   for (const car of cars){
-    c.fillStyle='rgba(15,15,30,.22)'; c.fillRect(car.x-13,car.y+4,26,5);
-    c.fillStyle=car.c; rr(c,car.x-14,car.y-7,28,14,4); c.fill();
+    const pos=iso(car.gx,car.gy);
+    c.fillStyle='rgba(15,15,30,.22)'; c.beginPath(); c.ellipse(pos.x,pos.y+4,13,3,0,0,7); c.fill();
+    c.fillStyle=car.c; rr(c,pos.x-14,pos.y-7,28,12,4); c.fill();
     c.fillStyle='rgba(180,210,235,.8)';
-    rr(c,car.x-(car.dir>0?4:10),car.y-5,14,6,2); c.fill();
+    rr(c,pos.x-(car.dir>0?4:10),pos.y-5,14,5,2); c.fill();
     if (nf>0.4){
       c.fillStyle='rgba(255,235,160,.85)';
-      c.beginPath(); c.arc(car.x+car.dir*14,car.y-2,2.4,0,7); c.fill();
-      c.beginPath(); c.arc(car.x+car.dir*14,car.y+3,2.4,0,7); c.fill();
+      c.beginPath(); c.arc(pos.x+car.dir*14,pos.y-1,2.2,0,7); c.fill();
     }
   }
   // pedestrians
   for (const a of agents){
+    const pos=iso(a.gx,a.gy);
     c.globalAlpha=a.alpha;
-    c.fillStyle='rgba(15,15,30,.2)'; c.beginPath(); c.ellipse(a.x,a.y+1,4,1.6,0,0,7); c.fill();
-    c.fillStyle=a.shirt; rr(c,a.x-3.2,a.y-12,6.4,11,2.5); c.fill();
-    c.fillStyle=a.skin; c.beginPath(); c.arc(a.x,a.y-15,3.2,0,7); c.fill();
+    c.fillStyle='rgba(15,15,30,.2)'; c.beginPath(); c.ellipse(pos.x,pos.y+1,4,1.6,0,0,7); c.fill();
+    c.fillStyle=a.shirt; rr(c,pos.x-3.2,pos.y-12,6.4,11,2.5); c.fill();
+    c.fillStyle=a.skin; c.beginPath(); c.arc(pos.x,pos.y-15,3.2,0,7); c.fill();
     c.globalAlpha=1;
   }
   // smoke + motes
@@ -1144,13 +1087,15 @@ function render(now){
 function hitTest(wx,wy){
   for (const did of Object.keys(CITY.lots)){
     const lot=CITY.lots[did], v=engine.venueAt(did);
-    const top=lot.base-(v?VENUE_H[v.tier]+34:130);
-    if (wx>=lot.x-26 && wx<=lot.x+lot.w+26 && wy>=top && wy<=lot.base+12)
+    const h=v?VENUE_H[v.tier]:60;
+    const b=isoBounds(lot.gx,lot.gy,VENUE_FW[1]||2,VENUE_FD[1]||1,h+40);
+    if (wx>=b.minX-10 && wx<=b.maxX+10 && wy>=b.minY-10 && wy<=b.maxY+10)
       return v?{type:'venue',id:did}:{type:'lot',id:did};
   }
   for (const id of Object.keys(CITY.pads)){
-    const p=CITY.pads[id];
-    if (wx>=p.x&&wx<=p.x+p.w&&wy>=p.y-16&&wy<=p.y+p.h) return {type:'pad',id};
+    const pad=CITY.pads[id];
+    const b=isoBounds(pad.gx,pad.gy,pad.fw,pad.fd,90);
+    if (wx>=b.minX-10 && wx<=b.maxX+10 && wy>=b.minY-10 && wy<=b.maxY+10) return {type:'pad',id};
   }
   return null;
 }
@@ -1296,8 +1241,9 @@ function advanceWeek(){
   }
   pushTicker('Wk '+r.week+' · net '+(r.net>=0?'+':'')+fmt$(r.net)+' · '+r.units.toLocaleString()+' drinks'+(r.shortfall?' · sourcing gap':''));
   for (const vs of engine.venueStats){
-    const lot=CITY.lots[vs.districtId];
-    motes.push({x:lot.x+lot.w/2,y:lot.base-VENUE_H[engine.venueAt(vs.districtId).tier]-18,
+    const lot=CITY.lots[vs.districtId], tier=engine.venueAt(vs.districtId).tier;
+    const top=iso(lot.gx+VENUE_FW[tier]/2,lot.gy+VENUE_FD[tier]/2);
+    motes.push({x:top.x,y:top.y-VENUE_H[tier]-18,
       vy:-13,a:1.6,t:'+'+fmt$(vs.revenue),c:'#4caf7d'});
   }
   checkObjectives();
@@ -1510,7 +1456,9 @@ function renderDrawer(){
         +'<span class="schip">rent <b>'+fmt$(last.rent)+'</b></span>'
         +'<span class="schip">wages <b>'+fmt$(last.wages)+'</b></span>'
         +'<span class="schip">marketing <b>'+fmt$(last.marketing)+'</b></span>'
-        +'<span class="schip">interest <b>'+fmt$(last.interest)+'</b></span></div></div>';
+        +'<span class="schip">interest <b>'+fmt$(last.interest)+'</b></span>'
+        +(last.rentIncome?'<span class="schip">rent income <b class="green">+'+fmt$(last.rentIncome)+'</b></span>':'')
+        +'</div></div>';
     } else html+='<div class="dsub">First week still trading…</div>';
     html+='<div class="dcard"><div class="dlabel">Balance sheet</div><div class="chips">'
       +'<span class="schip">cash <b>'+fmt$(S.cash)+'</b></span>'
@@ -1518,6 +1466,41 @@ function renderDrawer(){
       +'<span class="schip">net worth <b>'+fmt$(engine.netWorth())+'</b></span></div>'
       +(S.debt>0?'<div class="dsub">Loans auto-draw when cash runs dry (1.2%/wk interest) and repay when cash is strong. Bank limit: '+fmt$(300000)+'.</div>':'')
       +'</div>';
+
+  } else if (drawerType==='invest'){
+    title='Investments';
+    html+='<div class="dsub" style="margin-bottom:8px">Park spare cash in the markets — stocks fluctuate with the economy, real estate pays steady weekly rent.</div>';
+    html+='<div class="dcard"><div class="dlabel">Stock Market</div>';
+    for (const st of DATA.stocks){
+      const cur=S.stocks[st.id], hold=cur.shares*cur.price;
+      html+='<div class="drow" style="justify-content:space-between;margin-top:6px">'
+        +'<span class="dname">'+st.name+' <span class="dsub">('+st.id+')</span></span>'
+        +'<span class="dsub">$'+cur.price.toFixed(2)+'</span></div>'
+        +'<div class="drow" style="justify-content:space-between">'
+        +'<span class="dsub">'+(cur.shares>0?('holding '+cur.shares+' sh · '+fmt$(hold)):'sector: '+st.sector)+'</span>'
+        +'<div class="drow">'
+        +'<button class="btn btn-sm" '+(S.cash<cur.price*10?'disabled':'')+' onclick="uiStock(\''+st.id+'\',10)">Buy 10</button>'
+        +'<button class="btn btn-sm" '+(cur.shares<10?'disabled':'')+' onclick="uiStock(\''+st.id+'\',-10)">Sell 10</button>'
+        +'</div></div>';
+    }
+    html+='</div>';
+    html+='<div class="dcard"><div class="dlabel">Real Estate</div>';
+    for (const pr of DATA.properties){
+      const owned=S.properties[pr.id];
+      html+='<div class="drow" style="justify-content:space-between;margin-top:6px">'
+        +'<span class="dname">'+pr.name+' <span class="dsub">('+districtById(pr.district).name+')</span></span>'
+        +(owned?'<span class="goldc" style="font-size:11px">+'+fmt$(pr.rent)+'/wk</span>'
+               :'<button class="btn btn-sm btn-gold" '+(S.cash<pr.price?'disabled':'')+' onclick="uiProperty(\''+pr.id+'\')">Buy '+fmt$(pr.price)+'</button>')
+        +'</div>';
+    }
+    html+='</div>';
+    const stockVal=DATA.stocks.reduce((a,st)=>a+S.stocks[st.id].price*S.stocks[st.id].shares,0);
+    const propVal=DATA.properties.filter(pr=>S.properties[pr.id]).reduce((a,pr)=>a+pr.price,0);
+    const propIncome=DATA.properties.filter(pr=>S.properties[pr.id]).reduce((a,pr)=>a+pr.rent,0);
+    html+='<div class="dcard"><div class="dlabel">Portfolio</div><div class="chips">'
+      +'<span class="schip">stocks <b>'+fmt$(stockVal)+'</b></span>'
+      +'<span class="schip">property <b>'+fmt$(propVal)+'</b></span>'
+      +'<span class="schip">rent income <b>'+fmt$(propIncome)+'/wk</b></span></div></div>';
 
   } else if (drawerType==='goals'){
     title='Objectives';
@@ -1578,6 +1561,17 @@ function uiBuildLine(id){
     const l=lineById(id);
     toast(l.icon+' Construction!',l.name+' is up — first batch ready in '+(l.weeks>=52?(l.weeks/52).toFixed(0)+' years':l.weeks+' weeks')+'.');
     burstConfetti(); checkObjectives(); updateHUD(); renderDrawer();
+  }
+}
+function uiStock(id,qty){
+  const ok = qty>0 ? engine.buyStock(id,qty) : engine.sellStock(id,-qty);
+  if (ok){ updateHUD(); renderDrawer(); }
+}
+function uiProperty(id){
+  if (engine.buyProperty(id)){
+    const pr=DATA.properties.find(p=>p.id===id);
+    toast('🏢 Property bought',pr.name+' now earns '+fmt$(pr.rent)+'/wk in rent.');
+    updateHUD(); renderDrawer();
   }
 }
 function uiMkt(d){ engine.S.marketing=clamp(engine.S.marketing+d,0,6000); lastDrawerTouch=performance.now(); updateHUD(); renderDrawer(); }
