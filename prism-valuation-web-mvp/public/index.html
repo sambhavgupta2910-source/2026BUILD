@@ -50,10 +50,16 @@
       </div>
 
       <div class="stat-strip" id="statStrip">
-        <div class="stat"><strong id="statRows">—</strong><span>verified DLD sales</span></div>
-        <div class="stat"><strong id="statPsf">—</strong><span>median AED / sqft</span></div>
-        <div class="stat"><strong id="statAreas">—</strong><span>areas covered</span></div>
+        <div class="stat"><strong id="statRows" data-countup>—</strong><span>verified DLD sales</span></div>
+        <div class="stat"><strong id="statPsf" data-countup>—</strong><span>median AED / sqft</span></div>
+        <div class="stat"><strong id="statAreas" data-countup>—</strong><span>areas covered</span></div>
         <div class="stat"><strong id="statUpdated">—</strong><span>data through</span></div>
+      </div>
+
+      <div class="trust-row">
+        <span class="trust-pill"><span class="trust-dot"></span>Source: Dubai Land Department open transaction registry</span>
+        <span class="trust-pill">Actual sold prices — not asking prices</span>
+        <span class="trust-pill">Refreshed daily</span>
       </div>
     </div>
   </section>
@@ -126,6 +132,23 @@
               <div class="metric"><span>Comparables</span><strong id="rComps">—</strong></div>
               <div class="metric"><span>Confidence</span><strong id="rConfidence">—</strong></div>
             </div>
+
+            <div class="price-band">
+              <div class="band-head">
+                <span>Where this price sits vs registered sales (AED/sqft)</span>
+              </div>
+              <div class="band-track">
+                <div class="band-range" id="bandRange"></div>
+                <div class="band-median" id="bandMedian"></div>
+                <div class="band-marker" id="bandMarker"><span id="bandMarkerLabel">—</span></div>
+              </div>
+              <div class="band-labels">
+                <span id="bandLow">—</span>
+                <span class="band-mid" id="bandMid">DLD median —</span>
+                <span id="bandHigh">—</span>
+              </div>
+            </div>
+
             <p class="comp-basis" id="rBasis"></p>
             <div class="analyst-note" id="analystNoteWrap">
               <div class="analyst-head">
@@ -157,6 +180,18 @@
         <h2>Where the money is moving.</h2>
         <p class="section-sub">Top communities by registered residential sales — median price, trend direction and off-plan share, straight from DLD records.</p>
       </div>
+      <div class="chart-card card">
+        <div class="chart-head">
+          <div>
+            <strong>Citywide median price</strong>
+            <span>AED/sqft by month · residential sales</span>
+          </div>
+          <span class="chart-badge" id="chartBadge">—</span>
+        </div>
+        <svg id="trendChart" viewBox="0 0 800 220" preserveAspectRatio="none" role="img" aria-label="Monthly median price per square foot trend"></svg>
+        <div class="chart-axis" id="chartAxis"></div>
+      </div>
+
       <div class="table-wrap card">
         <table class="market-table">
           <thead>
@@ -205,6 +240,10 @@
             <span>Senior Investment Analyst · Sobha Realty</span>
             <span class="followers">4,119 followers on LinkedIn</span>
           </div>
+        </div>
+        <div class="cred-row">
+          <span class="trust-pill">Sobha Realty — Sales Manager</span>
+          <span class="trust-pill">Every verdict backed by DLD comparables</span>
         </div>
         <p>
           Every recommendation I make is checked against the same DLD engine you just used.
