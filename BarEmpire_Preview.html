@@ -312,6 +312,7 @@ const DATA = {
     {id:'office_harbor',   name:'Harbour Office Suite',  district:'harbor',    price:220000, rent:2600},
     {id:'penthouse_harbor',name:'Harbour Penthouse',     district:'harbor',    price:480000, rent:5200},
   ],
+  rivalNames: ['The Anchor','Lane & Co','Quayside Social','The Tipsy Fox','Harbour Taps','Velvet Room','The Brass Owl','Smokestack Tavern'],
 };
 const EQUIP_Q  =[1.00,1.10,1.18,1.30], EQUIP_CAP=[1.00,1.18,1.45,1.70];
 const TRAIN_Q  =[1.00,1.12,1.22,1.34], TRAIN_CAP=[1.00,1.10,1.18,1.28];
@@ -500,8 +501,9 @@ function newGameState(seed){
     s.menu[d.id] = {on:(d.id!=='raredram'&&d.id!=='reserve'), price:Math.round(d.fair*1.05*10)/10};
   s.stocks={}; for (const st of DATA.stocks) s.stocks[st.id]={price:st.base, shares:0};
   s.properties={}; for (const pr of DATA.properties) s.properties[pr.id]=false;
-  s.projects=[]; s.lineBonuses={}; s.wageBonus=0;
+  s.projects=[]; s.lineBonuses={}; s.wageBonus=0; s.lineAlloc={};
   s.pendingEvent=null; s.eventCooldown=2;
+  s.rivals={}; DATA.districts.forEach((d,i)=>{ s.rivals[d.id]={tier:1, nameIdx:i%DATA.rivalNames.length}; });
   return s;
 }
 
@@ -521,9 +523,11 @@ class SimEngine {
 
   tick(){
     const S=this.S, ev=[];
+    this._wholesale=0; this._overtime=0;
     this.runProjects(ev);
     this.runProduction(ev);
     this.evolveMarket(ev);
+    this.evolveRivals(ev);
     const eqtr = 0.30*(TRAIN_Q[S.training-1]-0.95) + 0.28*(EQUIP_Q[S.equipment-1]-0.95) + 0.18;
     const sea = season(S.week);
     const boosts = trendById(S.trendId).boosts;
@@ -534,7 +538,7 @@ class SimEngine {
 
     for (const v of S.venues){
       const d=districtById(v.districtId), vt=DATA.tiers[v.tier-1];
-      const compMult = 1/(1 + d.comp*0.11*S.competitorPressure);
+      const compMult = 1/(1 + (d.comp+S.rivals[v.districtId].tier)*0.11*S.competitorPressure);
       const seasonMult = sea==='summer'?1.06:sea==='winter'?0.98:1.0;
       const visitors = d.traffic*this.econMult()*seasonMult
         *(0.50+0.50*S.awareness/100)*(0.58+0.42*S.reputation/100)
@@ -598,9 +602,9 @@ class SimEngine {
     const rent = S.venues.filter(v=>!v.ownsPremises).reduce((a,v)=>a+districtById(v.districtId).rent,0);
     const wages = S.venues.reduce((a,v)=>a+v.staff,0)*TRAIN_WAGE[S.training-1] + S.wageBonus;
     const interest = S.debt*0.012;
-    const opex = rent+wages+S.marketing+interest;
+    const opex = rent+wages+S.marketing+interest+this._overtime;
     const rentIncome = DATA.properties.filter(pr=>S.properties[pr.id]).reduce((a,pr)=>a+pr.rent,0);
-    const gross=revenue-cogs, net=gross-opex+rentIncome;
+    const gross=revenue-cogs, net=gross-opex+rentIncome+this._wholesale;
     S.cash+=net;
     if (S.cash<0){ S.debt+=-S.cash; S.cash=0; }
     if (S.debt>0 && S.cash>S.debt*2){
@@ -619,7 +623,8 @@ class SimEngine {
     S.awareness = clamp(S.awareness*0.90+Math.sqrt(S.marketing/200)*2.2,0,100);
 
     const r={week:S.week,revenue,cogs,gross,opex,net,rent,wages,marketing:S.marketing,
-             interest,rentIncome,units,reputation:S.reputation,shortfall};
+             interest,rentIncome,units,reputation:S.reputation,shortfall,
+             wholesale:this._wholesale,overtime:this._overtime};
     S.history.push(r); if (S.history.length>64) S.history.shift();
     S.week++;
     this.venueStats=vstats; this.lastOrders=orders; this.lastEvents=ev;
@@ -630,7 +635,11 @@ class SimEngine {
     const S=this.S;
     for (const id of S.ownedLines){
       const l=lineById(id);
-      S.maturing.push({cat:l.cat,units:l.weekly,q:l.q,start:S.week,ready:S.week+l.weeks,lineId:id});
+      const alloc=S.lineAlloc[id]||{scale:1,wholesalePct:0};
+      const scale=alloc.scale||1;
+      const units=l.weekly*scale;
+      if (scale>1) this._overtime += l.weekly*(scale-1)*l.prodCost*1.5;
+      S.maturing.push({cat:l.cat,units,q:l.q,start:S.week,ready:S.week+l.weeks,lineId:id});
     }
     const readyNow=S.maturing.filter(b=>b.ready<=S.week);
     if (readyNow.length){
@@ -639,9 +648,17 @@ class SimEngine {
         const l=lineById(b.lineId)||DATA.lines.find(x=>x.cat===b.cat);
         const agingYears=(S.week-b.start)/52;
         const q=clamp(b.q+l.aging*agingYears+(S.lineBonuses[b.lineId]||0),0,1);
-        const ex=S.ownInv[b.cat];
-        S.ownInvQ[b.cat]= ex>0 ? (S.ownInvQ[b.cat]*ex+q*b.units)/(ex+b.units) : q;
-        S.ownInv[b.cat]=ex+b.units;
+        const alloc=S.lineAlloc[b.lineId]||{scale:1,wholesalePct:0};
+        const wsUnits=b.units*(alloc.wholesalePct||0)/100;
+        const ownUnits=b.units-wsUnits;
+        if (wsUnits>0){
+          this._wholesale += wsUnits*l.prodCost*2.5*S.marketIndex[b.cat];
+        }
+        if (ownUnits>0){
+          const ex=S.ownInv[b.cat];
+          S.ownInvQ[b.cat]= ex>0 ? (S.ownInvQ[b.cat]*ex+q*ownUnits)/(ex+ownUnits) : q;
+          S.ownInv[b.cat]=ex+ownUnits;
+        }
         byLine[b.lineId]=(byLine[b.lineId]||0)+b.units;
       }
       S.maturing=S.maturing.filter(b=>b.ready>S.week);
@@ -694,6 +711,24 @@ class SimEngine {
           if (eligible.length) S.pendingEvent={kind:'random', id:eligible[this.rngInt(eligible.length)].id};
         }
         S.eventCooldown=2;
+      }
+    }
+  }
+
+  evolveRivals(ev){
+    const S=this.S;
+    for (const d of DATA.districts){
+      const riv=S.rivals[d.id];
+      const r=this.rng();
+      if (riv.tier===0){
+        if (r<0.06){ riv.tier=1; riv.nameIdx=this.rngInt(DATA.rivalNames.length);
+          ev.push({msg:'🏪 '+DATA.rivalNames[riv.nameIdx]+' has opened in '+d.name+' — new competition on the block.'}); }
+      } else if (riv.tier<3 && r<0.025){
+        riv.tier++;
+        ev.push({msg:'🏪 '+DATA.rivalNames[riv.nameIdx]+' upgraded to a '+DATA.tiers[riv.tier-1].name+' in '+d.name+' — keep an eye on them.', big:true});
+      } else if (r<0.012){
+        ev.push({msg:'🏪 '+DATA.rivalNames[riv.nameIdx]+' has closed down in '+d.name+'.'});
+        riv.tier=0;
       }
     }
   }
@@ -781,6 +816,7 @@ class SimEngine {
       } else if (p.type==='line'){
         const l=lineById(p.lineId);
         S.ownedLines.push(p.lineId); S.lineBonuses[p.lineId]=p.qBonus||0;
+        S.lineAlloc[p.lineId]={scale:1,wholesalePct:0};
         ev.push({msg:l.icon+' '+l.name+' construction complete!', big:true});
       }
     }
@@ -1076,6 +1112,25 @@ function drawPad(c,padId,pad,built,nf,now,S){
   c.fillText(l.icon+' '+l.name+(nb?(' · '+nb+' aging'):''),box.At.x,box.At.y-5);
   return {top:{x:box.At.x,y:box.At.y}, smoke:{x:box.At.x+14,y:box.At.y-26}};
 }
+
+// rival businesses + ownable properties --------------------------------
+const RIVAL_TIER_COLOR=['#5a5a5a','#c08a52','#b8bec8','#f0c96e'];
+function drawRivalPin(c,dIdx,S,now){
+  const r=districtRow(dIdx);
+  const riv=S.rivals[DIST_IDS[dIdx]];
+  const p=iso(9,r.plaza);
+  if (riv.tier===0){ drawPin(c,p.x,p.y-6,RIVAL_TIER_COLOR[0],'×',now); return; }
+  drawPin(c,p.x,p.y-6,RIVAL_TIER_COLOR[riv.tier],'🏪',now);
+}
+function drawPropertyPins(c,dIdx,S,now){
+  const distId=DIST_IDS[dIdx], r=districtRow(dIdx);
+  const props=DATA.properties.filter(pr=>pr.district===distId);
+  props.forEach((pr,i)=>{
+    const p=iso(10.5+i*0.7, r.back0+i*1.1);
+    const owned=S.properties[pr.id];
+    drawPin(c,p.x,p.y-6,owned?'#f0c96e':'#7a7a7a',owned?'🏠':'$',now);
+  });
+}
 // ============================================================================
 // SCENE RENDER + LIVING CITY (agents, cars, particles) + CAMERA/INPUT  (ISO)
 // ============================================================================
@@ -1263,6 +1318,12 @@ function render(now){
     if (v) drawVenue(c,lot,v,nf,now,venueStatMap[did],engine.S);
     else drawEmptyLot(c,lot,districtById(did),nf,now,engine.S);
   }
+
+  // rivals + ownable properties
+  DIST_IDS.forEach((distId,d)=>{
+    drawRivalPin(c,d,engine.S,now);
+    drawPropertyPins(c,d,engine.S,now);
+  });
   // first-session pulse ring on starting bar
   if (firstSessionPulse && engine.S.week<4){
     const lot=CITY.lots.riverside, top=iso(lot.gx+1,lot.gy+0.5);
@@ -1707,6 +1768,21 @@ function renderDrawer(){
             +'<div class="prog"><div style="width:'+(frac*100)+'%"></div></div>';
         }
         html+='<div class="dsub" style="color:var(--pos)">ready stock: '+Math.round(S.ownInv[l.cat]).toLocaleString()+' units</div>';
+        const alloc=S.lineAlloc[l.id]||{scale:1,wholesalePct:0};
+        const outUnits=l.weekly*alloc.scale;
+        const wsUnits=Math.round(outUnits*alloc.wholesalePct/100);
+        const ownUnits=Math.round(outUnits-wsUnits);
+        const wsPrice=l.prodCost*2.5;
+        html+='<div class="dlabel" style="margin-top:6px">Output scale</div><div class="drow seg">';
+        for (const sc of [0.5,1,1.5])
+          html+='<button class="'+(alloc.scale===sc?'on':'')+'" onclick="uiLineScale(\''+l.id+'\','+sc+')">'+(sc*100)+'%</button>';
+        html+='</div>'
+          +(alloc.scale>1?'<div class="dsub">overtime adds '+fmt$(l.weekly*(alloc.scale-1)*l.prodCost*1.5)+'/wk to opex</div>':'')
+          +'<div class="dlabel" style="margin-top:6px">Wholesale split</div>'
+          +'<div class="drow stepper"><button onclick="uiLineWholesale(\''+l.id+'\',-10)">−</button>'
+          +'<span>'+alloc.wholesalePct+'% wholesale</span>'
+          +'<button onclick="uiLineWholesale(\''+l.id+'\',10)">+</button></div>'
+          +'<div class="dsub">'+Math.round(outUnits)+' units/wk → '+wsUnits+' sold wholesale @ $'+wsPrice.toFixed(2)+' ('+fmt$(wsUnits*wsPrice*S.marketIndex[l.cat])+'/wk) · '+ownUnits+' kept for your venues</div>';
       }
       html+='</div>';
     }
@@ -1752,6 +1828,8 @@ function renderDrawer(){
         +'<span class="schip">marketing <b>'+fmt$(last.marketing)+'</b></span>'
         +'<span class="schip">interest <b>'+fmt$(last.interest)+'</b></span>'
         +(last.rentIncome?'<span class="schip">rent income <b class="green">+'+fmt$(last.rentIncome)+'</b></span>':'')
+        +(last.overtime?'<span class="schip">overtime <b>'+fmt$(last.overtime)+'</b></span>':'')
+        +(last.wholesale?'<span class="schip">wholesale <b class="green">+'+fmt$(last.wholesale)+'</b></span>':'')
         +'</div></div>';
     } else html+='<div class="dsub">First week still trading…</div>';
     html+='<div class="dcard"><div class="dlabel">Balance sheet</div><div class="chips">'
@@ -1867,6 +1945,15 @@ function uiProperty(id){
     updateHUD(); renderDrawer();
   }
 }
+function uiLineScale(id,val){
+  const S=engine.S; if (!S.lineAlloc[id]) S.lineAlloc[id]={scale:1,wholesalePct:0};
+  S.lineAlloc[id].scale=val; lastDrawerTouch=performance.now(); updateHUD(); renderDrawer();
+}
+function uiLineWholesale(id,delta){
+  const S=engine.S; if (!S.lineAlloc[id]) S.lineAlloc[id]={scale:1,wholesalePct:0};
+  S.lineAlloc[id].wholesalePct=clamp(S.lineAlloc[id].wholesalePct+delta,0,100);
+  lastDrawerTouch=performance.now(); updateHUD(); renderDrawer();
+}
 function uiMkt(d){ engine.S.marketing=clamp(engine.S.marketing+d,0,6000); lastDrawerTouch=performance.now(); updateHUD(); renderDrawer(); }
 function uiEquip(){ if (engine.upgradeEquipment()){ toast('⭐ Equipment upgraded','Tier '+engine.S.equipment+' kit behind every bar.'); updateHUD(); renderDrawer(); } }
 function uiTrain(){ if (engine.upgradeTraining()){ toast('🎓 Crew trained','Tier '+engine.S.training+' service standard.'); updateHUD(); renderDrawer(); } }
@@ -1893,6 +1980,10 @@ function migrateSave(S){
   if (typeof S.wageBonus!=='number') S.wageBonus=0;
   if (S.pendingEvent===undefined) S.pendingEvent=null;
   if (typeof S.eventCooldown!=='number') S.eventCooldown=2;
+  if (!S.lineAlloc) S.lineAlloc={};
+  for (const id of S.ownedLines) if (!S.lineAlloc[id]) S.lineAlloc[id]={scale:1,wholesalePct:0};
+  if (!S.rivals) S.rivals={};
+  DATA.districts.forEach((d,i)=>{ if (!S.rivals[d.id]) S.rivals[d.id]={tier:1,nameIdx:i%DATA.rivalNames.length}; });
   return S;
 }
 function loadSave(){
