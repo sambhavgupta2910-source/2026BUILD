@@ -2,986 +2,1656 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0f0f1a">
 <title>Bar Empire</title>
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-:root {
-  --bg: #0f0f1a;
-  --card: #1a1a2e;
-  --card2: #12122a;
-  --gold: #c9a84c;
-  --gold2: #f0c96e;
-  --text: #e8e0d0;
-  --muted: #8a8070;
-  --pos: #4caf7d;
-  --neg: #e05252;
-  --border: #2a2a4a;
-  --btn: #252540;
-  --btnhov: #303060;
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#0f0f1a;--card:#1a1a2e;--card2:#131326;--gold:#c9a84c;--gold2:#f0c96e;
+  --text:#ece4d4;--muted:#9a907c;--pos:#4caf7d;--neg:#e05252;--border:#2c2c4c;
+  --btn:#252542;--btnhov:#32325c;--sat:env(safe-area-inset-top,0px);--sab:env(safe-area-inset-bottom,0px);
 }
-body { background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, sans-serif; font-size: 14px; min-height: 100vh; display: flex; flex-direction: column; }
-/* HUD */
-#hud { background: var(--card2); border-bottom: 1px solid var(--border); padding: 8px 12px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; z-index: 10; }
-.hud-stat { display: flex; flex-direction: column; align-items: center; min-width: 60px; }
-.hud-label { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
-.hud-val { font-size: 15px; font-weight: 700; color: var(--gold); }
-.hud-val.pos { color: var(--pos); }
-.hud-val.neg { color: var(--neg); }
-.hud-sep { width: 1px; background: var(--border); align-self: stretch; }
-.hud-right { margin-left: auto; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-.eco-badge, .trend-badge { font-size: 10px; padding: 3px 8px; border-radius: 10px; font-weight: 600; }
-.eco-Boom { background: #2a4a2a; color: var(--pos); }
-.eco-Stable { background: #2a2a4a; color: #8ab4f8; }
-.eco-Downturn { background: #4a2a2a; color: var(--neg); }
-.trend-badge { background: #3a2a1a; color: var(--gold); max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-/* Speed controls */
-#speed-bar { background: var(--card2); border-bottom: 1px solid var(--border); padding: 4px 12px; display: flex; gap: 6px; align-items: center; }
-.spd-btn { background: var(--btn); border: 1px solid var(--border); color: var(--text); padding: 4px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; transition: all 0.15s; }
-.spd-btn:hover { background: var(--btnhov); border-color: var(--gold); }
-.spd-btn.active { background: var(--gold); color: #0f0f1a; border-color: var(--gold); font-weight: 700; }
-#week-display { margin-left: auto; font-size: 12px; color: var(--muted); }
-/* Main content */
-#main { flex: 1; overflow-y: auto; padding: 12px; padding-bottom: 70px; }
-/* Tab bar */
-#tab-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--card2); border-top: 1px solid var(--border); display: flex; z-index: 10; }
-.tab-btn { flex: 1; padding: 10px 4px 8px; text-align: center; cursor: pointer; font-size: 10px; color: var(--muted); border: none; background: none; transition: color 0.2s; }
-.tab-btn .tab-icon { font-size: 18px; display: block; }
-.tab-btn.active { color: var(--gold); }
-/* Panels */
-.panel { display: none; animation: fadeIn 0.2s ease; }
-.panel.active { display: block; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
-/* Cards */
-.card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 12px; margin-bottom: 10px; }
-.card-title { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
-.card-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-.card-name { font-weight: 700; color: var(--gold2); font-size: 15px; }
-/* Buttons */
-.btn { background: var(--btn); border: 1px solid var(--border); color: var(--text); padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 12px; transition: all 0.15s; }
-.btn:hover { background: var(--btnhov); border-color: var(--gold); }
-.btn:disabled { opacity: 0.4; cursor: default; }
-.btn-gold { background: var(--gold); color: #0f0f1a; border-color: var(--gold); font-weight: 700; }
-.btn-gold:hover { background: var(--gold2); border-color: var(--gold2); }
-.btn-sm { padding: 3px 8px; font-size: 11px; }
-/* Tables */
-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-th { color: var(--muted); font-size: 10px; text-transform: uppercase; padding: 4px 6px; text-align: left; border-bottom: 1px solid var(--border); }
-td { padding: 6px 6px; border-bottom: 1px solid #1e1e38; }
-tr:last-child td { border-bottom: none; }
-.num { text-align: right; font-variant-numeric: tabular-nums; }
-/* Toggle */
-.toggle-wrap { display: flex; align-items: center; gap: 6px; }
-.toggle { position: relative; width: 34px; height: 18px; }
-.toggle input { opacity: 0; width: 0; height: 0; }
-.toggle-slider { position: absolute; cursor: pointer; inset: 0; background: #333; border-radius: 18px; transition: 0.2s; }
-.toggle-slider::before { content: ''; position: absolute; width: 14px; height: 14px; left: 2px; bottom: 2px; background: #888; border-radius: 50%; transition: 0.2s; }
-.toggle input:checked + .toggle-slider { background: var(--gold); }
-.toggle input:checked + .toggle-slider::before { transform: translateX(16px); background: #0f0f1a; }
-/* Slider */
-input[type=range] { width: 100%; accent-color: var(--gold); cursor: pointer; }
-/* Stats row */
-.stat-row { display: flex; gap: 8px; margin-bottom: 6px; flex-wrap: wrap; }
-.stat-chip { background: var(--card2); border: 1px solid var(--border); border-radius: 6px; padding: 4px 8px; font-size: 11px; }
-.stat-chip span { color: var(--gold); font-weight: 600; }
-/* Progress bar */
-.prog-bar { background: #111122; border-radius: 4px; height: 6px; overflow: hidden; margin: 2px 0; }
-.prog-fill { height: 100%; border-radius: 4px; background: var(--gold); transition: width 0.3s; }
-/* Bar chart */
-.bar-chart { display: flex; align-items: flex-end; gap: 3px; height: 80px; padding: 4px 0; }
-.bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; }
-.bar-seg { width: 100%; border-radius: 2px 2px 0 0; min-height: 2px; transition: height 0.3s; }
-.bar-lbl { font-size: 8px; color: var(--muted); writing-mode: vertical-rl; transform: rotate(180deg); }
-/* Toast */
-#toast { position: fixed; top: 80px; left: 50%; transform: translateX(-50%); background: var(--card); border: 1px solid var(--gold); border-radius: 10px; padding: 10px 16px; min-width: 240px; max-width: 340px; z-index: 100; transition: opacity 0.4s; opacity: 0; pointer-events: none; box-shadow: 0 4px 24px #0008; }
-#toast.show { opacity: 1; }
-.toast-title { font-weight: 700; color: var(--gold2); font-size: 13px; margin-bottom: 4px; }
-.toast-body { font-size: 12px; color: var(--text); line-height: 1.4; }
-/* Select */
-select { background: var(--btn); border: 1px solid var(--border); color: var(--text); padding: 4px 8px; border-radius: 6px; font-size: 12px; cursor: pointer; }
-select:focus { outline: 1px solid var(--gold); }
-/* Grid */
-.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-/* Responsive */
-@media (min-width: 600px) {
-  .grid2 { grid-template-columns: repeat(3, 1fr); }
-  #hud { padding: 8px 20px; }
-}
-@media (min-width: 900px) {
-  #main { max-width: 860px; margin: 0 auto; }
-}
-.green { color: var(--pos); }
-.red { color: var(--neg); }
-.gold { color: var(--gold); }
-.muted { color: var(--muted); }
-.bold { font-weight: 700; }
-.badge { display: inline-block; font-size: 9px; padding: 2px 6px; border-radius: 8px; margin-left: 4px; }
-.badge-maturing { background: #2a2a1a; color: #c9a84c; }
-.badge-ready { background: #1a3a1a; color: var(--pos); }
-hr.divider { border: none; border-top: 1px solid var(--border); margin: 8px 0; }
+html,body{height:100%;overscroll-behavior:none}
+body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,sans-serif;
+  position:fixed;inset:0;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none}
+#city{position:absolute;inset:0;display:block;touch-action:none}
+/* ---------- HUD ---------- */
+#hud{position:absolute;top:0;left:0;right:0;padding:calc(var(--sat) + 6px) 10px 6px;
+  background:linear-gradient(180deg,rgba(10,10,22,.96),rgba(10,10,22,.82));
+  border-bottom:1px solid var(--border);z-index:20}
+#hud-r1{display:flex;align-items:baseline;gap:10px}
+#wordmark{font-family:Georgia,serif;font-style:italic;font-weight:700;color:var(--gold);font-size:13px;letter-spacing:.5px}
+#h-cash{font-size:20px;font-weight:800;color:var(--gold2);font-variant-numeric:tabular-nums;transition:color .3s}
+#h-cash.flash-pos{color:var(--pos)} #h-cash.flash-neg{color:var(--neg)}
+#h-nw{font-size:11px;color:var(--muted)} #h-nw b{color:var(--text)}
+#h-debt{font-size:11px;color:var(--neg);display:none}
+#gear{margin-left:auto;background:none;border:none;color:var(--muted);font-size:17px;padding:2px 4px;cursor:pointer}
+#hud-r2{display:flex;align-items:center;gap:6px;margin-top:5px;flex-wrap:nowrap;overflow:hidden}
+.chip{font-size:10px;padding:2px 8px;border-radius:9px;font-weight:600;white-space:nowrap;flex-shrink:0}
+#h-rep{background:#2c2616;color:var(--gold2)}
+#h-date{background:var(--card);color:var(--muted)}
+.eco-Boom{background:#1d3a24;color:var(--pos)}.eco-Stable{background:#22224a;color:#8ab4f8}.eco-Downturn{background:#3f2020;color:var(--neg)}
+#h-trend{background:#33240f;color:var(--gold);overflow:hidden;text-overflow:ellipsis;max-width:34vw}
+#speed{margin-left:auto;display:flex;gap:0;border:1px solid var(--border);border-radius:8px;overflow:hidden;flex-shrink:0}
+.spd{background:var(--card2);border:none;color:var(--muted);font-size:11px;padding:4px 9px;cursor:pointer;line-height:1}
+.spd.active{background:var(--gold);color:#14101e;font-weight:800}
+/* ---------- ticker + objective ---------- */
+#ticker{position:absolute;left:0;right:0;z-index:18;padding:3px 12px;font-size:11px;color:#cfc5ae;
+  background:rgba(12,12,24,.72);border-bottom:1px solid rgba(44,44,76,.5);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:opacity .4s}
+#objchip{position:absolute;left:8px;z-index:18;display:flex;align-items:center;gap:6px;
+  background:rgba(20,18,34,.92);border:1px solid #3a3320;border-radius:20px;padding:5px 12px;
+  font-size:11px;color:var(--gold2);max-width:78vw;cursor:pointer;box-shadow:0 2px 10px #0007}
+#objchip .rew{color:var(--muted);font-size:10px}
+/* ---------- command bar ---------- */
+#cmdbar{position:absolute;bottom:0;left:0;right:0;z-index:20;display:flex;
+  background:linear-gradient(0deg,rgba(10,10,22,.97),rgba(10,10,22,.88));
+  border-top:1px solid var(--border);padding:4px 4px calc(var(--sab) + 4px)}
+.cmd{flex:1;background:none;border:none;color:var(--muted);font-size:9px;padding:4px 2px;cursor:pointer;line-height:1.25}
+.cmd .ic{display:block;font-size:19px;margin-bottom:2px}
+.cmd.active{color:var(--gold)}
+/* ---------- zoom ---------- */
+#zoomb{position:absolute;left:8px;bottom:calc(var(--sab) + 64px);z-index:15;display:flex;flex-direction:column;gap:6px}
+#zoomb button{width:34px;height:34px;border-radius:10px;border:1px solid var(--border);
+  background:rgba(20,20,38,.85);color:var(--text);font-size:17px;cursor:pointer}
+/* ---------- drawer ---------- */
+#drawer{position:absolute;left:0;right:0;bottom:0;z-index:30;background:rgba(18,17,32,.97);
+  -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+  border-radius:18px 18px 0 0;border:1px solid var(--border);border-bottom:none;
+  max-height:64vh;transform:translateY(110%);transition:transform .3s cubic-bezier(.32,.72,.33,1);
+  display:flex;flex-direction:column;box-shadow:0 -8px 40px #000a}
+#drawer.open{transform:translateY(0)}
+#drawer-head{display:flex;align-items:center;padding:10px 14px 6px;flex-shrink:0}
+#drawer-grab{position:absolute;top:6px;left:50%;transform:translateX(-50%);width:38px;height:4px;border-radius:2px;background:#3c3c5c}
+#drawer-title{font-size:15px;font-weight:800;color:var(--gold2)}
+#drawer-x{margin-left:auto;background:var(--btn);border:1px solid var(--border);color:var(--muted);
+  width:26px;height:26px;border-radius:50%;font-size:12px;cursor:pointer;line-height:1}
+#drawer-body{overflow-y:auto;padding:4px 14px calc(var(--sab) + 16px);-webkit-overflow-scrolling:touch}
+/* drawer widgets */
+.dcard{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:10px 12px;margin-bottom:9px}
+.drow{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.dlabel{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px}
+.dname{font-weight:700;font-size:13px}
+.dsub{font-size:11px;color:var(--muted)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}
+.schip{background:var(--card2);border:1px solid var(--border);border-radius:7px;padding:3px 8px;font-size:11px}
+.schip b{color:var(--gold)}
+.btn{background:var(--btn);border:1px solid var(--border);color:var(--text);padding:7px 13px;border-radius:9px;font-size:12px;cursor:pointer;font-weight:600}
+.btn:active{background:var(--btnhov)}
+.btn:disabled{opacity:.38}
+.btn-gold{background:var(--gold);border-color:var(--gold);color:#171221;font-weight:800}
+.btn-sm{padding:4px 9px;font-size:11px}
+.stepper{display:flex;align-items:center;gap:0;border:1px solid var(--border);border-radius:9px;overflow:hidden}
+.stepper button{background:var(--btn);border:none;color:var(--gold2);width:32px;height:30px;font-size:16px;cursor:pointer}
+.stepper span{min-width:54px;text-align:center;font-size:12px;font-weight:700;font-variant-numeric:tabular-nums}
+.seg{display:flex;border:1px solid var(--border);border-radius:8px;overflow:hidden;flex-wrap:wrap}
+.seg button{background:var(--card2);border:none;color:var(--muted);font-size:11px;padding:6px 10px;cursor:pointer}
+.seg button.on{background:var(--gold);color:#171221;font-weight:800}
+.prog{background:#0c0c1c;border-radius:4px;height:6px;overflow:hidden;margin:3px 0}
+.prog>div{height:100%;background:var(--gold);border-radius:4px;transition:width .4s}
+table{width:100%;border-collapse:collapse;font-size:11px}
+th{color:var(--muted);font-size:9px;text-transform:uppercase;text-align:right;padding:3px 5px;border-bottom:1px solid var(--border)}
+th:first-child,td:first-child{text-align:left}
+td{padding:5px;border-bottom:1px solid #20203a;text-align:right;font-variant-numeric:tabular-nums}
+tr:last-child td{border-bottom:none}
+.green{color:var(--pos)}.red{color:var(--neg)}.goldc{color:var(--gold)}.mutedc{color:var(--muted)}
+.bars{display:flex;align-items:flex-end;gap:2px;height:64px;margin:6px 0}
+.bars>div{flex:1;border-radius:2px 2px 0 0;min-height:2px}
+/* ---------- toast ---------- */
+#toasts{position:absolute;left:50%;transform:translateX(-50%);z-index:40;display:flex;flex-direction:column;gap:6px;width:min(330px,88vw);pointer-events:none}
+.toast{background:rgba(26,25,44,.97);border:1px solid var(--gold);border-radius:12px;padding:9px 13px;
+  box-shadow:0 6px 24px #000b;opacity:0;transform:translateY(-8px);transition:all .35s}
+.toast.show{opacity:1;transform:none}
+.toast b{color:var(--gold2);font-size:12px;display:block;margin-bottom:2px}
+.toast div{font-size:11px;line-height:1.4}
+/* ---------- overlays ---------- */
+.overlay{position:absolute;inset:0;z-index:50;background:rgba(8,8,18,.88);display:flex;align-items:center;justify-content:center;padding:22px}
+.ocard{background:var(--card);border:1px solid var(--gold);border-radius:18px;padding:22px;max-width:380px;box-shadow:0 12px 60px #000}
+.ocard h1{font-family:Georgia,serif;font-style:italic;color:var(--gold2);font-size:24px;margin-bottom:4px}
+.ocard .sub{color:var(--muted);font-size:11px;margin-bottom:14px;letter-spacing:1.5px;text-transform:uppercase}
+.ocard ul{list-style:none;margin-bottom:18px}
+.ocard li{font-size:13px;line-height:1.5;margin-bottom:9px;display:flex;gap:9px}
+.ocard li .em{font-size:17px;flex-shrink:0}
+.ocard .btn-gold{width:100%;padding:12px;font-size:14px;border-radius:11px}
+[hidden]{display:none!important}
 </style>
 </head>
 <body>
+<canvas id="city"></canvas>
 
-<!-- HUD -->
 <div id="hud">
-  <div class="hud-stat">
-    <div class="hud-label">Cash</div>
-    <div class="hud-val" id="h-cash">$60,000</div>
+  <div id="hud-r1">
+    <span id="wordmark">Bar Empire</span>
+    <span id="h-cash">$60,000</span>
+    <span id="h-nw">NW <b>$60k</b></span>
+    <span id="h-debt"></span>
+    <button id="gear" onclick="openDrawer('settings')">⚙︎</button>
   </div>
-  <div class="hud-sep"></div>
-  <div class="hud-stat">
-    <div class="hud-label">Net Worth</div>
-    <div class="hud-val" id="h-nw">$60,000</div>
-  </div>
-  <div class="hud-sep"></div>
-  <div class="hud-stat">
-    <div class="hud-label">Reputation</div>
-    <div class="hud-val" id="h-rep">42</div>
-  </div>
-  <div class="hud-sep"></div>
-  <div class="hud-stat">
-    <div class="hud-label">Awareness</div>
-    <div class="hud-val" id="h-aw">25</div>
-  </div>
-  <div class="hud-right">
-    <span class="eco-badge eco-Stable" id="h-eco">Stable</span>
-    <span class="trend-badge" id="h-trend">Balanced Scene</span>
+  <div id="hud-r2">
+    <span class="chip" id="h-rep">★ 42</span>
+    <span class="chip" id="h-date">Y1 · W1 · Spring</span>
+    <span class="chip eco-Stable" id="h-eco">Stable</span>
+    <span class="chip" id="h-trend">Balanced Scene</span>
+    <div id="speed">
+      <button class="spd" id="spd0" onclick="setSpeed(0)">⏸</button>
+      <button class="spd active" id="spd1" onclick="setSpeed(1)">▶</button>
+      <button class="spd" id="spd2" onclick="setSpeed(2)">▶▶</button>
+      <button class="spd" id="spd3" onclick="setSpeed(3)">▶▶▶</button>
+    </div>
   </div>
 </div>
+<div id="ticker">Welcome to Bayside.</div>
+<div id="objchip" onclick="openDrawer('goals')">🎯 <span id="obj-text"></span> <span class="rew" id="obj-rew"></span></div>
 
-<!-- Speed bar -->
-<div id="speed-bar">
-  <button class="spd-btn" id="spd-0" onclick="setSpeed(0)">⏸ Pause</button>
-  <button class="spd-btn active" id="spd-1" onclick="setSpeed(1)">1×</button>
-  <button class="spd-btn" id="spd-2" onclick="setSpeed(2)">2×</button>
-  <button class="spd-btn" id="spd-3" onclick="setSpeed(3)">3×</button>
-  <span id="week-display" class="muted">Week 1 — Spring</span>
-  <button class="btn btn-sm" style="margin-left:auto;" onclick="saveGame()">💾 Save</button>
-  <button class="btn btn-sm" onclick="newGame()">🔄 New</button>
+<div id="zoomb">
+  <button onclick="zoomBy(1.25)">＋</button>
+  <button onclick="zoomBy(0.8)">－</button>
 </div>
 
-<!-- Main panels -->
-<div id="main">
-  <div id="panel-city" class="panel active"></div>
-  <div id="panel-menu" class="panel"></div>
-  <div id="panel-supply" class="panel"></div>
-  <div id="panel-prod" class="panel"></div>
-  <div id="panel-finance" class="panel"></div>
+<div id="cmdbar">
+  <button class="cmd" data-d="menu" onclick="openDrawer('menu')"><span class="ic">🍸</span>Menu</button>
+  <button class="cmd" data-d="supply" onclick="openDrawer('supply')"><span class="ic">📦</span>Supply</button>
+  <button class="cmd" data-d="production" onclick="openDrawer('production')"><span class="ic">🏭</span>Produce</button>
+  <button class="cmd" data-d="brand" onclick="openDrawer('brand')"><span class="ic">⭐</span>Brand</button>
+  <button class="cmd" data-d="finance" onclick="openDrawer('finance')"><span class="ic">📈</span>Finance</button>
+  <button class="cmd" data-d="goals" onclick="openDrawer('goals')"><span class="ic">🎯</span>Goals</button>
 </div>
 
-<!-- Tab bar -->
-<div id="tab-bar">
-  <button class="tab-btn active" onclick="switchTab('city',this)"><span class="tab-icon">🏙️</span>City</button>
-  <button class="tab-btn" onclick="switchTab('menu',this)"><span class="tab-icon">🍺</span>Menu</button>
-  <button class="tab-btn" onclick="switchTab('supply',this)"><span class="tab-icon">📦</span>Supply</button>
-  <button class="tab-btn" onclick="switchTab('prod',this)"><span class="tab-icon">🏭</span>Production</button>
-  <button class="tab-btn" onclick="switchTab('finance',this)"><span class="tab-icon">📊</span>Finance</button>
+<div id="drawer">
+  <div id="drawer-grab"></div>
+  <div id="drawer-head">
+    <span id="drawer-title"></span>
+    <button id="drawer-x" onclick="closeDrawer()">✕</button>
+  </div>
+  <div id="drawer-body"></div>
 </div>
 
-<!-- Toast -->
-<div id="toast">
-  <div class="toast-title" id="toast-title">Week Complete</div>
-  <div class="toast-body" id="toast-body"></div>
+<div id="toasts"></div>
+
+<div class="overlay" id="ob-welcome" hidden>
+  <div class="ocard">
+    <h1>Bar Empire</h1>
+    <div class="sub">Bayside · a city to drink in</div>
+    <ul>
+      <li><span class="em">🏙️</span><span>This is your city. <b>Drag</b> to explore, <b>pinch</b> to zoom.</span></li>
+      <li><span class="em">🍺</span><span>Your first bar is open on the <b>Riverside Strip</b> — tap it to manage staff &amp; upgrades.</span></li>
+      <li><span class="em">🏗️</span><span>Tap <b>FOR LEASE</b> lots to expand. Build a brewery or distillery to own your supply.</span></li>
+      <li><span class="em">⏱️</span><span>Time flows on its own — <b>pause</b> anytime to think.</span></li>
+    </ul>
+    <button class="btn btn-gold" onclick="startGame()">Open the doors ▶</button>
+  </div>
+</div>
+<div class="overlay" id="ob-over" hidden>
+  <div class="ocard">
+    <h1 id="over-title">The bank calls it</h1>
+    <div class="sub" id="over-sub">Debt overwhelmed the empire</div>
+    <p id="over-body" style="font-size:13px;line-height:1.5;margin-bottom:16px"></p>
+    <button class="btn btn-gold" onclick="uiNewGame(true)">Start over</button>
+  </div>
+</div>
+<div class="overlay" id="ob-win" hidden>
+  <div class="ocard">
+    <h1>🏆 Empire Established</h1>
+    <div class="sub">Bayside belongs to you</div>
+    <p style="font-size:13px;line-height:1.5;margin-bottom:16px">From one riverside pop-up to a vertically-integrated drinks empire. The city will keep growing — keep playing, or start a fresh run.</p>
+    <button class="btn btn-gold" onclick="dismissWin()">Keep playing</button>
+  </div>
 </div>
 
 <script>
-// ============================================================
-// DETERMINISTIC RNG — mulberry32
-// ============================================================
-class Rng {
-  constructor(seed) { this._a = seed >>> 0; }
-  next() {
-    this._a = (this._a + 0x6D2B79F5) >>> 0;
-    let t = this._a;
-    t = Math.imul(t ^ (t >>> 15), 1 | t);
-    t ^= t + Math.imul(t ^ (t >>> 7), 61 | t);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  }
-  range(a, b) { return a + this.next() * (b - a); }
-  int(n) { return Math.floor(this.next() * n); }
+'use strict';
+// ============================================================================
+// BAR EMPIRE — city-builder prototype. Simulation ported from the C# Layer-0
+// core (BarEmpireCore.cs / SimulationEngine.cs); presentation is a 2D living
+// city per the GDD: tap buildings, drawers, pedestrians, real-time w/ pause.
+// ============================================================================
+const IS_BROWSER = typeof window !== 'undefined' && typeof document !== 'undefined';
+
+// ----------------------------------------------------------- tiny helpers
+const clamp = (x,a,b)=>Math.max(a,Math.min(b,x));
+const lerp = (a,b,t)=>a+(b-a)*t;
+function fmt$(n){
+  const neg = n<0 ? '-' : '';
+  n = Math.abs(n);
+  if (n>=1e6) return neg+'$'+(n/1e6).toFixed(2)+'M';
+  if (n>=1e4) return neg+'$'+(n/1e3).toFixed(1)+'k';
+  return neg+'$'+Math.round(n).toLocaleString('en-US');
 }
+function season(wk){ const m=wk%52; return m<13?'spring':m<26?'summer':m<39?'autumn':'winter'; }
+const cap1 = s=>s.charAt(0).toUpperCase()+s.slice(1);
+// static visual hash (NOT the sim rng)
+function h2(a,b){ let t=(Math.imul(a,374761393)+Math.imul(b,668265263))>>>0;
+  t=Math.imul(t^(t>>>13),1274126177)>>>0; return ((t^(t>>>16))>>>0)/4294967296; }
 
-// ============================================================
-// GAME DATA
-// ============================================================
-const Categories = ['Beer','Wine','Scotch','Spirits','Mixers'];
-const SupplyTiers = ['Standard','Premium','Reserve','TopShelf'];
-const Economies = ['Boom','Stable','Downturn'];
+// ----------------------------------------------------------- data (from C# GameData)
+const CATS = ['Beer','Wine','Scotch','Spirits','Mixers'];
+const DATA = {
+  drinks: [
+    {id:'draft',   name:'Craft Draft',       icon:'🍺', appeal:1.05, fair:8.0,  cat:'Beer',    use:1.0, cat2:null,     use2:0,   labor:0.6, season:'summer'},
+    {id:'houserw', name:'House Red/White',   icon:'🍷', appeal:1.15, fair:12.5, cat:'Wine',    use:1.0, cat2:null,     use2:0,   labor:0.7, season:null},
+    {id:'reserve', name:'Reserve Vintage',   icon:'🍷', appeal:1.30, fair:25.0, cat:'Wine',    use:1.0, cat2:null,     use2:0,   labor:0.9, season:null},
+    {id:'dram',    name:'Single Malt Dram',  icon:'🥃', appeal:1.25, fair:20.5, cat:'Scotch',  use:1.0, cat2:null,     use2:0,   labor:0.8, season:'winter'},
+    {id:'raredram',name:'Rare Aged Malt',    icon:'🥃', appeal:1.45, fair:48.0, cat:'Scotch',  use:1.0, cat2:null,     use2:0,   labor:1.0, season:null},
+    {id:'cocktail',name:'Signature Cocktail',icon:'🍸', appeal:1.35, fair:18.5, cat:'Spirits', use:1.0, cat2:'Mixers', use2:1.0, labor:1.4, season:null},
+    {id:'highball',name:'Highball',          icon:'🥂', appeal:1.10, fair:14.0, cat:'Spirits', use:0.7, cat2:'Mixers', use2:1.2, labor:0.9, season:'summer'},
+  ],
+  supply: {
+    Beer:   [{tier:'Standard',cost:1.8,q:0.50},{tier:'Premium',cost:2.9,q:0.70}],
+    Wine:   [{tier:'Standard',cost:3.5,q:0.55},{tier:'Premium',cost:6.0,q:0.75},{tier:'Reserve',cost:11.0,q:0.90}],
+    Scotch: [{tier:'Premium',cost:7.5,q:0.72},{tier:'Reserve',cost:14.0,q:0.88},{tier:'TopShelf',cost:26.0,q:1.00}],
+    Spirits:[{tier:'Standard',cost:2.5,q:0.55},{tier:'Premium',cost:4.5,q:0.78}],
+    Mixers: [{tier:'Standard',cost:0.6,q:0.60},{tier:'Premium',cost:1.1,q:0.80}],
+  },
+  lines: [
+    {id:'brewery', name:'Craft Brewery',    icon:'🍺', cat:'Beer',   capex:120000, weekly:900, prodCost:0.9, q:0.74, weeks:3,   aging:0.00},
+    {id:'wineest', name:'Wine Estate',      icon:'🍇', cat:'Wine',   capex:480000, weekly:420, prodCost:1.8, q:0.85, weeks:52,  aging:0.05},
+    {id:'distill', name:'Scotch Distillery',icon:'🥃', cat:'Scotch', capex:900000, weekly:260, prodCost:2.6, q:0.90, weeks:156, aging:0.10},
+  ],
+  tiers: [
+    {tier:1, name:'Pop-up Bar', cap:1.0, appeal:1.0, cost:0},
+    {tier:2, name:'Bar',        cap:1.6, appeal:1.2, cost:70000},
+    {tier:3, name:'Flagship',   cap:2.4, appeal:1.5, cost:260000},
+  ],
+  districts: [
+    {id:'riverside', name:'Riverside Strip', traffic:900,  rent:1100, affluence:1.00, comp:2, fitout:0},
+    {id:'market',    name:'Market Lane',     traffic:1250, rent:1900, affluence:1.05, comp:3, fitout:42000},
+    {id:'harbor',    name:'Harbour Front',   traffic:1700, rent:3000, affluence:1.25, comp:5, fitout:120000},
+  ],
+  trends: [
+    {id:'balanced', name:'Balanced Scene',     boosts:{},                                       note:'No strong pull this season.'},
+    {id:'cocktail', name:'Craft-Cocktail Boom',boosts:{cocktail:1.7,highball:1.3},              note:'Mixology is everywhere.'},
+    {id:'malt',     name:'Single-Malt Surge',  boosts:{dram:1.6,raredram:1.8},                  note:'Whisky connoisseurs out in force.'},
+    {id:'natural',  name:'Natural-Wine Wave',  boosts:{houserw:1.4,reserve:1.6},                note:'A wine-forward crowd.'},
+    {id:'craftbeer',name:'Craft-Beer Hype',    boosts:{draft:1.8},                              note:'Taprooms are the move.'},
+    {id:'lowno',    name:'Premiumization',     boosts:{reserve:1.5,raredram:1.6,cocktail:1.3},  note:'Drink less, drink better.'},
+  ],
+  baseThroughput: 150,   // serves per staff per week
+  drinksPerGuest: 2.2,   // a bar guest orders ~2 drinks, not 1
+  equipCost: [0,25000,60000,140000],
+  trainCost: [0,15000,40000,90000],
+  premisesMult: 115, // buy premises at rent x this (removes rent for good)
+};
+const EQUIP_Q  =[1.00,1.10,1.18,1.30], EQUIP_CAP=[1.00,1.18,1.45,1.70];
+const TRAIN_Q  =[1.00,1.12,1.22,1.34], TRAIN_CAP=[1.00,1.10,1.18,1.28];
+const TRAIN_WAGE=[620,760,930,1150];
+const drinkById   = id=>DATA.drinks.find(d=>d.id===id);
+const districtById= id=>DATA.districts.find(d=>d.id===id);
+const lineById    = id=>DATA.lines.find(l=>l.id===id);
+const trendById   = id=>DATA.trends.find(t=>t.id===id)||DATA.trends[0];
+const supplyFor   = (c,t)=>DATA.supply[c].find(s=>s.tier===t)||DATA.supply[c][0];
 
-const Drinks = [
-  { id:'draft',    name:'Craft Draft',        appeal:1.05, fairBase:7.0,  primary:'Beer',    primaryUse:1.0, secondary:null,      secondaryUse:0,   laborCost:0.6, seasonAffinity:'summer' },
-  { id:'houserw',  name:'House Red/White',     appeal:1.15, fairBase:11.0, primary:'Wine',    primaryUse:1.0, secondary:null,      secondaryUse:0,   laborCost:0.7, seasonAffinity:null },
-  { id:'reserve',  name:'Reserve Vintage',     appeal:1.30, fairBase:22.0, primary:'Wine',    primaryUse:1.0, secondary:null,      secondaryUse:0,   laborCost:0.9, seasonAffinity:null },
-  { id:'dram',     name:'Single Malt Dram',    appeal:1.25, fairBase:18.0, primary:'Scotch',  primaryUse:1.0, secondary:null,      secondaryUse:0,   laborCost:0.8, seasonAffinity:'winter' },
-  { id:'raredram', name:'Rare Aged Malt',      appeal:1.45, fairBase:42.0, primary:'Scotch',  primaryUse:1.0, secondary:null,      secondaryUse:0,   laborCost:1.0, seasonAffinity:null },
-  { id:'cocktail', name:'Signature Cocktail',  appeal:1.35, fairBase:16.0, primary:'Spirits', primaryUse:1.0, secondary:'Mixers',  secondaryUse:1.0, laborCost:1.4, seasonAffinity:null },
-  { id:'highball', name:'Highball',            appeal:1.10, fairBase:12.0, primary:'Spirits', primaryUse:0.7, secondary:'Mixers',  secondaryUse:1.2, laborCost:0.9, seasonAffinity:'summer' },
+// ----------------------------------------------------------- objectives ladder
+const OBJECTIVES = [
+  {id:'cash75',  name:'Grow your cash to $75k',        reward:5000,   check:(s,e)=>s.cash>=75000},
+  {id:'rep55',   name:'Reach 55★ reputation',          reward:7500,   check:(s,e)=>s.reputation>=55},
+  {id:'staff5',  name:'Run a 5-strong bar crew',       reward:4000,   check:(s,e)=>s.venues.some(v=>v.staff>=5)},
+  {id:'venue2',  name:'Open a bar on Market Lane',     reward:15000,  check:(s,e)=>s.venues.some(v=>v.districtId==='market')},
+  {id:'tier2',   name:'Upgrade a venue to a full Bar', reward:12000,  check:(s,e)=>s.venues.some(v=>v.tier>=2)},
+  {id:'brewery', name:'Build the Craft Brewery',       reward:20000,  check:(s,e)=>s.ownedLines.includes('brewery')},
+  {id:'ownbeer', name:'Pour your own craft beer',      reward:10000,  check:(s,e)=>(s.totals.ownServed.Beer||0)>0},
+  {id:'aware60', name:'Reach 60 brand awareness',      reward:8000,   check:(s,e)=>s.awareness>=60},
+  {id:'nw350',   name:'Reach $350k net worth',         reward:15000,  check:(s,e)=>e.netWorth()>=350000},
+  {id:'venue3',  name:'Open on Harbour Front',         reward:25000,  check:(s,e)=>s.venues.some(v=>v.districtId==='harbor')},
+  {id:'wine',    name:'Build the Wine Estate',         reward:40000,  check:(s,e)=>s.ownedLines.includes('wineest')},
+  {id:'flagship',name:'Open a Flagship venue',         reward:50000,  check:(s,e)=>s.venues.some(v=>v.tier>=3)},
+  {id:'nw1m',    name:'Reach $1M net worth',           reward:50000,  check:(s,e)=>e.netWorth()>=1000000},
+  {id:'distill', name:'Build the Scotch Distillery',   reward:75000,  check:(s,e)=>s.ownedLines.includes('distill')},
+  {id:'ownmalt', name:'Pour your own single malt',     reward:100000, check:(s,e)=>(s.totals.ownServed.Scotch||0)>0},
+  {id:'nw3m',    name:'Build a $3M empire',            reward:0, final:true, check:(s,e)=>e.netWorth()>=3000000},
 ];
 
-const SupplyDefs = [
-  { category:'Beer',    tier:'Standard', baseCost:1.8,  quality:0.50 },
-  { category:'Beer',    tier:'Premium',  baseCost:2.9,  quality:0.70 },
-  { category:'Wine',    tier:'Standard', baseCost:3.5,  quality:0.55 },
-  { category:'Wine',    tier:'Premium',  baseCost:6.0,  quality:0.75 },
-  { category:'Wine',    tier:'Reserve',  baseCost:11.0, quality:0.90 },
-  { category:'Scotch',  tier:'Premium',  baseCost:7.5,  quality:0.72 },
-  { category:'Scotch',  tier:'Reserve',  baseCost:14.0, quality:0.88 },
-  { category:'Scotch',  tier:'TopShelf', baseCost:26.0, quality:1.00 },
-  { category:'Spirits', tier:'Standard', baseCost:2.5,  quality:0.55 },
-  { category:'Spirits', tier:'Premium',  baseCost:4.5,  quality:0.78 },
-  { category:'Mixers',  tier:'Standard', baseCost:0.6,  quality:0.60 },
-  { category:'Mixers',  tier:'Premium',  baseCost:1.1,  quality:0.80 },
-];
-
-const ProductionLines = [
-  { id:'brewery', name:'Craft Brewery',     category:'Beer',   capex:120000, weeklyOutput:900, prodCostPerUnit:0.9, quality:0.74, maturationWeeks:3,   agingUplift:0.0 },
-  { id:'wineest', name:'Wine Estate',       category:'Wine',   capex:480000, weeklyOutput:420, prodCostPerUnit:1.8, quality:0.85, maturationWeeks:52,  agingUplift:0.05 },
-  { id:'distill', name:'Scotch Distillery', category:'Scotch', capex:900000, weeklyOutput:260, prodCostPerUnit:2.6, quality:0.90, maturationWeeks:156, agingUplift:0.10 },
-];
-
-const VenueTiers = [
-  { tier:1, name:'Pop-up Bar', capacityMult:1.0, appealMult:1.0, upgradeCost:0 },
-  { tier:2, name:'Bar',        capacityMult:1.6, appealMult:1.2, upgradeCost:85000 },
-  { tier:3, name:'Flagship',   capacityMult:2.4, appealMult:1.5, upgradeCost:320000 },
-];
-
-const Districts = [
-  { id:'riverside', name:'Riverside Strip', traffic:900,  rent:1600, affluence:1.00, competition:2, fitout:0 },
-  { id:'market',    name:'Market Lane',     traffic:1250, rent:2200, affluence:1.05, competition:3, fitout:42000 },
-  { id:'harbor',    name:'Harbour Front',   traffic:1700, rent:3400, affluence:1.25, competition:5, fitout:120000 },
-];
-
-const Trends = [
-  { id:'balanced',  name:'Balanced Scene',      boosts:{}, note:'No strong pull.' },
-  { id:'cocktail',  name:'Craft-Cocktail Boom', boosts:{cocktail:1.7, highball:1.3}, note:'Mixology is everywhere.' },
-  { id:'malt',      name:'Single-Malt Surge',   boosts:{dram:1.6, raredram:1.8}, note:'Whisky connoisseurs out in force.' },
-  { id:'natural',   name:'Natural-Wine Wave',   boosts:{houserw:1.4, reserve:1.6}, note:'Wine-forward crowd.' },
-  { id:'craftbeer', name:'Craft-Beer Hype',     boosts:{draft:1.8}, note:'Taprooms are the move.' },
-  { id:'lowno',     name:'Premiumization',      boosts:{reserve:1.5, raredram:1.6, cocktail:1.3}, note:'Drink less, drink better.' },
-];
-
-const EquipQ   = [1.00, 1.10, 1.18, 1.30];
-const EquipCap = [1.00, 1.18, 1.45, 1.70];
-const TrainQ   = [1.00, 1.12, 1.22, 1.34];
-const TrainCap = [1.00, 1.10, 1.18, 1.28];
-const TrainWage= [700,  860,  1040, 1280];
-
-// ============================================================
-// HELPERS
-// ============================================================
-function clamp(x, a, b) { return Math.max(a, Math.min(b, x)); }
-function season(wk) { let m = wk % 52; return m < 13 ? 'spring' : m < 26 ? 'summer' : m < 39 ? 'autumn' : 'winter'; }
-function fmt$(n) { return '$' + Math.round(n).toLocaleString(); }
-function fmtN(n, d=0) { return n.toFixed(d); }
-function drink(id) { return Drinks.find(d => d.id === id); }
-function district(id) { return Districts.find(d => d.id === id); }
-function trend(id) { return Trends.find(t => t.id === id); }
-function line(id) { return ProductionLines.find(l => l.id === id); }
-function supplyFor(cat, tier) {
-  return SupplyDefs.find(s => s.category === cat && s.tier === tier) ||
-         SupplyDefs.find(s => s.category === cat);
-}
-function venueTier(t) { return VenueTiers.find(v => v.tier === t); }
-
-// ============================================================
-// GAME STATE
-// ============================================================
-function newGameState(seed = 12345) {
+// ----------------------------------------------------------- new game state
+function newGameState(seed){
   const s = {
-    week: 1, cash: 60000, debt: 0, reputation: 42, awareness: 25,
-    equipment: 1, training: 1, marketing: 800,
-    sourcingTier: { Beer:'Standard', Wine:'Premium', Scotch:'Premium', Spirits:'Premium', Mixers:'Standard' },
-    ownedLines: [], maturing: [],
-    ownInventory: { Beer:0, Wine:0, Scotch:0, Spirits:0, Mixers:0 },
-    ownInvQuality: { Beer:0, Wine:0, Scotch:0, Spirits:0, Mixers:0 },
-    menu: {}, venues: [],
-    economy: 'Stable', trendId: 'balanced', trendTimer: 6,
-    marketIndex: { Beer:1.0, Wine:1.0, Scotch:1.0, Spirits:1.0, Mixers:1.0 },
-    competitorPressure: 1.0,
-    history: [], seed
+    v:2, week:1, cash:60000, debt:0, reputation:42, awareness:25,
+    equipment:1, training:1, marketing:600,
+    sourcing:{Beer:'Standard',Wine:'Premium',Scotch:'Premium',Spirits:'Premium',Mixers:'Standard'},
+    ownedLines:[], maturing:[], ownInv:{}, ownInvQ:{},
+    menu:{}, venues:[{districtId:'riverside',tier:1,staff:3,ownsPremises:false,premisesValue:0}],
+    economy:'Stable', trendId:'balanced', trendTimer:6,
+    marketIndex:{}, competitorPressure:1.0,
+    history:[], totals:{ownServed:{}}, flags:{firstReady:{},wasShort:false},
+    objIndex:0, completed:[],
+    rngA:(seed===undefined ? (Date.now()%2147483647) : seed)>>>0,
   };
-  for (const d of Drinks)
-    s.menu[d.id] = { on: (d.id !== 'raredram' && d.id !== 'reserve'), price: Math.round(d.fairBase * 1.05 * 10) / 10 };
-  s.venues.push({ districtId: 'riverside', tier: 1, staff: 3, ownsPremises: false, premisesValue: 0 });
+  for (const c of CATS){ s.marketIndex[c]=1; s.ownInv[c]=0; s.ownInvQ[c]=0; }
+  for (const d of DATA.drinks)
+    s.menu[d.id] = {on:(d.id!=='raredram'&&d.id!=='reserve'), price:Math.round(d.fair*1.05*10)/10};
   return s;
 }
 
-// ============================================================
-// SIMULATION ENGINE
-// ============================================================
-class SimulationEngine {
-  constructor(state) {
-    this.S = state;
-    this._rng = new Rng(state.seed);
-  }
+// ----------------------------------------------------------- engine (C# port)
+class SimEngine {
+  constructor(s){ this.S=s; this.venueStats=[]; this.lastOrders={}; this.lastEvents=[]; }
+  // mulberry32, state persisted in S for save/load determinism
+  rng(){ const S=this.S;
+    S.rngA=(S.rngA+0x6D2B79F5)>>>0; let t=S.rngA;
+    t=Math.imul(t^(t>>>15),1|t); t^=t+Math.imul(t^(t>>>7),61|t);
+    return ((t^(t>>>14))>>>0)/4294967296; }
+  rngInt(n){ return Math.floor(this.rng()*n); }
+  econMult(){ return this.S.economy==='Boom'?1.26:this.S.economy==='Downturn'?0.71:1.0; }
+  catQuality(c){ const S=this.S;
+    if (S.ownInv[c]>0.001) return S.ownInvQ[c];
+    return supplyFor(c,S.sourcing[c]).q; }
 
-  equipFactorQ()   { return EquipQ[this.S.equipment - 1]; }
-  equipFactorCap() { return EquipCap[this.S.equipment - 1]; }
-  trainFactorQ()   { return TrainQ[this.S.training - 1]; }
-  trainFactorCap() { return TrainCap[this.S.training - 1]; }
-  econMult()       { return this.S.economy === 'Boom' ? 1.26 : this.S.economy === 'Downturn' ? 0.71 : 1.0; }
-
-  categoryQuality(cat) {
-    if (this.S.ownInventory[cat] > 0.001) return this.S.ownInvQuality[cat];
-    const sup = supplyFor(cat, this.S.sourcingTier[cat]);
-    return sup ? sup.quality : 0.5;
-  }
-
-  tick() {
-    this._runProduction();
-    this._evolveMarket();
-
-    const S = this.S;
-    const eqtr = 0.30 * (this.trainFactorQ() - 0.95) + 0.28 * (this.equipFactorQ() - 0.95) + 0.18;
-    const orders = {};
-    const categoryDemand = { Beer:0, Wine:0, Scotch:0, Spirits:0, Mixers:0 };
-    let appealSum = 0, appealN = 0, serviceSum = 0;
+  tick(){
+    const S=this.S, ev=[];
+    this.runProduction(ev);
+    this.evolveMarket(ev);
+    const eqtr = 0.30*(TRAIN_Q[S.training-1]-0.95) + 0.28*(EQUIP_Q[S.equipment-1]-0.95) + 0.18;
     const sea = season(S.week);
-    const trendBoosts = trend(S.trendId)?.boosts ?? {};
+    const boosts = trendById(S.trendId).boosts;
+    const orders={}, catDemand={};
+    for (const c of CATS) catDemand[c]=0;
+    let appealSum=0, appealN=0, serviceSum=0;
+    const vstats=[];
 
-    for (const v of S.venues) {
-      const dist = district(v.districtId);
-      const vt = venueTier(v.tier);
-      const compMult = 1.0 / (1.0 + dist.competition * 0.11 * S.competitorPressure);
-      const seasonMult = sea === 'summer' ? 1.06 : sea === 'winter' ? 0.98 : 1.0;
-      const visitors = dist.traffic * this.econMult() * seasonMult
-        * (0.50 + 0.50 * S.awareness / 100)
-        * (0.58 + 0.42 * S.reputation / 100)
-        * compMult * vt.appealMult;
-
-      const live = Object.entries(S.menu).filter(([,m]) => m.on).map(([id]) => drink(id)).filter(Boolean);
-      const weights = {};
-      let wSum = 0, paSum = 0;
-      for (const dr of live) {
-        const dq = clamp(0.45 * this.categoryQuality(dr.primary) + eqtr, 0.2, 1.0);
-        const fair = dr.fairBase * (0.62 + 0.85 * dq) * dist.affluence;
+    for (const v of S.venues){
+      const d=districtById(v.districtId), vt=DATA.tiers[v.tier-1];
+      const compMult = 1/(1 + d.comp*0.11*S.competitorPressure);
+      const seasonMult = sea==='summer'?1.06:sea==='winter'?0.98:1.0;
+      const visitors = d.traffic*this.econMult()*seasonMult
+        *(0.50+0.50*S.awareness/100)*(0.58+0.42*S.reputation/100)
+        *compMult*vt.appeal;
+      const live = DATA.drinks.filter(dr=>S.menu[dr.id].on);
+      let wSum=0, paSum=0; const w={};
+      for (const dr of live){
+        const dq = clamp(0.45*this.catQuality(dr.cat)+eqtr, 0.2, 1.0);
+        const fair = dr.fair*(0.62+0.85*dq)*d.affluence;
         const price = S.menu[dr.id].price;
-        const pa = clamp(Math.pow(fair / Math.max(price, 0.5), 1.7), 0.05, 1.7);
-        const seasonM = dr.seasonAffinity === sea ? 1.25 : dr.seasonAffinity ? 0.85 : 1.0;
-        const trendM = trendBoosts[dr.id] ?? 1.0;
-        const w = Math.max(0.001, dr.appeal * pa * seasonM * trendM);
-        weights[dr.id] = w; wSum += w; paSum += pa; appealSum += pa; appealN++;
+        const pa = clamp(Math.pow(fair/Math.max(price,0.5),1.7), 0.05, 1.7);
+        const sm = dr.season===sea?1.25:dr.season?0.85:1.0;
+        const tm = boosts[dr.id]||1;
+        const wt = Math.max(0.001, dr.appeal*pa*sm*tm);
+        w[dr.id]=wt; wSum+=wt; paSum+=pa; appealSum+=pa; appealN++;
       }
-      const conversion = clamp(0.45 + 0.40 * (paSum / Math.max(1, live.length)), 0.30, 0.95);
-      const capacity = v.staff * 95 * vt.capacityMult * this.equipFactorCap() * this.trainFactorCap();
-      const rawDemand = visitors * conversion;
-      const scale = rawDemand > capacity ? capacity / rawDemand : 1.0;
-      serviceSum += clamp(scale, 0, 1);
-
-      for (const dr of live) {
-        const o = rawDemand * (weights[dr.id] / wSum) * scale;
-        orders[dr.id] = (orders[dr.id] || 0) + o;
-        categoryDemand[dr.primary] += o * dr.primaryUse;
-        if (dr.secondary) categoryDemand[dr.secondary] += o * dr.secondaryUse;
+      const conversion = clamp(0.45+0.40*(paSum/Math.max(1,live.length)), 0.30, 0.95);
+      const capacity = v.staff*DATA.baseThroughput*vt.cap*EQUIP_CAP[S.equipment-1]*TRAIN_CAP[S.training-1];
+      const rawDemand = visitors*conversion*DATA.drinksPerGuest;
+      const scale = rawDemand>capacity ? capacity/rawDemand : 1;
+      serviceSum += clamp(scale,0,1);
+      let vRev=0, vServed=0;
+      if (wSum>0) for (const dr of live){
+        const o = rawDemand*(w[dr.id]/wSum)*scale;
+        orders[dr.id]=(orders[dr.id]||0)+o;
+        vRev+=o*S.menu[dr.id].price; vServed+=o;
+        catDemand[dr.cat]+=o*dr.use;
+        if (dr.cat2) catDemand[dr.cat2]+=o*dr.use2;
       }
+      vstats.push({districtId:v.districtId, visitors, served:vServed,
+                   serviceLevel:clamp(scale,0,1), revenue:vRev});
     }
 
-    // consume supply
-    let cogs = 0, shortfall = false;
-    for (const cat of Categories) {
-      const need = categoryDemand[cat];
-      if (need <= 0) continue;
-      const own = Math.min(need, S.ownInventory[cat]);
-      const sourced = need - own;
-      const ownLine = ProductionLines.find(l => l.category === cat && S.ownedLines.includes(l.id));
-      if (own > 0 && ownLine) { cogs += own * ownLine.prodCostPerUnit; S.ownInventory[cat] -= own; }
-      if (sourced > 0) {
-        const sup = supplyFor(cat, S.sourcingTier[cat]);
-        cogs += sourced * (sup ? sup.baseCost : 3.0) * S.marketIndex[cat];
-        if (S.ownedLines.some(id => line(id)?.category === cat)) shortfall = true;
+    // consume supply: own inventory first, then sourced at market
+    let cogs=0, shortfall=false;
+    for (const c of CATS){
+      const need=catDemand[c]; if (need<=0) continue;
+      const own=Math.min(need, S.ownInv[c]); const sourced=need-own;
+      const line = DATA.lines.find(l=>l.cat===c && S.ownedLines.includes(l.id));
+      if (own>0 && line){ cogs+=own*line.prodCost; S.ownInv[c]-=own;
+        S.totals.ownServed[c]=(S.totals.ownServed[c]||0)+own; }
+      if (sourced>0){
+        cogs += sourced*supplyFor(c,S.sourcing[c]).cost*S.marketIndex[c];
+        if (S.ownedLines.some(id=>lineById(id).cat===c)) shortfall=true;
       }
     }
+    if (shortfall && !S.flags.wasShort)
+      ev.push({msg:'⚠️ Own stock ran dry — buying at market prices while batches mature'});
+    S.flags.wasShort = shortfall;
 
     // revenue + labor
-    let revenue = 0, units = 0;
-    for (const [id, qty] of Object.entries(orders)) {
-      const dr = drink(id);
-      revenue += qty * S.menu[id].price;
-      cogs += qty * dr.laborCost;
-      units += Math.round(qty);
+    let revenue=0, units=0;
+    for (const id of Object.keys(orders)){
+      const dr=drinkById(id);
+      revenue+=orders[id]*S.menu[id].price;
+      cogs+=orders[id]*dr.labor;
+      units+=Math.round(orders[id]);
     }
 
-    // opex
-    const rent = S.venues.filter(v => !v.ownsPremises).reduce((s, v) => s + district(v.districtId).rent, 0);
-    const wages = S.venues.reduce((s, v) => s + v.staff, 0) * TrainWage[S.training - 1];
-    const interest = S.debt * 0.012;
-    const opex = rent + wages + S.marketing + interest;
-    const gross = revenue - cogs;
-    const net = gross - opex;
-
-    S.cash += net;
-    if (S.cash < 0) { S.debt += -S.cash; S.cash = 0; }
+    // opex + finances
+    const rent = S.venues.filter(v=>!v.ownsPremises).reduce((a,v)=>a+districtById(v.districtId).rent,0);
+    const wages = S.venues.reduce((a,v)=>a+v.staff,0)*TRAIN_WAGE[S.training-1];
+    const interest = S.debt*0.012;
+    const opex = rent+wages+S.marketing+interest;
+    const gross=revenue-cogs, net=gross-opex;
+    S.cash+=net;
+    if (S.cash<0){ S.debt+=-S.cash; S.cash=0; }
+    if (S.debt>0 && S.cash>S.debt*2){
+      const pay=Math.min(S.debt, S.debt*0.25);
+      S.debt-=pay; S.cash-=pay;
+      ev.push({msg:'🏦 Paid down '+fmt$(pay)+' of the loan'});
+    }
 
     // reputation + awareness
-    const valuePerc = appealN > 0 ? clamp(appealSum / appealN, 0, 1.7) / 1.4 : 0.5;
-    const servicePerc = S.venues.length > 0 ? serviceSum / S.venues.length : 1;
-    const activeMenu = Object.entries(S.menu).filter(([,m]) => m.on).map(([id]) => drink(id)).filter(Boolean);
-    const avgQ = activeMenu.length > 0
-      ? activeMenu.reduce((s, d) => s + this.categoryQuality(d.primary), 0) / activeMenu.length
-      : 0.5;
-    const repTarget = clamp(100 * (0.35 + 0.40 * valuePerc * avgQ + 0.25 * servicePerc), 5, 100);
-    S.reputation = clamp(S.reputation + (repTarget - S.reputation) * 0.28, 1, 100);
-    S.awareness = clamp(S.awareness * 0.90 + Math.sqrt(S.marketing / 200) * 2.2, 0, 100);
+    const valuePerc = appealN>0 ? clamp(appealSum/appealN,0,1.7)/1.4 : 0.5;
+    const servicePerc = S.venues.length>0 ? serviceSum/S.venues.length : 1;
+    const onMenu = DATA.drinks.filter(dr=>S.menu[dr.id].on);
+    const avgQ = onMenu.length ? onMenu.reduce((a,dr)=>a+this.catQuality(dr.cat),0)/onMenu.length : 0.4;
+    const repTarget = clamp(100*(0.35+0.40*valuePerc*avgQ+0.25*servicePerc),5,100);
+    S.reputation = clamp(S.reputation+(repTarget-S.reputation)*0.28,1,100);
+    S.awareness = clamp(S.awareness*0.90+Math.sqrt(S.marketing/200)*2.2,0,100);
 
-    const r = { week: S.week, revenue, cogs, gross, opex, net, rent, wages, marketing: S.marketing, interest, units, reputation: S.reputation, shortfall };
-    S.history.push(r);
+    const r={week:S.week,revenue,cogs,gross,opex,net,rent,wages,marketing:S.marketing,
+             interest,units,reputation:S.reputation,shortfall};
+    S.history.push(r); if (S.history.length>64) S.history.shift();
     S.week++;
+    this.venueStats=vstats; this.lastOrders=orders; this.lastEvents=ev;
     return r;
   }
 
-  _runProduction() {
-    const S = this.S;
-    for (const id of S.ownedLines) {
-      const l = line(id);
-      S.maturing.push({ category: l.category, units: l.weeklyOutput, quality: l.quality, startWeek: S.week, readyWeek: S.week + l.maturationWeeks });
+  runProduction(ev){
+    const S=this.S;
+    for (const id of S.ownedLines){
+      const l=lineById(id);
+      S.maturing.push({cat:l.cat,units:l.weekly,q:l.q,start:S.week,ready:S.week+l.weeks,lineId:id});
     }
-    const ready = S.maturing.filter(b => b.readyWeek <= S.week);
-    for (const b of ready) {
-      const l = ProductionLines.find(pl => pl.category === b.category);
-      const agingYears = (S.week - b.startWeek) / 52;
-      const q = clamp(b.quality + l.agingUplift * agingYears, 0, 1.0);
-      const existing = S.ownInventory[b.category];
-      const newQ = existing > 0
-        ? (S.ownInvQuality[b.category] * existing + q * b.units) / (existing + b.units)
-        : q;
-      S.ownInventory[b.category] = existing + b.units;
-      S.ownInvQuality[b.category] = newQ;
+    const readyNow=S.maturing.filter(b=>b.ready<=S.week);
+    if (readyNow.length){
+      const byLine={};
+      for (const b of readyNow){
+        const l=lineById(b.lineId)||DATA.lines.find(x=>x.cat===b.cat);
+        const agingYears=(S.week-b.start)/52;
+        const q=clamp(b.q+l.aging*agingYears,0,1);
+        const ex=S.ownInv[b.cat];
+        S.ownInvQ[b.cat]= ex>0 ? (S.ownInvQ[b.cat]*ex+q*b.units)/(ex+b.units) : q;
+        S.ownInv[b.cat]=ex+b.units;
+        byLine[b.lineId]=(byLine[b.lineId]||0)+b.units;
+      }
+      S.maturing=S.maturing.filter(b=>b.ready>S.week);
+      for (const id of Object.keys(byLine)){
+        const l=lineById(id);
+        if (!S.flags.firstReady[id]){
+          S.flags.firstReady[id]=true;
+          ev.push({msg:l.icon+' First batch ready! '+Math.round(byLine[id])+' units of own '+l.cat.toLowerCase()+' on tap', big:true});
+        }
+      }
     }
-    S.maturing = S.maturing.filter(b => b.readyWeek > S.week);
   }
 
-  _evolveMarket() {
-    const S = this.S;
-    const rr = this._rng.next();
-    const prevEco = S.economy;
-    const prevTrend = S.trendId;
+  evolveMarket(ev){
+    const S=this.S, rr=this.rng();
+    const prevEco=S.economy;
+    if (S.economy==='Stable'){ if (rr<0.06) S.economy='Boom'; else if (rr<0.13) S.economy='Downturn'; }
+    else if (S.economy==='Boom'){ if (rr<0.22) S.economy='Stable'; }
+    else if (rr<0.20) S.economy='Stable';
+    if (S.economy!==prevEco){
+      const m=S.economy==='Boom'?'📈 Boom! The city is spending big':
+              S.economy==='Downturn'?'📉 Downturn — wallets are closing':'⚖️ The economy steadies';
+      ev.push({msg:m,big:true});
+    }
+    if (--S.trendTimer<=0){
+      const ids=DATA.trends.map(t=>t.id).filter(i=>i!==S.trendId);
+      S.trendId=ids[this.rngInt(ids.length)];
+      S.trendTimer=5+this.rngInt(6);
+      const t=trendById(S.trendId);
+      ev.push({msg:'✨ New trend: '+t.name+' — '+t.note,big:true});
+    }
+    const drift=S.economy==='Boom'?0.006:S.economy==='Downturn'?-0.005:0.001;
+    for (const c of CATS)
+      S.marketIndex[c]=clamp(S.marketIndex[c]*(1+drift+(this.rng()-0.5)*0.05),0.55,2.4);
+    S.competitorPressure=clamp(S.competitorPressure+(this.rng()-0.45)*0.04,0.7,1.8);
+  }
 
-    if (S.economy === 'Stable') {
-      if (rr < 0.06) S.economy = 'Boom';
-      else if (rr < 0.13) S.economy = 'Downturn';
-    } else if (S.economy === 'Boom') {
-      if (rr < 0.22) S.economy = 'Stable';
+  // -------------------------------------------------- player actions
+  venueAt(districtId){ return this.S.venues.find(v=>v.districtId===districtId); }
+  openVenue(districtId){
+    const S=this.S, d=districtById(districtId);
+    if (!d || this.venueAt(districtId) || S.cash<d.fitout) return false;
+    S.cash-=d.fitout;
+    S.venues.push({districtId,tier:1,staff:3,ownsPremises:false,premisesValue:0});
+    return true;
+  }
+  upgradeVenue(districtId){
+    const S=this.S, v=this.venueAt(districtId);
+    if (!v || v.tier>=3) return false;
+    const cost=DATA.tiers[v.tier].cost;
+    if (S.cash<cost) return false;
+    S.cash-=cost; v.tier++; return true;
+  }
+  setStaff(districtId,delta){
+    const v=this.venueAt(districtId); if (!v) return false;
+    v.staff=clamp(v.staff+delta,1,12); return true;
+  }
+  buyPremises(districtId){
+    const S=this.S, v=this.venueAt(districtId);
+    if (!v || v.ownsPremises) return false;
+    const price=districtById(districtId).rent*DATA.premisesMult;
+    if (S.cash<price) return false;
+    S.cash-=price; v.ownsPremises=true; v.premisesValue=price; return true;
+  }
+  buildLine(id){
+    const S=this.S, l=lineById(id);
+    if (!l || S.ownedLines.includes(id) || S.cash<l.capex) return false;
+    S.cash-=l.capex; S.ownedLines.push(id); return true;
+  }
+  upgradeEquipment(){
+    const S=this.S; if (S.equipment>=4) return false;
+    const c=DATA.equipCost[S.equipment]; if (S.cash<c) return false;
+    S.cash-=c; S.equipment++; return true;
+  }
+  upgradeTraining(){
+    const S=this.S; if (S.training>=4) return false;
+    const c=DATA.trainCost[S.training]; if (S.cash<c) return false;
+    S.cash-=c; S.training++; return true;
+  }
+  netWorth(){
+    const S=this.S;
+    const inv=CATS.reduce((a,c)=>a+S.ownInv[c]*2,0);
+    const prem=S.venues.reduce((a,v)=>a+(v.premisesValue||0),0);
+    const lines=S.ownedLines.reduce((a,id)=>a+lineById(id).capex*0.5,0);
+    return S.cash-S.debt+inv+prem+lines;
+  }
+  // est. unit cost of a drink for menu UI
+  drinkCost(dr){
+    const S=this.S;
+    const eff=c=>{
+      const line=DATA.lines.find(l=>l.cat===c&&S.ownedLines.includes(l.id));
+      if (line && S.ownInv[c]>0.001) return line.prodCost;
+      return supplyFor(c,S.sourcing[c]).cost*S.marketIndex[c];
+    };
+    return dr.use*eff(dr.cat)+(dr.cat2?dr.use2*eff(dr.cat2):0)+dr.labor;
+  }
+}
+// ============================================================================
+// CITY WORLD — geometry, procedural decor, canvas renderer
+// ============================================================================
+const CITY = {
+  W:1500, H:2300,
+  bands: [
+    {id:'riverside', label:'RIVERSIDE STRIP',
+     main:{base:600, hMin:130,hMax:220, segs:[[40,600],[820,1460]]},
+     back:{base:380, hMin:70, hMax:130, segs:[[40,1460]]},
+     road:{y:622,h:68}, walkN:611, walkS:701, pal:0},
+    {id:'market', label:'MARKET LANE',
+     main:{base:1290, hMin:170,hMax:280, segs:[[40,600],[820,1110]]},
+     back:{base:1050, hMin:80, hMax:150, segs:[[40,1110]]},
+     road:{y:1312,h:68}, walkN:1301, walkS:1391, pal:1},
+    {id:'harbor', label:'HARBOUR FRONT',
+     main:{base:1980, hMin:210,hMax:340, segs:[[40,600],[820,1460]]},
+     back:{base:1700, hMin:60, hMax:120, segs:[[40,1460]]},
+     road:{y:2002,h:74}, walkN:1991, walkS:2098, pal:2},
+  ],
+  lots:{ riverside:{x:620,w:180,base:600,band:0},
+         market:   {x:620,w:180,base:1290,band:1},
+         harbor:   {x:620,w:180,base:1980,band:2} },
+  pads:{ brewery:{x:1150,y:880, w:310,h:120},
+         wineest:{x:1150,y:1020,w:310,h:120},
+         distill:{x:1150,y:1160,w:310,h:120} },
+};
+const VENUE_H=[0,86,150,240], VENUE_W=[0,110,170,185];
+const PALETTES=[
+  {walls:['#e7c9a1','#d9b48b','#c9d4b8','#e3d3b5','#d4a98c','#e0c0a8'], win:'#7e93a8', winLit:'#ffd98a'},
+  {walls:['#c98e6a','#b97e5e','#d9a878','#a98a74','#c4a284','#b58a6b'], win:'#6e8398', winLit:'#ffcf78'},
+  {walls:['#9fb6c8','#8aa6bb','#b8c8d8','#7e98ad','#a8bcd0','#90a8be'], win:'#5e7b95', winLit:'#ffe3a0'},
+];
+const MUTE=['#b8a98f','#a89a82','#9fa68e','#b0a18a'];
+
+// procedural decor buildings (deterministic visual seed)
+let DECOR=[];
+function genCity(){
+  DECOR=[];
+  let vr=917;
+  const vrng=()=>{ vr=(vr+0x6D2B79F5)>>>0; let t=vr;
+    t=Math.imul(t^(t>>>15),1|t); t^=t+Math.imul(t^(t>>>7),61|t);
+    return ((t^(t>>>14))>>>0)/4294967296; };
+  CITY.bands.forEach((band,bi)=>{
+    // backdrop row (muted, behind)
+    for (const [x0,x1] of band.back.segs){
+      let x=x0;
+      while (x<x1-70){
+        const w=60+vrng()*70, h=band.back.hMin+vrng()*(band.back.hMax-band.back.hMin);
+        DECOR.push({x,w,base:band.back.base,h,c:MUTE[(vrng()*MUTE.length)|0],back:true,band:bi,seed:(x|0)});
+        x+=w+8+vrng()*14;
+      }
+    }
+    // main row facades
+    const pal=PALETTES[band.pal];
+    for (const [x0,x1] of band.main.segs){
+      let x=x0;
+      while (x<x1-80){
+        const w=85+vrng()*65, h=band.main.hMin+vrng()*(band.main.hMax-band.main.hMin);
+        DECOR.push({x,w,base:band.main.base,h,c:pal.walls[(vrng()*pal.walls.length)|0],
+          win:pal.win,winLit:pal.winLit,back:false,band:bi,seed:(x*7|0),
+          shop:vrng()<0.5,awning:vrng()<0.35,ac:vrng()<0.4});
+        x+=w+10+vrng()*16;
+      }
+    }
+  });
+}
+
+// ----------------------------------------------------------- canvas helpers
+function rr(c,x,y,w,h,r){ r=Math.min(r,w/2,h/2);
+  c.beginPath(); c.moveTo(x+r,y); c.arcTo(x+w,y,x+w,y+h,r); c.arcTo(x+w,y+h,x,y+h,r);
+  c.arcTo(x,y+h,x,y,r); c.arcTo(x,y,x+w,y,r); c.closePath(); }
+
+// day/night: 0..1 cycle
+const DAY_MS=48000;
+function dayPhase(now){ return (now%DAY_MS)/DAY_MS; }
+function nightFactor(p){ // 0 day → 1 night
+  if (p<0.42) return 0;
+  if (p<0.52) return (p-0.42)/0.10;
+  if (p<0.90) return 1;
+  if (p<0.98) return 1-(p-0.90)/0.08;
+  return 0;
+}
+function duskFactor(p){
+  const d1=Math.abs(p-0.47), d2=Math.abs(p-0.94);
+  return Math.max(0, 0.14-Math.min(d1,d2)*1.6)/0.14;
+}
+
+// ----------------------------------------------------------- draw pieces
+function drawDecorB(c,b,nf){
+  const y=b.base-b.h;
+  if (b.back){
+    c.fillStyle=b.c; c.globalAlpha=0.8; c.fillRect(b.x,y,b.w,b.h); c.globalAlpha=1;
+    c.fillStyle='rgba(20,22,40,.18)'; c.fillRect(b.x,y,b.w,5);
+    return;
+  }
+  // shadow
+  c.fillStyle='rgba(20,20,35,.18)'; c.fillRect(b.x+4,b.base-3,b.w,6);
+  c.fillStyle=b.c; rr(c,b.x,y,b.w,b.h,3); c.fill();
+  // parapet
+  c.fillStyle='rgba(0,0,0,.16)'; c.fillRect(b.x,y,b.w,6);
+  // windows
+  const cols=Math.max(1,((b.w-22)/24)|0), rows=Math.max(1,((b.h-40)/30)|0);
+  const gx=(b.w-cols*15)/(cols+1), gy=(b.h-34-rows*18)/(rows+1);
+  for (let r2=0;r2<rows;r2++) for (let k=0;k<cols;k++){
+    const wx=b.x+gx+k*(15+gx), wy=y+8+gy+r2*(18+gy);
+    const lit=nf>0.45 && h2(b.seed+k,r2)<0.62;
+    c.fillStyle=lit?b.winLit:b.win;
+    c.globalAlpha=lit?0.95:0.85; c.fillRect(wx,wy,15,18); c.globalAlpha=1;
+  }
+  // ground floor: door + maybe shopfront
+  c.fillStyle='rgba(35,30,28,.85)';
+  c.fillRect(b.x+b.w*0.5-9,b.base-26,18,26);
+  if (b.shop){
+    c.fillStyle=nf>0.45?'rgba(255,214,140,.8)':'rgba(225,235,245,.7)';
+    c.fillRect(b.x+8,b.base-26,b.w*0.5-22,22);
+    c.fillStyle=['#b0563f','#3f7a68','#54618f','#8f5470'][b.seed%4];
+    c.fillRect(b.x+6,b.base-34,b.w*0.55,8);
+  }
+  if (b.awning){
+    c.fillStyle='#b0563f'; const aw=b.w*0.4;
+    c.fillRect(b.x+b.w-aw-8,b.base-32,aw,7);
+    c.fillStyle='rgba(255,255,255,.25)';
+    for (let i=0;i<4;i++) c.fillRect(b.x+b.w-aw-8+i*aw/4,b.base-32,aw/8,7);
+  }
+  if (b.ac){ c.fillStyle='#8b8b95'; c.fillRect(b.x+b.w-20,y+10,12,8); }
+}
+
+function drawTree(c,x,y,s){
+  c.fillStyle='#6b4a32'; c.fillRect(x-2,y-s*0.5,4,s*0.5);
+  c.fillStyle='#5d8a4e'; c.beginPath(); c.arc(x,y-s*0.62,s*0.42,0,7); c.fill();
+  c.fillStyle='#6fa05c'; c.beginPath(); c.arc(x-s*0.2,y-s*0.5,s*0.3,0,7); c.fill();
+  c.beginPath(); c.arc(x+s*0.22,y-s*0.55,s*0.28,0,7); c.fill();
+}
+function drawLamp(c,x,y,nf){
+  c.strokeStyle='#3a3f4a'; c.lineWidth=2.5;
+  c.beginPath(); c.moveTo(x,y); c.lineTo(x,y-26); c.stroke();
+  c.fillStyle=nf>0.4?'#ffd98a':'#c8ccd4';
+  c.beginPath(); c.arc(x,y-28,3.4,0,7); c.fill();
+  if (nf>0.4){
+    c.fillStyle='rgba(255,210,130,'+(0.16*nf)+')';
+    c.beginPath(); c.arc(x,y-28,16,0,7); c.fill();
+    c.fillStyle='rgba(255,210,130,'+(0.10*nf)+')';
+    c.beginPath(); c.ellipse(x,y-2,20,7,0,0,7); c.fill();
+  }
+}
+
+// player venue facades --------------------------------------------------
+function drawVenue(c,lot,v,nf,now,stats){
+  const cx=lot.x+lot.w/2, base=lot.base, tier=v.tier;
+  const w=VENUE_W[tier], h=VENUE_H[tier], x=cx-w/2, y=base-h;
+  c.fillStyle='rgba(15,15,30,.25)'; c.fillRect(x+5,base-3,w,7); // shadow
+  if (tier===1){
+    // pop-up kiosk: cart + big umbrella + chalkboard
+    c.fillStyle='#5d4a38'; rr(c,x+10,base-52,w-20,52,5); c.fill();
+    c.fillStyle='#7a6248'; c.fillRect(x+10,base-52,w-20,10);
+    c.fillStyle=nf>0.4?'#ffd98a':'#efe6d2'; c.fillRect(x+22,base-40,w-44,16); // counter glow
+    c.strokeStyle='#8a7458'; c.lineWidth=3;
+    c.beginPath(); c.moveTo(cx,base-50); c.lineTo(cx,base-86); c.stroke();
+    c.fillStyle='#c9a84c';
+    c.beginPath(); c.moveTo(cx-44,base-72); c.quadraticCurveTo(cx,base-104,cx+44,base-72);
+    c.lineTo(cx+34,base-68); c.quadraticCurveTo(cx,base-94,cx-34,base-68); c.closePath(); c.fill();
+    c.fillStyle='#a8893d';
+    c.beginPath(); c.moveTo(cx-44,base-72); c.quadraticCurveTo(cx,base-104,cx+44,base-72);
+    c.quadraticCurveTo(cx,base-88,cx-44,base-72); c.fill();
+    c.fillStyle='#2e2a26'; c.fillRect(x-2,base-30,16,30);
+    c.fillStyle='#f0e8d8'; c.font='700 7px system-ui'; c.textAlign='center';
+    c.fillText('BAR',x+6,base-16);
+  } else if (tier===2){
+    c.fillStyle='#4a3a52'; rr(c,x,y,w,h,4); c.fill();
+    c.fillStyle='rgba(0,0,0,.2)'; c.fillRect(x,y,w,7);
+    c.fillStyle='#c9a84c'; c.fillRect(x,y+7,w,3);
+    // big warm window + door
+    c.fillStyle=nf>0.3?'rgba(255,205,120,.92)':'rgba(240,228,200,.85)';
+    rr(c,x+12,base-64,w*0.52,52,4); c.fill();
+    c.strokeStyle='rgba(60,45,60,.5)'; c.lineWidth=2;
+    c.strokeRect(x+12,base-64,w*0.52,52);
+    c.beginPath(); c.moveTo(x+12+w*0.26,base-64); c.lineTo(x+12+w*0.26,base-12); c.stroke();
+    c.fillStyle='#2e2433'; rr(c,x+w-44,base-58,30,58,3); c.fill();
+    c.fillStyle='#c9a84c'; c.beginPath(); c.arc(x+w-22,base-30,2.4,0,7); c.fill();
+    // awning
+    c.fillStyle='#7a2e3a'; c.fillRect(x+8,base-74,w*0.58,9);
+    c.fillStyle='rgba(255,255,255,.22)';
+    for (let i=0;i<5;i++) c.fillRect(x+8+i*w*0.58/5,base-74,w*0.058,9);
+    // upper windows
+    for (let i=0;i<3;i++){
+      const wx=x+14+i*((w-28)/3);
+      c.fillStyle=nf>0.45?'#ffd98a':'#8e9bb0';
+      c.fillRect(wx,y+18,(w-28)/3-8,24);
+    }
+    // hanging sign
+    c.strokeStyle='#8a7458'; c.lineWidth=2;
+    c.beginPath(); c.moveTo(x+w-6,base-86); c.lineTo(x+w+10,base-86); c.stroke();
+    if (nf>0.3){ c.shadowColor='#ffce6a'; c.shadowBlur=10; }
+    c.fillStyle='#c9a84c'; c.beginPath(); c.arc(x+w+10,base-78,9,0,7); c.fill();
+    c.shadowBlur=0;
+    c.fillStyle='#171221'; c.font='800 10px Georgia'; c.textAlign='center';
+    c.fillText('P',x+w+10,base-74.5);
+  } else {
+    // flagship: two floors + terrace + neon
+    c.fillStyle='#3c3146'; rr(c,x,y,w,h,5); c.fill();
+    c.fillStyle='#c9a84c'; c.fillRect(x,y,w,4);
+    c.fillStyle='rgba(201,168,76,.5)'; c.fillRect(x,y+h*0.42,w,3); // floor line
+    // ground glass front
+    c.fillStyle=nf>0.3?'rgba(255,205,120,.95)':'rgba(240,230,205,.9)';
+    rr(c,x+10,base-70,w-52,58,4); c.fill();
+    c.strokeStyle='rgba(50,40,58,.55)'; c.lineWidth=2;
+    for (let i=1;i<4;i++){ c.beginPath();
+      c.moveTo(x+10+i*(w-52)/4,base-70); c.lineTo(x+10+i*(w-52)/4,base-12); c.stroke(); }
+    c.fillStyle='#241c2e'; rr(c,x+w-36,base-62,26,62,3); c.fill();
+    c.fillStyle='#c9a84c'; c.beginPath(); c.arc(x+w-18,base-32,2.6,0,7); c.fill();
+    // terrace on floor line
+    c.fillStyle='#55465e'; c.fillRect(x-8,y+h*0.42-4,w+16,6);
+    for (const ux of [x+18,x+w/2,x+w-22]){
+      c.strokeStyle='#8a7458'; c.lineWidth=2;
+      c.beginPath(); c.moveTo(ux,y+h*0.42-4); c.lineTo(ux,y+h*0.42-22); c.stroke();
+      c.fillStyle='#b0563f';
+      c.beginPath(); c.moveTo(ux-13,y+h*0.42-18); c.quadraticCurveTo(ux,y+h*0.42-32,ux+13,y+h*0.42-18); c.closePath(); c.fill();
+    }
+    // upper windows
+    for (let i=0;i<4;i++){
+      const wx=x+14+i*((w-28)/4);
+      c.fillStyle=nf>0.45?'#ffd98a':'#93a0b5';
+      c.fillRect(wx,y+16,(w-28)/4-8,30);
+    }
+    // neon sign panel
+    if (nf>0.25){ c.shadowColor='#ffce6a'; c.shadowBlur=14; }
+    c.fillStyle='#171221'; rr(c,cx-44,y-20,88,24,5); c.fill();
+    c.shadowBlur=0;
+    c.strokeStyle='#c9a84c'; c.lineWidth=1.5; rr(c,cx-44,y-20,88,24,5); c.stroke();
+    c.fillStyle=nf>0.25?'#ffd98a':'#c9a84c';
+    c.font='italic 800 13px Georgia'; c.textAlign='center';
+    c.fillText('PROOF',cx,y-3);
+  }
+  // queue figures when under-staffed
+  if (stats && stats.serviceLevel<0.94){
+    const q=Math.min(6,Math.round((1-stats.serviceLevel)*11));
+    for (let i=0;i<q;i++){
+      const qx=cx+w/2+12+i*11, qy=base-2;
+      c.fillStyle=['#c97f5f','#5f86c9','#7a5fc9','#5fc98e','#c9b25f','#c95f74'][i%6];
+      rr(c,qx-3,qy-12,6,10,2); c.fill();
+      c.fillStyle='#e8b88a'; c.beginPath(); c.arc(qx,qy-15,3,0,7); c.fill();
+    }
+    c.fillStyle='rgba(224,82,82,.92)'; c.font='700 9px system-ui'; c.textAlign='center';
+    c.fillText('QUEUE',cx+w/2+38,base-26);
+  }
+}
+
+function drawEmptyLot(c,lot,d,nf,now){
+  const x=lot.x,w=lot.w,base=lot.base;
+  c.fillStyle='#8f8a7c'; rr(c,x,base-110,w,110,4); c.fill();
+  c.strokeStyle='rgba(201,168,76,'+(0.55+0.35*Math.sin(now/400))+')';
+  c.lineWidth=2.5; c.setLineDash([9,7]); rr(c,x+3,base-107,w-6,104,4); c.stroke(); c.setLineDash([]);
+  // sign board
+  const cx=x+w/2;
+  c.fillStyle='#6b5a40'; c.fillRect(cx-3,base-58,6,38);
+  c.fillStyle='#1d1a2a'; rr(c,cx-52,base-96,104,42,5); c.fill();
+  c.strokeStyle='#c9a84c'; c.lineWidth=1.5; rr(c,cx-52,base-96,104,42,5); c.stroke();
+  c.fillStyle='#f0c96e'; c.font='800 12px system-ui'; c.textAlign='center';
+  c.fillText('FOR LEASE',cx,base-79);
+  c.fillStyle='#cfc5ae'; c.font='600 10px system-ui';
+  c.fillText(d.fitout>0?('fit-out '+fmt$(d.fitout)):'ready now',cx,base-64);
+}
+
+// production pads --------------------------------------------------------
+function drawPad(c,padId,pad,built,nf,now,S){
+  const {x,y,w,h}=pad;
+  c.fillStyle='#7d7668'; rr(c,x,y,w,h,5); c.fill();
+  c.strokeStyle='rgba(60,56,46,.6)'; c.lineWidth=1.5; rr(c,x,y,w,h,5); c.stroke();
+  const l=lineById(padId), cx=x+w/2, base=y+h-8;
+  if (!built){
+    c.strokeStyle='rgba(201,168,76,.4)'; c.setLineDash([7,6]);
+    rr(c,x+4,y+4,w-8,h-8,4); c.stroke(); c.setLineDash([]);
+    c.fillStyle='#c9b88a'; c.font='800 11px system-ui'; c.textAlign='center';
+    c.fillText(l.icon+' '+l.name.toUpperCase(),cx,y+h/2-8);
+    c.fillStyle='#9a907c'; c.font='600 10px system-ui';
+    c.fillText('build for '+fmt$(l.capex),cx,y+h/2+8);
+    return;
+  }
+  if (padId==='brewery'){
+    c.fillStyle='#8a5a3c'; rr(c,x+16,base-58,150,58,4); c.fill();
+    c.fillStyle='#6e4630'; c.fillRect(x+16,base-58,150,9);
+    for (const kx of [x+50,x+105]){
+      c.fillStyle='#c98a3c'; c.beginPath(); c.arc(kx,base-26,17,0,7); c.fill();
+      c.fillStyle='#e8b86a'; c.beginPath(); c.arc(kx-5,base-31,5,0,7); c.fill();
+      c.fillStyle='#8a5a28'; c.fillRect(kx-3,base-52,6,12);
+    }
+    c.fillStyle='#b8b2a6'; rr(c,x+190,base-66,30,66,14); c.fill();
+    c.fillStyle='#8f8a7c'; c.fillRect(x+196,base-66,18,8);
+    c.fillStyle='#5a4632'; c.fillRect(x+240,base-70,9,46);
+  } else if (padId==='wineest'){
+    for (let i=0;i<4;i++){
+      c.strokeStyle='#4e7a40'; c.lineWidth=5;
+      c.beginPath(); c.moveTo(x+14,y+22+i*22); c.lineTo(x+150,y+22+i*22); c.stroke();
+      c.strokeStyle='#6fa05c'; c.lineWidth=2.5;
+      c.beginPath(); c.moveTo(x+14,y+20+i*22); c.lineTo(x+150,y+20+i*22); c.stroke();
+    }
+    c.fillStyle='#d9c8a8'; rr(c,x+180,base-52,90,52,4); c.fill();
+    c.fillStyle='#a8523c'; c.beginPath();
+    c.moveTo(x+172,base-52); c.lineTo(x+225,base-76); c.lineTo(x+278,base-52); c.closePath(); c.fill();
+    c.fillStyle='#5a3c28';
+    for (let i=0;i<3;i++){ c.beginPath(); c.arc(x+196+i*16,base-7,7,0,7); c.fill();
+      c.fillStyle='#7a5438'; c.beginPath(); c.arc(x+196+i*16,base-7,4.5,0,7); c.fill(); c.fillStyle='#5a3c28'; }
+  } else {
+    c.fillStyle='#9a948a'; rr(c,x+16,base-60,140,60,3); c.fill();
+    c.fillStyle='#7d7668'; c.fillRect(x+16,base-60,140,8);
+    // pagoda vent
+    c.fillStyle='#5a5248';
+    c.beginPath(); c.moveTo(x+58,base-60); c.lineTo(x+86,base-88) ; c.lineTo(x+114,base-60); c.closePath(); c.fill();
+    c.beginPath(); c.moveTo(x+68,base-76); c.lineTo(x+86,base-96); c.lineTo(x+104,base-76); c.closePath(); c.fill();
+    // cask stack
+    c.fillStyle='#7a5438';
+    for (const [bx,by] of [[x+190,base-12],[x+212,base-12],[x+234,base-12],[x+201,base-30],[x+223,base-30]]){
+      c.beginPath(); c.arc(bx,by,10,0,7); c.fill();
+      c.strokeStyle='#5a3c28'; c.lineWidth=2; c.beginPath(); c.arc(bx,by,10,0,7); c.stroke();
+      c.fillStyle='#8f6444'; c.beginPath(); c.arc(bx,by,5.5,0,7); c.fill(); c.fillStyle='#7a5438';
+    }
+    c.fillStyle='#4a4238'; c.fillRect(x+136,base-78,8,30);
+  }
+  // name + aging chip
+  c.fillStyle='rgba(20,18,32,.88)'; rr(c,cx-60,y-12,120,18,9); c.fill();
+  c.fillStyle='#f0c96e'; c.font='700 10px system-ui'; c.textAlign='center';
+  const nb=S? S.maturing.filter(b=>b.lineId===padId).length : 0;
+  c.fillText(l.icon+' '+l.name+(nb?(' · '+nb+' aging'):''),cx,y+1);
+}
+// ============================================================================
+// SCENE RENDER + LIVING CITY (agents, cars, particles) + CAMERA/INPUT
+// ============================================================================
+let canvas=null, ctx=null;
+const VIEW={w:0,h:0,dpr:1};
+const cam={x:710,y:430,z:0.9};
+let agents=[], cars=[], motes=[], smokes=[], confetti=[];
+let bandRates=[0.4,0.4,0.4], venueStatMap={};
+let firstSessionPulse=true;
+
+function resize(){
+  VIEW.dpr=Math.min(2,window.devicePixelRatio||1);
+  VIEW.w=window.innerWidth; VIEW.h=window.innerHeight;
+  canvas.width=VIEW.w*VIEW.dpr; canvas.height=VIEW.h*VIEW.dpr;
+  canvas.style.width=VIEW.w+'px'; canvas.style.height=VIEW.h+'px';
+  clampCam();
+}
+function minZoom(){ return Math.max(0.30, Math.min(VIEW.w/CITY.W, VIEW.h/CITY.H)*0.92); }
+function clampCam(){
+  cam.z=clamp(cam.z,minZoom(),2.2);
+  const hw=VIEW.w/2/cam.z, hh=VIEW.h/2/cam.z;
+  cam.x = hw*2>CITY.W ? CITY.W/2 : clamp(cam.x,hw,CITY.W-hw);
+  cam.y = hh*2>CITY.H ? CITY.H/2 : clamp(cam.y,hh,CITY.H-hh);
+}
+function s2w(sx,sy){ return {x:(sx-VIEW.w/2)/cam.z+cam.x, y:(sy-VIEW.h/2)/cam.z+cam.y}; }
+function zoomBy(f,px,py){
+  const fx=px===undefined?VIEW.w/2:px, fy=py===undefined?VIEW.h/2:py;
+  const before=s2w(fx,fy);
+  cam.z=clamp(cam.z*f,minZoom(),2.2);
+  const after=s2w(fx,fy);
+  cam.x+=before.x-after.x; cam.y+=before.y-after.y; clampCam();
+}
+
+// ----------------------------------------------------------- living city update
+function refreshBandRates(){
+  venueStatMap={};
+  for (const vs of engine.venueStats) venueStatMap[vs.districtId]=vs;
+  CITY.bands.forEach((b,i)=>{
+    const vs=venueStatMap[b.id];
+    bandRates[i]= vs ? clamp(vs.visitors/1400,0.3,1.8)
+                     : clamp(districtById(b.id).traffic/3200,0.15,0.5);
+  });
+}
+const spawnAcc=[0,0,0];
+function updateAgents(dt){
+  CITY.bands.forEach((band,bi)=>{
+    spawnAcc[bi]+=bandRates[bi]*dt;
+    while (spawnAcc[bi]>1 && agents.length<70){
+      spawnAcc[bi]-=1;
+      const lane=Math.random()<0.5?0:1;
+      const dir=Math.random()<0.5?1:-1;
+      const y=(lane===0?band.walkN:band.walkS)+Math.random()*6-3;
+      const v=engine.venueAt(band.id);
+      const vs=venueStatMap[band.id];
+      const toVenue = v && lane===0 && Math.random()<0.42;
+      agents.push({
+        x:dir>0?-12:CITY.W+12, y, dir, band:bi, lane,
+        speed:26+Math.random()*22, state:'walk',
+        shirt:['#c97f5f','#5f86c9','#7a5fc9','#5fc98e','#c9b25f','#c95f74','#8a8f9a','#bf8fc9'][(Math.random()*8)|0],
+        skin:['#e8b88a','#c9956a','#a87850','#8a6240'][(Math.random()*4)|0],
+        target: toVenue ? CITY.lots[band.id].x+CITY.lots[band.id].w/2+(Math.random()*24-12) : null,
+        alpha:1,
+      });
+    }
+  });
+  for (let i=agents.length-1;i>=0;i--){
+    const a=agents[i];
+    if (a.state==='walk'){
+      a.x+=a.dir*a.speed*dt;
+      if (a.target!==null && Math.abs(a.x-a.target)<5){
+        a.state='enter';
+        if (Math.random()<0.35) motes.push({x:a.x,y:a.y-26,vy:-16,a:1,t:'+$',c:'#4caf7d'});
+      }
+      if (a.x<-20||a.x>CITY.W+20){ agents.splice(i,1); continue; }
     } else {
-      if (rr < 0.20) S.economy = 'Stable';
+      a.y-=10*dt; a.alpha-=dt*1.6;
+      if (a.alpha<=0){ agents.splice(i,1); continue; }
     }
-
-    S.trendTimer--;
-    if (S.trendTimer <= 0) {
-      const ids = Trends.map(t => t.id).filter(i => i !== S.trendId);
-      S.trendId = ids[this._rng.int(ids.length)];
-      S.trendTimer = 5 + this._rng.int(6);
+  }
+}
+function initCars(){
+  cars=[];
+  CITY.bands.forEach((band,bi)=>{
+    for (let i=0;i<3;i++){
+      const dir=i%2===0?1:-1;
+      cars.push({band:bi, dir,
+        y:band.road.y+(dir>0?17:band.road.h-17),
+        x:Math.random()*CITY.W, speed:60+Math.random()*55,
+        c:['#c94f4f','#4f7ec9','#d9b048','#5aa56a','#8a6ab8','#d97f3e','#c9c9c9','#3f3f46'][(Math.random()*8)|0]});
     }
+  });
+}
+function updateCars(dt){
+  for (const car of cars){
+    car.x+=car.dir*car.speed*dt;
+    if (car.dir>0 && car.x>CITY.W+40) car.x=-40;
+    if (car.dir<0 && car.x<-40) car.x=CITY.W+40;
+  }
+}
+function updateParticles(dt,now){
+  for (let i=motes.length-1;i>=0;i--){
+    const m=motes[i]; m.y+=m.vy*dt; m.a-=dt*0.8;
+    if (m.a<=0) motes.splice(i,1);
+  }
+  // factory smoke
+  if (engine && Math.random()<dt*3){
+    for (const id of engine.S.ownedLines){
+      const p=CITY.pads[id];
+      const sx = id==='brewery'?p.x+244: id==='wineest'?p.x+225: p.x+140;
+      const sy = id==='brewery'?p.y+p.h-78: id==='wineest'?p.y+p.h-60: p.y+p.h-86;
+      smokes.push({x:sx+Math.random()*6-3,y:sy,r:3,a:0.5});
+    }
+  }
+  for (let i=smokes.length-1;i>=0;i--){
+    const s=smokes[i]; s.y-=14*dt; s.r+=8*dt; s.a-=dt*0.35; s.x+=Math.sin(now/600+i)*6*dt;
+    if (s.a<=0) smokes.splice(i,1);
+  }
+  for (let i=confetti.length-1;i>=0;i--){
+    const p=confetti[i]; p.vy+=240*dt; p.x+=p.vx*dt; p.y+=p.vy*dt; p.rot+=p.vr*dt; p.a-=dt*0.7;
+    if (p.a<=0) confetti.splice(i,1);
+  }
+}
+function burstConfetti(){
+  for (let i=0;i<42;i++)
+    confetti.push({x:VIEW.w/2,y:VIEW.h*0.22,
+      vx:(Math.random()-0.5)*340, vy:-Math.random()*260-60,
+      rot:Math.random()*6, vr:(Math.random()-0.5)*12, a:1.4,
+      c:['#f0c96e','#c9a84c','#e05252','#ece4d4'][(Math.random()*4)|0]});
+}
 
-    const drift = S.economy === 'Boom' ? 0.006 : S.economy === 'Downturn' ? -0.005 : 0.001;
-    for (const cat of Categories)
-      S.marketIndex[cat] = clamp(S.marketIndex[cat] * (1 + drift + (this._rng.next() - 0.5) * 0.05), 0.55, 2.4);
-    S.competitorPressure = clamp(S.competitorPressure + (this._rng.next() - 0.45) * 0.04, 0.7, 1.8);
+// ----------------------------------------------------------- main render
+function render(now){
+  const c=ctx, p=dayPhase(now), nf=nightFactor(p), df=duskFactor(p);
+  c.setTransform(VIEW.dpr,0,0,VIEW.dpr,0,0);
+  c.fillStyle='#a8a294'; c.fillRect(0,0,VIEW.w,VIEW.h);
+  c.translate(VIEW.w/2,VIEW.h/2); c.scale(cam.z,cam.z); c.translate(-cam.x,-cam.y);
+  c.textAlign='center';
 
-    return { ecoChanged: prevEco !== S.economy, trendChanged: prevTrend !== S.trendId };
+  // ground zones
+  c.fillStyle='#9aa886'; c.fillRect(0,120,CITY.W,62);          // river bank
+  c.fillStyle='#86a86e'; c.fillRect(0,712,CITY.W,148);          // plaza 1
+  c.fillStyle='#86a86e'; c.fillRect(0,1402,CITY.W,158);         // plaza 2
+  c.fillStyle='#b8a988'; c.fillRect(0,2120,CITY.W,40);          // boardwalk
+  // water: river + harbour
+  for (const [wy,wh] of [[0,120],[2160,140]]){
+    const g=c.createLinearGradient(0,wy,0,wy+wh);
+    const dk=nf*0.55;
+    g.addColorStop(0,'rgb('+(70-40*dk)+','+(130-60*dk)+','+(160-50*dk)+')');
+    g.addColorStop(1,'rgb('+(50-28*dk)+','+(105-50*dk)+','+(140-45*dk)+')');
+    c.fillStyle=g; c.fillRect(0,wy,CITY.W,wh);
+    c.strokeStyle='rgba(255,255,255,'+(0.22-0.12*nf)+')'; c.lineWidth=1.5;
+    for (let i=0;i<10;i++){
+      const sx=(h2(i,wy)*CITY.W+now/55)%CITY.W, sy=wy+12+h2(i*3,wy)* (wh-24);
+      c.beginPath(); c.moveTo(sx,sy); c.lineTo(sx+16,sy); c.stroke();
+    }
+  }
+  // boat in harbour
+  const bx=((now/110)%(CITY.W+300))-150, by=2215+Math.sin(now/900)*3;
+  c.fillStyle='#7a5438'; rr(c,bx,by,46,12,5); c.fill();
+  c.strokeStyle='#5a4632'; c.lineWidth=2; c.beginPath(); c.moveTo(bx+23,by); c.lineTo(bx+23,by-24); c.stroke();
+  c.fillStyle='#ece4d4'; c.beginPath(); c.moveTo(bx+25,by-24); c.lineTo(bx+40,by-8); c.lineTo(bx+25,by-8); c.closePath(); c.fill();
+  // pier
+  c.fillStyle='#8a7458'; c.fillRect(700,2120,70,120);
+  c.strokeStyle='rgba(60,48,36,.4)';
+  for (let i=0;i<6;i++){ c.beginPath(); c.moveTo(700,2140+i*18); c.lineTo(770,2140+i*18); c.stroke(); }
+
+  // roads + sidewalks per band
+  for (const band of CITY.bands){
+    c.fillStyle='#c4beb0';
+    c.fillRect(0,band.walkN-11,CITY.W,22);
+    c.fillRect(0,band.walkS-11,CITY.W,22);
+    c.fillStyle='#4a4d55'; c.fillRect(0,band.road.y,CITY.W,band.road.h);
+    c.strokeStyle='rgba(220,214,190,.5)'; c.lineWidth=2.5; c.setLineDash([18,16]);
+    c.beginPath(); c.moveTo(0,band.road.y+band.road.h/2); c.lineTo(CITY.W,band.road.y+band.road.h/2); c.stroke();
+    c.setLineDash([]);
+    c.fillStyle='rgba(230,226,210,.55)';
+    for (const cwx of [470,950]) for (let i=0;i<6;i++)
+      c.fillRect(cwx+i*9,band.road.y+4,5,band.road.h-8);
+    // district label on road
+    c.fillStyle='rgba(240,236,220,.34)'; c.font='800 17px system-ui';
+    c.fillText(band.label,250,band.road.y+band.road.h/2+6);
   }
 
-  buildLine(lineId) {
-    const l = line(lineId);
-    if (!l || this.S.ownedLines.includes(lineId) || this.S.cash < l.capex) return false;
-    this.S.cash -= l.capex;
-    this.S.ownedLines.push(lineId);
-    return true;
+  // trees & lamps & fountain
+  for (let x=70;x<CITY.W;x+=130) drawTree(c,x+h2(x,1)*36,166,26+h2(x,2)*10);
+  for (let x=90;x<CITY.W;x+=150){ drawTree(c,x+h2(x,3)*40,800,30+h2(x,4)*12); drawTree(c,x+h2(x,5)*40,1505,30+h2(x,6)*12); }
+  // fountain
+  c.fillStyle='#9fb4c4'; c.beginPath(); c.arc(420,786,26,0,7); c.fill();
+  c.strokeStyle='#7e98ad'; c.lineWidth=3; c.beginPath(); c.arc(420,786,26,0,7); c.stroke();
+  c.fillStyle='rgba(255,255,255,.6)';
+  c.beginPath(); c.arc(420,786,6+Math.sin(now/300)*2,0,7); c.fill();
+
+  // decor buildings (backs then mains, per band order = already y-sorted enough)
+  for (const b of DECOR) if (b.back) drawDecorB(c,b,nf);
+  for (const b of DECOR) if (!b.back) drawDecorB(c,b,nf);
+
+  // production pads
+  for (const id of Object.keys(CITY.pads))
+    drawPad(c,id,CITY.pads[id],engine.S.ownedLines.includes(id),nf,now,engine.S);
+
+  // player lots / venues
+  for (const did of Object.keys(CITY.lots)){
+    const lot=CITY.lots[did], v=engine.venueAt(did);
+    if (v) drawVenue(c,lot,v,nf,now,venueStatMap[did]);
+    else drawEmptyLot(c,lot,districtById(did),nf,now);
+  }
+  // first-session pulse ring on starting bar
+  if (firstSessionPulse && engine.S.week<4){
+    const lot=CITY.lots.riverside, r=46+Math.sin(now/300)*8;
+    c.strokeStyle='rgba(240,201,110,'+(0.5+0.3*Math.sin(now/300))+')'; c.lineWidth=3;
+    c.beginPath(); c.arc(lot.x+lot.w/2,lot.base-44,r,0,7); c.stroke();
   }
 
-  openVenue(districtId) {
-    const dist = district(districtId);
-    if (!dist) return false;
-    if (this.S.venues.some(v => v.districtId === districtId)) return false;
-    if (this.S.cash < dist.fitout) return false;
-    this.S.cash -= dist.fitout;
-    this.S.venues.push({ districtId, tier: 1, staff: 3, ownsPremises: false, premisesValue: 0 });
-    return true;
+  // lamps along north sidewalks
+  for (const band of CITY.bands)
+    for (let x=80;x<CITY.W;x+=190) drawLamp(c,x,band.walkN+10,nf);
+
+  // cars
+  for (const car of cars){
+    c.fillStyle='rgba(15,15,30,.22)'; c.fillRect(car.x-13,car.y+4,26,5);
+    c.fillStyle=car.c; rr(c,car.x-14,car.y-7,28,14,4); c.fill();
+    c.fillStyle='rgba(180,210,235,.8)';
+    rr(c,car.x-(car.dir>0?4:10),car.y-5,14,6,2); c.fill();
+    if (nf>0.4){
+      c.fillStyle='rgba(255,235,160,.85)';
+      c.beginPath(); c.arc(car.x+car.dir*14,car.y-2,2.4,0,7); c.fill();
+      c.beginPath(); c.arc(car.x+car.dir*14,car.y+3,2.4,0,7); c.fill();
+    }
+  }
+  // pedestrians
+  for (const a of agents){
+    c.globalAlpha=a.alpha;
+    c.fillStyle='rgba(15,15,30,.2)'; c.beginPath(); c.ellipse(a.x,a.y+1,4,1.6,0,0,7); c.fill();
+    c.fillStyle=a.shirt; rr(c,a.x-3.2,a.y-12,6.4,11,2.5); c.fill();
+    c.fillStyle=a.skin; c.beginPath(); c.arc(a.x,a.y-15,3.2,0,7); c.fill();
+    c.globalAlpha=1;
+  }
+  // smoke + motes
+  for (const s of smokes){
+    c.fillStyle='rgba(225,222,215,'+Math.max(0,s.a)+')';
+    c.beginPath(); c.arc(s.x,s.y,s.r,0,7); c.fill();
+  }
+  c.font='700 13px system-ui';
+  for (const m of motes){
+    c.globalAlpha=Math.max(0,Math.min(1,m.a));
+    c.fillStyle=m.c; c.fillText(m.t,m.x,m.y);
+    c.globalAlpha=1;
   }
 
-  upgradeVenue(districtId) {
-    const v = this.S.venues.find(v => v.districtId === districtId);
-    if (!v || v.tier >= 3) return false;
-    const nextTier = venueTier(v.tier + 1);
-    if (this.S.cash < nextTier.upgradeCost) return false;
-    this.S.cash -= nextTier.upgradeCost;
-    v.tier++;
-    return true;
-  }
-
-  addStaff(districtId, delta) {
-    const v = this.S.venues.find(v => v.districtId === districtId);
-    if (!v) return;
-    v.staff = Math.max(1, Math.min(20, v.staff + delta));
-  }
-
-  netWorth() {
-    const S = this.S;
-    const inv = Object.values(S.ownInventory).reduce((s, v) => s + v * 2, 0);
-    const lines = S.ownedLines.reduce((s, id) => s + (line(id)?.capex || 0) * 0.5, 0);
-    return S.cash - S.debt + inv + lines;
+  // night ambient + dusk tint (world only)
+  c.setTransform(VIEW.dpr,0,0,VIEW.dpr,0,0);
+  if (nf>0){ c.fillStyle='rgba(14,18,48,'+(0.42*nf)+')'; c.fillRect(0,0,VIEW.w,VIEW.h); }
+  if (df>0){ c.fillStyle='rgba(255,130,60,'+(0.10*df)+')'; c.fillRect(0,0,VIEW.w,VIEW.h); }
+  // confetti (screen space)
+  for (const pt of confetti){
+    c.save(); c.globalAlpha=Math.max(0,Math.min(1,pt.a));
+    c.translate(pt.x,pt.y); c.rotate(pt.rot);
+    c.fillStyle=pt.c; c.fillRect(-3,-2,6,4); c.restore();
   }
 }
 
-// ============================================================
-// GAME LOOP
-// ============================================================
-let engine, lastTick, speed = 1;
-const SPEEDS = [null, 3000, 1500, 500]; // ms per week
+// ----------------------------------------------------------- input
+function hitTest(wx,wy){
+  for (const did of Object.keys(CITY.lots)){
+    const lot=CITY.lots[did], v=engine.venueAt(did);
+    const top=lot.base-(v?VENUE_H[v.tier]+34:130);
+    if (wx>=lot.x-26 && wx<=lot.x+lot.w+26 && wy>=top && wy<=lot.base+12)
+      return v?{type:'venue',id:did}:{type:'lot',id:did};
+  }
+  for (const id of Object.keys(CITY.pads)){
+    const p=CITY.pads[id];
+    if (wx>=p.x&&wx<=p.x+p.w&&wy>=p.y-16&&wy<=p.y+p.h) return {type:'pad',id};
+  }
+  return null;
+}
+function bindInput(){
+  let touches=new Map(), panStart=null, moved=false, pinch0=null;
+  const tp=e=>{ const r=canvas.getBoundingClientRect();
+    return [...e.changedTouches].map(t=>({id:t.identifier,x:t.clientX-r.left,y:t.clientY-r.top})); };
+  canvas.addEventListener('touchstart',e=>{
+    e.preventDefault();
+    for (const t of tp(e)) touches.set(t.id,t);
+    if (touches.size===1){ const t=[...touches.values()][0];
+      panStart={x:t.x,y:t.y,cx:cam.x,cy:cam.y}; moved=false; }
+    else if (touches.size===2){
+      const [a,b]=[...touches.values()];
+      pinch0={d:Math.hypot(a.x-b.x,a.y-b.y),z:cam.z,mx:(a.x+b.x)/2,my:(a.y+b.y)/2,
+              w:s2w((a.x+b.x)/2,(a.y+b.y)/2)};
+      panStart=null;
+    }
+  },{passive:false});
+  canvas.addEventListener('touchmove',e=>{
+    e.preventDefault();
+    for (const t of tp(e)) if (touches.has(t.id)) touches.set(t.id,t);
+    if (touches.size===1 && panStart){
+      const t=[...touches.values()][0];
+      const dx=t.x-panStart.x, dy=t.y-panStart.y;
+      if (Math.abs(dx)+Math.abs(dy)>10) moved=true;
+      cam.x=panStart.cx-dx/cam.z; cam.y=panStart.cy-dy/cam.z; clampCam();
+    } else if (touches.size===2 && pinch0){
+      const [a,b]=[...touches.values()];
+      const d=Math.hypot(a.x-b.x,a.y-b.y);
+      cam.z=clamp(pinch0.z*d/pinch0.d,minZoom(),2.2);
+      const mx=(a.x+b.x)/2,my=(a.y+b.y)/2;
+      cam.x=pinch0.w.x-(mx-VIEW.w/2)/cam.z;
+      cam.y=pinch0.w.y-(my-VIEW.h/2)/cam.z;
+      clampCam(); moved=true;
+    }
+  },{passive:false});
+  canvas.addEventListener('touchend',e=>{
+    e.preventDefault();
+    const ended=tp(e);
+    for (const t of ended) touches.delete(t.id);
+    if (touches.size<2) pinch0=null;
+    if (touches.size===0 && !moved && ended.length===1){
+      const w=s2w(ended[0].x,ended[0].y); handleTap(w.x,w.y);
+    }
+    if (touches.size===0) panStart=null;
+  },{passive:false});
+  // mouse (desktop)
+  let mdown=null;
+  canvas.addEventListener('mousedown',e=>{ mdown={x:e.clientX,y:e.clientY,cx:cam.x,cy:cam.y}; moved=false; });
+  window.addEventListener('mousemove',e=>{
+    if (!mdown) return;
+    const dx=e.clientX-mdown.x, dy=e.clientY-mdown.y;
+    if (Math.abs(dx)+Math.abs(dy)>6) moved=true;
+    cam.x=mdown.cx-dx/cam.z; cam.y=mdown.cy-dy/cam.z; clampCam();
+  });
+  window.addEventListener('mouseup',e=>{
+    if (mdown && !moved){ const w=s2w(e.clientX,e.clientY); handleTap(w.x,w.y); }
+    mdown=null;
+  });
+  canvas.addEventListener('wheel',e=>{
+    e.preventDefault(); zoomBy(e.deltaY<0?1.12:0.89,e.clientX,e.clientY);
+  },{passive:false});
+}
+function handleTap(wx,wy){
+  const hit=hitTest(wx,wy);
+  firstSessionPulse=false;
+  if (!hit){ closeDrawer(); return; }
+  if (hit.type==='venue') openDrawer('venue',hit.id);
+  else if (hit.type==='lot') openDrawer('build',hit.id);
+  else openDrawer('production',hit.id);
+}
+// ============================================================================
+// UI — HUD, ticker, toasts, drawers, game loop, persistence
+// ============================================================================
+let engine=null, speed=1, simAcc=0, lastFrame=0;
+const SIM_MS=[0,3000,1500,600];
+const SAVE_KEY='barEmpireSave_v2';
+let drawerType=null, drawerArg=null, lastDrawerTouch=0;
+let tickerQ=[], tickerBusy=false;
 
-function initGame(state) {
-  engine = new SimulationEngine(state);
-  lastTick = performance.now();
-  renderAll();
+const $=id=>document.getElementById(id);
+
+// ----------------------------------------------------------- HUD
+function updateHUD(){
+  const S=engine.S;
+  $('h-cash').textContent=fmt$(S.cash);
+  $('h-nw').innerHTML='NW <b>'+fmt$(engine.netWorth())+'</b>';
+  const dEl=$('h-debt');
+  if (S.debt>1){ dEl.style.display='inline'; dEl.textContent='debt '+fmt$(S.debt); }
+  else dEl.style.display='none';
+  $('h-rep').textContent='★ '+S.reputation.toFixed(0);
+  const yr=Math.floor((S.week-1)/52)+1, wk=(S.week-1)%52+1;
+  $('h-date').textContent='Y'+yr+' · W'+wk+' · '+cap1(season(S.week));
+  const eco=$('h-eco'); eco.textContent=S.economy; eco.className='chip eco-'+S.economy;
+  $('h-trend').textContent=trendById(S.trendId).name;
+  const o=OBJECTIVES[S.objIndex];
+  if (o){ $('obj-text').textContent=o.name;
+    $('obj-rew').textContent=o.reward?('+'+fmt$(o.reward)):''; }
+  else { $('obj-text').textContent='Empire complete'; $('obj-rew').textContent=''; }
+}
+function flashCash(net){
+  const el=$('h-cash');
+  el.classList.remove('flash-pos','flash-neg');
+  void el.offsetWidth;
+  el.classList.add(net>=0?'flash-pos':'flash-neg');
+  setTimeout(()=>el.classList.remove('flash-pos','flash-neg'),900);
+}
+function setSpeed(s){
+  speed=s;
+  for (let i=0;i<4;i++) $('spd'+i).classList.toggle('active',i===s);
 }
 
-function newGame() {
-  if (!confirm('Start a new game? (current progress will be lost)')) return;
-  localStorage.removeItem('barempire_save');
+// ----------------------------------------------------------- ticker & toasts
+function pushTicker(msg){ tickerQ.push(msg); if (tickerQ.length>6) tickerQ.shift(); pumpTicker(); }
+function pumpTicker(){
+  if (tickerBusy || !tickerQ.length) return;
+  tickerBusy=true;
+  const el=$('ticker');
+  el.style.opacity=0;
+  setTimeout(()=>{
+    el.textContent=tickerQ.shift(); el.style.opacity=1;
+    setTimeout(()=>{ tickerBusy=false; pumpTicker(); }, 4200);
+  },350);
+}
+function toast(title,body){
+  const host=$('toasts');
+  const t=document.createElement('div'); t.className='toast';
+  t.innerHTML='<b>'+title+'</b><div>'+body+'</div>';
+  host.appendChild(t);
+  requestAnimationFrame(()=>t.classList.add('show'));
+  setTimeout(()=>{ t.classList.remove('show'); setTimeout(()=>t.remove(),400); },4200);
+  while (host.children.length>2) host.firstChild.remove();
+}
+
+// ----------------------------------------------------------- weekly advance
+function advanceWeek(){
+  const r=engine.tick();
+  refreshBandRates();
+  for (const e of engine.lastEvents){
+    pushTicker(e.msg);
+    if (e.big) toast('Bayside News', e.msg);
+  }
+  pushTicker('Wk '+r.week+' · net '+(r.net>=0?'+':'')+fmt$(r.net)+' · '+r.units.toLocaleString()+' drinks'+(r.shortfall?' · sourcing gap':''));
+  for (const vs of engine.venueStats){
+    const lot=CITY.lots[vs.districtId];
+    motes.push({x:lot.x+lot.w/2,y:lot.base-VENUE_H[engine.venueAt(vs.districtId).tier]-18,
+      vy:-13,a:1.6,t:'+'+fmt$(vs.revenue),c:'#4caf7d'});
+  }
+  checkObjectives();
+  updateHUD(); flashCash(r.net);
+  refreshDrawer(false);
+  autosave();
+  checkEndStates();
+}
+function checkObjectives(){
+  const S=engine.S;
+  let guard=0;
+  while (S.objIndex<OBJECTIVES.length && guard++<6){
+    const o=OBJECTIVES[S.objIndex];
+    if (!o.check(S,engine)) break;
+    S.completed.push(o.id);
+    S.objIndex++;
+    if (o.reward){ S.cash+=o.reward; }
+    burstConfetti();
+    toast('🎯 Objective complete!', o.name+(o.reward?(' — reward <b>'+fmt$(o.reward)+'</b>'):''));
+    pushTicker('🎯 '+o.name+' ✓');
+    if (o.final){ $('ob-win').hidden=false; setSpeed(0); }
+  }
+}
+function checkEndStates(){
+  if (engine.S.debt>300000){
+    setSpeed(0);
+    $('over-body').textContent='Debt passed '+fmt$(300000)+' and the lenders pulled the plug at week '+engine.S.week+'. Your empire reached a net worth of '+fmt$(engine.netWorth())+' at its peak. Another round?';
+    $('ob-over').hidden=false;
+  }
+}
+function dismissWin(){ $('ob-win').hidden=true; setSpeed(1); }
+
+// ----------------------------------------------------------- drawers
+function openDrawer(type,arg){
+  drawerType=type; drawerArg=arg;
+  document.querySelectorAll('.cmd').forEach(b=>b.classList.toggle('active',b.dataset.d===type));
+  renderDrawer();
+  $('drawer').classList.add('open');
+}
+function closeDrawer(){
+  drawerType=null;
+  $('drawer').classList.remove('open');
+  document.querySelectorAll('.cmd').forEach(b=>b.classList.remove('active'));
+}
+function refreshDrawer(force){
+  if (!drawerType) return;
+  if (!force && performance.now()-lastDrawerTouch<1500) return;
+  renderDrawer();
+}
+function renderDrawer(){
+  const S=engine.S;
+  let title='', html='';
+  const noteTouch='ontouchstart' in window?'touchstart':'mousedown';
+
+  if (drawerType==='venue'){
+    const did=drawerArg, v=engine.venueAt(did), d=districtById(did);
+    if (!v){ closeDrawer(); return; }
+    const vt=DATA.tiers[v.tier-1], vs=venueStatMap[did];
+    title=d.name+' — '+vt.name;
+    const next=v.tier<3?DATA.tiers[v.tier]:null;
+    const premPrice=d.rent*DATA.premisesMult;
+    html+='<div class="dcard"><div class="chips">'
+      +'<span class="schip">visitors/wk <b>'+(vs?Math.round(vs.visitors).toLocaleString():'—')+'</b></span>'
+      +'<span class="schip">service <b>'+(vs?Math.round(vs.serviceLevel*100)+'%':'—')+'</b></span>'
+      +'<span class="schip">revenue/wk <b>'+(vs?fmt$(vs.revenue):'—')+'</b></span></div>'
+      +(vs&&vs.serviceLevel<0.94?'<div class="dsub" style="color:var(--neg)">⚠️ Queues forming — add staff or upgrade capacity</div>':'')
+      +'</div>';
+    html+='<div class="dcard"><div class="dlabel">Staff — '+fmt$(TRAIN_WAGE[S.training-1])+'/wk each</div>'
+      +'<div class="drow"><div class="stepper">'
+      +'<button onclick="uiStaff(\''+did+'\',-1)">−</button><span>'+v.staff+' staff</span>'
+      +'<button onclick="uiStaff(\''+did+'\',1)">+</button></div>'
+      +'<span class="dsub">capacity '+Math.round(v.staff*DATA.baseThroughput*vt.cap*EQUIP_CAP[S.equipment-1]*TRAIN_CAP[S.training-1]).toLocaleString()+' serves/wk</span></div></div>';
+    html+='<div class="dcard"><div class="dlabel">Building</div><div class="drow">'
+      +(next?('<button class="btn btn-gold" '+(S.cash<next.cost?'disabled':'')+' onclick="uiUpgrade(\''+did+'\')">Upgrade to '+next.name+' · '+fmt$(next.cost)+'</button>')
+            :'<span class="dsub">⭐ Flagship — fully upgraded</span>')
+      +'</div></div>';
+    html+='<div class="dcard"><div class="dlabel">Premises</div>'
+      +(v.ownsPremises?'<div class="dsub">🏛️ You own this building — no rent.</div>'
+        :('<div class="drow"><button class="btn" '+(S.cash<premPrice?'disabled':'')+' onclick="uiBuyPrem(\''+did+'\')">Buy premises · '+fmt$(premPrice)+'</button>'
+          +'<span class="dsub">kills the '+fmt$(d.rent)+'/wk rent forever</span></div>'))
+      +'</div>';
+    html+='<div class="dcard"><div class="dlabel">District</div><div class="chips">'
+      +'<span class="schip">traffic <b>'+d.traffic+'</b></span>'
+      +'<span class="schip">rent <b>'+fmt$(d.rent)+'/wk</b></span>'
+      +'<span class="schip">affluence <b>'+d.affluence.toFixed(2)+'</b></span>'
+      +'<span class="schip">rivals <b>'+d.comp+'</b></span></div></div>';
+
+  } else if (drawerType==='build'){
+    const did=drawerArg, d=districtById(did);
+    title=d.name+' — open a venue';
+    html+='<div class="dcard"><div class="chips">'
+      +'<span class="schip">traffic <b>'+d.traffic+'</b></span>'
+      +'<span class="schip">rent <b>'+fmt$(d.rent)+'/wk</b></span>'
+      +'<span class="schip">affluence <b>'+d.affluence.toFixed(2)+'</b></span>'
+      +'<span class="schip">rivals <b>'+d.comp+'</b></span></div>'
+      +'<div class="dsub" style="margin:8px 0">'
+      +(did==='harbor'?'The premium waterfront. Expensive, crowded with rivals — and the city\'s richest drinkers.'
+        :did==='market'?'Dense midtown foot traffic. A natural second venue.'
+        :'Your home turf on the river.')+'</div>'
+      +'<button class="btn btn-gold" style="width:100%" '+(S.cash<d.fitout?'disabled':'')
+      +' onclick="uiOpenVenue(\''+did+'\')">Open Pop-up Bar · '+(d.fitout?fmt$(d.fitout):'free')+'</button></div>';
+
+  } else if (drawerType==='menu'){
+    title='Menu & pricing';
+    html+='<div class="dsub" style="margin-bottom:8px">Brand-wide prices. Demand follows value-for-money, season and the current trend ('+trendById(S.trendId).name+').</div>';
+    const sea=season(S.week);
+    for (const dr of DATA.drinks){
+      const m=S.menu[dr.id], cost=engine.drinkCost(dr);
+      const sold=engine.lastOrders[dr.id]||0;
+      const boost=trendById(S.trendId).boosts[dr.id];
+      html+='<div class="dcard"><div class="drow" style="justify-content:space-between">'
+        +'<span class="dname">'+dr.icon+' '+dr.name
+        +(dr.season===sea?' <span class="goldc" style="font-size:10px">in season</span>':'')
+        +(boost?' <span class="goldc" style="font-size:10px">🔥 trending</span>':'')+'</span>'
+        +'<button class="btn btn-sm '+(m.on?'btn-gold':'')+'" onclick="uiToggleDrink(\''+dr.id+'\')">'+(m.on?'ON':'off')+'</button></div>'
+        +'<div class="drow" style="margin-top:7px"><div class="stepper">'
+        +'<button onclick="uiPrice(\''+dr.id+'\',-0.5)">−</button><span>$'+m.price.toFixed(2)+'</span>'
+        +'<button onclick="uiPrice(\''+dr.id+'\',0.5)">+</button></div>'
+        +'<span class="dsub">cost ~$'+cost.toFixed(2)+' · margin <b class="'+(m.price-cost>0?'green':'red')+'">$'+(m.price-cost).toFixed(2)+'</b>'
+        +(m.on&&sold>0.5?' · sold '+Math.round(sold):'')+'</span></div></div>';
+    }
+
+  } else if (drawerType==='supply'){
+    title='Supply sourcing';
+    html+='<div class="dsub" style="margin-bottom:8px">Pick a market tier per category — or out-build the market entirely with your own production.</div>';
+    for (const c of CATS){
+      const cur=S.sourcing[c], own=S.ownInv[c];
+      html+='<div class="dcard"><div class="drow" style="justify-content:space-between">'
+        +'<span class="dname">'+c+'</span>'
+        +'<span class="dsub">index ×'+S.marketIndex[c].toFixed(2)+'</span></div>'
+        +'<div class="seg" style="margin-top:7px">';
+      for (const s of DATA.supply[c])
+        html+='<button class="'+(cur===s.tier?'on':'')+'" onclick="uiSource(\''+c+'\',\''+s.tier+'\')">'
+          +s.tier+' · $'+(s.cost*S.marketIndex[c]).toFixed(2)+' · q'+Math.round(s.q*100)+'</button>';
+      html+='</div>';
+      if (own>0.5){
+        const l=DATA.lines.find(l=>l.cat===c&&S.ownedLines.includes(l.id));
+        html+='<div class="dsub" style="margin-top:7px;color:var(--pos)">🏭 Own stock: '
+          +Math.round(own).toLocaleString()+' units @ q'+Math.round(S.ownInvQ[c]*100)
+          +(l?' ($'+l.prodCost.toFixed(2)+'/unit — used first)':'')+'</div>';
+      }
+      html+='</div>';
+    }
+
+  } else if (drawerType==='production'){
+    title='Production — own the supply';
+    html+='<div class="dsub" style="margin-bottom:8px">Beer matures in weeks, scotch in years. Patience pays: own product is cheaper, better, and immune to price spikes.</div>';
+    for (const l of DATA.lines){
+      const built=S.ownedLines.includes(l.id);
+      const batches=S.maturing.filter(b=>b.lineId===l.id);
+      html+='<div class="dcard'+(drawerArg===l.id?' " style="border-color:var(--gold)"':'"')+'>'
+        +'<div class="drow" style="justify-content:space-between">'
+        +'<span class="dname">'+l.icon+' '+l.name+'</span>'
+        +(built?'<span class="goldc" style="font-size:11px">OPERATING</span>'
+               :'<button class="btn btn-gold btn-sm" '+(S.cash<l.capex?'disabled':'')+' onclick="uiBuildLine(\''+l.id+'\')">Build · '+fmt$(l.capex)+'</button>')
+        +'</div>'
+        +'<div class="chips"><span class="schip">output <b>'+l.weekly+'/wk</b></span>'
+        +'<span class="schip">cost <b>$'+l.prodCost.toFixed(2)+'</b></span>'
+        +'<span class="schip">quality <b>'+Math.round(l.q*100)+'</b></span>'
+        +'<span class="schip">matures <b>'+(l.weeks>=52?(l.weeks/52).toFixed(0)+' yr':l.weeks+' wk')+'</b></span></div>';
+      if (built){
+        if (batches.length){
+          const nxt=batches.reduce((a,b)=>Math.min(a,b.ready),Infinity);
+          const oldest=batches[0];
+          const frac=clamp((S.week-oldest.start)/(oldest.ready-oldest.start),0,1);
+          html+='<div class="dsub">'+batches.length+' batches aging · next ready in '+Math.max(0,nxt-S.week)+' wk</div>'
+            +'<div class="prog"><div style="width:'+(frac*100)+'%"></div></div>';
+        }
+        html+='<div class="dsub" style="color:var(--pos)">ready stock: '+Math.round(S.ownInv[l.cat]).toLocaleString()+' units</div>';
+      }
+      html+='</div>';
+    }
+
+  } else if (drawerType==='brand'){
+    title='Brand HQ';
+    html+='<div class="dcard"><div class="dlabel">Marketing — awareness '+S.awareness.toFixed(0)+'/100</div>'
+      +'<div class="drow"><div class="stepper">'
+      +'<button onclick="uiMkt(-250)">−</button><span>'+fmt$(S.marketing)+'/wk</span>'
+      +'<button onclick="uiMkt(250)">+</button></div>'
+      +'<span class="dsub">decays if you stop</span></div>'
+      +'<div class="prog"><div style="width:'+S.awareness+'%"></div></div></div>';
+    html+='<div class="dcard"><div class="dlabel">Bar equipment — tier '+S.equipment+'/4</div><div class="drow">'
+      +(S.equipment<4?('<button class="btn btn-gold btn-sm" '+(S.cash<DATA.equipCost[S.equipment]?'disabled':'')
+        +' onclick="uiEquip()">Upgrade · '+fmt$(DATA.equipCost[S.equipment])+'</button>'):'<span class="dsub">maxed</span>')
+      +'<span class="dsub">quality +'+Math.round((EQUIP_Q[S.equipment-1]-1)*100)+'% · capacity +'+Math.round((EQUIP_CAP[S.equipment-1]-1)*100)+'%</span></div></div>';
+    html+='<div class="dcard"><div class="dlabel">Staff training — tier '+S.training+'/4</div><div class="drow">'
+      +(S.training<4?('<button class="btn btn-gold btn-sm" '+(S.cash<DATA.trainCost[S.training]?'disabled':'')
+        +' onclick="uiTrain()">Train up · '+fmt$(DATA.trainCost[S.training])+'</button>'):'<span class="dsub">maxed</span>')
+      +'<span class="dsub">wages '+fmt$(TRAIN_WAGE[S.training-1])+'/staff/wk</span></div></div>';
+    html+='<div class="dcard"><div class="dlabel">Reputation '+S.reputation.toFixed(0)+'/100</div>'
+      +'<div class="prog"><div style="width:'+S.reputation+'%"></div></div>'
+      +'<div class="dsub">grows with value-for-money, quality and short queues</div></div>';
+
+  } else if (drawerType==='finance'){
+    title='Finance';
+    const hist=S.history.slice(-16);
+    if (hist.length){
+      const maxAbs=Math.max(1,...hist.map(h=>Math.abs(h.net)));
+      html+='<div class="dcard"><div class="dlabel">Weekly net — last '+hist.length+' wks</div><div class="bars">';
+      for (const h of hist)
+        html+='<div style="height:'+Math.max(3,Math.abs(h.net)/maxAbs*100)+'%;background:'+(h.net>=0?'var(--pos)':'var(--neg)')+'" title="W'+h.week+'"></div>';
+      html+='</div></div>';
+      html+='<div class="dcard"><table><tr><th>Wk</th><th>Revenue</th><th>COGS</th><th>Opex</th><th>Net</th></tr>';
+      for (const h of hist.slice(-8).reverse())
+        html+='<tr><td>'+h.week+'</td><td>'+fmt$(h.revenue)+'</td><td>'+fmt$(h.cogs)+'</td><td>'+fmt$(h.opex)+'</td>'
+          +'<td class="'+(h.net>=0?'green':'red')+'">'+(h.net>=0?'+':'')+fmt$(h.net)+'</td></tr>';
+      html+='</table></div>';
+      const last=hist[hist.length-1];
+      html+='<div class="dcard"><div class="dlabel">Last week opex</div><div class="chips">'
+        +'<span class="schip">rent <b>'+fmt$(last.rent)+'</b></span>'
+        +'<span class="schip">wages <b>'+fmt$(last.wages)+'</b></span>'
+        +'<span class="schip">marketing <b>'+fmt$(last.marketing)+'</b></span>'
+        +'<span class="schip">interest <b>'+fmt$(last.interest)+'</b></span></div></div>';
+    } else html+='<div class="dsub">First week still trading…</div>';
+    html+='<div class="dcard"><div class="dlabel">Balance sheet</div><div class="chips">'
+      +'<span class="schip">cash <b>'+fmt$(S.cash)+'</b></span>'
+      +'<span class="schip">debt <b>'+fmt$(S.debt)+'</b></span>'
+      +'<span class="schip">net worth <b>'+fmt$(engine.netWorth())+'</b></span></div>'
+      +(S.debt>0?'<div class="dsub">Loans auto-draw when cash runs dry (1.2%/wk interest) and repay when cash is strong. Bank limit: '+fmt$(300000)+'.</div>':'')
+      +'</div>';
+
+  } else if (drawerType==='goals'){
+    title='Objectives';
+    OBJECTIVES.forEach((o,i)=>{
+      const done=i<S.objIndex, cur=i===S.objIndex;
+      if (!done && !cur && i>S.objIndex+2) return;
+      html+='<div class="dcard" style="'+(cur?'border-color:var(--gold)':'')+(done?';opacity:.55':'')+'">'
+        +'<div class="drow" style="justify-content:space-between">'
+        +'<span class="dname">'+(done?'✓ ':cur?'🎯 ':'🔒 ')+o.name+'</span>'
+        +(o.reward?'<span class="'+(done?'mutedc':'goldc')+'" style="font-size:11px">+'+fmt$(o.reward)+'</span>':'')
+        +'</div></div>';
+    });
+
+  } else if (drawerType==='settings'){
+    title='Settings';
+    html+='<div class="dcard"><div class="drow">'
+      +'<button class="btn" onclick="autosave();toast(\'Saved\',\'Progress stored on this device.\')">💾 Save now</button>'
+      +'<button class="btn" onclick="uiNewGame(false)">🔄 New game</button></div>'
+      +'<div class="dsub" style="margin-top:8px">Autosaves every week. Seed '+S.rngA%100000+' · Week '+S.week+'</div></div>';
+    html+='<div class="dcard"><div class="dsub">Bar Empire — playable city prototype. The full 3D Unity build follows this exact simulation. Drag to pan, pinch to zoom, tap buildings to manage.</div></div>';
+  }
+
+  $('drawer-title').textContent=title;
+  $('drawer-body').innerHTML=html;
+  $('drawer-body').addEventListener(noteTouch,()=>{ lastDrawerTouch=performance.now(); },{passive:true});
+}
+
+// ----------------------------------------------------------- ui actions
+function uiStaff(did,d){ engine.setStaff(did,d); lastDrawerTouch=performance.now(); updateHUD(); renderDrawer(); }
+function uiUpgrade(did){
+  if (engine.upgradeVenue(did)){
+    const v=engine.venueAt(did);
+    toast('🏗️ Upgraded!','Your '+districtById(did).name+' venue is now a '+DATA.tiers[v.tier-1].name+'.');
+    burstConfetti(); checkObjectives(); updateHUD(); renderDrawer();
+  } else toast('Not enough cash','Keep trading or take it slower.');
+}
+function uiBuyPrem(did){
+  if (engine.buyPremises(did)){
+    toast('🏛️ Premises bought','No more rent on '+districtById(did).name+'.');
+    updateHUD(); renderDrawer();
+  }
+}
+function uiOpenVenue(did){
+  if (engine.openVenue(did)){
+    toast('🍾 New venue!','Your '+districtById(did).name+' pop-up is open for business.');
+    burstConfetti(); checkObjectives(); updateHUD(); openDrawer('venue',did);
+  }
+}
+function uiToggleDrink(id){ const m=engine.S.menu[id]; m.on=!m.on; lastDrawerTouch=performance.now(); renderDrawer(); }
+function uiPrice(id,d){
+  const m=engine.S.menu[id], dr=drinkById(id);
+  m.price=clamp(Math.round((m.price+d)*10)/10, 1, dr.fair*3);
+  lastDrawerTouch=performance.now(); renderDrawer();
+}
+function uiSource(c,t){ engine.S.sourcing[c]=t; lastDrawerTouch=performance.now(); renderDrawer(); }
+function uiBuildLine(id){
+  if (engine.buildLine(id)){
+    const l=lineById(id);
+    toast(l.icon+' Construction!',l.name+' is up — first batch ready in '+(l.weeks>=52?(l.weeks/52).toFixed(0)+' years':l.weeks+' weeks')+'.');
+    burstConfetti(); checkObjectives(); updateHUD(); renderDrawer();
+  }
+}
+function uiMkt(d){ engine.S.marketing=clamp(engine.S.marketing+d,0,6000); lastDrawerTouch=performance.now(); updateHUD(); renderDrawer(); }
+function uiEquip(){ if (engine.upgradeEquipment()){ toast('⭐ Equipment upgraded','Tier '+engine.S.equipment+' kit behind every bar.'); updateHUD(); renderDrawer(); } }
+function uiTrain(){ if (engine.upgradeTraining()){ toast('🎓 Crew trained','Tier '+engine.S.training+' service standard.'); updateHUD(); renderDrawer(); } }
+function uiNewGame(fromOver){
+  if (!fromOver && !confirm('Start a fresh empire? Current progress is replaced.')) return;
+  $('ob-over').hidden=true; $('ob-win').hidden=true;
   initGame(newGameState());
+  closeDrawer(); setSpeed(1);
+  toast('🍸 Fresh start','Riverside pop-up open. Make it count.');
 }
 
-function saveGame() {
-  try {
-    localStorage.setItem('barempire_save', JSON.stringify(engine.S));
-    showToast('Game Saved', 'Progress saved to local storage.');
-  } catch(e) { showToast('Save Failed', e.message); }
+// ----------------------------------------------------------- save / load
+function autosave(){
+  try{ localStorage.setItem(SAVE_KEY,JSON.stringify({v:2,S:engine.S,ts:Date.now()})); }catch(e){}
 }
-
-function loadGame() {
-  try {
-    const raw = localStorage.getItem('barempire_save');
-    if (raw) return JSON.parse(raw);
-  } catch(e) {}
+function loadSave(){
+  try{
+    const raw=localStorage.getItem(SAVE_KEY);
+    if (!raw) return null;
+    const j=JSON.parse(raw);
+    if (j&&j.v===2&&j.S&&j.S.week) return j.S;
+  }catch(e){}
   return null;
 }
 
-function setSpeed(s) {
-  speed = s;
-  document.querySelectorAll('.spd-btn').forEach((b, i) => b.classList.toggle('active', i === s));
+// ----------------------------------------------------------- boot + loop
+function initGame(S){
+  engine=new SimEngine(S);
+  refreshBandRates();
+  updateHUD();
+  simAcc=0;
 }
-
-// rAF loop
-function loop(now) {
+function loop(now){
   requestAnimationFrame(loop);
-  if (speed > 0) {
-    const interval = SPEEDS[speed];
-    if (now - lastTick >= interval) {
-      lastTick = now;
-      doTick();
-    }
+  const dt=Math.min(0.05,(now-lastFrame)/1000)||0.016;
+  lastFrame=now;
+  if (speed>0 && engine){
+    simAcc+=dt*1000;
+    const iv=SIM_MS[speed];
+    if (simAcc>=iv){ simAcc-=iv; advanceWeek(); }
   }
+  updateAgents(dt); updateCars(dt); updateParticles(dt,now);
+  render(now);
 }
-
-function doTick() {
-  const S = engine.S;
-  const prevEco = S.economy;
-  const prevTrend = S.trendId;
-  const r = engine.tick();
-  updateHUD();
-  renderActivePanel();
-
-  // Toast
-  let events = [];
-  if (S.economy !== prevEco) events.push(`Economy: ${prevEco} → ${S.economy}`);
-  if (S.trendId !== prevTrend) events.push(`New trend: ${trend(S.trendId)?.name}`);
-  const sign = r.net >= 0 ? '+' : '';
-  const col = r.net >= 0 ? 'green' : 'red';
-  let body = `Revenue ${fmt$(r.revenue)} | Net <span class="${col}">${sign}${fmt$(r.net)}</span> | Rep ${r.reputation.toFixed(0)}`;
-  if (events.length) body += '<br>' + events.join(' • ');
-  showToast(`Week ${r.week} Complete`, body);
+function startGame(){
+  $('ob-welcome').hidden=true;
+  setSpeed(1);
+  pushTicker('Doors open on the Riverside Strip. Make Bayside drink well.');
 }
-
-// ============================================================
-// HUD
-// ============================================================
-function updateHUD() {
-  const S = engine.S;
-  const nw = engine.netWorth();
-  document.getElementById('h-cash').textContent = fmt$(S.cash);
-  document.getElementById('h-nw').textContent = fmt$(nw);
-  document.getElementById('h-nw').className = 'hud-val ' + (nw >= 0 ? 'pos' : 'neg');
-  document.getElementById('h-rep').textContent = S.reputation.toFixed(0);
-  document.getElementById('h-aw').textContent = S.awareness.toFixed(0);
-  const eBadge = document.getElementById('h-eco');
-  eBadge.textContent = S.economy;
-  eBadge.className = 'eco-badge eco-' + S.economy;
-  document.getElementById('h-trend').textContent = trend(S.trendId)?.name ?? S.trendId;
-  document.getElementById('week-display').textContent = `Week ${S.week} — ${cap(season(S.week))}`;
-}
-
-function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
-
-// ============================================================
-// TAB SWITCHING
-// ============================================================
-let currentTab = 'city';
-function switchTab(tab, btn) {
-  currentTab = tab;
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.getElementById('panel-' + tab).classList.add('active');
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  renderActivePanel();
-}
-
-function renderActivePanel() {
-  const renders = { city: renderCity, menu: renderMenu, supply: renderSupply, prod: renderProd, finance: renderFinance };
-  renders[currentTab]?.();
-}
-
-function renderAll() {
-  updateHUD();
-  renderCity();
-}
-
-// ============================================================
-// CITY TAB
-// ============================================================
-function renderCity() {
-  const S = engine.S;
-  let html = '<div class="card-title" style="padding:0 2px 6px;font-size:12px;color:var(--muted);">Bayside City — Your Venues & Districts</div>';
-  for (const dist of Districts) {
-    const v = S.venues.find(v => v.districtId === dist.id);
-    const vt = v ? venueTier(v.tier) : null;
-    const hasVenue = !!v;
-    const canOpen = !hasVenue && S.cash >= dist.fitout;
-    const canUpgrade = v && v.tier < 3 && S.cash >= venueTier(v.tier + 1).upgradeCost;
-
-    html += `<div class="card">
-      <div class="card-head">
-        <div class="card-name">${dist.name}</div>
-        ${hasVenue ? `<span class="badge badge-ready">${vt.name}</span>` : '<span class="muted" style="font-size:11px;">No venue</span>'}
-      </div>
-      <div class="stat-row">
-        <div class="stat-chip">Traffic <span>${dist.traffic.toLocaleString()}</span>/wk</div>
-        <div class="stat-chip">Rent <span>${fmt$(dist.rent)}</span>/wk</div>
-        <div class="stat-chip">Affluence <span>${dist.affluence.toFixed(2)}×</span></div>
-        <div class="stat-chip">Competition <span>${dist.competition}</span></div>
-      </div>`;
-    if (hasVenue) {
-      html += `<div class="stat-row">
-        <div class="stat-chip">Staff <span>${v.staff}</span></div>
-        <div class="stat-chip">Tier <span>${v.tier}/3</span></div>
-        <div class="stat-chip">Capacity <span>~${Math.round(v.staff * 95 * vt.capacityMult * EquipCap[S.equipment-1] * TrainCap[S.training-1])}</span>/wk</div>
-      </div>
-      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;">
-        <button class="btn btn-sm" onclick="addStaff('${dist.id}',-1)">− Staff</button>
-        <button class="btn btn-sm" onclick="addStaff('${dist.id}',1)">+ Staff</button>
-        ${v.tier < 3 ? `<button class="btn btn-sm ${canUpgrade ? 'btn-gold' : ''}" onclick="upgradeVenue('${dist.id}')" ${canUpgrade ? '' : 'disabled'}>Upgrade → ${venueTier(v.tier+1).name} (${fmt$(venueTier(v.tier+1).upgradeCost)})</button>` : '<span class="badge badge-ready">Max Tier</span>'}
-      </div>`;
-    } else {
-      html += `<div style="margin-top:8px;">
-        <button class="btn ${canOpen ? 'btn-gold' : ''}" onclick="openVenue('${dist.id}')" ${canOpen ? '' : 'disabled'}>
-          Open Venue${dist.fitout > 0 ? ` — Fitout ${fmt$(dist.fitout)}` : ' — Free!'}
-        </button>
-      </div>`;
-    }
-    html += '</div>';
+function boot(){
+  canvas=$('city'); ctx=canvas.getContext('2d');
+  genCity(); initCars();
+  resize();
+  window.addEventListener('resize',resize);
+  if (window.visualViewport) visualViewport.addEventListener('resize',resize);
+  bindInput();
+  const saved=loadSave();
+  if (saved){
+    initGame(saved);
+    setSpeed(1);
+    firstSessionPulse=false;
+    toast('Welcome back','Week '+saved.week+' — the city kept your seat.');
+  } else {
+    initGame(newGameState());
+    setSpeed(0);
+    $('ob-welcome').hidden=false;
   }
-
-  // Global settings
-  html += `<div class="card">
-    <div class="card-title">Operations</div>
-    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:10px;">
-      <div style="flex:1;min-width:180px;">
-        <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">Weekly Marketing: <span class="gold">${fmt$(S.marketing)}</span></div>
-        <input type="range" min="0" max="5000" step="100" value="${S.marketing}" oninput="setMarketing(this.value)" style="width:100%;">
-        <div style="font-size:10px;color:var(--muted);">Awareness: ${S.awareness.toFixed(0)}</div>
-      </div>
-    </div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;">
-      <div>
-        <div style="font-size:11px;color:var(--muted)">Equipment (Tier ${S.equipment}/4)</div>
-        <div class="prog-bar" style="width:120px;"><div class="prog-fill" style="width:${(S.equipment/4)*100}%"></div></div>
-        <button class="btn btn-sm" style="margin-top:4px;" onclick="upgradeEquip()" ${S.equipment>=4||S.cash<[0,15000,45000,120000][S.equipment]?'disabled':''}>
-          Upgrade (${fmt$([0,15000,45000,120000][S.equipment]??0)})
-        </button>
-      </div>
-      <div>
-        <div style="font-size:11px;color:var(--muted)">Training (Tier ${S.training}/4)</div>
-        <div class="prog-bar" style="width:120px;"><div class="prog-fill" style="width:${(S.training/4)*100}%"></div></div>
-        <button class="btn btn-sm" style="margin-top:4px;" onclick="upgradeTraining()" ${S.training>=4||S.cash<[0,10000,30000,80000][S.training]?'disabled':''}>
-          Upgrade (${fmt$([0,10000,30000,80000][S.training]??0)})
-        </button>
-      </div>
-    </div>
-  </div>`;
-
-  document.getElementById('panel-city').innerHTML = html;
+  document.addEventListener('visibilitychange',()=>{ if (document.hidden&&engine) autosave(); });
+  requestAnimationFrame(t=>{ lastFrame=t; loop(t); });
 }
-
-function openVenue(id) { if (engine.openVenue(id)) { updateHUD(); renderCity(); } else showToast('Cannot Open','Insufficient funds.'); }
-function upgradeVenue(id) { if (engine.upgradeVenue(id)) { updateHUD(); renderCity(); } else showToast('Cannot Upgrade','Insufficient funds.'); }
-function addStaff(id, delta) { engine.addStaff(id, delta); renderCity(); }
-function setMarketing(v) { engine.S.marketing = parseFloat(v); renderCity(); }
-function upgradeEquip() {
-  const costs = [0,15000,45000,120000];
-  const S = engine.S;
-  if (S.equipment >= 4) return;
-  const cost = costs[S.equipment];
-  if (S.cash < cost) { showToast('Insufficient Funds', `Need ${fmt$(cost)}`); return; }
-  S.cash -= cost; S.equipment++; updateHUD(); renderCity();
-}
-function upgradeTraining() {
-  const costs = [0,10000,30000,80000];
-  const S = engine.S;
-  if (S.training >= 4) return;
-  const cost = costs[S.training];
-  if (S.cash < cost) { showToast('Insufficient Funds', `Need ${fmt$(cost)}`); return; }
-  S.cash -= cost; S.training++; updateHUD(); renderCity();
-}
-
-// ============================================================
-// MENU TAB
-// ============================================================
-function renderMenu() {
-  const S = engine.S;
-  const sea = season(S.week);
-  const trendBoosts = trend(S.trendId)?.boosts ?? {};
-  let html = `<div class="card">
-    <div class="card-title">Drink Menu — ${Object.values(S.menu).filter(m=>m.on).length} items active</div>
-    <table>
-      <thead><tr><th>Drink</th><th>On</th><th>Price</th><th class="num">Fair</th><th class="num">Margin%</th><th>Trend</th></tr></thead>
-      <tbody>`;
-  for (const dr of Drinks) {
-    const mi = S.menu[dr.id];
-    const dq = clamp(0.45 * engine.categoryQuality(dr.primary) + (0.30*(TrainQ[S.training-1]-0.95)+0.28*(EquipQ[S.equipment-1]-0.95)+0.18), 0.2, 1.0);
-    const fairPrice = dr.fairBase * (0.62 + 0.85 * dq) * 1.0; // riverside base
-    const sup = supplyFor(dr.primary, S.sourcingTier[dr.primary]);
-    const matCost = (sup ? sup.baseCost * S.marketIndex[dr.primary] : 3.0) * dr.primaryUse + dr.laborCost;
-    const margin = mi.price > 0 ? ((mi.price - matCost) / mi.price * 100) : 0;
-    const trendM = trendBoosts[dr.id] ?? 1.0;
-    const seasonNote = dr.seasonAffinity === sea ? '🔥' : (dr.seasonAffinity && dr.seasonAffinity !== sea) ? '❄️' : '';
-    html += `<tr>
-      <td><div style="font-weight:600;">${dr.name}</div><div style="font-size:10px;color:var(--muted);">${dr.primary}${dr.secondary?'+'+dr.secondary:''}</div></td>
-      <td><label class="toggle"><input type="checkbox" ${mi.on?'checked':''} onchange="toggleDrink('${dr.id}',this.checked)"><span class="toggle-slider"></span></label></td>
-      <td style="min-width:100px;">
-        <div style="font-size:13px;font-weight:700;color:var(--gold)">${fmt$(mi.price)}</div>
-        <input type="range" min="${(dr.fairBase*0.5).toFixed(1)}" max="${(dr.fairBase*2).toFixed(1)}" step="0.5" value="${mi.price}" style="width:90px;" oninput="setDrinkPrice('${dr.id}',this.value)">
-      </td>
-      <td class="num" style="color:var(--muted);font-size:11px;">${fmt$(fairPrice)}</td>
-      <td class="num" style="${margin>30?'color:var(--pos)':margin<10?'color:var(--neg)':''};">${margin.toFixed(0)}%</td>
-      <td style="font-size:11px;">${trendM>1?`<span class="green">×${trendM.toFixed(1)}</span>`:'—'} ${seasonNote}</td>
-    </tr>`;
-  }
-  html += '</tbody></table></div>';
-  document.getElementById('panel-menu').innerHTML = html;
-}
-
-function toggleDrink(id, on) { engine.S.menu[id].on = on; renderMenu(); }
-function setDrinkPrice(id, val) { engine.S.menu[id].price = parseFloat(val); renderMenu(); }
-
-// ============================================================
-// SUPPLY TAB
-// ============================================================
-function renderSupply() {
-  const S = engine.S;
-  let html = `<div class="card"><div class="card-title">Open-Market Sourcing Policy</div>`;
-  for (const cat of Categories) {
-    const availTiers = SupplyDefs.filter(s => s.category === cat);
-    const current = supplyFor(cat, S.sourcingTier[cat]);
-    const ownLine = ProductionLines.find(l => l.category === cat && S.ownedLines.includes(l.id));
-    html += `<div style="margin-bottom:14px;">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-        <div style="font-weight:700;color:var(--gold2);min-width:70px;">${cat}</div>
-        <select onchange="setSourcing('${cat}',this.value)">
-          ${availTiers.map(s => `<option value="${s.tier}" ${s.tier===S.sourcingTier[cat]?'selected':''}>${s.tier} — ${fmt$(s.baseCost)}/unit, Q ${(s.quality*100).toFixed(0)}%</option>`).join('')}
-        </select>
-        ${ownLine ? `<span class="badge badge-ready">Own Line</span>` : ''}
-      </div>
-      <div class="stat-row">
-        <div class="stat-chip">Cost <span>${fmt$(current.baseCost * S.marketIndex[cat])}/unit</span></div>
-        <div class="stat-chip">Quality <span>${(current.quality*100).toFixed(0)}%</span></div>
-        <div class="stat-chip">Market idx <span>${S.marketIndex[cat].toFixed(2)}×</span></div>
-        ${S.ownInventory[cat] > 0 ? `<div class="stat-chip">Own Stock <span>${Math.round(S.ownInventory[cat]).toLocaleString()} units</span></div>` : ''}
-        ${S.ownInvQuality[cat] > 0 ? `<div class="stat-chip">Own Q <span>${(S.ownInvQuality[cat]*100).toFixed(0)}%</span></div>` : ''}
-      </div>
-    </div>`;
-  }
-  html += '</div>';
-  document.getElementById('panel-supply').innerHTML = html;
-}
-
-function setSourcing(cat, tier) { engine.S.sourcingTier[cat] = tier; renderSupply(); }
-
-// ============================================================
-// PRODUCTION TAB
-// ============================================================
-function renderProd() {
-  const S = engine.S;
-  let html = '';
-  for (const l of ProductionLines) {
-    const owned = S.ownedLines.includes(l.id);
-    const canBuild = !owned && S.cash >= l.capex;
-    const maturing = S.maturing.filter(b => b.category === l.category);
-    const totalMat = maturing.reduce((s, b) => s + b.units, 0);
-    const nextReady = maturing.length ? Math.min(...maturing.map(b => b.readyWeek)) : null;
-
-    html += `<div class="card">
-      <div class="card-head">
-        <div class="card-name">${l.name}</div>
-        ${owned ? '<span class="badge badge-ready">OWNED</span>' : '<span class="badge badge-maturing">NOT BUILT</span>'}
-      </div>
-      <div class="stat-row">
-        <div class="stat-chip">Capex <span>${fmt$(l.capex)}</span></div>
-        <div class="stat-chip">Output <span>${l.weeklyOutput}/wk</span></div>
-        <div class="stat-chip">Matures <span>${l.maturationWeeks}wk</span></div>
-        <div class="stat-chip">Prod Cost <span>${fmt$(l.prodCostPerUnit)}/unit</span></div>
-        <div class="stat-chip">Quality <span>${(l.quality*100).toFixed(0)}%</span></div>
-      </div>`;
-    if (!owned) {
-      html += `<button class="btn ${canBuild?'btn-gold':''}" onclick="buildLine('${l.id}')" ${canBuild?'':'disabled'}>
-        Build (${fmt$(l.capex)})${!canBuild && S.cash < l.capex ? ' — Need '+fmt$(l.capex - S.cash)+' more' : ''}
-      </button>`;
-    } else {
-      html += `<div style="font-size:11px;color:var(--muted);margin-bottom:6px;">Producing ${l.weeklyOutput} units/wk → ready in ${l.maturationWeeks} weeks</div>`;
-      if (S.ownInventory[l.category] > 0) {
-        html += `<div style="margin-bottom:8px;padding:6px 10px;background:var(--card2);border-radius:6px;">
-          <span class="green bold">${Math.round(S.ownInventory[l.category]).toLocaleString()} units ready</span>
-          <span class="muted" style="font-size:11px;margin-left:6px;">Avg quality ${(S.ownInvQuality[l.category]*100).toFixed(0)}%</span>
-        </div>`;
-      }
-      if (maturing.length) {
-        html += `<div style="font-size:11px;color:var(--muted);margin-bottom:4px;">Maturing batches (${maturing.length}, ~${Math.round(totalMat).toLocaleString()} units):</div>`;
-        // Show first few batches
-        const shown = maturing.slice(0, 5);
-        for (const b of shown) {
-          const weeksLeft = b.readyWeek - S.week;
-          const pct = Math.max(0, 100 - weeksLeft / l.maturationWeeks * 100);
-          html += `<div style="margin-bottom:4px;">
-            <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:2px;">
-              <span>${Math.round(b.units).toLocaleString()} units</span>
-              <span class="muted">${weeksLeft}wk left</span>
-            </div>
-            <div class="prog-bar"><div class="prog-fill" style="width:${pct.toFixed(0)}%;background:${pct>80?'var(--pos)':'var(--gold)'}"></div></div>
-          </div>`;
-        }
-        if (maturing.length > 5) html += `<div class="muted" style="font-size:10px;">+${maturing.length-5} more batches…</div>`;
-      }
-    }
-    html += '</div>';
-  }
-  document.getElementById('panel-prod').innerHTML = html;
-}
-
-function buildLine(id) {
-  if (engine.buildLine(id)) { updateHUD(); renderProd(); showToast('Construction Started', `${line(id).name} is being built! Batches will start maturing.`); }
-  else showToast('Cannot Build', 'Insufficient funds.');
-}
-
-// ============================================================
-// FINANCE TAB
-// ============================================================
-function renderFinance() {
-  const S = engine.S;
-  const hist = S.history.slice(-10).reverse();
-  const maxRev = Math.max(...S.history.slice(-10).map(r => r.revenue), 1);
-  const maxNet = Math.max(...S.history.slice(-10).map(r => Math.abs(r.net)), 1);
-
-  // Totals
-  const totalRev = S.history.reduce((s,r) => s+r.revenue, 0);
-  const totalNet = S.history.reduce((s,r) => s+r.net, 0);
-  const totalUnits = S.history.reduce((s,r) => s+r.units, 0);
-
-  let html = `<div class="card">
-    <div class="card-title">Running Totals (${S.history.length} weeks)</div>
-    <div class="stat-row">
-      <div class="stat-chip">Revenue <span>${fmt$(totalRev)}</span></div>
-      <div class="stat-chip">Net <span style="color:${totalNet>=0?'var(--pos)':'var(--neg)'}">${fmt$(totalNet)}</span></div>
-      <div class="stat-chip">Units Sold <span>${totalUnits.toLocaleString()}</span></div>
-      <div class="stat-chip">Debt <span style="color:${S.debt>0?'var(--neg)':'var(--pos)'}">${fmt$(S.debt)}</span></div>
-    </div>
-  </div>`;
-
-  if (S.history.length > 1) {
-    // Revenue bar chart
-    const chartData = S.history.slice(-10);
-    html += `<div class="card">
-      <div class="card-title">Revenue vs Net (last 10 weeks)</div>
-      <div class="bar-chart">`;
-    for (const r of chartData) {
-      const revH = Math.max(2, (r.revenue / maxRev) * 70);
-      const netH = Math.max(2, (Math.abs(r.net) / maxNet) * 70);
-      const netColor = r.net >= 0 ? 'var(--pos)' : 'var(--neg)';
-      html += `<div class="bar-col">
-        <div style="display:flex;gap:1px;align-items:flex-end;height:72px;">
-          <div class="bar-seg" style="height:${revH}px;background:var(--gold);width:45%;opacity:0.7;"></div>
-          <div class="bar-seg" style="height:${netH}px;background:${netColor};width:45%;"></div>
-        </div>
-        <div class="bar-lbl">${r.week}</div>
-      </div>`;
-    }
-    html += `</div>
-      <div style="font-size:10px;color:var(--muted);margin-top:4px;">
-        <span style="color:var(--gold)">■</span> Revenue &nbsp;&nbsp;
-        <span style="color:var(--pos)">■</span> Net profit &nbsp;&nbsp;
-        <span style="color:var(--neg)">■</span> Net loss
-      </div>
-    </div>`;
-  }
-
-  html += `<div class="card">
-    <div class="card-title">Weekly P&L (last 10 weeks)</div>
-    <div style="overflow-x:auto;">
-    <table>
-      <thead><tr><th>Wk</th><th class="num">Revenue</th><th class="num">COGS</th><th class="num">Gross</th><th class="num">OpEx</th><th class="num">Net</th></tr></thead>
-      <tbody>`;
-  for (const r of hist) {
-    const nc = r.net >= 0 ? 'green' : 'red';
-    html += `<tr>
-      <td>${r.week}</td>
-      <td class="num">${fmt$(r.revenue)}</td>
-      <td class="num red">${fmt$(r.cogs)}</td>
-      <td class="num ${r.gross>=0?'green':'red'}">${fmt$(r.gross)}</td>
-      <td class="num red">${fmt$(r.opex)}</td>
-      <td class="num ${nc} bold">${fmt$(r.net)}</td>
-    </tr>`;
-  }
-  if (hist.length === 0) html += '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:16px;">No history yet — advance time to see results.</td></tr>';
-  html += `</tbody></table></div>`;
-
-  // Opex breakdown for last week
-  if (hist.length > 0) {
-    const last = hist[0];
-    html += `<hr class="divider"><div style="font-size:11px;color:var(--muted);">Last week opex breakdown:</div>
-      <div class="stat-row" style="margin-top:6px;">
-        <div class="stat-chip">Rent <span class="red">${fmt$(last.rent)}</span></div>
-        <div class="stat-chip">Wages <span class="red">${fmt$(last.wages)}</span></div>
-        <div class="stat-chip">Marketing <span class="red">${fmt$(last.marketing)}</span></div>
-        ${last.interest>0?`<div class="stat-chip">Interest <span class="red">${fmt$(last.interest)}</span></div>`:''}
-      </div>`;
-  }
-  html += '</div>';
-
-  document.getElementById('panel-finance').innerHTML = html;
-}
-
-// ============================================================
-// TOAST
-// ============================================================
-let toastTimer;
-function showToast(title, body) {
-  const el = document.getElementById('toast');
-  document.getElementById('toast-title').textContent = title;
-  document.getElementById('toast-body').innerHTML = body;
-  el.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => el.classList.remove('show'), 3500);
-}
-
-// ============================================================
-// INIT
-// ============================================================
-const saved = loadGame();
-if (saved) {
-  initGame(saved);
-  showToast('Game Loaded', 'Welcome back, Empire builder!');
-} else {
-  initGame(newGameState());
-  showToast('Welcome to Bar Empire!', 'Your Riverside Pop-up Bar is open and trading — time is flowing. Pause anytime to make changes.');
-}
-requestAnimationFrame(loop);
+if (IS_BROWSER) boot();
+else if (typeof module!=='undefined') module.exports={SimEngine,newGameState,DATA,OBJECTIVES,CATS,fmt$,season};
 </script>
 </body>
 </html>
