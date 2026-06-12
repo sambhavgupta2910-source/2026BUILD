@@ -35,9 +35,14 @@ body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,
 #h-date{background:var(--card);color:var(--muted)}
 .eco-Boom{background:#1d3a24;color:var(--pos)}.eco-Stable{background:#22224a;color:#8ab4f8}.eco-Downturn{background:#3f2020;color:var(--neg)}
 #h-trend{background:#33240f;color:var(--gold);overflow:hidden;text-overflow:ellipsis;max-width:34vw}
-#speed{margin-left:auto;display:flex;gap:0;border:1px solid var(--border);border-radius:8px;overflow:hidden;flex-shrink:0}
-.spd{background:var(--card2);border:none;color:var(--muted);font-size:11px;padding:4px 9px;cursor:pointer;line-height:1}
-.spd.active{background:var(--gold);color:#14101e;font-weight:800}
+/* ---------- next-week FAB ---------- */
+#nextweek{position:absolute;right:10px;bottom:calc(var(--sab) + 66px);z-index:25;
+  background:linear-gradient(180deg,var(--gold2),var(--gold));border:none;color:#171221;
+  border-radius:14px;padding:11px 16px;font-weight:800;font-size:13px;letter-spacing:.3px;
+  display:flex;align-items:center;gap:7px;box-shadow:0 6px 20px #000a;cursor:pointer}
+#nextweek .nwk-ic{font-size:16px}
+#nextweek.pulse{animation:nwkpulse 1.6s ease-in-out infinite}
+@keyframes nwkpulse{0%,100%{box-shadow:0 6px 20px #000a}50%{box-shadow:0 6px 26px var(--gold2)}}
 /* ---------- ticker + objective ---------- */
 #ticker{position:absolute;left:0;right:0;z-index:18;padding:3px 12px;font-size:11px;color:#cfc5ae;
   background:rgba(12,12,24,.72);border-bottom:1px solid rgba(44,44,76,.5);
@@ -116,6 +121,21 @@ tr:last-child td{border-bottom:none}
 .ocard li{font-size:13px;line-height:1.5;margin-bottom:9px;display:flex;gap:9px}
 .ocard li .em{font-size:17px;flex-shrink:0}
 .ocard .btn-gold{width:100%;padding:12px;font-size:14px;border-radius:11px}
+/* ---------- weekly recap / decision card ---------- */
+#ob-week .ocard{max-width:400px}
+.wk-stats{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.wk-projects{font-size:11px;color:var(--muted);margin-bottom:12px;line-height:1.5}
+.wk-event{border-top:1px solid var(--border);padding-top:12px;margin-top:4px;text-align:center}
+.wk-event .ev-icon{font-size:32px;display:block;margin-bottom:4px}
+.wk-event h2{font-size:15px;color:var(--gold2);margin-bottom:6px;text-align:left}
+.wk-event p{font-size:12px;color:var(--text);line-height:1.5;margin-bottom:12px;text-align:left}
+.wk-choice{display:block;width:100%;text-align:left;background:var(--card2);border:1px solid var(--border);
+  border-radius:11px;padding:10px 13px;margin-bottom:8px;color:var(--text);cursor:pointer}
+.wk-choice:active{background:var(--btnhov)}
+.wk-choice b{display:block;color:var(--gold2);font-size:13px;margin-bottom:2px}
+.wk-choice span{font-size:11px;color:var(--muted)}
+.wk-choice:disabled{opacity:.4}
+.wk-result{font-size:13px;line-height:1.55;margin:10px 0 14px;text-align:left}
 [hidden]{display:none!important}
 </style>
 </head>
@@ -135,12 +155,6 @@ tr:last-child td{border-bottom:none}
     <span class="chip" id="h-date">Y1 · W1 · Spring</span>
     <span class="chip eco-Stable" id="h-eco">Stable</span>
     <span class="chip" id="h-trend">Balanced Scene</span>
-    <div id="speed">
-      <button class="spd" id="spd0" onclick="setSpeed(0)">⏸</button>
-      <button class="spd active" id="spd1" onclick="setSpeed(1)">▶</button>
-      <button class="spd" id="spd2" onclick="setSpeed(2)">▶▶</button>
-      <button class="spd" id="spd3" onclick="setSpeed(3)">▶▶▶</button>
-    </div>
   </div>
 </div>
 <div id="ticker">Welcome to Bayside.</div>
@@ -150,6 +164,8 @@ tr:last-child td{border-bottom:none}
   <button onclick="zoomBy(1.25)">＋</button>
   <button onclick="zoomBy(0.8)">－</button>
 </div>
+
+<button id="nextweek" class="pulse" onclick="nextWeek()"><span class="nwk-ic">▶</span>Next Week</button>
 
 <div id="cmdbar">
   <button class="cmd" data-d="menu" onclick="openDrawer('menu')"><span class="ic">🍸</span>Menu</button>
@@ -179,8 +195,8 @@ tr:last-child td{border-bottom:none}
     <ul>
       <li><span class="em">🏙️</span><span>This is your city. <b>Drag</b> to explore, <b>pinch</b> to zoom.</span></li>
       <li><span class="em">🍺</span><span>Your first bar is open on the <b>Riverside Strip</b> — tap it to manage staff &amp; upgrades.</span></li>
-      <li><span class="em">🏗️</span><span>Tap <b>FOR LEASE</b> lots to expand. Build a brewery or distillery to own your supply.</span></li>
-      <li><span class="em">⏱️</span><span>Time flows on its own — <b>pause</b> anytime to think.</span></li>
+      <li><span class="em">🏗️</span><span>Tap <b>FOR LEASE</b> lots to expand. Building takes a few weeks — choose standard or premium fit-outs along the way.</span></li>
+      <li><span class="em">▶</span><span>Tap <b>Next Week</b> to run the week. Expect news, decisions and the odd curveball every time you do.</span></li>
     </ul>
     <button class="btn btn-gold" onclick="startGame()">Open the doors ▶</button>
   </div>
@@ -199,6 +215,13 @@ tr:last-child td{border-bottom:none}
     <div class="sub">Bayside belongs to you</div>
     <p style="font-size:13px;line-height:1.5;margin-bottom:16px">From one riverside pop-up to a vertically-integrated drinks empire. The city will keep growing — keep playing, or start a fresh run.</p>
     <button class="btn btn-gold" onclick="dismissWin()">Keep playing</button>
+  </div>
+</div>
+<div class="overlay" id="ob-week" hidden>
+  <div class="ocard">
+    <h1 id="week-title">Week</h1>
+    <div class="sub" id="week-sub"></div>
+    <div id="week-body"></div>
   </div>
 </div>
 
@@ -299,6 +322,145 @@ const lineById    = id=>DATA.lines.find(l=>l.id===id);
 const trendById   = id=>DATA.trends.find(t=>t.id===id)||DATA.trends[0];
 const supplyFor   = (c,t)=>DATA.supply[c].find(s=>s.tier===t)||DATA.supply[c][0];
 
+// ----------------------------------------------------------- weekly decision events
+DATA.events = [
+  {id:'critic', icon:'📰', title:'A Food Critic Is in Town',
+   body:'A well-known local critic has been spotted near your venue, notebook in hand.',
+   choices:[
+     {label:'Roll out the red carpet', sub:'Spend '+fmt$(2000)+' on a special tasting menu', cost:2000,
+      effects:[{t:'rep',amount:8},{t:'aware',amount:5}],
+      result:'The critic raves about your venue — reputation and buzz soar!'},
+     {label:'Let them dine as a regular guest', sub:'No cost, no guarantees',
+      effects:[{t:'random',branches:[
+        {p:0.5,effects:[{t:'rep',amount:4}],result:'A glowing, honest review boosts your reputation.'},
+        {p:0.5,effects:[{t:'rep',amount:-3}],result:'A lukewarm write-up dents your reputation.'}]}]},
+   ]},
+  {id:'staffDispute', icon:'😤', title:'Staff Are Restless',
+   body:'Your crew is grumbling about wages after a tough run of late shifts.',
+   check:(s)=>s.venues.some(v=>v.staff>=3),
+   choices:[
+     {label:'Give everyone a raise', sub:'+'+fmt$(150)+'/wk wages, but happier staff',
+      effects:[{t:'wageBonus',amount:150},{t:'rep',amount:3}],
+      result:'Wages go up — morale (and reputation) improve.'},
+     {label:'Hold the line', sub:'Risk losing a staff member',
+      effects:[{t:'random',branches:[
+        {p:0.4,effects:[{t:'staffLoss',amount:1}],result:"A bartender walks out mid-shift — you're short-staffed."},
+        {p:0.6,effects:[],result:'Grumbling continues, but everyone stays on.'}]}]},
+   ]},
+  {id:'viral', icon:'📱', title:"You're Going Viral!",
+   body:"A patron's post about your venue is blowing up online.",
+   choices:[
+     {label:'Lean in — boost the ads', sub:'Spend '+fmt$(1500)+' to ride the wave', cost:1500,
+      effects:[{t:'aware',amount:12},{t:'revenueBoost',pct:0.05}],
+      result:'The campaign amplifies the moment — awareness and sales jump!'},
+     {label:'Let it ride naturally', sub:'No cost',
+      effects:[{t:'aware',amount:4}], result:'Word of mouth spreads on its own.'},
+   ]},
+  {id:'inspector', icon:'🕵️', title:'Health Inspector Incoming',
+   body:'Word is a health inspector will drop by this week.',
+   choices:[
+     {label:'Deep clean before they arrive', sub:'Spend '+fmt$(800), cost:800,
+      effects:[{t:'rep',amount:5}], result:'Spotless inspection — reputation gets a boost.'},
+     {label:'Wing it', sub:'No cost, no guarantees',
+      effects:[{t:'random',branches:[
+        {p:0.5,effects:[{t:'rep',amount:-6}],result:'Cited for violations — reputation takes a hit.'},
+        {p:0.5,effects:[{t:'rep',amount:2}],result:'Passed clean — relief all around.'}]}]},
+   ]},
+  {id:'supplierDeal', icon:'📦', title:'Bulk Supplier Offer',
+   body:'A distributor offers a one-time bulk discount on your drink supplies.',
+   choices:[
+     {label:'Take the deal', sub:'Cut sourcing costs across the board',
+      effects:[{t:'marketIndex',mult:0.92}], result:'Stocked up cheap — sourcing costs drop for now.'},
+     {label:'Pass on it', sub:'No change', effects:[], result:'You stick with your usual suppliers.'},
+   ]},
+  {id:'rivalClosed', icon:'🚪', title:'A Rival Has Closed',
+   body:'A nearby competitor has shut its doors for good.',
+   choices:[
+     {label:"Run a promo for their old regulars", sub:'Spend '+fmt$(1000), cost:1000,
+      effects:[{t:'aware',amount:8},{t:'rep',amount:3}], result:'Their old crowd starts showing up at your place.'},
+     {label:'Business as usual', sub:'No cost', effects:[{t:'aware',amount:2}], result:'A few stray customers wander in anyway.'},
+   ]},
+  {id:'stockTip', icon:'📈', title:'A Hot Stock Tip',
+   body:'A regular at the bar swears they know which stock is about to move.',
+   choices:[
+     {label:'Put '+fmt$(5000)+' on the tip', sub:'High risk, high reward', cost:5000,
+      effects:[{t:'stockBuyBoost',amount:5000}], result:'You take the plunge — shares bought, fingers crossed.'},
+     {label:'Ignore it', sub:'No cost', effects:[], result:'Probably for the best — or was it?'},
+   ]},
+  {id:'gala', icon:'🎉', title:'Charity Gala Invitation',
+   body:'A high-profile charity gala is looking for sponsors.',
+   check:(s)=>s.cash>=3000,
+   choices:[
+     {label:'Sponsor the gala', sub:'Spend '+fmt$(3000), cost:3000,
+      effects:[{t:'rep',amount:10},{t:'aware',amount:6}], result:'Your name is on every program — reputation and buzz climb.'},
+     {label:'Politely decline', sub:'No cost', effects:[], result:'You keep your cash for now.'},
+   ]},
+  {id:'festival', icon:'🎪', title:'City Festival This Week',
+   body:'A street festival is setting up just blocks away.',
+   choices:[
+     {label:'Set up a stall', sub:'Spend '+fmt$(1200), cost:1200,
+      effects:[{t:'revenueBoost',pct:0.08},{t:'aware',amount:5}], result:'Festival crowds spill into your venue — a great week of sales.'},
+     {label:'Skip it', sub:'No cost', effects:[], result:'You sit this one out.'},
+   ]},
+  {id:'equipFail', icon:'⚙️', title:'Equipment Breakdown',
+   body:'A critical piece of bar equipment has broken down.',
+   choices:[
+     {label:'Rush repair', sub:'Spend '+fmt$(1800), cost:1800,
+      effects:[{t:'rep',amount:2}], result:'Fixed fast — barely a hiccup in service.'},
+     {label:'Patch it up cheaply', sub:'Risk it breaking again',
+      effects:[{t:'random',branches:[
+        {p:0.5,effects:[{t:'cash',amount:-2500}],result:'It breaks again mid-week — an expensive emergency repair.'},
+        {p:0.5,effects:[],result:'The patch holds, for now.'}]}]},
+   ]},
+];
+
+// generic, JSON-safe choice-effect interpreter — returns a result message
+function applyChoiceEffects(engine, choice){
+  const S=engine.S;
+  for (const eff of (choice.effects||[])){
+    switch (eff.t){
+      case 'cash': S.cash+=eff.amount; break;
+      case 'rep': S.reputation=clamp(S.reputation+eff.amount,1,100); break;
+      case 'aware': S.awareness=clamp(S.awareness+eff.amount,0,100); break;
+      case 'wageBonus': S.wageBonus+=eff.amount; break;
+      case 'marketIndex': for (const c of CATS) S.marketIndex[c]=clamp(S.marketIndex[c]*eff.mult,0.55,2.4); break;
+      case 'revenueBoost': { const last=S.history[S.history.length-1]; S.cash+=(last?last.revenue:0)*eff.pct; break; }
+      case 'stockBuyBoost': {
+        const ids=DATA.stocks.map(s=>s.id), id=ids[engine.rngInt(ids.length)], cur=S.stocks[id];
+        const qty=Math.floor(eff.amount/cur.price); cur.shares+=qty; cur.price*=1.2; break;
+      }
+      case 'staffLoss': {
+        const cand=S.venues.filter(v=>v.staff>eff.amount);
+        if (cand.length){ const v=cand[engine.rngInt(cand.length)]; v.staff-=eff.amount; }
+        break;
+      }
+      case 'random': {
+        const r=engine.rng(); let acc=0;
+        for (const br of eff.branches){ acc+=br.p; if (r<=acc) return applyChoiceEffects(engine,{effects:br.effects,result:br.result}); }
+        const last=eff.branches[eff.branches.length-1];
+        return applyChoiceEffects(engine,{effects:last.effects,result:last.result});
+      }
+    }
+  }
+  return choice.result || '';
+}
+
+// investment choices offered while a construction project is underway
+function investOptionsFor(p){
+  if (p.type==='line'){
+    const l=lineById(p.lineId), cost=Math.round(l.capex*0.25);
+    return [
+      {label:'Standard equipment', sub:'Keep costs down', cost:0, qBonus:0, result:'Standard equipment ordered for the build.'},
+      {label:'Premium equipment', sub:'+8% quality — '+fmt$(cost), cost, qBonus:0.08, result:'Premium equipment ordered — quality will be excellent.'},
+    ];
+  }
+  const cost = p.type==='venue' ? 15000 : 25000;
+  return [
+    {label:'Standard finish', sub:'Keep costs down', cost:0, decorBonus:0, result:'Standard fit-out underway.'},
+    {label:'Premium finish', sub:'+15% appeal — '+fmt$(cost), cost, decorBonus:0.15, result:'Premium interiors and exteriors ordered!'},
+  ];
+}
+
 // ----------------------------------------------------------- objectives ladder
 const OBJECTIVES = [
   {id:'cash75',  name:'Grow your cash to $75k',        reward:5000,   check:(s,e)=>s.cash>=75000},
@@ -338,6 +500,8 @@ function newGameState(seed){
     s.menu[d.id] = {on:(d.id!=='raredram'&&d.id!=='reserve'), price:Math.round(d.fair*1.05*10)/10};
   s.stocks={}; for (const st of DATA.stocks) s.stocks[st.id]={price:st.base, shares:0};
   s.properties={}; for (const pr of DATA.properties) s.properties[pr.id]=false;
+  s.projects=[]; s.lineBonuses={}; s.wageBonus=0;
+  s.pendingEvent=null; s.eventCooldown=2;
   return s;
 }
 
@@ -357,6 +521,7 @@ class SimEngine {
 
   tick(){
     const S=this.S, ev=[];
+    this.runProjects(ev);
     this.runProduction(ev);
     this.evolveMarket(ev);
     const eqtr = 0.30*(TRAIN_Q[S.training-1]-0.95) + 0.28*(EQUIP_Q[S.equipment-1]-0.95) + 0.18;
@@ -373,7 +538,7 @@ class SimEngine {
       const seasonMult = sea==='summer'?1.06:sea==='winter'?0.98:1.0;
       const visitors = d.traffic*this.econMult()*seasonMult
         *(0.50+0.50*S.awareness/100)*(0.58+0.42*S.reputation/100)
-        *compMult*vt.appeal;
+        *compMult*vt.appeal*(1+(v.decorBonus||0));
       const live = DATA.drinks.filter(dr=>S.menu[dr.id].on);
       let wSum=0, paSum=0; const w={};
       for (const dr of live){
@@ -431,7 +596,7 @@ class SimEngine {
 
     // opex + finances
     const rent = S.venues.filter(v=>!v.ownsPremises).reduce((a,v)=>a+districtById(v.districtId).rent,0);
-    const wages = S.venues.reduce((a,v)=>a+v.staff,0)*TRAIN_WAGE[S.training-1];
+    const wages = S.venues.reduce((a,v)=>a+v.staff,0)*TRAIN_WAGE[S.training-1] + S.wageBonus;
     const interest = S.debt*0.012;
     const opex = rent+wages+S.marketing+interest;
     const rentIncome = DATA.properties.filter(pr=>S.properties[pr.id]).reduce((a,pr)=>a+pr.rent,0);
@@ -473,7 +638,7 @@ class SimEngine {
       for (const b of readyNow){
         const l=lineById(b.lineId)||DATA.lines.find(x=>x.cat===b.cat);
         const agingYears=(S.week-b.start)/52;
-        const q=clamp(b.q+l.aging*agingYears,0,1);
+        const q=clamp(b.q+l.aging*agingYears+(S.lineBonuses[b.lineId]||0),0,1);
         const ex=S.ownInv[b.cat];
         S.ownInvQ[b.cat]= ex>0 ? (S.ownInvQ[b.cat]*ex+q*b.units)/(ex+b.units) : q;
         S.ownInv[b.cat]=ex+b.units;
@@ -520,6 +685,17 @@ class SimEngine {
       const bias = st.id==='PROOF' ? clamp((this.netWorth()/300000-1)*0.002,-0.01,0.01) : 0;
       cur.price=clamp(cur.price*(1+stockDrift+bias+(this.rng()-0.5)*st.vol), st.base*0.2, st.base*6);
     }
+
+    // weekly decision event trigger
+    if (!S.pendingEvent){
+      if (--S.eventCooldown<=0){
+        if (S.week>=3 && this.rng()<0.4){
+          const eligible=DATA.events.filter(e=>!e.check||e.check(S));
+          if (eligible.length) S.pendingEvent={kind:'random', id:eligible[this.rngInt(eligible.length)].id};
+        }
+        S.eventCooldown=2;
+      }
+    }
   }
 
   // -------------------------------------------------- player actions
@@ -527,8 +703,11 @@ class SimEngine {
   openVenue(districtId){
     const S=this.S, d=districtById(districtId);
     if (!d || this.venueAt(districtId) || S.cash<d.fitout) return false;
+    if (S.projects.some(p=>p.type==='venue'&&p.districtId===districtId)) return false;
     S.cash-=d.fitout;
-    S.venues.push({districtId,tier:1,staff:3,ownsPremises:false,premisesValue:0});
+    const weeks=3;
+    S.projects.push({type:'venue',districtId,weeksLeft:weeks,totalWeeks:weeks,decorBonus:0});
+    S.pendingEvent={kind:'invest',projIdx:S.projects.length-1};
     return true;
   }
   upgradeVenue(districtId){
@@ -536,7 +715,12 @@ class SimEngine {
     if (!v || v.tier>=3) return false;
     const cost=DATA.tiers[v.tier].cost;
     if (S.cash<cost) return false;
-    S.cash-=cost; v.tier++; return true;
+    if (S.projects.some(p=>p.type==='upgrade'&&p.districtId===districtId)) return false;
+    S.cash-=cost;
+    const toTier=v.tier+1, weeks=toTier===2?4:6;
+    S.projects.push({type:'upgrade',districtId,toTier,weeksLeft:weeks,totalWeeks:weeks,decorBonus:0});
+    S.pendingEvent={kind:'invest',projIdx:S.projects.length-1};
+    return true;
   }
   setStaff(districtId,delta){
     const v=this.venueAt(districtId); if (!v) return false;
@@ -552,7 +736,55 @@ class SimEngine {
   buildLine(id){
     const S=this.S, l=lineById(id);
     if (!l || S.ownedLines.includes(id) || S.cash<l.capex) return false;
-    S.cash-=l.capex; S.ownedLines.push(id); return true;
+    if (S.projects.some(p=>p.type==='line'&&p.lineId===id)) return false;
+    S.cash-=l.capex;
+    const weeks=id==='brewery'?4:id==='wineest'?8:12;
+    S.projects.push({type:'line',lineId:id,weeksLeft:weeks,totalWeeks:weeks,qBonus:0});
+    S.pendingEvent={kind:'invest',projIdx:S.projects.length-1};
+    return true;
+  }
+  resolveEvent(choiceIdx){
+    const S=this.S, pe=S.pendingEvent; if (!pe) return false;
+    if (pe.kind==='random'){
+      const def=DATA.events.find(e=>e.id===pe.id);
+      if (!def){ S.pendingEvent=null; return false; }
+      const choice=def.choices[choiceIdx]; if (!choice) return false;
+      if (choice.cost && S.cash<choice.cost) return false;
+      if (choice.cost) S.cash-=choice.cost;
+      const msg=applyChoiceEffects(this,choice);
+      this.lastEvents.push({msg:(def.icon?def.icon+' ':'')+msg, big:true});
+      S.pendingEvent=null; return true;
+    }
+    if (pe.kind==='invest'){
+      const p=S.projects[pe.projIdx]; if (!p){ S.pendingEvent=null; return false; }
+      const opts=investOptionsFor(p), choice=opts[choiceIdx]; if (!choice) return false;
+      if (choice.cost && S.cash<choice.cost) return false;
+      if (choice.cost) S.cash-=choice.cost;
+      if (p.type==='line') p.qBonus=choice.qBonus||0; else p.decorBonus=choice.decorBonus||0;
+      this.lastEvents.push({msg:choice.result||'Investment choice made.', big:false});
+      S.pendingEvent=null; return true;
+    }
+    return false;
+  }
+  runProjects(ev){
+    const S=this.S, kept=[];
+    for (const p of S.projects){
+      p.weeksLeft--;
+      if (p.weeksLeft>0){ kept.push(p); continue; }
+      if (p.type==='venue'){
+        S.venues.push({districtId:p.districtId,tier:1,staff:3,ownsPremises:false,premisesValue:0,decorBonus:p.decorBonus||0});
+        ev.push({msg:'🏗️ New venue opened in '+districtById(p.districtId).name+'!', big:true});
+      } else if (p.type==='upgrade'){
+        const v=this.venueAt(p.districtId);
+        if (v){ v.tier=p.toTier; v.decorBonus=(v.decorBonus||0)+(p.decorBonus||0); }
+        ev.push({msg:'🏗️ Venue upgraded to '+DATA.tiers[p.toTier-1].name+'!', big:true});
+      } else if (p.type==='line'){
+        const l=lineById(p.lineId);
+        S.ownedLines.push(p.lineId); S.lineBonuses[p.lineId]=p.qBonus||0;
+        ev.push({msg:l.icon+' '+l.name+' construction complete!', big:true});
+      }
+    }
+    S.projects=kept;
   }
   upgradeEquipment(){
     const S=this.S; if (S.equipment>=4) return false;
@@ -617,7 +849,7 @@ const CITY = {
 };
 DIST_IDS.forEach((id,d)=>{
   const r=districtRow(d);
-  CITY.lots[id]={gx:4,gy:r.front,fw:2,fd:1};
+  CITY.lots[id]={gx:4,gy:r.front,fw:2,fd:1,districtId:id};
 });
 ['brewery','wineest','distill'].forEach((id,d)=>{
   const r=districtRow(d);
@@ -779,7 +1011,7 @@ function drawDecorB(c,b,nf){
 }
 
 // player venue facades --------------------------------------------------
-function drawVenue(c,lot,v,nf,now,stats){
+function drawVenue(c,lot,v,nf,now,stats,S){
   const tier=v.tier, fw=VENUE_FW[tier], fd=VENUE_FD[tier], h=VENUE_H[tier];
   const top= tier===1 ? '#7a6248' : tier===2 ? '#4a3a52' : '#3c3146';
   const box=drawIsoBox(c,lot.gx,lot.gy,fw,fd,h, top, shade(top,0.78), shade(top,0.55));
@@ -798,10 +1030,13 @@ function drawVenue(c,lot,v,nf,now,stats){
   if (stats && stats.serviceLevel<0.94){
     drawPin(c,ctr.x+24,box.At.y+8,'#e05252','!',now);
   }
+  // scaffolding pin while an upgrade is under construction
+  const proj=S&&S.projects.find(p=>p.type==='upgrade'&&p.districtId===lot.districtId);
+  if (proj) drawPin(c,ctr.x-24,box.At.y+8,'#f0c96e','🏗'+proj.weeksLeft,now);
   return {top:{x:box.At.x,y:box.At.y}};
 }
 
-function drawEmptyLot(c,lot,d,nf,now){
+function drawEmptyLot(c,lot,d,nf,now,S){
   drawIsoTile(c,lot.gx,lot.gy,VENUE_FW[1]||2,VENUE_FD[1]||1,'#8f8a7c');
   const A=iso(lot.gx,lot.gy), Cc=iso(lot.gx+(VENUE_FW[1]||2),lot.gy+(VENUE_FD[1]||1));
   c.strokeStyle='rgba(201,168,76,'+(0.55+0.35*Math.sin(now/400))+')';
@@ -810,7 +1045,9 @@ function drawEmptyLot(c,lot,d,nf,now){
   c.lineTo(Cc.x,Cc.y); c.lineTo(iso(lot.gx,lot.gy+(VENUE_FD[1]||1)).x,iso(lot.gx,lot.gy+(VENUE_FD[1]||1)).y); c.closePath(); c.stroke();
   c.setLineDash([]);
   const ctr=iso(lot.gx+1,lot.gy+0.5);
-  drawPin(c,ctr.x,ctr.y-40,'#c9a84c','+',now);
+  const proj=S&&S.projects.find(p=>p.type==='venue'&&p.districtId===lot.districtId);
+  if (proj) drawPin(c,ctr.x,ctr.y-40,'#f0c96e','🏗'+proj.weeksLeft,now);
+  else drawPin(c,ctr.x,ctr.y-40,'#c9a84c','+',now);
 }
 
 // production pads --------------------------------------------------------
@@ -823,7 +1060,9 @@ function drawPad(c,padId,pad,built,nf,now,S){
     const A=iso(pad.gx,pad.gy),B=iso(pad.gx+pad.fw,pad.gy),Cc=iso(pad.gx+pad.fw,pad.gy+pad.fd),D=iso(pad.gx,pad.gy+pad.fd);
     c.beginPath(); c.moveTo(A.x,A.y); c.lineTo(B.x,B.y); c.lineTo(Cc.x,Cc.y); c.lineTo(D.x,D.y); c.closePath(); c.stroke();
     c.setLineDash([]);
-    drawPin(c,ctr.x,ctr.y-30,'#7a5fc9',l.icon,now);
+    const proj=S&&S.projects.find(p=>p.type==='line'&&p.lineId===padId);
+    if (proj) drawPin(c,ctr.x,ctr.y-30,'#f0c96e','🏗'+proj.weeksLeft,now);
+    else drawPin(c,ctr.x,ctr.y-30,'#7a5fc9',l.icon,now);
     return;
   }
   const colors = padId==='brewery' ? '#8a5a3c' : padId==='wineest' ? '#6f8a5a' : '#9a948a';
@@ -1021,8 +1260,8 @@ function render(now){
   // player lots / venues
   for (const did of Object.keys(CITY.lots)){
     const lot=CITY.lots[did], v=engine.venueAt(did);
-    if (v) drawVenue(c,lot,v,nf,now,venueStatMap[did]);
-    else drawEmptyLot(c,lot,districtById(did),nf,now);
+    if (v) drawVenue(c,lot,v,nf,now,venueStatMap[did],engine.S);
+    else drawEmptyLot(c,lot,districtById(did),nf,now,engine.S);
   }
   // first-session pulse ring on starting bar
   if (firstSessionPulse && engine.S.week<4){
@@ -1171,8 +1410,7 @@ function handleTap(wx,wy){
 // ============================================================================
 // UI — HUD, ticker, toasts, drawers, game loop, persistence
 // ============================================================================
-let engine=null, speed=1, simAcc=0, lastFrame=0;
-const SIM_MS=[0,3000,1500,600];
+let engine=null, lastFrame=0;
 const SAVE_KEY='barEmpireSave_v2';
 let drawerType=null, drawerArg=null, lastDrawerTouch=0;
 let tickerQ=[], tickerBusy=false;
@@ -1204,11 +1442,6 @@ function flashCash(net){
   el.classList.add(net>=0?'flash-pos':'flash-neg');
   setTimeout(()=>el.classList.remove('flash-pos','flash-neg'),900);
 }
-function setSpeed(s){
-  speed=s;
-  for (let i=0;i<4;i++) $('spd'+i).classList.toggle('active',i===s);
-}
-
 // ----------------------------------------------------------- ticker & toasts
 function pushTicker(msg){ tickerQ.push(msg); if (tickerQ.length>6) tickerQ.shift(); pumpTicker(); }
 function pumpTicker(){
@@ -1232,13 +1465,12 @@ function toast(title,body){
 }
 
 // ----------------------------------------------------------- weekly advance
-function advanceWeek(){
+function nextWeek(){
+  const S=engine.S;
+  if (S.pendingEvent){ showWeekOverlay(null); return; }
   const r=engine.tick();
   refreshBandRates();
-  for (const e of engine.lastEvents){
-    pushTicker(e.msg);
-    if (e.big) toast('Bayside News', e.msg);
-  }
+  for (const e of engine.lastEvents) pushTicker(e.msg);
   pushTicker('Wk '+r.week+' · net '+(r.net>=0?'+':'')+fmt$(r.net)+' · '+r.units.toLocaleString()+' drinks'+(r.shortfall?' · sourcing gap':''));
   for (const vs of engine.venueStats){
     const lot=CITY.lots[vs.districtId], tier=engine.venueAt(vs.districtId).tier;
@@ -1250,7 +1482,68 @@ function advanceWeek(){
   updateHUD(); flashCash(r.net);
   refreshDrawer(false);
   autosave();
-  checkEndStates();
+  if (checkEndStates()) return;
+  showWeekOverlay(r);
+}
+function projectLabel(p){
+  if (p.type==='venue') return 'New venue in '+districtById(p.districtId).name;
+  if (p.type==='upgrade') return 'Upgrading '+districtById(p.districtId).name+' to '+DATA.tiers[p.toTier-1].name;
+  return lineById(p.lineId).icon+' Building '+lineById(p.lineId).name;
+}
+function investBodyFor(p){
+  if (p.type==='venue') return 'Your new venue in '+districtById(p.districtId).name+' is under construction — '+p.weeksLeft+' of '+p.totalWeeks+' weeks left. How should it be finished?';
+  if (p.type==='upgrade') return 'Upgrading '+districtById(p.districtId).name+' to a '+DATA.tiers[p.toTier-1].name+' — '+p.weeksLeft+' of '+p.totalWeeks+' weeks left. How should it be finished?';
+  return lineById(p.lineId).name+' is under construction — '+p.weeksLeft+' of '+p.totalWeeks+' weeks left. What equipment should it be fitted with?';
+}
+function pendingEventHTML(){
+  const S=engine.S, pe=S.pendingEvent;
+  let icon='💡', title='', body='', choices=[];
+  if (pe.kind==='random'){
+    const def=DATA.events.find(e=>e.id===pe.id);
+    icon=def.icon; title=def.title; body=def.body; choices=def.choices;
+  } else {
+    const p=S.projects[pe.projIdx];
+    icon='🏗️'; title='Construction Decision'; body=investBodyFor(p); choices=investOptionsFor(p);
+  }
+  let html='<div class="wk-event"><span class="ev-icon">'+icon+'</span><h2>'+title+'</h2><p>'+body+'</p>';
+  choices.forEach((ch,i)=>{
+    const afford=!ch.cost||S.cash>=ch.cost;
+    html+='<button class="wk-choice" '+(afford?'':'disabled')+' onclick="resolveEventChoice('+i+')"><b>'+ch.label+'</b><span>'+(ch.sub||'')+'</span></button>';
+  });
+  html+='</div>';
+  return html;
+}
+function showWeekOverlay(r){
+  const S=engine.S;
+  let html='';
+  if (r){
+    html+='<div class="wk-stats">'
+      +'<span class="schip">revenue <b>'+fmt$(r.revenue)+'</b></span>'
+      +'<span class="schip">net <b class="'+(r.net>=0?'green':'red')+'">'+(r.net>=0?'+':'')+fmt$(r.net)+'</b></span>'
+      +'<span class="schip">drinks <b>'+r.units.toLocaleString()+'</b></span>'
+      +'<span class="schip">★ <b>'+Math.round(r.reputation)+'</b></span></div>';
+    for (const e of engine.lastEvents) html+='<div class="dsub" style="margin-bottom:6px">'+e.msg+'</div>';
+    if (S.projects.length)
+      html+='<div class="wk-projects">'+S.projects.map(p=>'🏗️ '+projectLabel(p)+' — '+p.weeksLeft+' wk left').join('<br>')+'</div>';
+  }
+  html += S.pendingEvent ? pendingEventHTML()
+    : '<button class="btn btn-gold" style="width:100%" onclick="closeWeekOverlay()">Continue ▶</button>';
+
+  $('week-title').textContent = r ? 'Week '+r.week+' Complete' : 'A Decision Awaits';
+  $('week-sub').textContent = r ? cap1(season(S.week))+' · Year '+(Math.floor((S.week-1)/52)+1) : 'Bayside';
+  $('week-body').innerHTML = html;
+  $('ob-week').hidden=false;
+}
+function resolveEventChoice(idx){
+  const ok=engine.resolveEvent(idx);
+  if (!ok) return;
+  updateHUD(); refreshDrawer(true);
+  const last=engine.lastEvents[engine.lastEvents.length-1];
+  $('week-body').innerHTML='<div class="wk-event"><span class="ev-icon">✅</span><div class="wk-result">'+(last?last.msg:'')+'</div></div>'
+    +'<button class="btn btn-gold" style="width:100%" onclick="closeWeekOverlay()">Continue ▶</button>';
+}
+function closeWeekOverlay(){
+  $('ob-week').hidden=true;
 }
 function checkObjectives(){
   const S=engine.S;
@@ -1264,17 +1557,18 @@ function checkObjectives(){
     burstConfetti();
     toast('🎯 Objective complete!', o.name+(o.reward?(' — reward <b>'+fmt$(o.reward)+'</b>'):''));
     pushTicker('🎯 '+o.name+' ✓');
-    if (o.final){ $('ob-win').hidden=false; setSpeed(0); }
+    if (o.final) $('ob-win').hidden=false;
   }
 }
 function checkEndStates(){
   if (engine.S.debt>300000){
-    setSpeed(0);
     $('over-body').textContent='Debt passed '+fmt$(300000)+' and the lenders pulled the plug at week '+engine.S.week+'. Your empire reached a net worth of '+fmt$(engine.netWorth())+' at its peak. Another round?';
     $('ob-over').hidden=false;
+    return true;
   }
+  return false;
 }
-function dismissWin(){ $('ob-win').hidden=true; setSpeed(1); }
+function dismissWin(){ $('ob-win').hidden=true; }
 
 // ----------------------------------------------------------- drawers
 function openDrawer(type,arg){
@@ -1532,9 +1826,8 @@ function renderDrawer(){
 function uiStaff(did,d){ engine.setStaff(did,d); lastDrawerTouch=performance.now(); updateHUD(); renderDrawer(); }
 function uiUpgrade(did){
   if (engine.upgradeVenue(did)){
-    const v=engine.venueAt(did);
-    toast('🏗️ Upgraded!','Your '+districtById(did).name+' venue is now a '+DATA.tiers[v.tier-1].name+'.');
-    burstConfetti(); checkObjectives(); updateHUD(); renderDrawer();
+    toast('🏗️ Upgrade started','Crews are moving in on '+districtById(did).name+'. A few weeks of work ahead.');
+    updateHUD(); renderDrawer(); closeDrawer(); showWeekOverlay(null);
   } else toast('Not enough cash','Keep trading or take it slower.');
 }
 function uiBuyPrem(did){
@@ -1545,8 +1838,8 @@ function uiBuyPrem(did){
 }
 function uiOpenVenue(did){
   if (engine.openVenue(did)){
-    toast('🍾 New venue!','Your '+districtById(did).name+' pop-up is open for business.');
-    burstConfetti(); checkObjectives(); updateHUD(); openDrawer('venue',did);
+    toast('🏗️ Construction started','Your new pop-up in '+districtById(did).name+' breaks ground.');
+    updateHUD(); closeDrawer(); showWeekOverlay(null);
   }
 }
 function uiToggleDrink(id){ const m=engine.S.menu[id]; m.on=!m.on; lastDrawerTouch=performance.now(); renderDrawer(); }
@@ -1559,8 +1852,8 @@ function uiSource(c,t){ engine.S.sourcing[c]=t; lastDrawerTouch=performance.now(
 function uiBuildLine(id){
   if (engine.buildLine(id)){
     const l=lineById(id);
-    toast(l.icon+' Construction!',l.name+' is up — first batch ready in '+(l.weeks>=52?(l.weeks/52).toFixed(0)+' years':l.weeks+' weeks')+'.');
-    burstConfetti(); checkObjectives(); updateHUD(); renderDrawer();
+    toast(l.icon+' Construction started',l.name+' is being built.');
+    updateHUD(); renderDrawer(); closeDrawer(); showWeekOverlay(null);
   }
 }
 function uiStock(id,qty){
@@ -1579,9 +1872,9 @@ function uiEquip(){ if (engine.upgradeEquipment()){ toast('⭐ Equipment upgrade
 function uiTrain(){ if (engine.upgradeTraining()){ toast('🎓 Crew trained','Tier '+engine.S.training+' service standard.'); updateHUD(); renderDrawer(); } }
 function uiNewGame(fromOver){
   if (!fromOver && !confirm('Start a fresh empire? Current progress is replaced.')) return;
-  $('ob-over').hidden=true; $('ob-win').hidden=true;
+  $('ob-over').hidden=true; $('ob-win').hidden=true; $('ob-week').hidden=true;
   initGame(newGameState());
-  closeDrawer(); setSpeed(1);
+  closeDrawer();
   toast('🍸 Fresh start','Riverside pop-up open. Make it count.');
 }
 
@@ -1604,23 +1897,16 @@ function initGame(S){
   engine=new SimEngine(S);
   refreshBandRates();
   updateHUD();
-  simAcc=0;
 }
 function loop(now){
   requestAnimationFrame(loop);
   const dt=Math.min(0.05,(now-lastFrame)/1000)||0.016;
   lastFrame=now;
-  if (speed>0 && engine){
-    simAcc+=dt*1000;
-    const iv=SIM_MS[speed];
-    if (simAcc>=iv){ simAcc-=iv; advanceWeek(); }
-  }
   updateAgents(dt); updateCars(dt); updateParticles(dt,now);
   render(now);
 }
 function startGame(){
   $('ob-welcome').hidden=true;
-  setSpeed(1);
   pushTicker('Doors open on the Riverside Strip. Make Bayside drink well.');
 }
 function boot(){
@@ -1633,12 +1919,10 @@ function boot(){
   const saved=loadSave();
   if (saved){
     initGame(saved);
-    setSpeed(1);
     firstSessionPulse=false;
     toast('Welcome back','Week '+saved.week+' — the city kept your seat.');
   } else {
     initGame(newGameState());
-    setSpeed(0);
     $('ob-welcome').hidden=false;
   }
   document.addEventListener('visibilitychange',()=>{ if (document.hidden&&engine) autosave(); });
