@@ -38,6 +38,28 @@ async function boot() {
   loadMarket();
   loadListings();
   loadLaunches();
+  setupScrollspy();
+}
+
+// Highlight the nav link for the section currently in view
+function setupScrollspy() {
+  const links = [...document.querySelectorAll('.nav-links a[href^="#"]')];
+  const sections = links
+    .map((a) => document.querySelector(a.getAttribute('href')))
+    .filter(Boolean);
+  if (!sections.length) return;
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const id = `#${entry.target.id}`;
+        links.forEach((a) => a.classList.toggle('active', a.getAttribute('href') === id));
+      });
+    },
+    { rootMargin: '-45% 0px -50% 0px' },
+  );
+  sections.forEach((s) => observer.observe(s));
 }
 
 function setWhatsappLinks() {
@@ -49,6 +71,10 @@ function setWhatsappLinks() {
 
 function esc(s) {
   return String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+function slugify(s) {
+  return String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 }
 
 // Animated count-up for hero stats (respects prefers-reduced-motion)
@@ -141,8 +167,11 @@ async function loadListings() {
       .slice(0, 6)
       .map(
         (l) => `<article class="listing-card">
-          <img class="listing-img" src="${esc(l.image || '')}" alt="${esc(l.project)}" loading="lazy"
-               onerror="this.style.display='none'" />
+          <div class="listing-img-wrap">
+            ${l.status ? `<span class="status-badge ${slugify(l.status)}">${esc(l.status)}</span>` : ''}
+            <img class="listing-img" src="${esc(l.image || '')}" alt="${esc(l.project)}" loading="lazy"
+                 onerror="this.style.display='none'" />
+          </div>
           <div class="listing-body">
             <div class="listing-dev">${esc(l.developer)}</div>
             <h3 class="listing-name">${esc(l.project)}</h3>
@@ -193,12 +222,14 @@ async function loadLaunches() {
 // ── Deal check / pricing proof ────────────────────────────────────────
 
 const VERDICT_CLS = { 'Strong Buy': 'buy', 'Fair Value': 'fair', 'Overpriced': 'over' };
+const VERDICT_ICON = { 'Strong Buy': '✓', 'Fair Value': '●', 'Overpriced': '!' };
 
 $('dealForm').addEventListener('submit', async (e) => {
   e.preventDefault();
   const btn = $('dcSubmit');
+  const origLabel = btn.textContent;
   btn.disabled = true;
-  btn.textContent = 'Scoring against DLD comps…';
+  btn.innerHTML = '<span class="btn-spinner"></span> Scoring against DLD comps…';
   $('resultError').classList.add('hidden');
 
   try {
@@ -225,7 +256,7 @@ $('dealForm').addEventListener('submit', async (e) => {
     errEl.classList.remove('hidden');
   } finally {
     btn.disabled = false;
-    btn.textContent = 'Run Pricing Proof';
+    btn.textContent = origLabel;
   }
 });
 
@@ -234,7 +265,7 @@ function renderVerdict(d) {
   $('resultCard').classList.remove('hidden');
 
   const badge = $('verdictBadge');
-  badge.textContent = d.verdict;
+  badge.innerHTML = `<span class="verdict-icon">${VERDICT_ICON[d.verdict] || '●'}</span>${esc(d.verdict)}`;
   badge.className = `verdict-badge ${VERDICT_CLS[d.verdict] || 'fair'}`;
 
   const sign = d.discountPct > 0 ? '+' : '';
