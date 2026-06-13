@@ -1,0 +1,2095 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0f0f1a">
+<meta name="description" content="Bar Empire — build a drinks empire across a living city. Playable prototype.">
+<title>Bar Empire</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,700;1,800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#0f0f1a;--card:#1a1a2e;--card2:#131326;--gold:#c9a84c;--gold2:#f0c96e;
+  --text:#ece4d4;--muted:#a49a82;--pos:#4caf7d;--neg:#e05252;--border:#2c2c4c;
+  --btn:#252542;--btnhov:#32325c;--sat:env(safe-area-inset-top,0px);--sab:env(safe-area-inset-bottom,0px);
+  --sans:'Inter',system-ui,-apple-system,sans-serif;--serif:'Playfair Display',Georgia,serif;
+  --ease:cubic-bezier(.16,1,.3,1);--hudh:calc(var(--sat) + 64px);
+}
+html,body{height:100%;overscroll-behavior:none}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);
+  position:fixed;inset:0;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none}
+button{font-family:inherit;touch-action:manipulation}
+:focus-visible{outline:2px solid var(--gold2);outline-offset:2px}
+#city{position:absolute;inset:0;display:block;touch-action:none}
+/* ---------- HUD ---------- */
+#hud{position:absolute;top:0;left:0;right:0;padding:calc(var(--sat) + 7px) 12px 7px;
+  background:linear-gradient(180deg,rgba(11,11,24,.9),rgba(11,11,24,.72));
+  -webkit-backdrop-filter:blur(14px) saturate(1.4);backdrop-filter:blur(14px) saturate(1.4);
+  border-bottom:1px solid var(--border);z-index:20}
+#hud-r1{display:flex;align-items:center;gap:10px}
+#wordmark{font-family:var(--serif);font-style:italic;font-weight:700;color:var(--gold);font-size:14px;letter-spacing:.5px}
+#h-cash{font-size:20px;font-weight:800;color:var(--gold2);font-variant-numeric:tabular-nums;transition:color .3s}
+#h-cash.flash-pos{color:var(--pos)} #h-cash.flash-neg{color:var(--neg)}
+#h-nw{font-size:11px;color:var(--muted)} #h-nw b{color:var(--text);font-variant-numeric:tabular-nums}
+#h-debt{font-size:11px;color:var(--neg);display:none}
+#gear{margin-left:auto;margin-right:-8px;background:none;border:none;color:var(--muted);padding:10px;cursor:pointer;
+  display:flex;align-items:center;transition:color .2s}
+#gear svg{width:20px;height:20px}
+#gear:active{color:var(--gold2)}
+#hud-r2{display:flex;align-items:center;gap:6px;margin-top:5px;flex-wrap:nowrap;overflow:hidden}
+.chip{font-size:11px;padding:3px 9px;border-radius:10px;font-weight:600;white-space:nowrap;flex-shrink:0;font-variant-numeric:tabular-nums}
+#h-rep{background:#2c2616;color:var(--gold2)}
+#h-date{background:var(--card);color:var(--muted)}
+.eco-Boom{background:#1d3a24;color:var(--pos)}.eco-Stable{background:#22224a;color:#8ab4f8}.eco-Downturn{background:#3f2020;color:var(--neg)}
+#h-trend{background:#33240f;color:var(--gold);overflow:hidden;text-overflow:ellipsis;max-width:34vw}
+/* ---------- next-week FAB ---------- */
+#nextweek{position:absolute;right:12px;bottom:calc(var(--sab) + 78px);z-index:25;
+  background:linear-gradient(180deg,var(--gold2),var(--gold));border:none;color:#171221;
+  border-radius:15px;padding:13px 18px;min-height:48px;font-weight:800;font-size:13px;letter-spacing:.3px;
+  display:flex;align-items:center;gap:8px;box-shadow:0 6px 20px #000a;cursor:pointer;
+  transition:transform .15s var(--ease),box-shadow .3s}
+#nextweek svg{width:14px;height:14px}
+#nextweek:active{transform:scale(.96)}
+#nextweek.pulse{animation:nwkpulse 1.6s ease-in-out infinite}
+@keyframes nwkpulse{0%,100%{box-shadow:0 6px 20px #000a}50%{box-shadow:0 6px 26px var(--gold2)}}
+/* ---------- ticker + objective ---------- */
+#ticker{position:absolute;top:var(--hudh);left:0;right:0;z-index:18;padding:4px 12px;font-size:12px;color:#cfc5ae;
+  background:rgba(12,12,24,.72);border-bottom:1px solid rgba(44,44,76,.5);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:opacity .4s}
+#objchip{position:absolute;top:calc(var(--hudh) + 30px);left:8px;z-index:18;display:flex;align-items:center;gap:7px;
+  background:rgba(20,18,34,.92);border:1px solid #3a3320;border-radius:20px;padding:8px 14px;min-height:38px;
+  font-size:12px;color:var(--gold2);max-width:78vw;cursor:pointer;box-shadow:0 2px 10px #0007;
+  transition:transform .15s var(--ease)}
+#objchip:active{transform:scale(.97)}
+#objchip svg{width:14px;height:14px;flex-shrink:0;color:var(--gold)}
+#objchip .rew{color:var(--muted);font-size:11px}
+/* ---------- command bar ---------- */
+#cmdbar{position:absolute;bottom:0;left:0;right:0;z-index:20;display:flex;
+  background:linear-gradient(0deg,rgba(10,10,22,.94),rgba(10,10,22,.78));
+  -webkit-backdrop-filter:blur(14px) saturate(1.4);backdrop-filter:blur(14px) saturate(1.4);
+  border-top:1px solid var(--border);padding:6px 4px calc(var(--sab) + 6px)}
+.cmd{flex:1;position:relative;background:none;border:none;color:var(--muted);font-size:10px;font-weight:600;
+  padding:6px 2px;min-height:50px;cursor:pointer;line-height:1.25;transition:color .2s,transform .15s var(--ease)}
+.cmd:active{transform:scale(.93)}
+.cmd .ic{display:flex;justify-content:center;margin-bottom:3px}
+.cmd .ic svg{width:22px;height:22px}
+.cmd.active{color:var(--gold)}
+.cmd.active::before{content:'';position:absolute;top:-6px;left:30%;right:30%;height:2px;border-radius:0 0 2px 2px;background:var(--gold)}
+/* ---------- zoom ---------- */
+#zoomb{position:absolute;left:10px;bottom:calc(var(--sab) + 78px);z-index:15;display:flex;flex-direction:column;gap:8px}
+#zoomb button{width:42px;height:42px;border-radius:12px;border:1px solid var(--border);
+  background:rgba(20,20,38,.85);color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:transform .15s var(--ease)}
+#zoomb button:active{transform:scale(.93)}
+#zoomb svg{width:18px;height:18px}
+/* ---------- drawer ---------- */
+#drawer{position:absolute;left:0;right:0;bottom:0;z-index:30;background:rgba(18,17,32,.97);
+  -webkit-backdrop-filter:blur(14px) saturate(1.4);backdrop-filter:blur(14px) saturate(1.4);
+  border-radius:20px 20px 0 0;border:1px solid var(--border);border-bottom:none;
+  max-height:64vh;max-height:64dvh;transform:translateY(110%);transition:transform .34s var(--ease);
+  display:flex;flex-direction:column;box-shadow:0 -8px 40px #000a}
+#drawer.open{transform:translateY(0)}
+#drawer-head{display:flex;align-items:center;padding:14px 16px 8px;flex-shrink:0;touch-action:none}
+#drawer-grab{position:absolute;top:7px;left:50%;transform:translateX(-50%);width:40px;height:4px;border-radius:2px;background:#3c3c5c}
+#drawer-title{font-family:var(--serif);font-size:17px;font-weight:700;color:var(--gold2)}
+#drawer-x{margin-left:auto;background:var(--btn);border:1px solid var(--border);color:var(--muted);
+  width:38px;height:38px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:transform .15s var(--ease),color .2s}
+#drawer-x svg{width:15px;height:15px}
+#drawer-x:active{transform:scale(.92);color:var(--text)}
+#drawer-body{overflow-y:auto;padding:4px 16px calc(var(--sab) + 18px);-webkit-overflow-scrolling:touch}
+/* drawer widgets */
+.dcard{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px 14px;margin-bottom:10px}
+.drow{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.dlabel{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;font-weight:600;margin-bottom:6px}
+.dname{font-weight:700;font-size:14px}
+.dsub{font-size:12px;color:var(--muted);line-height:1.45}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}
+.schip{background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:4px 9px;font-size:12px;font-variant-numeric:tabular-nums}
+.schip b{color:var(--gold)}
+.btn{background:var(--btn);border:1px solid var(--border);color:var(--text);padding:10px 14px;min-height:44px;
+  border-radius:11px;font-size:13px;cursor:pointer;font-weight:600;
+  transition:background .2s,border-color .2s,transform .15s var(--ease)}
+.btn:hover{background:var(--btnhov)}
+.btn:active{background:var(--btnhov);transform:scale(.97)}
+.btn:disabled{opacity:.38;cursor:not-allowed;transform:none}
+.btn-gold{background:linear-gradient(180deg,var(--gold2),var(--gold));border-color:var(--gold);color:#171221;font-weight:800}
+.btn-gold:hover,.btn-gold:active{background:linear-gradient(180deg,var(--gold2),var(--gold));filter:brightness(1.07)}
+.btn-sm{padding:8px 11px;min-height:38px;font-size:12px}
+.stepper{display:flex;align-items:center;gap:0;border:1px solid var(--border);border-radius:11px;overflow:hidden}
+.stepper button{background:var(--btn);border:none;color:var(--gold2);width:42px;height:40px;font-size:18px;cursor:pointer;
+  transition:background .15s}
+.stepper button:active{background:var(--btnhov)}
+.stepper span{min-width:58px;text-align:center;font-size:13px;font-weight:700;font-variant-numeric:tabular-nums}
+.seg{display:flex;border:1px solid var(--border);border-radius:10px;overflow:hidden;flex-wrap:wrap}
+.seg button{background:var(--card2);border:none;color:var(--muted);font-size:12px;padding:9px 12px;min-height:38px;cursor:pointer;
+  transition:background .2s,color .2s}
+.seg button.on{background:var(--gold);color:#171221;font-weight:800}
+.prog{background:#0c0c1c;border-radius:4px;height:7px;overflow:hidden;margin:4px 0}
+.prog>div{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:4px;transition:width .4s}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.5px;text-align:right;padding:4px 5px;border-bottom:1px solid var(--border)}
+th:first-child,td:first-child{text-align:left}
+td{padding:6px 5px;border-bottom:1px solid #20203a;text-align:right;font-variant-numeric:tabular-nums}
+tr:last-child td{border-bottom:none}
+.green{color:var(--pos)}.red{color:var(--neg)}.goldc{color:var(--gold)}.mutedc{color:var(--muted)}
+.bars{position:relative;display:flex;gap:2px;height:76px;margin:8px 0 4px}
+.bars::after{content:'';position:absolute;left:0;right:0;top:50%;height:1px;background:var(--border)}
+.bar{flex:1;position:relative}
+.bar i{position:absolute;left:12%;right:12%;border-radius:2px;min-height:2px}
+.bar i.bpos{bottom:50%;background:var(--pos)}
+.bar i.bneg{top:50%;background:var(--neg)}
+/* ---------- toast ---------- */
+#toasts{position:absolute;top:calc(var(--hudh) + 76px);left:50%;transform:translateX(-50%);z-index:40;
+  display:flex;flex-direction:column;gap:6px;width:min(330px,88vw);pointer-events:none}
+.toast{background:rgba(26,25,44,.97);border:1px solid rgba(201,168,76,.65);border-radius:13px;padding:10px 14px;
+  box-shadow:0 6px 24px #000b;opacity:0;transform:translateY(-8px);transition:opacity .35s,transform .35s var(--ease)}
+.toast.show{opacity:1;transform:none}
+.toast b{color:var(--gold2);font-size:13px;display:block;margin-bottom:2px}
+.toast div{font-size:12px;line-height:1.45}
+/* ---------- overlays ---------- */
+.overlay{position:absolute;inset:0;z-index:50;background:rgba(8,8,18,.88);display:flex;align-items:center;justify-content:center;
+  padding:22px;animation:ovIn .25s ease-out}
+.ocard{background:var(--card);border:1px solid var(--gold);border-radius:20px;padding:24px 22px;max-width:380px;width:100%;
+  box-shadow:0 12px 60px #000;animation:cardIn .34s var(--ease);max-height:86vh;max-height:86dvh;overflow-y:auto}
+@keyframes ovIn{from{opacity:0}}
+@keyframes cardIn{from{opacity:0;transform:translateY(16px) scale(.97)}}
+.ocard h1{font-family:var(--serif);font-style:italic;color:var(--gold2);font-size:25px;margin-bottom:4px}
+.ocard .sub{color:var(--muted);font-size:11px;margin-bottom:14px;letter-spacing:2px;text-transform:uppercase;font-weight:600}
+.ocard ul{list-style:none;margin-bottom:18px}
+.ocard li{font-size:13px;line-height:1.55;margin-bottom:10px;display:flex;gap:10px}
+.ocard li .em{font-size:17px;flex-shrink:0}
+.ocard .btn-gold{width:100%;padding:13px;min-height:48px;font-size:14px;border-radius:12px}
+/* ---------- weekly recap / decision card ---------- */
+#ob-week .ocard{max-width:400px}
+.wk-stats{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.wk-projects{font-size:12px;color:var(--muted);margin-bottom:12px;line-height:1.5}
+.wk-event{border-top:1px solid var(--border);padding-top:12px;margin-top:4px;text-align:center}
+.wk-event .ev-icon{font-size:32px;display:block;margin-bottom:4px}
+.wk-event h2{font-family:var(--serif);font-size:17px;color:var(--gold2);margin-bottom:6px;text-align:left}
+.wk-event p{font-size:13px;color:var(--text);line-height:1.55;margin-bottom:12px;text-align:left}
+.wk-choice{display:block;width:100%;text-align:left;background:var(--card2);border:1px solid var(--border);
+  border-radius:13px;padding:12px 14px;min-height:48px;margin-bottom:8px;color:var(--text);cursor:pointer;
+  transition:background .2s,border-color .2s,transform .15s var(--ease)}
+.wk-choice:hover{border-color:var(--gold)}
+.wk-choice:active{background:var(--btnhov);transform:scale(.98)}
+.wk-choice b{display:block;color:var(--gold2);font-size:14px;margin-bottom:2px}
+.wk-choice span{font-size:12px;color:var(--muted)}
+.wk-choice:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.wk-result{font-size:13px;line-height:1.55;margin:10px 0 14px;text-align:left}
+[hidden]{display:none!important}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+<canvas id="city"></canvas>
+
+<div id="hud">
+  <div id="hud-r1">
+    <span id="wordmark">Bar Empire</span>
+    <span id="h-cash">$60,000</span>
+    <span id="h-nw">NW <b>$60k</b></span>
+    <span id="h-debt"></span>
+    <button id="gear" aria-label="Settings" onclick="openDrawer('settings')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="21" y1="4" x2="14" y2="4"/><line x1="10" y1="4" x2="3" y2="4"/><line x1="21" y1="12" x2="12" y2="12"/><line x1="8" y1="12" x2="3" y2="12"/><line x1="21" y1="20" x2="16" y2="20"/><line x1="12" y1="20" x2="3" y2="20"/><line x1="14" y1="2" x2="14" y2="6"/><line x1="8" y1="10" x2="8" y2="14"/><line x1="16" y1="18" x2="16" y2="22"/></svg></button>
+  </div>
+  <div id="hud-r2">
+    <span class="chip" id="h-rep">★ 42</span>
+    <span class="chip" id="h-date">Y1 · W1 · Spring</span>
+    <span class="chip eco-Stable" id="h-eco">Stable</span>
+    <span class="chip" id="h-trend">Balanced Scene</span>
+  </div>
+</div>
+<div id="ticker" aria-live="polite">Welcome to Bayside.</div>
+<button id="objchip" type="button" onclick="openDrawer('goals')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> <span id="obj-text"></span> <span class="rew" id="obj-rew"></span></button>
+
+<div id="zoomb">
+  <button aria-label="Zoom in" onclick="zoomBy(1.25)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+  <button aria-label="Zoom out" onclick="zoomBy(0.8)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></button>
+</div>
+
+<button id="nextweek" class="pulse" onclick="nextWeek()"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><path d="M6 4l14 8-14 8Z"/></svg>Next Week</button>
+
+<div id="cmdbar">
+  <button class="cmd" data-d="menu" onclick="openDrawer('menu')"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 22h8M12 11v11M19 3l-7 8-7-8Z"/></svg></span>Menu</button>
+  <button class="cmd" data-d="supply" onclick="openDrawer('supply')"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5M12 22V12"/></svg></span>Supply</button>
+  <button class="cmd" data-d="production" onclick="openDrawer('production')"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M17 18h1M12 18h1M7 18h1"/></svg></span>Produce</button>
+  <button class="cmd" data-d="brand" onclick="openDrawer('brand')"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01Z"/></svg></span>Brand</button>
+  <button class="cmd" data-d="finance" onclick="openDrawer('finance')"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 7l-8.5 8.5-5-5L2 17"/><path d="M16 7h6v6"/></svg></span>Finance</button>
+</div>
+
+<div id="drawer" role="dialog" aria-labelledby="drawer-title">
+  <div id="drawer-grab"></div>
+  <div id="drawer-head">
+    <span id="drawer-title"></span>
+    <button id="drawer-x" aria-label="Close" onclick="closeDrawer()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+  </div>
+  <div id="drawer-body"></div>
+</div>
+
+<div id="toasts" aria-live="polite"></div>
+
+<div class="overlay" id="ob-welcome" role="dialog" aria-modal="true" aria-label="Welcome" hidden>
+  <div class="ocard">
+    <h1>Bar Empire</h1>
+    <div class="sub">Bayside · a city to drink in</div>
+    <ul>
+      <li><span class="em">🏙️</span><span>This is your city. <b>Drag</b> to explore, <b>pinch</b> to zoom.</span></li>
+      <li><span class="em">🍺</span><span>Your first bar is open on the <b>Riverside Strip</b> — tap it to manage staff &amp; upgrades.</span></li>
+      <li><span class="em">🏗️</span><span>Tap <b>FOR LEASE</b> lots to expand. Building takes a few weeks — choose standard or premium fit-outs along the way.</span></li>
+      <li><span class="em">▶</span><span>Tap <b>Next Week</b> to run the week. Expect news, decisions and the odd curveball every time you do.</span></li>
+    </ul>
+    <button class="btn btn-gold" onclick="startGame()">Open the doors ▶</button>
+  </div>
+</div>
+<div class="overlay" id="ob-over" role="dialog" aria-modal="true" aria-label="Game over" hidden>
+  <div class="ocard">
+    <h1 id="over-title">The bank calls it</h1>
+    <div class="sub" id="over-sub">Debt overwhelmed the empire</div>
+    <p id="over-body" style="font-size:13px;line-height:1.5;margin-bottom:16px"></p>
+    <button class="btn btn-gold" onclick="uiNewGame(true)">Start over</button>
+  </div>
+</div>
+<div class="overlay" id="ob-win" role="dialog" aria-modal="true" aria-label="Victory" hidden>
+  <div class="ocard">
+    <h1>🏆 Empire Established</h1>
+    <div class="sub">Bayside belongs to you</div>
+    <p style="font-size:13px;line-height:1.5;margin-bottom:16px">From one riverside pop-up to a vertically-integrated drinks empire. The city will keep growing — keep playing, or start a fresh run.</p>
+    <button class="btn btn-gold" onclick="dismissWin()">Keep playing</button>
+  </div>
+</div>
+<div class="overlay" id="ob-week" role="dialog" aria-modal="true" aria-labelledby="week-title" hidden>
+  <div class="ocard">
+    <h1 id="week-title">Week</h1>
+    <div class="sub" id="week-sub"></div>
+    <div id="week-body"></div>
+  </div>
+</div>
+
+<script>
+'use strict';
+// ============================================================================
+// BAR EMPIRE — city-builder prototype. Simulation ported from the C# Layer-0
+// core (BarEmpireCore.cs / SimulationEngine.cs); presentation is a 2D living
+// city per the GDD: tap buildings, drawers, pedestrians, real-time w/ pause.
+// ============================================================================
+const IS_BROWSER = typeof window !== 'undefined' && typeof document !== 'undefined';
+
+// ----------------------------------------------------------- tiny helpers
+const clamp = (x,a,b)=>Math.max(a,Math.min(b,x));
+const lerp = (a,b,t)=>a+(b-a)*t;
+function fmt$(n){
+  const neg = n<0 ? '-' : '';
+  n = Math.abs(n);
+  if (n>=1e6) return neg+'$'+(n/1e6).toFixed(2)+'M';
+  if (n>=1e4) return neg+'$'+(n/1e3).toFixed(1)+'k';
+  return neg+'$'+Math.round(n).toLocaleString('en-US');
+}
+function season(wk){ const m=wk%52; return m<13?'spring':m<26?'summer':m<39?'autumn':'winter'; }
+const cap1 = s=>s.charAt(0).toUpperCase()+s.slice(1);
+// static visual hash (NOT the sim rng)
+function h2(a,b){ let t=(Math.imul(a,374761393)+Math.imul(b,668265263))>>>0;
+  t=Math.imul(t^(t>>>13),1274126177)>>>0; return ((t^(t>>>16))>>>0)/4294967296; }
+
+// ----------------------------------------------------------- data (from C# GameData)
+const CATS = ['Beer','Wine','Scotch','Spirits','Mixers'];
+const DATA = {
+  drinks: [
+    {id:'draft',   name:'Craft Draft',       icon:'🍺', appeal:1.05, fair:8.0,  cat:'Beer',    use:1.0, cat2:null,     use2:0,   labor:0.6, season:'summer'},
+    {id:'houserw', name:'House Red/White',   icon:'🍷', appeal:1.15, fair:12.5, cat:'Wine',    use:1.0, cat2:null,     use2:0,   labor:0.7, season:null},
+    {id:'reserve', name:'Reserve Vintage',   icon:'🍷', appeal:1.30, fair:25.0, cat:'Wine',    use:1.0, cat2:null,     use2:0,   labor:0.9, season:null},
+    {id:'dram',    name:'Single Malt Dram',  icon:'🥃', appeal:1.25, fair:20.5, cat:'Scotch',  use:1.0, cat2:null,     use2:0,   labor:0.8, season:'winter'},
+    {id:'raredram',name:'Rare Aged Malt',    icon:'🥃', appeal:1.45, fair:48.0, cat:'Scotch',  use:1.0, cat2:null,     use2:0,   labor:1.0, season:null},
+    {id:'cocktail',name:'Signature Cocktail',icon:'🍸', appeal:1.35, fair:18.5, cat:'Spirits', use:1.0, cat2:'Mixers', use2:1.0, labor:1.4, season:null},
+    {id:'highball',name:'Highball',          icon:'🥂', appeal:1.10, fair:14.0, cat:'Spirits', use:0.7, cat2:'Mixers', use2:1.2, labor:0.9, season:'summer'},
+  ],
+  supply: {
+    Beer:   [{tier:'Standard',cost:1.8,q:0.50},{tier:'Premium',cost:2.9,q:0.70}],
+    Wine:   [{tier:'Standard',cost:3.5,q:0.55},{tier:'Premium',cost:6.0,q:0.75},{tier:'Reserve',cost:11.0,q:0.90}],
+    Scotch: [{tier:'Premium',cost:7.5,q:0.72},{tier:'Reserve',cost:14.0,q:0.88},{tier:'TopShelf',cost:26.0,q:1.00}],
+    Spirits:[{tier:'Standard',cost:2.5,q:0.55},{tier:'Premium',cost:4.5,q:0.78}],
+    Mixers: [{tier:'Standard',cost:0.6,q:0.60},{tier:'Premium',cost:1.1,q:0.80}],
+  },
+  lines: [
+    {id:'brewery', name:'Craft Brewery',    icon:'🍺', cat:'Beer',   capex:120000, weekly:900, prodCost:0.9, q:0.74, weeks:3,   aging:0.00},
+    {id:'wineest', name:'Wine Estate',      icon:'🍇', cat:'Wine',   capex:480000, weekly:420, prodCost:1.8, q:0.85, weeks:52,  aging:0.05},
+    {id:'distill', name:'Scotch Distillery',icon:'🥃', cat:'Scotch', capex:900000, weekly:260, prodCost:2.6, q:0.90, weeks:156, aging:0.10},
+  ],
+  tiers: [
+    {tier:1, name:'Pop-up Bar', cap:1.0, appeal:1.0, cost:0},
+    {tier:2, name:'Bar',        cap:1.6, appeal:1.2, cost:70000},
+    {tier:3, name:'Flagship',   cap:2.4, appeal:1.5, cost:260000},
+  ],
+  districts: [
+    {id:'riverside', name:'Riverside Strip', traffic:900,  rent:1100, affluence:1.00, comp:2, fitout:0},
+    {id:'market',    name:'Market Lane',     traffic:1250, rent:1900, affluence:1.05, comp:3, fitout:42000},
+    {id:'harbor',    name:'Harbour Front',   traffic:1700, rent:3000, affluence:1.25, comp:5, fitout:120000},
+  ],
+  trends: [
+    {id:'balanced', name:'Balanced Scene',     boosts:{},                                       note:'No strong pull this season.'},
+    {id:'cocktail', name:'Craft-Cocktail Boom',boosts:{cocktail:1.7,highball:1.3},              note:'Mixology is everywhere.'},
+    {id:'malt',     name:'Single-Malt Surge',  boosts:{dram:1.6,raredram:1.8},                  note:'Whisky connoisseurs out in force.'},
+    {id:'natural',  name:'Natural-Wine Wave',  boosts:{houserw:1.4,reserve:1.6},                note:'A wine-forward crowd.'},
+    {id:'craftbeer',name:'Craft-Beer Hype',    boosts:{draft:1.8},                              note:'Taprooms are the move.'},
+    {id:'lowno',    name:'Premiumization',     boosts:{reserve:1.5,raredram:1.6,cocktail:1.3},  note:'Drink less, drink better.'},
+  ],
+  baseThroughput: 150,   // serves per staff per week
+  drinksPerGuest: 2.2,   // a bar guest orders ~2 drinks, not 1
+  equipCost: [0,25000,60000,140000],
+  trainCost: [0,15000,40000,90000],
+  premisesMult: 115, // buy premises at rent x this (removes rent for good)
+  stocks: [
+    {id:'PROOF', name:'Proof Holdings',   sector:'Hospitality', base:42,  vol:0.045},
+    {id:'GCSK',  name:'Golden Cask Group',sector:'Spirits',     base:88,  vol:0.035},
+    {id:'HRBL',  name:'Harbour Logistics',sector:'Shipping',    base:31,  vol:0.05},
+    {id:'CRST',  name:'Crestline Retail', sector:'Retail',      base:55,  vol:0.04},
+    {id:'BWTC',  name:'Bayside Water Co', sector:'Utilities',   base:19,  vol:0.02},
+  ],
+  properties: [
+    {id:'flat_riverside',  name:'Riverside Walk-up',     district:'riverside', price:45000,  rent:520},
+    {id:'house_riverside', name:'Riverside Townhouse',   district:'riverside', price:140000, rent:1600},
+    {id:'flat_market',     name:'Market Lane Apartments',district:'market',    price:95000,  rent:1150},
+    {id:'retail_market',   name:'Market Retail Unit',    district:'market',    price:180000, rent:2100},
+    {id:'office_harbor',   name:'Harbour Office Suite',  district:'harbor',    price:220000, rent:2600},
+    {id:'penthouse_harbor',name:'Harbour Penthouse',     district:'harbor',    price:480000, rent:5200},
+  ],
+  rivalNames: ['The Anchor','Lane & Co','Quayside Social','The Tipsy Fox','Harbour Taps','Velvet Room','The Brass Owl','Smokestack Tavern'],
+};
+const EQUIP_Q  =[1.00,1.10,1.18,1.30], EQUIP_CAP=[1.00,1.18,1.45,1.70];
+const TRAIN_Q  =[1.00,1.12,1.22,1.34], TRAIN_CAP=[1.00,1.10,1.18,1.28];
+const TRAIN_WAGE=[620,760,930,1150];
+const drinkById   = id=>DATA.drinks.find(d=>d.id===id);
+const districtById= id=>DATA.districts.find(d=>d.id===id);
+const lineById    = id=>DATA.lines.find(l=>l.id===id);
+const trendById   = id=>DATA.trends.find(t=>t.id===id)||DATA.trends[0];
+const supplyFor   = (c,t)=>DATA.supply[c].find(s=>s.tier===t)||DATA.supply[c][0];
+
+// ----------------------------------------------------------- weekly decision events
+DATA.events = [
+  {id:'critic', icon:'📰', title:'A Food Critic Is in Town',
+   body:'A well-known local critic has been spotted near your venue, notebook in hand.',
+   choices:[
+     {label:'Roll out the red carpet', sub:'Spend '+fmt$(2000)+' on a special tasting menu', cost:2000,
+      effects:[{t:'rep',amount:8},{t:'aware',amount:5}],
+      result:'The critic raves about your venue — reputation and buzz soar!'},
+     {label:'Let them dine as a regular guest', sub:'No cost, no guarantees',
+      effects:[{t:'random',branches:[
+        {p:0.5,effects:[{t:'rep',amount:4}],result:'A glowing, honest review boosts your reputation.'},
+        {p:0.5,effects:[{t:'rep',amount:-3}],result:'A lukewarm write-up dents your reputation.'}]}]},
+   ]},
+  {id:'staffDispute', icon:'😤', title:'Staff Are Restless',
+   body:'Your crew is grumbling about wages after a tough run of late shifts.',
+   check:(s)=>s.venues.some(v=>v.staff>=3),
+   choices:[
+     {label:'Give everyone a raise', sub:'+'+fmt$(150)+'/wk wages, but happier staff',
+      effects:[{t:'wageBonus',amount:150},{t:'rep',amount:3}],
+      result:'Wages go up — morale (and reputation) improve.'},
+     {label:'Hold the line', sub:'Risk losing a staff member',
+      effects:[{t:'random',branches:[
+        {p:0.4,effects:[{t:'staffLoss',amount:1}],result:"A bartender walks out mid-shift — you're short-staffed."},
+        {p:0.6,effects:[],result:'Grumbling continues, but everyone stays on.'}]}]},
+   ]},
+  {id:'viral', icon:'📱', title:"You're Going Viral!",
+   body:"A patron's post about your venue is blowing up online.",
+   choices:[
+     {label:'Lean in — boost the ads', sub:'Spend '+fmt$(1500)+' to ride the wave', cost:1500,
+      effects:[{t:'aware',amount:12},{t:'revenueBoost',pct:0.05}],
+      result:'The campaign amplifies the moment — awareness and sales jump!'},
+     {label:'Let it ride naturally', sub:'No cost',
+      effects:[{t:'aware',amount:4}], result:'Word of mouth spreads on its own.'},
+   ]},
+  {id:'inspector', icon:'🕵️', title:'Health Inspector Incoming',
+   body:'Word is a health inspector will drop by this week.',
+   choices:[
+     {label:'Deep clean before they arrive', sub:'Spend '+fmt$(800), cost:800,
+      effects:[{t:'rep',amount:5}], result:'Spotless inspection — reputation gets a boost.'},
+     {label:'Wing it', sub:'No cost, no guarantees',
+      effects:[{t:'random',branches:[
+        {p:0.5,effects:[{t:'rep',amount:-6}],result:'Cited for violations — reputation takes a hit.'},
+        {p:0.5,effects:[{t:'rep',amount:2}],result:'Passed clean — relief all around.'}]}]},
+   ]},
+  {id:'supplierDeal', icon:'📦', title:'Bulk Supplier Offer',
+   body:'A distributor offers a one-time bulk discount on your drink supplies.',
+   choices:[
+     {label:'Take the deal', sub:'Cut sourcing costs across the board',
+      effects:[{t:'marketIndex',mult:0.92}], result:'Stocked up cheap — sourcing costs drop for now.'},
+     {label:'Pass on it', sub:'No change', effects:[], result:'You stick with your usual suppliers.'},
+   ]},
+  {id:'rivalClosed', icon:'🚪', title:'A Rival Has Closed',
+   body:'A nearby competitor has shut its doors for good.',
+   choices:[
+     {label:"Run a promo for their old regulars", sub:'Spend '+fmt$(1000), cost:1000,
+      effects:[{t:'aware',amount:8},{t:'rep',amount:3}], result:'Their old crowd starts showing up at your place.'},
+     {label:'Business as usual', sub:'No cost', effects:[{t:'aware',amount:2}], result:'A few stray customers wander in anyway.'},
+   ]},
+  {id:'stockTip', icon:'📈', title:'A Hot Stock Tip',
+   body:'A regular at the bar swears they know which stock is about to move.',
+   choices:[
+     {label:'Put '+fmt$(5000)+' on the tip', sub:'High risk, high reward', cost:5000,
+      effects:[{t:'stockBuyBoost',amount:5000}], result:'You take the plunge — shares bought, fingers crossed.'},
+     {label:'Ignore it', sub:'No cost', effects:[], result:'Probably for the best — or was it?'},
+   ]},
+  {id:'gala', icon:'🎉', title:'Charity Gala Invitation',
+   body:'A high-profile charity gala is looking for sponsors.',
+   check:(s)=>s.cash>=3000,
+   choices:[
+     {label:'Sponsor the gala', sub:'Spend '+fmt$(3000), cost:3000,
+      effects:[{t:'rep',amount:10},{t:'aware',amount:6}], result:'Your name is on every program — reputation and buzz climb.'},
+     {label:'Politely decline', sub:'No cost', effects:[], result:'You keep your cash for now.'},
+   ]},
+  {id:'festival', icon:'🎪', title:'City Festival This Week',
+   body:'A street festival is setting up just blocks away.',
+   choices:[
+     {label:'Set up a stall', sub:'Spend '+fmt$(1200), cost:1200,
+      effects:[{t:'revenueBoost',pct:0.08},{t:'aware',amount:5}], result:'Festival crowds spill into your venue — a great week of sales.'},
+     {label:'Skip it', sub:'No cost', effects:[], result:'You sit this one out.'},
+   ]},
+  {id:'equipFail', icon:'⚙️', title:'Equipment Breakdown',
+   body:'A critical piece of bar equipment has broken down.',
+   choices:[
+     {label:'Rush repair', sub:'Spend '+fmt$(1800), cost:1800,
+      effects:[{t:'rep',amount:2}], result:'Fixed fast — barely a hiccup in service.'},
+     {label:'Patch it up cheaply', sub:'Risk it breaking again',
+      effects:[{t:'random',branches:[
+        {p:0.5,effects:[{t:'cash',amount:-2500}],result:'It breaks again mid-week — an expensive emergency repair.'},
+        {p:0.5,effects:[],result:'The patch holds, for now.'}]}]},
+   ]},
+];
+
+// generic, JSON-safe choice-effect interpreter — returns a result message
+function applyChoiceEffects(engine, choice){
+  const S=engine.S;
+  for (const eff of (choice.effects||[])){
+    switch (eff.t){
+      case 'cash': S.cash+=eff.amount; break;
+      case 'rep': S.reputation=clamp(S.reputation+eff.amount,1,100); break;
+      case 'aware': S.awareness=clamp(S.awareness+eff.amount,0,100); break;
+      case 'wageBonus': S.wageBonus+=eff.amount; break;
+      case 'marketIndex': for (const c of CATS) S.marketIndex[c]=clamp(S.marketIndex[c]*eff.mult,0.55,2.4); break;
+      case 'revenueBoost': { const last=S.history[S.history.length-1]; S.cash+=(last?last.revenue:0)*eff.pct; break; }
+      case 'stockBuyBoost': {
+        const ids=DATA.stocks.map(s=>s.id), id=ids[engine.rngInt(ids.length)], cur=S.stocks[id];
+        const qty=Math.floor(eff.amount/cur.price); cur.shares+=qty; cur.price*=1.2; break;
+      }
+      case 'staffLoss': {
+        const cand=S.venues.filter(v=>v.staff>eff.amount);
+        if (cand.length){ const v=cand[engine.rngInt(cand.length)]; v.staff-=eff.amount; }
+        break;
+      }
+      case 'random': {
+        const r=engine.rng(); let acc=0;
+        for (const br of eff.branches){ acc+=br.p; if (r<=acc) return applyChoiceEffects(engine,{effects:br.effects,result:br.result}); }
+        const last=eff.branches[eff.branches.length-1];
+        return applyChoiceEffects(engine,{effects:last.effects,result:last.result});
+      }
+    }
+  }
+  return choice.result || '';
+}
+
+// investment choices offered while a construction project is underway
+function investOptionsFor(p){
+  if (p.type==='line'){
+    const l=lineById(p.lineId), cost=Math.round(l.capex*0.25);
+    return [
+      {label:'Standard equipment', sub:'Keep costs down', cost:0, qBonus:0, result:'Standard equipment ordered for the build.'},
+      {label:'Premium equipment', sub:'+8% quality — '+fmt$(cost), cost, qBonus:0.08, result:'Premium equipment ordered — quality will be excellent.'},
+    ];
+  }
+  const cost = p.type==='venue' ? 15000 : 25000;
+  return [
+    {label:'Standard finish', sub:'Keep costs down', cost:0, decorBonus:0, result:'Standard fit-out underway.'},
+    {label:'Premium finish', sub:'+15% appeal — '+fmt$(cost), cost, decorBonus:0.15, result:'Premium interiors and exteriors ordered!'},
+  ];
+}
+
+// ----------------------------------------------------------- objectives ladder
+const OBJECTIVES = [
+  {id:'cash75',  name:'Grow your cash to $75k',        reward:5000,   check:(s,e)=>s.cash>=75000},
+  {id:'rep55',   name:'Reach 55★ reputation',          reward:7500,   check:(s,e)=>s.reputation>=55},
+  {id:'staff5',  name:'Run a 5-strong bar crew',       reward:4000,   check:(s,e)=>s.venues.some(v=>v.staff>=5)},
+  {id:'venue2',  name:'Open a bar on Market Lane',     reward:15000,  check:(s,e)=>s.venues.some(v=>v.districtId==='market')},
+  {id:'tier2',   name:'Upgrade a venue to a full Bar', reward:12000,  check:(s,e)=>s.venues.some(v=>v.tier>=2)},
+  {id:'brewery', name:'Build the Craft Brewery',       reward:20000,  check:(s,e)=>s.ownedLines.includes('brewery')},
+  {id:'ownbeer', name:'Pour your own craft beer',      reward:10000,  check:(s,e)=>(s.totals.ownServed.Beer||0)>0},
+  {id:'aware60', name:'Reach 60 brand awareness',      reward:8000,   check:(s,e)=>s.awareness>=60},
+  {id:'nw350',   name:'Reach $350k net worth',         reward:15000,  check:(s,e)=>e.netWorth()>=350000},
+  {id:'venue3',  name:'Open on Harbour Front',         reward:25000,  check:(s,e)=>s.venues.some(v=>v.districtId==='harbor')},
+  {id:'wine',    name:'Build the Wine Estate',         reward:40000,  check:(s,e)=>s.ownedLines.includes('wineest')},
+  {id:'flagship',name:'Open a Flagship venue',         reward:50000,  check:(s,e)=>s.venues.some(v=>v.tier>=3)},
+  {id:'nw1m',    name:'Reach $1M net worth',           reward:50000,  check:(s,e)=>e.netWorth()>=1000000},
+  {id:'distill', name:'Build the Scotch Distillery',   reward:75000,  check:(s,e)=>s.ownedLines.includes('distill')},
+  {id:'ownmalt', name:'Pour your own single malt',     reward:100000, check:(s,e)=>(s.totals.ownServed.Scotch||0)>0},
+  {id:'nw3m',    name:'Build a $3M empire',            reward:0, final:true, check:(s,e)=>e.netWorth()>=3000000},
+];
+
+// ----------------------------------------------------------- new game state
+function newGameState(seed){
+  const s = {
+    v:2, week:1, cash:60000, debt:0, reputation:42, awareness:25,
+    equipment:1, training:1, marketing:600,
+    sourcing:{Beer:'Standard',Wine:'Premium',Scotch:'Premium',Spirits:'Premium',Mixers:'Standard'},
+    ownedLines:[], maturing:[], ownInv:{}, ownInvQ:{},
+    menu:{}, venues:[{districtId:'riverside',tier:1,staff:3,ownsPremises:false,premisesValue:0}],
+    economy:'Stable', trendId:'balanced', trendTimer:6,
+    marketIndex:{}, competitorPressure:1.0,
+    history:[], totals:{ownServed:{}}, flags:{firstReady:{},wasShort:false},
+    objIndex:0, completed:[],
+    rngA:(seed===undefined ? (Date.now()%2147483647) : seed)>>>0,
+  };
+  for (const c of CATS){ s.marketIndex[c]=1; s.ownInv[c]=0; s.ownInvQ[c]=0; }
+  for (const d of DATA.drinks)
+    s.menu[d.id] = {on:(d.id!=='raredram'&&d.id!=='reserve'), price:Math.round(d.fair*1.05*10)/10};
+  s.stocks={}; for (const st of DATA.stocks) s.stocks[st.id]={price:st.base, shares:0};
+  s.properties={}; for (const pr of DATA.properties) s.properties[pr.id]=false;
+  s.projects=[]; s.lineBonuses={}; s.wageBonus=0; s.lineAlloc={};
+  s.pendingEvent=null; s.eventCooldown=2;
+  s.rivals={}; DATA.districts.forEach((d,i)=>{ s.rivals[d.id]={tier:1, nameIdx:i%DATA.rivalNames.length}; });
+  return s;
+}
+
+// ----------------------------------------------------------- engine (C# port)
+class SimEngine {
+  constructor(s){ this.S=s; this.venueStats=[]; this.lastOrders={}; this.lastEvents=[]; }
+  // mulberry32, state persisted in S for save/load determinism
+  rng(){ const S=this.S;
+    S.rngA=(S.rngA+0x6D2B79F5)>>>0; let t=S.rngA;
+    t=Math.imul(t^(t>>>15),1|t); t^=t+Math.imul(t^(t>>>7),61|t);
+    return ((t^(t>>>14))>>>0)/4294967296; }
+  rngInt(n){ return Math.floor(this.rng()*n); }
+  econMult(){ return this.S.economy==='Boom'?1.26:this.S.economy==='Downturn'?0.71:1.0; }
+  catQuality(c){ const S=this.S;
+    if (S.ownInv[c]>0.001) return S.ownInvQ[c];
+    return supplyFor(c,S.sourcing[c]).q; }
+
+  tick(){
+    const S=this.S, ev=[];
+    this._wholesale=0; this._overtime=0;
+    this.runProjects(ev);
+    this.runProduction(ev);
+    this.evolveMarket(ev);
+    this.evolveRivals(ev);
+    const eqtr = 0.30*(TRAIN_Q[S.training-1]-0.95) + 0.28*(EQUIP_Q[S.equipment-1]-0.95) + 0.18;
+    const sea = season(S.week);
+    const boosts = trendById(S.trendId).boosts;
+    const orders={}, catDemand={};
+    for (const c of CATS) catDemand[c]=0;
+    let appealSum=0, appealN=0, serviceSum=0;
+    const vstats=[];
+
+    for (const v of S.venues){
+      const d=districtById(v.districtId), vt=DATA.tiers[v.tier-1];
+      const compMult = 1/(1 + (d.comp+S.rivals[v.districtId].tier)*0.11*S.competitorPressure);
+      const seasonMult = sea==='summer'?1.06:sea==='winter'?0.98:1.0;
+      const visitors = d.traffic*this.econMult()*seasonMult
+        *(0.50+0.50*S.awareness/100)*(0.58+0.42*S.reputation/100)
+        *compMult*vt.appeal*(1+(v.decorBonus||0));
+      const live = DATA.drinks.filter(dr=>S.menu[dr.id].on);
+      let wSum=0, paSum=0; const w={};
+      for (const dr of live){
+        const dq = clamp(0.45*this.catQuality(dr.cat)+eqtr, 0.2, 1.0);
+        const fair = dr.fair*(0.62+0.85*dq)*d.affluence;
+        const price = S.menu[dr.id].price;
+        const pa = clamp(Math.pow(fair/Math.max(price,0.5),1.7), 0.05, 1.7);
+        const sm = dr.season===sea?1.25:dr.season?0.85:1.0;
+        const tm = boosts[dr.id]||1;
+        const wt = Math.max(0.001, dr.appeal*pa*sm*tm);
+        w[dr.id]=wt; wSum+=wt; paSum+=pa; appealSum+=pa; appealN++;
+      }
+      const conversion = clamp(0.45+0.40*(paSum/Math.max(1,live.length)), 0.30, 0.95);
+      const capacity = v.staff*DATA.baseThroughput*vt.cap*EQUIP_CAP[S.equipment-1]*TRAIN_CAP[S.training-1];
+      const rawDemand = visitors*conversion*DATA.drinksPerGuest;
+      const scale = rawDemand>capacity ? capacity/rawDemand : 1;
+      serviceSum += clamp(scale,0,1);
+      let vRev=0, vServed=0;
+      if (wSum>0) for (const dr of live){
+        const o = rawDemand*(w[dr.id]/wSum)*scale;
+        orders[dr.id]=(orders[dr.id]||0)+o;
+        vRev+=o*S.menu[dr.id].price; vServed+=o;
+        catDemand[dr.cat]+=o*dr.use;
+        if (dr.cat2) catDemand[dr.cat2]+=o*dr.use2;
+      }
+      vstats.push({districtId:v.districtId, visitors, served:vServed,
+                   serviceLevel:clamp(scale,0,1), revenue:vRev});
+    }
+
+    // consume supply: own inventory first, then sourced at market
+    let cogs=0, shortfall=false;
+    for (const c of CATS){
+      const need=catDemand[c]; if (need<=0) continue;
+      const own=Math.min(need, S.ownInv[c]); const sourced=need-own;
+      const line = DATA.lines.find(l=>l.cat===c && S.ownedLines.includes(l.id));
+      if (own>0 && line){ cogs+=own*line.prodCost; S.ownInv[c]-=own;
+        S.totals.ownServed[c]=(S.totals.ownServed[c]||0)+own; }
+      if (sourced>0){
+        cogs += sourced*supplyFor(c,S.sourcing[c]).cost*S.marketIndex[c];
+        if (S.ownedLines.some(id=>lineById(id).cat===c)) shortfall=true;
+      }
+    }
+    if (shortfall && !S.flags.wasShort)
+      ev.push({msg:'⚠️ Own stock ran dry — buying at market prices while batches mature'});
+    S.flags.wasShort = shortfall;
+
+    // revenue + labor
+    let revenue=0, units=0;
+    for (const id of Object.keys(orders)){
+      const dr=drinkById(id);
+      revenue+=orders[id]*S.menu[id].price;
+      cogs+=orders[id]*dr.labor;
+      units+=Math.round(orders[id]);
+    }
+
+    // opex + finances
+    const rent = S.venues.filter(v=>!v.ownsPremises).reduce((a,v)=>a+districtById(v.districtId).rent,0);
+    const wages = S.venues.reduce((a,v)=>a+v.staff,0)*TRAIN_WAGE[S.training-1] + S.wageBonus;
+    const interest = S.debt*0.012;
+    const opex = rent+wages+S.marketing+interest+this._overtime;
+    const rentIncome = DATA.properties.filter(pr=>S.properties[pr.id]).reduce((a,pr)=>a+pr.rent,0);
+    const gross=revenue-cogs, net=gross-opex+rentIncome+this._wholesale;
+    S.cash+=net;
+    if (S.cash<0){ S.debt+=-S.cash; S.cash=0; }
+    if (S.debt>0 && S.cash>S.debt*2){
+      const pay=Math.min(S.debt, S.debt*0.25);
+      S.debt-=pay; S.cash-=pay;
+      ev.push({msg:'🏦 Paid down '+fmt$(pay)+' of the loan'});
+    }
+
+    // reputation + awareness
+    const valuePerc = appealN>0 ? clamp(appealSum/appealN,0,1.7)/1.4 : 0.5;
+    const servicePerc = S.venues.length>0 ? serviceSum/S.venues.length : 1;
+    const onMenu = DATA.drinks.filter(dr=>S.menu[dr.id].on);
+    const avgQ = onMenu.length ? onMenu.reduce((a,dr)=>a+this.catQuality(dr.cat),0)/onMenu.length : 0.4;
+    const repTarget = clamp(100*(0.35+0.40*valuePerc*avgQ+0.25*servicePerc),5,100);
+    S.reputation = clamp(S.reputation+(repTarget-S.reputation)*0.28,1,100);
+    S.awareness = clamp(S.awareness*0.90+Math.sqrt(S.marketing/200)*2.2,0,100);
+
+    const r={week:S.week,revenue,cogs,gross,opex,net,rent,wages,marketing:S.marketing,
+             interest,rentIncome,units,reputation:S.reputation,shortfall,
+             wholesale:this._wholesale,overtime:this._overtime};
+    S.history.push(r); if (S.history.length>64) S.history.shift();
+    S.week++;
+    this.venueStats=vstats; this.lastOrders=orders; this.lastEvents=ev;
+    return r;
+  }
+
+  runProduction(ev){
+    const S=this.S;
+    for (const id of S.ownedLines){
+      const l=lineById(id);
+      const alloc=S.lineAlloc[id]||{scale:1,wholesalePct:0};
+      const scale=alloc.scale||1;
+      const units=l.weekly*scale;
+      if (scale>1) this._overtime += l.weekly*(scale-1)*l.prodCost*1.5;
+      S.maturing.push({cat:l.cat,units,q:l.q,start:S.week,ready:S.week+l.weeks,lineId:id});
+    }
+    const readyNow=S.maturing.filter(b=>b.ready<=S.week);
+    if (readyNow.length){
+      const byLine={};
+      for (const b of readyNow){
+        const l=lineById(b.lineId)||DATA.lines.find(x=>x.cat===b.cat);
+        const agingYears=(S.week-b.start)/52;
+        const q=clamp(b.q+l.aging*agingYears+(S.lineBonuses[b.lineId]||0),0,1);
+        const alloc=S.lineAlloc[b.lineId]||{scale:1,wholesalePct:0};
+        const wsUnits=b.units*(alloc.wholesalePct||0)/100;
+        const ownUnits=b.units-wsUnits;
+        if (wsUnits>0){
+          this._wholesale += wsUnits*l.prodCost*2.5*S.marketIndex[b.cat];
+        }
+        if (ownUnits>0){
+          const ex=S.ownInv[b.cat];
+          S.ownInvQ[b.cat]= ex>0 ? (S.ownInvQ[b.cat]*ex+q*ownUnits)/(ex+ownUnits) : q;
+          S.ownInv[b.cat]=ex+ownUnits;
+        }
+        byLine[b.lineId]=(byLine[b.lineId]||0)+b.units;
+      }
+      S.maturing=S.maturing.filter(b=>b.ready>S.week);
+      for (const id of Object.keys(byLine)){
+        const l=lineById(id);
+        if (!S.flags.firstReady[id]){
+          S.flags.firstReady[id]=true;
+          ev.push({msg:l.icon+' First batch ready! '+Math.round(byLine[id])+' units of own '+l.cat.toLowerCase()+' on tap', big:true});
+        }
+      }
+    }
+  }
+
+  evolveMarket(ev){
+    const S=this.S, rr=this.rng();
+    const prevEco=S.economy;
+    if (S.economy==='Stable'){ if (rr<0.06) S.economy='Boom'; else if (rr<0.13) S.economy='Downturn'; }
+    else if (S.economy==='Boom'){ if (rr<0.22) S.economy='Stable'; }
+    else if (rr<0.20) S.economy='Stable';
+    if (S.economy!==prevEco){
+      const m=S.economy==='Boom'?'📈 Boom! The city is spending big':
+              S.economy==='Downturn'?'📉 Downturn — wallets are closing':'⚖️ The economy steadies';
+      ev.push({msg:m,big:true});
+    }
+    if (--S.trendTimer<=0){
+      const ids=DATA.trends.map(t=>t.id).filter(i=>i!==S.trendId);
+      S.trendId=ids[this.rngInt(ids.length)];
+      S.trendTimer=5+this.rngInt(6);
+      const t=trendById(S.trendId);
+      ev.push({msg:'✨ New trend: '+t.name+' — '+t.note,big:true});
+    }
+    const drift=S.economy==='Boom'?0.006:S.economy==='Downturn'?-0.005:0.001;
+    for (const c of CATS)
+      S.marketIndex[c]=clamp(S.marketIndex[c]*(1+drift+(this.rng()-0.5)*0.05),0.55,2.4);
+    S.competitorPressure=clamp(S.competitorPressure+(this.rng()-0.45)*0.04,0.7,1.8);
+
+    // stock market drift (PROOF tracks own net worth growth a little, others random-walk)
+    const stockDrift=S.economy==='Boom'?0.006:S.economy==='Downturn'?-0.006:0.0008;
+    for (const st of DATA.stocks){
+      const cur=S.stocks[st.id];
+      const bias = st.id==='PROOF' ? clamp((this.netWorth()/300000-1)*0.002,-0.01,0.01) : 0;
+      cur.price=clamp(cur.price*(1+stockDrift+bias+(this.rng()-0.5)*st.vol), st.base*0.2, st.base*6);
+    }
+
+    // weekly decision event trigger
+    if (!S.pendingEvent){
+      if (--S.eventCooldown<=0){
+        if (S.week>=3 && this.rng()<0.4){
+          const eligible=DATA.events.filter(e=>!e.check||e.check(S));
+          if (eligible.length) S.pendingEvent={kind:'random', id:eligible[this.rngInt(eligible.length)].id};
+        }
+        S.eventCooldown=2;
+      }
+    }
+  }
+
+  evolveRivals(ev){
+    const S=this.S;
+    for (const d of DATA.districts){
+      const riv=S.rivals[d.id];
+      const r=this.rng();
+      if (riv.tier===0){
+        if (r<0.06){ riv.tier=1; riv.nameIdx=this.rngInt(DATA.rivalNames.length);
+          ev.push({msg:'🏪 '+DATA.rivalNames[riv.nameIdx]+' has opened in '+d.name+' — new competition on the block.'}); }
+      } else if (riv.tier<3 && r<0.025){
+        riv.tier++;
+        ev.push({msg:'🏪 '+DATA.rivalNames[riv.nameIdx]+' upgraded to a '+DATA.tiers[riv.tier-1].name+' in '+d.name+' — keep an eye on them.', big:true});
+      } else if (r<0.012){
+        ev.push({msg:'🏪 '+DATA.rivalNames[riv.nameIdx]+' has closed down in '+d.name+'.'});
+        riv.tier=0;
+      }
+    }
+  }
+
+  // -------------------------------------------------- player actions
+  venueAt(districtId){ return this.S.venues.find(v=>v.districtId===districtId); }
+  openVenue(districtId){
+    const S=this.S, d=districtById(districtId);
+    if (!d || this.venueAt(districtId) || S.cash<d.fitout) return false;
+    if (S.projects.some(p=>p.type==='venue'&&p.districtId===districtId)) return false;
+    S.cash-=d.fitout;
+    const weeks=3;
+    S.projects.push({type:'venue',districtId,weeksLeft:weeks,totalWeeks:weeks,decorBonus:0});
+    S.pendingEvent={kind:'invest',projIdx:S.projects.length-1};
+    return true;
+  }
+  upgradeVenue(districtId){
+    const S=this.S, v=this.venueAt(districtId);
+    if (!v || v.tier>=3) return false;
+    const cost=DATA.tiers[v.tier].cost;
+    if (S.cash<cost) return false;
+    if (S.projects.some(p=>p.type==='upgrade'&&p.districtId===districtId)) return false;
+    S.cash-=cost;
+    const toTier=v.tier+1, weeks=toTier===2?4:6;
+    S.projects.push({type:'upgrade',districtId,toTier,weeksLeft:weeks,totalWeeks:weeks,decorBonus:0});
+    S.pendingEvent={kind:'invest',projIdx:S.projects.length-1};
+    return true;
+  }
+  setStaff(districtId,delta){
+    const v=this.venueAt(districtId); if (!v) return false;
+    v.staff=clamp(v.staff+delta,1,12); return true;
+  }
+  buyPremises(districtId){
+    const S=this.S, v=this.venueAt(districtId);
+    if (!v || v.ownsPremises) return false;
+    const price=districtById(districtId).rent*DATA.premisesMult;
+    if (S.cash<price) return false;
+    S.cash-=price; v.ownsPremises=true; v.premisesValue=price; return true;
+  }
+  buildLine(id){
+    const S=this.S, l=lineById(id);
+    if (!l || S.ownedLines.includes(id) || S.cash<l.capex) return false;
+    if (S.projects.some(p=>p.type==='line'&&p.lineId===id)) return false;
+    S.cash-=l.capex;
+    const weeks=id==='brewery'?4:id==='wineest'?8:12;
+    S.projects.push({type:'line',lineId:id,weeksLeft:weeks,totalWeeks:weeks,qBonus:0});
+    S.pendingEvent={kind:'invest',projIdx:S.projects.length-1};
+    return true;
+  }
+  resolveEvent(choiceIdx){
+    const S=this.S, pe=S.pendingEvent; if (!pe) return false;
+    if (pe.kind==='random'){
+      const def=DATA.events.find(e=>e.id===pe.id);
+      if (!def){ S.pendingEvent=null; return false; }
+      const choice=def.choices[choiceIdx]; if (!choice) return false;
+      if (choice.cost && S.cash<choice.cost) return false;
+      if (choice.cost) S.cash-=choice.cost;
+      const msg=applyChoiceEffects(this,choice);
+      this.lastEvents.push({msg:(def.icon?def.icon+' ':'')+msg, big:true});
+      S.pendingEvent=null; return true;
+    }
+    if (pe.kind==='invest'){
+      const p=S.projects[pe.projIdx]; if (!p){ S.pendingEvent=null; return false; }
+      const opts=investOptionsFor(p), choice=opts[choiceIdx]; if (!choice) return false;
+      if (choice.cost && S.cash<choice.cost) return false;
+      if (choice.cost) S.cash-=choice.cost;
+      if (p.type==='line') p.qBonus=choice.qBonus||0; else p.decorBonus=choice.decorBonus||0;
+      this.lastEvents.push({msg:choice.result||'Investment choice made.', big:false});
+      S.pendingEvent=null; return true;
+    }
+    return false;
+  }
+  runProjects(ev){
+    const S=this.S, kept=[];
+    for (const p of S.projects){
+      p.weeksLeft--;
+      if (p.weeksLeft>0){ kept.push(p); continue; }
+      if (p.type==='venue'){
+        S.venues.push({districtId:p.districtId,tier:1,staff:3,ownsPremises:false,premisesValue:0,decorBonus:p.decorBonus||0});
+        ev.push({msg:'🏗️ New venue opened in '+districtById(p.districtId).name+'!', big:true});
+      } else if (p.type==='upgrade'){
+        const v=this.venueAt(p.districtId);
+        if (v){ v.tier=p.toTier; v.decorBonus=(v.decorBonus||0)+(p.decorBonus||0); }
+        ev.push({msg:'🏗️ Venue upgraded to '+DATA.tiers[p.toTier-1].name+'!', big:true});
+      } else if (p.type==='line'){
+        const l=lineById(p.lineId);
+        S.ownedLines.push(p.lineId); S.lineBonuses[p.lineId]=p.qBonus||0;
+        S.lineAlloc[p.lineId]={scale:1,wholesalePct:0};
+        ev.push({msg:l.icon+' '+l.name+' construction complete!', big:true});
+      }
+    }
+    S.projects=kept;
+  }
+  upgradeEquipment(){
+    const S=this.S; if (S.equipment>=4) return false;
+    const c=DATA.equipCost[S.equipment]; if (S.cash<c) return false;
+    S.cash-=c; S.equipment++; return true;
+  }
+  upgradeTraining(){
+    const S=this.S; if (S.training>=4) return false;
+    const c=DATA.trainCost[S.training]; if (S.cash<c) return false;
+    S.cash-=c; S.training++; return true;
+  }
+  netWorth(){
+    const S=this.S;
+    const inv=CATS.reduce((a,c)=>a+S.ownInv[c]*2,0);
+    const prem=S.venues.reduce((a,v)=>a+(v.premisesValue||0),0);
+    const lines=S.ownedLines.reduce((a,id)=>a+lineById(id).capex*0.5,0);
+    const stocks=DATA.stocks.reduce((a,st)=>a+S.stocks[st.id].price*S.stocks[st.id].shares,0);
+    const props=DATA.properties.filter(pr=>S.properties[pr.id]).reduce((a,pr)=>a+pr.price,0);
+    return S.cash-S.debt+inv+prem+lines+stocks+props;
+  }
+  buyStock(id,qty){
+    const S=this.S, st=DATA.stocks.find(x=>x.id===id), cur=st&&S.stocks[id];
+    if (!st || qty<=0) return false;
+    const cost=cur.price*qty;
+    if (S.cash<cost) return false;
+    S.cash-=cost; cur.shares+=qty; return true;
+  }
+  sellStock(id,qty){
+    const S=this.S, cur=S.stocks[id];
+    if (!cur || qty<=0 || cur.shares<qty) return false;
+    S.cash+=cur.price*qty; cur.shares-=qty; return true;
+  }
+  buyProperty(id){
+    const S=this.S, pr=DATA.properties.find(x=>x.id===id);
+    if (!pr || S.properties[id] || S.cash<pr.price) return false;
+    S.cash-=pr.price; S.properties[id]=true; return true;
+  }
+  // est. unit cost of a drink for menu UI
+  drinkCost(dr){
+    const S=this.S;
+    const eff=c=>{
+      const line=DATA.lines.find(l=>l.cat===c&&S.ownedLines.includes(l.id));
+      if (line && S.ownInv[c]>0.001) return line.prodCost;
+      return supplyFor(c,S.sourcing[c]).cost*S.marketIndex[c];
+    };
+    return dr.use*eff(dr.cat)+(dr.cat2?dr.use2*eff(dr.cat2):0)+dr.labor;
+  }
+}
+// ============================================================================
+// CITY WORLD — isometric grid, procedural decor, canvas renderer
+// ============================================================================
+const COLS=12, DROWS=6, NDIST=3, GROWS=NDIST*DROWS; // 12 x 18 grid
+const TILE_W=76, TILE_H=42, OX=684, OY=150;
+const DIST_IDS=['riverside','market','harbor'];
+function districtRow(d){ return {back0:d*DROWS+0, back1:d*DROWS+1, road:d*DROWS+2, front:d*DROWS+3, plaza:d*DROWS+4, road2:d*DROWS+5}; }
+function iso(gx,gy){ return {x:OX+(gx-gy)*(TILE_W/2), y:OY+(gx+gy)*(TILE_H/2)}; }
+
+const CITY = {
+  W: OX+(COLS+GROWS)*(TILE_W/2)+40,
+  H: OY+(COLS+GROWS)*(TILE_H/2)+160,
+  lots:{}, pads:{},
+};
+DIST_IDS.forEach((id,d)=>{
+  const r=districtRow(d);
+  CITY.lots[id]={gx:4,gy:r.front,fw:2,fd:1,districtId:id};
+});
+['brewery','wineest','distill'].forEach((id,d)=>{
+  const r=districtRow(d);
+  CITY.pads[id]={gx:0,gy:r.front,fw:3,fd:1};
+});
+const VENUE_FW=[0,2,2,2], VENUE_FD=[0,1,1,1], VENUE_H=[0,46,80,124];
+const PALETTES=[
+  {walls:['#e7c9a1','#d9b48b','#c9d4b8','#e3d3b5','#d4a98c','#e0c0a8'], win:'#7e93a8', winLit:'#ffd98a'},
+  {walls:['#c98e6a','#b97e5e','#d9a878','#a98a74','#c4a284','#b58a6b'], win:'#6e8398', winLit:'#ffcf78'},
+  {walls:['#9fb6c8','#8aa6bb','#b8c8d8','#7e98ad','#a8bcd0','#90a8be'], win:'#5e7b95', winLit:'#ffe3a0'},
+];
+const MUTE=['#b8a98f','#a89a82','#9fa68e','#b0a18a'];
+
+// ----------------------------------------------------------- color helpers
+function shade(hex,f){ // f<1 darker, f>1 lighter
+  const n=parseInt(hex.slice(1),16);
+  let r=(n>>16)&255, g=(n>>8)&255, b=n&255;
+  r=Math.max(0,Math.min(255,Math.round(r*f)));
+  g=Math.max(0,Math.min(255,Math.round(g*f)));
+  b=Math.max(0,Math.min(255,Math.round(b*f)));
+  return 'rgb('+r+','+g+','+b+')';
+}
+
+// procedural decor buildings (deterministic visual seed)
+let DECOR=[];
+function genCity(){
+  DECOR=[];
+  let vr=917;
+  const vrng=()=>{ vr=(vr+0x6D2B79F5)>>>0; let t=vr;
+    t=Math.imul(t^(t>>>15),1|t); t^=t+Math.imul(t^(t>>>7),61|t);
+    return ((t^(t>>>14))>>>0)/4294967296; };
+  DIST_IDS.forEach((distId,d)=>{
+    const r=districtRow(d), pal=PALETTES[d];
+    // back skyline rows
+    for (const gy of [r.back0,r.back1]){
+      let gx=0;
+      while (gx<COLS){
+        const fw=(vrng()<0.55)?1:2, h=70+vrng()*100+(gy===r.back0?40:0);
+        if (gx+fw>COLS) break;
+        DECOR.push({gx,gy,fw,fd:1,h,
+          c:pal.walls[(vrng()*pal.walls.length)|0], win:pal.win, winLit:pal.winLit,
+          shop:vrng()<0.4, seed:(gx*7+gy*13)|0});
+        gx+=fw;
+      }
+    }
+    // front row shop cells (skip pad cols 0-2 and venue cols 4-5)
+    for (let gx=0;gx<COLS;gx++){
+      if (gx>=0&&gx<3) continue; // pad
+      if (gx>=4&&gx<6) continue; // venue
+      const h=40+vrng()*46;
+      DECOR.push({gx,gy:r.front,fw:1,fd:1,h,
+        c:pal.walls[(vrng()*pal.walls.length)|0], win:pal.win, winLit:pal.winLit,
+        shop:vrng()<0.6, seed:(gx*11+r.front*3)|0});
+    }
+  });
+}
+
+// ----------------------------------------------------------- canvas helpers
+function rr(c,x,y,w,h,r){ r=Math.min(r,w/2,h/2);
+  c.beginPath(); c.moveTo(x+r,y); c.arcTo(x+w,y,x+w,y+h,r); c.arcTo(x+w,y+h,x,y+h,r);
+  c.arcTo(x,y+h,x,y,r); c.arcTo(x,y,x+w,y,r); c.closePath(); }
+
+// day/night: 0..1 cycle
+const DAY_MS=48000;
+function dayPhase(now){ return (now%DAY_MS)/DAY_MS; }
+function nightFactor(p){ // 0 day → 1 night
+  if (p<0.42) return 0;
+  if (p<0.52) return (p-0.42)/0.10;
+  if (p<0.90) return 1;
+  if (p<0.98) return 1-(p-0.90)/0.08;
+  return 0;
+}
+function duskFactor(p){
+  const d1=Math.abs(p-0.47), d2=Math.abs(p-0.94);
+  return Math.max(0, 0.14-Math.min(d1,d2)*1.6)/0.14;
+}
+
+// ----------------------------------------------------------- iso primitives
+// draw a flat ground diamond (tile)
+function drawIsoTile(c,gx,gy,fw,fd,color){
+  const A=iso(gx,gy), B=iso(gx+fw,gy), Cc=iso(gx+fw,gy+fd), D=iso(gx,gy+fd);
+  c.fillStyle=color;
+  c.beginPath(); c.moveTo(A.x,A.y); c.lineTo(B.x,B.y); c.lineTo(Cc.x,Cc.y); c.lineTo(D.x,D.y); c.closePath(); c.fill();
+}
+// draw an extruded iso box (ground footprint gx,gy,fw,fd; height h px)
+function drawIsoBox(c,gx,gy,fw,fd,h,topColor,rightColor,leftColor){
+  const A=iso(gx,gy), B=iso(gx+fw,gy), Cc=iso(gx+fw,gy+fd), D=iso(gx,gy+fd);
+  const At={x:A.x,y:A.y-h}, Bt={x:B.x,y:B.y-h}, Ct={x:Cc.x,y:Cc.y-h}, Dt={x:D.x,y:D.y-h};
+  // ground shadow
+  c.fillStyle='rgba(15,15,30,.16)';
+  c.beginPath(); c.moveTo(A.x,A.y); c.lineTo(B.x,B.y); c.lineTo(Cc.x,Cc.y); c.lineTo(D.x,D.y); c.closePath(); c.fill();
+  // right face (B-C edge)
+  c.fillStyle=rightColor;
+  c.beginPath(); c.moveTo(B.x,B.y); c.lineTo(Cc.x,Cc.y); c.lineTo(Ct.x,Ct.y); c.lineTo(Bt.x,Bt.y); c.closePath(); c.fill();
+  // left face (D-C edge)
+  c.fillStyle=leftColor;
+  c.beginPath(); c.moveTo(D.x,D.y); c.lineTo(Cc.x,Cc.y); c.lineTo(Ct.x,Ct.y); c.lineTo(Dt.x,Dt.y); c.closePath(); c.fill();
+  // top face
+  c.fillStyle=topColor;
+  c.beginPath(); c.moveTo(At.x,At.y); c.lineTo(Bt.x,Bt.y); c.lineTo(Ct.x,Ct.y); c.lineTo(Dt.x,Dt.y); c.closePath(); c.fill();
+  return {A,B,C:Cc,D,At,Bt,Ct,Dt};
+}
+// bounding box of a footprint+height (for hit testing / culling)
+function isoBounds(gx,gy,fw,fd,h){
+  const A=iso(gx,gy), B=iso(gx+fw,gy), Cc=iso(gx+fw,gy+fd), D=iso(gx,gy+fd);
+  return {minX:Math.min(A.x,B.x,Cc.x,D.x), maxX:Math.max(A.x,B.x,Cc.x,D.x),
+          minY:Math.min(A.y,B.y,Cc.y,D.y)-h, maxY:Math.max(A.y,B.y,Cc.y,D.y),
+          top:iso(gx+fw/2,gy+fd/2)};
+}
+
+// ----------------------------------------------------------- map pins (Coffee Inc 2 style)
+function drawPin(c,x,y,color,label,now){
+  const bob=Math.sin((now||0)/350+x*0.01)*2.5;
+  const py=y+bob;
+  c.fillStyle='rgba(15,15,30,.25)'; c.beginPath(); c.ellipse(x,y+4,7,2.5,0,0,7); c.fill();
+  c.save(); c.translate(x,py-14);
+  c.fillStyle=color;
+  c.beginPath(); c.arc(0,0,9,0,7); c.fill();
+  c.beginPath(); c.moveTo(-6,6); c.lineTo(0,16); c.lineTo(6,6); c.closePath(); c.fill();
+  c.fillStyle='#fff'; c.font='800 10px system-ui'; c.textAlign='center'; c.textBaseline='middle';
+  c.fillText(label,0,0.5);
+  c.restore();
+  c.textBaseline='alphabetic';
+}
+
+function drawTree(c,gx,gy,s){
+  const p=iso(gx,gy);
+  c.fillStyle='#6b4a32'; c.fillRect(p.x-2,p.y-s*0.5,4,s*0.5);
+  c.fillStyle='#5d8a4e'; c.beginPath(); c.arc(p.x,p.y-s*0.62,s*0.42,0,7); c.fill();
+  c.fillStyle='#6fa05c'; c.beginPath(); c.arc(p.x-s*0.2,p.y-s*0.5,s*0.3,0,7); c.fill();
+  c.beginPath(); c.arc(p.x+s*0.22,p.y-s*0.55,s*0.28,0,7); c.fill();
+}
+function drawLamp(c,gx,gy,nf){
+  const p=iso(gx,gy);
+  c.strokeStyle='#3a3f4a'; c.lineWidth=2.5;
+  c.beginPath(); c.moveTo(p.x,p.y); c.lineTo(p.x,p.y-26); c.stroke();
+  c.fillStyle=nf>0.4?'#ffd98a':'#c8ccd4';
+  c.beginPath(); c.arc(p.x,p.y-28,3.4,0,7); c.fill();
+  if (nf>0.4){
+    c.fillStyle='rgba(255,210,130,'+(0.16*nf)+')';
+    c.beginPath(); c.arc(p.x,p.y-28,16,0,7); c.fill();
+  }
+}
+
+// ----------------------------------------------------------- decor buildings
+function drawDecorB(c,b,nf){
+  const pal={win:b.win,winLit:b.winLit};
+  const box=drawIsoBox(c,b.gx,b.gy,b.fw,b.fd,b.h, b.c, shade(b.c,0.72), shade(b.c,0.5));
+  // windows on right face
+  const fcols=Math.max(1,Math.round(b.fw*2)), frows=Math.max(1,Math.round(b.h/26));
+  for (let r2=0;r2<frows;r2++) for (let k=0;k<fcols;k++){
+    const t1=(k+0.5)/fcols, t2=(r2+0.5)/frows;
+    const wx=box.Bt.x+(box.Ct.x-box.Bt.x)*t1;
+    const lit=nf>0.45 && h2(b.seed+k,r2)<0.6;
+    c.fillStyle=lit?b.winLit:b.win; c.globalAlpha=lit?0.9:0.7;
+    c.fillRect(wx-2.5,box.Bt.y+(box.B.y-box.Bt.y)*t2-3,5,6);
+    c.globalAlpha=1;
+  }
+}
+
+// player venue facades --------------------------------------------------
+function drawVenue(c,lot,v,nf,now,stats,S){
+  const tier=v.tier, fw=VENUE_FW[tier], fd=VENUE_FD[tier], h=VENUE_H[tier];
+  const top= tier===1 ? '#7a6248' : tier===2 ? '#4a3a52' : '#3c3146';
+  const box=drawIsoBox(c,lot.gx,lot.gy,fw,fd,h, top, shade(top,0.78), shade(top,0.55));
+  const ctr=iso(lot.gx+fw/2,lot.gy+fd/2);
+  // glowing window on front-right face
+  c.fillStyle=nf>0.35?'rgba(255,205,120,.92)':'rgba(240,228,200,.85)';
+  c.fillRect((box.B.x+box.Bt.x)/2-10,(box.B.y+box.Bt.y)/2-6,20,12);
+  // roof sign
+  if (nf>0.25){ c.shadowColor='#ffce6a'; c.shadowBlur=12; }
+  c.fillStyle='#171221'; rr(c,box.At.x-32,box.At.y-22,64,18,5); c.fill();
+  c.shadowBlur=0;
+  c.strokeStyle='#c9a84c'; c.lineWidth=1.2; rr(c,box.At.x-32,box.At.y-22,64,18,5); c.stroke();
+  c.fillStyle=nf>0.25?'#ffd98a':'#c9a84c'; c.font='italic 800 11px Georgia'; c.textAlign='center';
+  c.fillText('PROOF '+'★'.repeat(tier),box.At.x,box.At.y-9);
+  // queue pin when under-staffed
+  if (stats && stats.serviceLevel<0.94){
+    drawPin(c,ctr.x+24,box.At.y+8,'#e05252','!',now);
+  }
+  // scaffolding pin while an upgrade is under construction
+  const proj=S&&S.projects&&S.projects.find(p=>p.type==='upgrade'&&p.districtId===lot.districtId);
+  if (proj) drawPin(c,ctr.x-24,box.At.y+8,'#f0c96e',proj.weeksLeft+'w',now);
+  return {top:{x:box.At.x,y:box.At.y}};
+}
+
+function drawEmptyLot(c,lot,d,nf,now,S){
+  drawIsoTile(c,lot.gx,lot.gy,VENUE_FW[1]||2,VENUE_FD[1]||1,'#8f8a7c');
+  const A=iso(lot.gx,lot.gy), Cc=iso(lot.gx+(VENUE_FW[1]||2),lot.gy+(VENUE_FD[1]||1));
+  c.strokeStyle='rgba(201,168,76,'+(0.55+0.35*Math.sin(now/400))+')';
+  c.lineWidth=2; c.setLineDash([6,5]);
+  c.beginPath(); c.moveTo(A.x,A.y); c.lineTo(iso(lot.gx+(VENUE_FW[1]||2),lot.gy).x,iso(lot.gx+(VENUE_FW[1]||2),lot.gy).y);
+  c.lineTo(Cc.x,Cc.y); c.lineTo(iso(lot.gx,lot.gy+(VENUE_FD[1]||1)).x,iso(lot.gx,lot.gy+(VENUE_FD[1]||1)).y); c.closePath(); c.stroke();
+  c.setLineDash([]);
+  const ctr=iso(lot.gx+1,lot.gy+0.5);
+  const proj=S&&S.projects&&S.projects.find(p=>p.type==='venue'&&p.districtId===lot.districtId);
+  if (proj) drawPin(c,ctr.x,ctr.y-40,'#f0c96e',proj.weeksLeft+'w',now);
+  else drawPin(c,ctr.x,ctr.y-40,'#c9a84c','+',now);
+}
+
+// production pads --------------------------------------------------------
+function drawPad(c,padId,pad,built,nf,now,S){
+  const l=lineById(padId);
+  if (!built){
+    drawIsoTile(c,pad.gx,pad.gy,pad.fw,pad.fd,'#9a9486');
+    const ctr=iso(pad.gx+pad.fw/2,pad.gy+pad.fd/2);
+    c.strokeStyle='rgba(201,168,76,.45)'; c.setLineDash([6,5]);
+    const A=iso(pad.gx,pad.gy),B=iso(pad.gx+pad.fw,pad.gy),Cc=iso(pad.gx+pad.fw,pad.gy+pad.fd),D=iso(pad.gx,pad.gy+pad.fd);
+    c.beginPath(); c.moveTo(A.x,A.y); c.lineTo(B.x,B.y); c.lineTo(Cc.x,Cc.y); c.lineTo(D.x,D.y); c.closePath(); c.stroke();
+    c.setLineDash([]);
+    const proj=S&&S.projects&&S.projects.find(p=>p.type==='line'&&p.lineId===padId);
+    if (proj) drawPin(c,ctr.x,ctr.y-30,'#f0c96e',proj.weeksLeft+'w',now);
+    else drawPin(c,ctr.x,ctr.y-30,'#7a5fc9',l.icon,now);
+    return;
+  }
+  const colors = padId==='brewery' ? '#8a5a3c' : padId==='wineest' ? '#6f8a5a' : '#9a948a';
+  const box=drawIsoBox(c,pad.gx,pad.gy,pad.fw,pad.fd,58,colors,shade(colors,0.75),shade(colors,0.52));
+  // chimney/vent
+  c.fillStyle=shade(colors,0.4); c.fillRect(box.At.x+10,box.At.y-26,8,26);
+  const nb=S? S.maturing.filter(b=>b.lineId===padId).length : 0;
+  const ctr=iso(pad.gx+pad.fw/2,pad.gy+pad.fd/2);
+  c.fillStyle='rgba(20,18,32,.88)'; rr(c,box.At.x-46,box.At.y-18,92,18,9); c.fill();
+  c.fillStyle='#f0c96e'; c.font='700 10px system-ui'; c.textAlign='center';
+  c.fillText(l.icon+' '+l.name+(nb?(' · '+nb+' aging'):''),box.At.x,box.At.y-5);
+  return {top:{x:box.At.x,y:box.At.y}, smoke:{x:box.At.x+14,y:box.At.y-26}};
+}
+
+// rival businesses + ownable properties --------------------------------
+const RIVAL_TIER_COLOR=['#5a5a5a','#c08a52','#b8bec8','#f0c96e'];
+function drawRivalPin(c,dIdx,S,now){
+  const r=districtRow(dIdx);
+  const riv=S.rivals[DIST_IDS[dIdx]];
+  const p=iso(9,r.plaza);
+  if (riv.tier===0){ drawPin(c,p.x,p.y-6,RIVAL_TIER_COLOR[0],'×',now); return; }
+  drawPin(c,p.x,p.y-6,RIVAL_TIER_COLOR[riv.tier],'R'+riv.tier,now);
+}
+function drawPropertyPins(c,dIdx,S,now){
+  const distId=DIST_IDS[dIdx], r=districtRow(dIdx);
+  const props=DATA.properties.filter(pr=>pr.district===distId);
+  props.forEach((pr,i)=>{
+    const p=iso(10.5+i*0.7, r.back0+i*1.1);
+    const owned=S.properties[pr.id];
+    drawPin(c,p.x,p.y-6,owned?'#f0c96e':'#7a7a7a',owned?'✓':'$',now);
+  });
+}
+// ============================================================================
+// SCENE RENDER + LIVING CITY (agents, cars, particles) + CAMERA/INPUT  (ISO)
+// ============================================================================
+let canvas=null, ctx=null;
+const VIEW={w:0,h:0,dpr:1};
+const cam={x:CITY.W/2,y:CITY.H/2-60,z:0.9};
+let agents=[], cars=[], motes=[], smokes=[], confetti=[];
+let bandRates=[0.4,0.4,0.4], venueStatMap={};
+let firstSessionPulse=true;
+
+function resize(){
+  VIEW.dpr=Math.min(2,window.devicePixelRatio||1);
+  VIEW.w=window.innerWidth; VIEW.h=window.innerHeight;
+  canvas.width=VIEW.w*VIEW.dpr; canvas.height=VIEW.h*VIEW.dpr;
+  canvas.style.width=VIEW.w+'px'; canvas.style.height=VIEW.h+'px';
+  clampCam();
+}
+function minZoom(){ return Math.max(0.30, Math.min(VIEW.w/CITY.W, VIEW.h/CITY.H)*0.92); }
+function clampCam(){
+  cam.z=clamp(cam.z,minZoom(),2.2);
+  const hw=VIEW.w/2/cam.z, hh=VIEW.h/2/cam.z;
+  cam.x = hw*2>CITY.W ? CITY.W/2 : clamp(cam.x,hw,CITY.W-hw);
+  cam.y = hh*2>CITY.H ? CITY.H/2 : clamp(cam.y,hh,CITY.H-hh);
+}
+function s2w(sx,sy){ return {x:(sx-VIEW.w/2)/cam.z+cam.x, y:(sy-VIEW.h/2)/cam.z+cam.y}; }
+function zoomBy(f,px,py){
+  const fx=px===undefined?VIEW.w/2:px, fy=py===undefined?VIEW.h/2:py;
+  const before=s2w(fx,fy);
+  cam.z=clamp(cam.z*f,minZoom(),2.2);
+  const after=s2w(fx,fy);
+  cam.x+=before.x-after.x; cam.y+=before.y-after.y; clampCam();
+}
+
+// ----------------------------------------------------------- living city update
+function refreshBandRates(){
+  venueStatMap={};
+  for (const vs of engine.venueStats) venueStatMap[vs.districtId]=vs;
+  DIST_IDS.forEach((id,i)=>{
+    const vs=venueStatMap[id];
+    bandRates[i]= vs ? clamp(vs.visitors/1400,0.3,1.8)
+                     : clamp(districtById(id).traffic/3200,0.15,0.5);
+  });
+}
+const spawnAcc=[0,0,0];
+function updateAgents(dt){
+  DIST_IDS.forEach((distId,bi)=>{
+    const r=districtRow(bi);
+    spawnAcc[bi]+=bandRates[bi]*dt;
+    while (spawnAcc[bi]>1 && agents.length<70){
+      spawnAcc[bi]-=1;
+      const dir=Math.random()<0.5?1:-1;
+      const gyOff=Math.random()*0.7+0.15;
+      const v=engine.venueAt(distId);
+      const toVenue = v && Math.random()<0.42;
+      agents.push({
+        gx:dir>0?-1:COLS+1, gy:r.plaza+gyOff, dir, band:bi,
+        speed:0.55+Math.random()*0.45, state:'walk',
+        shirt:['#c97f5f','#5f86c9','#7a5fc9','#5fc98e','#c9b25f','#c95f74','#8a8f9a','#bf8fc9'][(Math.random()*8)|0],
+        skin:['#e8b88a','#c9956a','#a87850','#8a6240'][(Math.random()*4)|0],
+        target: toVenue ? CITY.lots[distId].gx+VENUE_FW[1]/2 : null,
+        alpha:1,
+      });
+    }
+  });
+  for (let i=agents.length-1;i>=0;i--){
+    const a=agents[i];
+    if (a.state==='walk'){
+      a.gx+=a.dir*a.speed*dt;
+      if (a.target!==null && Math.abs(a.gx-a.target)<0.08){
+        a.state='enter';
+        if (Math.random()<0.35){ const p=iso(a.gx,a.gy); motes.push({x:p.x,y:p.y-26,vy:-16,a:1,t:'+$',c:'#4caf7d'}); }
+      }
+      if (a.gx<-1.5||a.gx>COLS+1.5){ agents.splice(i,1); continue; }
+    } else {
+      a.gy-=0.012*dt*60/16; a.alpha-=dt*1.6;
+      if (a.alpha<=0){ agents.splice(i,1); continue; }
+    }
+  }
+}
+function initCars(){
+  cars=[];
+  DIST_IDS.forEach((distId,bi)=>{
+    const r=districtRow(bi);
+    for (let i=0;i<3;i++){
+      const dir=i%2===0?1:-1;
+      cars.push({band:bi, dir,
+        gy:r.road+(dir>0?0.28:0.72),
+        gx:Math.random()*COLS, speed:0.7+Math.random()*0.5,
+        c:['#c94f4f','#4f7ec9','#d9b048','#5aa56a','#8a6ab8','#d97f3e','#c9c9c9','#3f3f46'][(Math.random()*8)|0]});
+    }
+  });
+}
+function updateCars(dt){
+  for (const car of cars){
+    car.gx+=car.dir*car.speed*dt;
+    if (car.dir>0 && car.gx>COLS+1) car.gx=-1;
+    if (car.dir<0 && car.gx<-1) car.gx=COLS+1;
+  }
+}
+function updateParticles(dt,now){
+  for (let i=motes.length-1;i>=0;i--){
+    const m=motes[i]; m.y+=m.vy*dt; m.a-=dt*0.8;
+    if (m.a<=0) motes.splice(i,1);
+  }
+  // factory smoke
+  if (engine && Math.random()<dt*3){
+    for (const id of engine.S.ownedLines){
+      const pad=CITY.pads[id]; const top=iso(pad.gx+pad.fw/2,pad.gy+pad.fd/2);
+      smokes.push({x:top.x+14+Math.random()*6-3,y:top.y-86,r:3,a:0.5});
+    }
+  }
+  for (let i=smokes.length-1;i>=0;i--){
+    const s=smokes[i]; s.y-=14*dt; s.r+=8*dt; s.a-=dt*0.35; s.x+=Math.sin(now/600+i)*6*dt;
+    if (s.a<=0) smokes.splice(i,1);
+  }
+  for (let i=confetti.length-1;i>=0;i--){
+    const p=confetti[i]; p.vy+=240*dt; p.x+=p.vx*dt; p.y+=p.vy*dt; p.rot+=p.vr*dt; p.a-=dt*0.7;
+    if (p.a<=0) confetti.splice(i,1);
+  }
+}
+function burstConfetti(){
+  for (let i=0;i<42;i++)
+    confetti.push({x:VIEW.w/2,y:VIEW.h*0.22,
+      vx:(Math.random()-0.5)*340, vy:-Math.random()*260-60,
+      rot:Math.random()*6, vr:(Math.random()-0.5)*12, a:1.4,
+      c:['#f0c96e','#c9a84c','#e05252','#ece4d4'][(Math.random()*4)|0]});
+}
+
+// ----------------------------------------------------------- main render
+function render(now){
+  const c=ctx, p=dayPhase(now), nf=nightFactor(p), df=duskFactor(p);
+  c.setTransform(VIEW.dpr,0,0,VIEW.dpr,0,0);
+  c.fillStyle='#a8a294'; c.fillRect(0,0,VIEW.w,VIEW.h);
+  c.translate(VIEW.w/2,VIEW.h/2); c.scale(cam.z,cam.z); c.translate(-cam.x,-cam.y);
+  c.textAlign='center';
+
+  // base ground wash for full grid
+  drawIsoTile(c,0,0,COLS,GROWS,'#9aa886');
+
+  // per-district zones: back rows (skyline ground), road, front row, plaza, road2
+  DIST_IDS.forEach((distId,d)=>{
+    const r=districtRow(d);
+    drawIsoTile(c,0,r.back0,COLS,2,'#b8a988');                 // skyline block ground
+    drawIsoTile(c,0,r.road,COLS,1,'#4a4d55');                  // main street
+    drawIsoTile(c,0,r.front,COLS,1,'#9aa886');                 // front lots ground
+    drawIsoTile(c,0,r.plaza,COLS,1,'#86a86e');                 // plaza/park
+    drawIsoTile(c,0,r.road2,COLS,1, d===1?'#4a4d55':'#5e8aa8'); // road or water edge
+  });
+  // river strip above riverside, harbor water below
+  drawIsoTile(c,0,-1,COLS,1,'#5e8aa8');
+
+  // road lane markings
+  DIST_IDS.forEach((distId,d)=>{
+    const r=districtRow(d);
+    for (const rowGy of [r.road, ...(d===1?[r.road2]:[])]){
+      c.strokeStyle='rgba(220,214,190,.45)'; c.lineWidth=2; c.setLineDash([10,8]);
+      const A=iso(0,rowGy+0.5), B=iso(COLS,rowGy+0.5);
+      c.beginPath(); c.moveTo(A.x,A.y); c.lineTo(B.x,B.y); c.stroke();
+      c.setLineDash([]);
+    }
+    // district label
+    const lab=iso(1.2,r.road+0.5);
+    c.fillStyle='rgba(240,236,220,.4)'; c.font='800 14px system-ui'; c.textAlign='left';
+    c.fillText(distId.toUpperCase(),lab.x,lab.y+4);
+    c.textAlign='center';
+  });
+
+  // trees in plaza rows
+  DIST_IDS.forEach((distId,d)=>{
+    const r=districtRow(d);
+    for (let gx=6.5; gx<COLS; gx+=1.6) drawTree(c,gx+h2(gx,d)*0.3,r.plaza+0.5,22+h2(gx,d+5)*10);
+  });
+
+  // decor buildings: back rows then front-row shops
+  for (const b of DECOR) if (b.gy%DROWS<2) drawDecorB(c,b,nf);
+  for (const b of DECOR) if (b.gy%DROWS===3) drawDecorB(c,b,nf);
+
+  // production pads
+  for (const id of Object.keys(CITY.pads))
+    drawPad(c,id,CITY.pads[id],engine.S.ownedLines.includes(id),nf,now,engine.S);
+
+  // player lots / venues
+  for (const did of Object.keys(CITY.lots)){
+    const lot=CITY.lots[did], v=engine.venueAt(did);
+    if (v) drawVenue(c,lot,v,nf,now,venueStatMap[did],engine.S);
+    else drawEmptyLot(c,lot,districtById(did),nf,now,engine.S);
+  }
+
+  // rivals + ownable properties
+  DIST_IDS.forEach((distId,d)=>{
+    drawRivalPin(c,d,engine.S,now);
+    drawPropertyPins(c,d,engine.S,now);
+  });
+  // first-session pulse ring on starting bar
+  if (firstSessionPulse && engine.S.week<4){
+    const lot=CITY.lots.riverside, top=iso(lot.gx+1,lot.gy+0.5);
+    const rad=46+Math.sin(now/300)*8;
+    c.strokeStyle='rgba(240,201,110,'+(0.5+0.3*Math.sin(now/300))+')'; c.lineWidth=3;
+    c.beginPath(); c.arc(top.x,top.y-40,rad,0,7); c.stroke();
+  }
+
+  // lamps along plaza edges
+  DIST_IDS.forEach((distId,d)=>{
+    const r=districtRow(d);
+    for (let gx=0.5; gx<COLS; gx+=2.2) drawLamp(c,gx,r.plaza,nf);
+  });
+
+  // cars
+  for (const car of cars){
+    const pos=iso(car.gx,car.gy);
+    c.fillStyle='rgba(15,15,30,.22)'; c.beginPath(); c.ellipse(pos.x,pos.y+4,13,3,0,0,7); c.fill();
+    c.fillStyle=car.c; rr(c,pos.x-14,pos.y-7,28,12,4); c.fill();
+    c.fillStyle='rgba(180,210,235,.8)';
+    rr(c,pos.x-(car.dir>0?4:10),pos.y-5,14,5,2); c.fill();
+    if (nf>0.4){
+      c.fillStyle='rgba(255,235,160,.85)';
+      c.beginPath(); c.arc(pos.x+car.dir*14,pos.y-1,2.2,0,7); c.fill();
+    }
+  }
+  // pedestrians
+  for (const a of agents){
+    const pos=iso(a.gx,a.gy);
+    c.globalAlpha=a.alpha;
+    c.fillStyle='rgba(15,15,30,.2)'; c.beginPath(); c.ellipse(pos.x,pos.y+1,4,1.6,0,0,7); c.fill();
+    c.fillStyle=a.shirt; rr(c,pos.x-3.2,pos.y-12,6.4,11,2.5); c.fill();
+    c.fillStyle=a.skin; c.beginPath(); c.arc(pos.x,pos.y-15,3.2,0,7); c.fill();
+    c.globalAlpha=1;
+  }
+  // smoke + motes
+  for (const s of smokes){
+    c.fillStyle='rgba(225,222,215,'+Math.max(0,s.a)+')';
+    c.beginPath(); c.arc(s.x,s.y,s.r,0,7); c.fill();
+  }
+  c.font='700 13px system-ui';
+  for (const m of motes){
+    c.globalAlpha=Math.max(0,Math.min(1,m.a));
+    c.fillStyle=m.c; c.fillText(m.t,m.x,m.y);
+    c.globalAlpha=1;
+  }
+
+  // night ambient + dusk tint (world only)
+  c.setTransform(VIEW.dpr,0,0,VIEW.dpr,0,0);
+  if (nf>0){ c.fillStyle='rgba(14,18,48,'+(0.42*nf)+')'; c.fillRect(0,0,VIEW.w,VIEW.h); }
+  if (df>0){ c.fillStyle='rgba(255,130,60,'+(0.10*df)+')'; c.fillRect(0,0,VIEW.w,VIEW.h); }
+  // confetti (screen space)
+  for (const pt of confetti){
+    c.save(); c.globalAlpha=Math.max(0,Math.min(1,pt.a));
+    c.translate(pt.x,pt.y); c.rotate(pt.rot);
+    c.fillStyle=pt.c; c.fillRect(-3,-2,6,4); c.restore();
+  }
+}
+
+// ----------------------------------------------------------- input
+function hitTest(wx,wy){
+  for (const did of Object.keys(CITY.lots)){
+    const lot=CITY.lots[did], v=engine.venueAt(did);
+    const h=v?VENUE_H[v.tier]:60;
+    const b=isoBounds(lot.gx,lot.gy,VENUE_FW[1]||2,VENUE_FD[1]||1,h+40);
+    if (wx>=b.minX-10 && wx<=b.maxX+10 && wy>=b.minY-10 && wy<=b.maxY+10)
+      return v?{type:'venue',id:did}:{type:'lot',id:did};
+  }
+  for (const id of Object.keys(CITY.pads)){
+    const pad=CITY.pads[id];
+    const b=isoBounds(pad.gx,pad.gy,pad.fw,pad.fd,90);
+    if (wx>=b.minX-10 && wx<=b.maxX+10 && wy>=b.minY-10 && wy<=b.maxY+10) return {type:'pad',id};
+  }
+  return null;
+}
+function bindInput(){
+  let touches=new Map(), panStart=null, moved=false, pinch0=null;
+  const tp=e=>{ const r=canvas.getBoundingClientRect();
+    return [...e.changedTouches].map(t=>({id:t.identifier,x:t.clientX-r.left,y:t.clientY-r.top})); };
+  canvas.addEventListener('touchstart',e=>{
+    e.preventDefault();
+    for (const t of tp(e)) touches.set(t.id,t);
+    if (touches.size===1){ const t=[...touches.values()][0];
+      panStart={x:t.x,y:t.y,cx:cam.x,cy:cam.y}; moved=false; }
+    else if (touches.size===2){
+      const [a,b]=[...touches.values()];
+      pinch0={d:Math.hypot(a.x-b.x,a.y-b.y),z:cam.z,mx:(a.x+b.x)/2,my:(a.y+b.y)/2,
+              w:s2w((a.x+b.x)/2,(a.y+b.y)/2)};
+      panStart=null;
+    }
+  },{passive:false});
+  canvas.addEventListener('touchmove',e=>{
+    e.preventDefault();
+    for (const t of tp(e)) if (touches.has(t.id)) touches.set(t.id,t);
+    if (touches.size===1 && panStart){
+      const t=[...touches.values()][0];
+      const dx=t.x-panStart.x, dy=t.y-panStart.y;
+      if (Math.abs(dx)+Math.abs(dy)>10) moved=true;
+      cam.x=panStart.cx-dx/cam.z; cam.y=panStart.cy-dy/cam.z; clampCam();
+    } else if (touches.size===2 && pinch0){
+      const [a,b]=[...touches.values()];
+      const d=Math.hypot(a.x-b.x,a.y-b.y);
+      cam.z=clamp(pinch0.z*d/pinch0.d,minZoom(),2.2);
+      const mx=(a.x+b.x)/2,my=(a.y+b.y)/2;
+      cam.x=pinch0.w.x-(mx-VIEW.w/2)/cam.z;
+      cam.y=pinch0.w.y-(my-VIEW.h/2)/cam.z;
+      clampCam(); moved=true;
+    }
+  },{passive:false});
+  canvas.addEventListener('touchend',e=>{
+    e.preventDefault();
+    const ended=tp(e);
+    for (const t of ended) touches.delete(t.id);
+    if (touches.size<2) pinch0=null;
+    if (touches.size===0 && !moved && ended.length===1){
+      const w=s2w(ended[0].x,ended[0].y); handleTap(w.x,w.y);
+    }
+    if (touches.size===0) panStart=null;
+  },{passive:false});
+  // mouse (desktop)
+  let mdown=null;
+  canvas.addEventListener('mousedown',e=>{ mdown={x:e.clientX,y:e.clientY,cx:cam.x,cy:cam.y}; moved=false; });
+  window.addEventListener('mousemove',e=>{
+    if (!mdown) return;
+    const dx=e.clientX-mdown.x, dy=e.clientY-mdown.y;
+    if (Math.abs(dx)+Math.abs(dy)>6) moved=true;
+    cam.x=mdown.cx-dx/cam.z; cam.y=mdown.cy-dy/cam.z; clampCam();
+  });
+  window.addEventListener('mouseup',e=>{
+    if (mdown && !moved){ const w=s2w(e.clientX,e.clientY); handleTap(w.x,w.y); }
+    mdown=null;
+  });
+  canvas.addEventListener('wheel',e=>{
+    e.preventDefault(); zoomBy(e.deltaY<0?1.12:0.89,e.clientX,e.clientY);
+  },{passive:false});
+}
+function handleTap(wx,wy){
+  const hit=hitTest(wx,wy);
+  firstSessionPulse=false;
+  if (!hit){ closeDrawer(); return; }
+  if (hit.type==='venue') openDrawer('venue',hit.id);
+  else if (hit.type==='lot') openDrawer('build',hit.id);
+  else openDrawer('production',hit.id);
+}
+// ============================================================================
+// UI — HUD, ticker, toasts, drawers, game loop, persistence
+// ============================================================================
+let engine=null, lastFrame=0;
+const SAVE_KEY='barEmpireSave_v2';
+let drawerType=null, drawerArg=null, lastDrawerTouch=0;
+let tickerQ=[], tickerBusy=false;
+
+const $=id=>document.getElementById(id);
+
+// ----------------------------------------------------------- HUD
+function updateHUD(){
+  const S=engine.S;
+  $('h-cash').textContent=fmt$(S.cash);
+  $('h-nw').innerHTML='NW <b>'+fmt$(engine.netWorth())+'</b>';
+  const dEl=$('h-debt');
+  if (S.debt>1){ dEl.style.display='inline'; dEl.textContent='debt '+fmt$(S.debt); }
+  else dEl.style.display='none';
+  $('h-rep').textContent='★ '+S.reputation.toFixed(0);
+  const yr=Math.floor((S.week-1)/52)+1, wk=(S.week-1)%52+1;
+  $('h-date').textContent='Y'+yr+' · W'+wk+' · '+cap1(season(S.week));
+  const eco=$('h-eco'); eco.textContent=S.economy; eco.className='chip eco-'+S.economy;
+  $('h-trend').textContent=trendById(S.trendId).name;
+  const o=OBJECTIVES[S.objIndex];
+  if (o){ $('obj-text').textContent=o.name;
+    $('obj-rew').textContent=o.reward?('+'+fmt$(o.reward)):''; }
+  else { $('obj-text').textContent='Empire complete'; $('obj-rew').textContent=''; }
+}
+function flashCash(net){
+  const el=$('h-cash');
+  el.classList.remove('flash-pos','flash-neg');
+  void el.offsetWidth;
+  el.classList.add(net>=0?'flash-pos':'flash-neg');
+  setTimeout(()=>el.classList.remove('flash-pos','flash-neg'),900);
+}
+// ----------------------------------------------------------- ticker & toasts
+function pushTicker(msg){ tickerQ.push(msg); if (tickerQ.length>6) tickerQ.shift(); pumpTicker(); }
+function pumpTicker(){
+  if (tickerBusy || !tickerQ.length) return;
+  tickerBusy=true;
+  const el=$('ticker');
+  el.style.opacity=0;
+  setTimeout(()=>{
+    el.textContent=tickerQ.shift(); el.style.opacity=1;
+    setTimeout(()=>{ tickerBusy=false; pumpTicker(); }, 4200);
+  },350);
+}
+function toast(title,body){
+  const host=$('toasts');
+  const t=document.createElement('div'); t.className='toast';
+  t.innerHTML='<b>'+title+'</b><div>'+body+'</div>';
+  host.appendChild(t);
+  requestAnimationFrame(()=>t.classList.add('show'));
+  setTimeout(()=>{ t.classList.remove('show'); setTimeout(()=>t.remove(),400); },4200);
+  while (host.children.length>2) host.firstChild.remove();
+}
+
+// ----------------------------------------------------------- weekly advance
+function nextWeek(){
+  const S=engine.S;
+  if (S.pendingEvent){ showWeekOverlay(null); return; }
+  const r=engine.tick();
+  refreshBandRates();
+  for (const e of engine.lastEvents) pushTicker(e.msg);
+  pushTicker('Wk '+r.week+' · net '+(r.net>=0?'+':'')+fmt$(r.net)+' · '+r.units.toLocaleString()+' drinks'+(r.shortfall?' · sourcing gap':''));
+  for (const vs of engine.venueStats){
+    const lot=CITY.lots[vs.districtId], tier=engine.venueAt(vs.districtId).tier;
+    const top=iso(lot.gx+VENUE_FW[tier]/2,lot.gy+VENUE_FD[tier]/2);
+    motes.push({x:top.x,y:top.y-VENUE_H[tier]-18,
+      vy:-13,a:1.6,t:'+'+fmt$(vs.revenue),c:'#4caf7d'});
+  }
+  checkObjectives();
+  updateHUD(); flashCash(r.net);
+  refreshDrawer(false);
+  autosave();
+  if (checkEndStates()) return;
+  showWeekOverlay(r);
+}
+function projectLabel(p){
+  if (p.type==='venue') return 'New venue in '+districtById(p.districtId).name;
+  if (p.type==='upgrade') return 'Upgrading '+districtById(p.districtId).name+' to '+DATA.tiers[p.toTier-1].name;
+  return lineById(p.lineId).icon+' Building '+lineById(p.lineId).name;
+}
+function investBodyFor(p){
+  if (p.type==='venue') return 'Your new venue in '+districtById(p.districtId).name+' is under construction — '+p.weeksLeft+' of '+p.totalWeeks+' weeks left. How should it be finished?';
+  if (p.type==='upgrade') return 'Upgrading '+districtById(p.districtId).name+' to a '+DATA.tiers[p.toTier-1].name+' — '+p.weeksLeft+' of '+p.totalWeeks+' weeks left. How should it be finished?';
+  return lineById(p.lineId).name+' is under construction — '+p.weeksLeft+' of '+p.totalWeeks+' weeks left. What equipment should it be fitted with?';
+}
+function pendingEventHTML(){
+  const S=engine.S, pe=S.pendingEvent;
+  let icon='💡', title='', body='', choices=[];
+  if (pe.kind==='random'){
+    const def=DATA.events.find(e=>e.id===pe.id);
+    icon=def.icon; title=def.title; body=def.body; choices=def.choices;
+  } else {
+    const p=S.projects[pe.projIdx];
+    icon='🏗️'; title='Construction Decision'; body=investBodyFor(p); choices=investOptionsFor(p);
+  }
+  let html='<div class="wk-event"><span class="ev-icon">'+icon+'</span><h2>'+title+'</h2><p>'+body+'</p>';
+  choices.forEach((ch,i)=>{
+    const afford=!ch.cost||S.cash>=ch.cost;
+    html+='<button class="wk-choice" '+(afford?'':'disabled')+' onclick="resolveEventChoice('+i+')"><b>'+ch.label+'</b><span>'+(ch.sub||'')+'</span></button>';
+  });
+  html+='</div>';
+  return html;
+}
+function showWeekOverlay(r){
+  const S=engine.S;
+  let html='';
+  if (r){
+    html+='<div class="wk-stats">'
+      +'<span class="schip">revenue <b>'+fmt$(r.revenue)+'</b></span>'
+      +'<span class="schip">net <b class="'+(r.net>=0?'green':'red')+'">'+(r.net>=0?'+':'')+fmt$(r.net)+'</b></span>'
+      +'<span class="schip">drinks <b>'+r.units.toLocaleString()+'</b></span>'
+      +'<span class="schip">★ <b>'+Math.round(r.reputation)+'</b></span></div>';
+    for (const e of engine.lastEvents) html+='<div class="dsub" style="margin-bottom:6px">'+e.msg+'</div>';
+    if (S.projects.length)
+      html+='<div class="wk-projects">'+S.projects.map(p=>'🏗️ '+projectLabel(p)+' — '+p.weeksLeft+' wk left').join('<br>')+'</div>';
+  }
+  html += S.pendingEvent ? pendingEventHTML()
+    : '<button class="btn btn-gold" style="width:100%" onclick="closeWeekOverlay()">Continue ▶</button>';
+
+  $('week-title').textContent = r ? 'Week '+r.week+' Complete' : 'A Decision Awaits';
+  $('week-sub').textContent = r ? cap1(season(S.week))+' · Year '+(Math.floor((S.week-1)/52)+1) : 'Bayside';
+  $('week-body').innerHTML = html;
+  $('ob-week').hidden=false;
+}
+function resolveEventChoice(idx){
+  const ok=engine.resolveEvent(idx);
+  if (!ok) return;
+  updateHUD(); refreshDrawer(true);
+  const last=engine.lastEvents[engine.lastEvents.length-1];
+  $('week-body').innerHTML='<div class="wk-event"><span class="ev-icon">✅</span><div class="wk-result">'+(last?last.msg:'')+'</div></div>'
+    +'<button class="btn btn-gold" style="width:100%" onclick="closeWeekOverlay()">Continue ▶</button>';
+}
+function closeWeekOverlay(){
+  $('ob-week').hidden=true;
+}
+function checkObjectives(){
+  const S=engine.S;
+  let guard=0;
+  while (S.objIndex<OBJECTIVES.length && guard++<6){
+    const o=OBJECTIVES[S.objIndex];
+    if (!o.check(S,engine)) break;
+    S.completed.push(o.id);
+    S.objIndex++;
+    if (o.reward){ S.cash+=o.reward; }
+    burstConfetti();
+    toast('🎯 Objective complete!', o.name+(o.reward?(' — reward <b>'+fmt$(o.reward)+'</b>'):''));
+    pushTicker('🎯 '+o.name+' ✓');
+    if (o.final) $('ob-win').hidden=false;
+  }
+}
+function checkEndStates(){
+  if (engine.S.debt>300000){
+    $('over-body').textContent='Debt passed '+fmt$(300000)+' and the lenders pulled the plug at week '+engine.S.week+'. Your empire reached a net worth of '+fmt$(engine.netWorth())+' at its peak. Another round?';
+    $('ob-over').hidden=false;
+    return true;
+  }
+  return false;
+}
+function dismissWin(){ $('ob-win').hidden=true; }
+
+// ----------------------------------------------------------- drawers
+function openDrawer(type,arg){
+  drawerType=type; drawerArg=arg;
+  document.querySelectorAll('.cmd').forEach(b=>b.classList.toggle('active',b.dataset.d===type));
+  renderDrawer();
+  $('drawer').classList.add('open');
+}
+function closeDrawer(){
+  drawerType=null;
+  $('drawer').classList.remove('open');
+  document.querySelectorAll('.cmd').forEach(b=>b.classList.remove('active'));
+}
+function refreshDrawer(force){
+  if (!drawerType) return;
+  if (!force && performance.now()-lastDrawerTouch<1500) return;
+  renderDrawer();
+}
+function renderDrawer(){
+  const S=engine.S;
+  let title='', html='';
+  const noteTouch='ontouchstart' in window?'touchstart':'mousedown';
+
+  if (drawerType==='venue'){
+    const did=drawerArg, v=engine.venueAt(did), d=districtById(did);
+    if (!v){ closeDrawer(); return; }
+    const vt=DATA.tiers[v.tier-1], vs=venueStatMap[did];
+    title=d.name+' — '+vt.name;
+    const next=v.tier<3?DATA.tiers[v.tier]:null;
+    const premPrice=d.rent*DATA.premisesMult;
+    html+='<div class="dcard"><div class="chips">'
+      +'<span class="schip">visitors/wk <b>'+(vs?Math.round(vs.visitors).toLocaleString():'—')+'</b></span>'
+      +'<span class="schip">service <b>'+(vs?Math.round(vs.serviceLevel*100)+'%':'—')+'</b></span>'
+      +'<span class="schip">revenue/wk <b>'+(vs?fmt$(vs.revenue):'—')+'</b></span></div>'
+      +(vs&&vs.serviceLevel<0.94?'<div class="dsub" style="color:var(--neg)">⚠️ Queues forming — add staff or upgrade capacity</div>':'')
+      +'</div>';
+    html+='<div class="dcard"><div class="dlabel">Staff — '+fmt$(TRAIN_WAGE[S.training-1])+'/wk each</div>'
+      +'<div class="drow"><div class="stepper">'
+      +'<button onclick="uiStaff(\''+did+'\',-1)">−</button><span>'+v.staff+' staff</span>'
+      +'<button onclick="uiStaff(\''+did+'\',1)">+</button></div>'
+      +'<span class="dsub">capacity '+Math.round(v.staff*DATA.baseThroughput*vt.cap*EQUIP_CAP[S.equipment-1]*TRAIN_CAP[S.training-1]).toLocaleString()+' serves/wk</span></div></div>';
+    html+='<div class="dcard"><div class="dlabel">Building</div><div class="drow">'
+      +(next?('<button class="btn btn-gold" '+(S.cash<next.cost?'disabled':'')+' onclick="uiUpgrade(\''+did+'\')">Upgrade to '+next.name+' · '+fmt$(next.cost)+'</button>')
+            :'<span class="dsub">⭐ Flagship — fully upgraded</span>')
+      +'</div></div>';
+    html+='<div class="dcard"><div class="dlabel">Premises</div>'
+      +(v.ownsPremises?'<div class="dsub">🏛️ You own this building — no rent.</div>'
+        :('<div class="drow"><button class="btn" '+(S.cash<premPrice?'disabled':'')+' onclick="uiBuyPrem(\''+did+'\')">Buy premises · '+fmt$(premPrice)+'</button>'
+          +'<span class="dsub">kills the '+fmt$(d.rent)+'/wk rent forever</span></div>'))
+      +'</div>';
+    html+='<div class="dcard"><div class="dlabel">District</div><div class="chips">'
+      +'<span class="schip">traffic <b>'+d.traffic+'</b></span>'
+      +'<span class="schip">rent <b>'+fmt$(d.rent)+'/wk</b></span>'
+      +'<span class="schip">affluence <b>'+d.affluence.toFixed(2)+'</b></span>'
+      +'<span class="schip">rivals <b>'+d.comp+'</b></span></div></div>';
+
+  } else if (drawerType==='build'){
+    const did=drawerArg, d=districtById(did);
+    title=d.name+' — open a venue';
+    html+='<div class="dcard"><div class="chips">'
+      +'<span class="schip">traffic <b>'+d.traffic+'</b></span>'
+      +'<span class="schip">rent <b>'+fmt$(d.rent)+'/wk</b></span>'
+      +'<span class="schip">affluence <b>'+d.affluence.toFixed(2)+'</b></span>'
+      +'<span class="schip">rivals <b>'+d.comp+'</b></span></div>'
+      +'<div class="dsub" style="margin:8px 0">'
+      +(did==='harbor'?'The premium waterfront. Expensive, crowded with rivals — and the city\'s richest drinkers.'
+        :did==='market'?'Dense midtown foot traffic. A natural second venue.'
+        :'Your home turf on the river.')+'</div>'
+      +'<button class="btn btn-gold" style="width:100%" '+(S.cash<d.fitout?'disabled':'')
+      +' onclick="uiOpenVenue(\''+did+'\')">Open Pop-up Bar · '+(d.fitout?fmt$(d.fitout):'free')+'</button></div>';
+
+  } else if (drawerType==='menu'){
+    title='Menu & pricing';
+    html+='<div class="dsub" style="margin-bottom:8px">Brand-wide prices. Demand follows value-for-money, season and the current trend ('+trendById(S.trendId).name+').</div>';
+    const sea=season(S.week);
+    for (const dr of DATA.drinks){
+      const m=S.menu[dr.id], cost=engine.drinkCost(dr);
+      const sold=engine.lastOrders[dr.id]||0;
+      const boost=trendById(S.trendId).boosts[dr.id];
+      html+='<div class="dcard"><div class="drow" style="justify-content:space-between">'
+        +'<span class="dname">'+dr.icon+' '+dr.name
+        +(dr.season===sea?' <span class="goldc" style="font-size:10px">in season</span>':'')
+        +(boost?' <span class="goldc" style="font-size:10px">🔥 trending</span>':'')+'</span>'
+        +'<button class="btn btn-sm '+(m.on?'btn-gold':'')+'" onclick="uiToggleDrink(\''+dr.id+'\')">'+(m.on?'ON':'off')+'</button></div>'
+        +'<div class="drow" style="margin-top:7px"><div class="stepper">'
+        +'<button onclick="uiPrice(\''+dr.id+'\',-0.5)">−</button><span>$'+m.price.toFixed(2)+'</span>'
+        +'<button onclick="uiPrice(\''+dr.id+'\',0.5)">+</button></div>'
+        +'<span class="dsub">cost ~$'+cost.toFixed(2)+' · margin <b class="'+(m.price-cost>0?'green':'red')+'">$'+(m.price-cost).toFixed(2)+'</b>'
+        +(m.on&&sold>0.5?' · sold '+Math.round(sold):'')+'</span></div></div>';
+    }
+
+  } else if (drawerType==='supply'){
+    title='Supply sourcing';
+    html+='<div class="dsub" style="margin-bottom:8px">Pick a market tier per category — or out-build the market entirely with your own production.</div>';
+    for (const c of CATS){
+      const cur=S.sourcing[c], own=S.ownInv[c];
+      html+='<div class="dcard"><div class="drow" style="justify-content:space-between">'
+        +'<span class="dname">'+c+'</span>'
+        +'<span class="dsub">index ×'+S.marketIndex[c].toFixed(2)+'</span></div>'
+        +'<div class="seg" style="margin-top:7px">';
+      for (const s of DATA.supply[c])
+        html+='<button class="'+(cur===s.tier?'on':'')+'" onclick="uiSource(\''+c+'\',\''+s.tier+'\')">'
+          +s.tier+' · $'+(s.cost*S.marketIndex[c]).toFixed(2)+' · q'+Math.round(s.q*100)+'</button>';
+      html+='</div>';
+      if (own>0.5){
+        const l=DATA.lines.find(l=>l.cat===c&&S.ownedLines.includes(l.id));
+        html+='<div class="dsub" style="margin-top:7px;color:var(--pos)">🏭 Own stock: '
+          +Math.round(own).toLocaleString()+' units @ q'+Math.round(S.ownInvQ[c]*100)
+          +(l?' ($'+l.prodCost.toFixed(2)+'/unit — used first)':'')+'</div>';
+      }
+      html+='</div>';
+    }
+
+  } else if (drawerType==='production'){
+    title='Production — own the supply';
+    html+='<div class="dsub" style="margin-bottom:8px">Beer matures in weeks, scotch in years. Patience pays: own product is cheaper, better, and immune to price spikes.</div>';
+    for (const l of DATA.lines){
+      const built=S.ownedLines.includes(l.id);
+      const batches=S.maturing.filter(b=>b.lineId===l.id);
+      html+='<div class="dcard'+(drawerArg===l.id?' " style="border-color:var(--gold)"':'"')+'>'
+        +'<div class="drow" style="justify-content:space-between">'
+        +'<span class="dname">'+l.icon+' '+l.name+'</span>'
+        +(built?'<span class="goldc" style="font-size:11px">OPERATING</span>'
+               :'<button class="btn btn-gold btn-sm" '+(S.cash<l.capex?'disabled':'')+' onclick="uiBuildLine(\''+l.id+'\')">Build · '+fmt$(l.capex)+'</button>')
+        +'</div>'
+        +'<div class="chips"><span class="schip">output <b>'+l.weekly+'/wk</b></span>'
+        +'<span class="schip">cost <b>$'+l.prodCost.toFixed(2)+'</b></span>'
+        +'<span class="schip">quality <b>'+Math.round(l.q*100)+'</b></span>'
+        +'<span class="schip">matures <b>'+(l.weeks>=52?(l.weeks/52).toFixed(0)+' yr':l.weeks+' wk')+'</b></span></div>';
+      if (built){
+        if (batches.length){
+          const nxt=batches.reduce((a,b)=>Math.min(a,b.ready),Infinity);
+          const oldest=batches[0];
+          const frac=clamp((S.week-oldest.start)/(oldest.ready-oldest.start),0,1);
+          html+='<div class="dsub">'+batches.length+' batches aging · next ready in '+Math.max(0,nxt-S.week)+' wk</div>'
+            +'<div class="prog"><div style="width:'+(frac*100)+'%"></div></div>';
+        }
+        html+='<div class="dsub" style="color:var(--pos)">ready stock: '+Math.round(S.ownInv[l.cat]).toLocaleString()+' units</div>';
+        const alloc=S.lineAlloc[l.id]||{scale:1,wholesalePct:0};
+        const outUnits=l.weekly*alloc.scale;
+        const wsUnits=Math.round(outUnits*alloc.wholesalePct/100);
+        const ownUnits=Math.round(outUnits-wsUnits);
+        const wsPrice=l.prodCost*2.5;
+        html+='<div class="dlabel" style="margin-top:6px">Output scale</div><div class="drow seg">';
+        for (const sc of [0.5,1,1.5])
+          html+='<button class="'+(alloc.scale===sc?'on':'')+'" onclick="uiLineScale(\''+l.id+'\','+sc+')">'+(sc*100)+'%</button>';
+        html+='</div>'
+          +(alloc.scale>1?'<div class="dsub">overtime adds '+fmt$(l.weekly*(alloc.scale-1)*l.prodCost*1.5)+'/wk to opex</div>':'')
+          +'<div class="dlabel" style="margin-top:6px">Wholesale split</div>'
+          +'<div class="drow stepper"><button onclick="uiLineWholesale(\''+l.id+'\',-10)">−</button>'
+          +'<span>'+alloc.wholesalePct+'% wholesale</span>'
+          +'<button onclick="uiLineWholesale(\''+l.id+'\',10)">+</button></div>'
+          +'<div class="dsub">'+Math.round(outUnits)+' units/wk → '+wsUnits+' sold wholesale @ $'+wsPrice.toFixed(2)+' ('+fmt$(wsUnits*wsPrice*S.marketIndex[l.cat])+'/wk) · '+ownUnits+' kept for your venues</div>';
+      }
+      html+='</div>';
+    }
+
+  } else if (drawerType==='brand'){
+    title='Brand HQ';
+    html+='<div class="dcard"><div class="dlabel">Marketing — awareness '+S.awareness.toFixed(0)+'/100</div>'
+      +'<div class="drow"><div class="stepper">'
+      +'<button onclick="uiMkt(-250)">−</button><span>'+fmt$(S.marketing)+'/wk</span>'
+      +'<button onclick="uiMkt(250)">+</button></div>'
+      +'<span class="dsub">decays if you stop</span></div>'
+      +'<div class="prog"><div style="width:'+S.awareness+'%"></div></div></div>';
+    html+='<div class="dcard"><div class="dlabel">Bar equipment — tier '+S.equipment+'/4</div><div class="drow">'
+      +(S.equipment<4?('<button class="btn btn-gold btn-sm" '+(S.cash<DATA.equipCost[S.equipment]?'disabled':'')
+        +' onclick="uiEquip()">Upgrade · '+fmt$(DATA.equipCost[S.equipment])+'</button>'):'<span class="dsub">maxed</span>')
+      +'<span class="dsub">quality +'+Math.round((EQUIP_Q[S.equipment-1]-1)*100)+'% · capacity +'+Math.round((EQUIP_CAP[S.equipment-1]-1)*100)+'%</span></div></div>';
+    html+='<div class="dcard"><div class="dlabel">Staff training — tier '+S.training+'/4</div><div class="drow">'
+      +(S.training<4?('<button class="btn btn-gold btn-sm" '+(S.cash<DATA.trainCost[S.training]?'disabled':'')
+        +' onclick="uiTrain()">Train up · '+fmt$(DATA.trainCost[S.training])+'</button>'):'<span class="dsub">maxed</span>')
+      +'<span class="dsub">wages '+fmt$(TRAIN_WAGE[S.training-1])+'/staff/wk</span></div></div>';
+    html+='<div class="dcard"><div class="dlabel">Reputation '+S.reputation.toFixed(0)+'/100</div>'
+      +'<div class="prog"><div style="width:'+S.reputation+'%"></div></div>'
+      +'<div class="dsub">grows with value-for-money, quality and short queues</div></div>';
+
+  } else if (drawerType==='finance'){
+    title='Finance';
+    const hist=S.history.slice(-16);
+    if (hist.length){
+      const maxAbs=Math.max(1,...hist.map(h=>Math.abs(h.net)));
+      html+='<div class="dcard"><div class="dlabel">Weekly net — last '+hist.length+' wks</div><div class="bars" role="img" aria-label="Weekly net profit, last '+hist.length+' weeks">';
+      for (const h of hist)
+        html+='<div class="bar"><i class="'+(h.net>=0?'bpos':'bneg')+'" style="height:'+Math.max(2,Math.abs(h.net)/maxAbs*48)+'%" title="W'+h.week+' · '+(h.net>=0?'+':'')+fmt$(h.net)+'"></i></div>';
+      html+='</div></div>';
+      html+='<div class="dcard"><table><tr><th>Wk</th><th>Revenue</th><th>COGS</th><th>Opex</th><th>Net</th></tr>';
+      for (const h of hist.slice(-8).reverse())
+        html+='<tr><td>'+h.week+'</td><td>'+fmt$(h.revenue)+'</td><td>'+fmt$(h.cogs)+'</td><td>'+fmt$(h.opex)+'</td>'
+          +'<td class="'+(h.net>=0?'green':'red')+'">'+(h.net>=0?'+':'')+fmt$(h.net)+'</td></tr>';
+      html+='</table></div>';
+      const last=hist[hist.length-1];
+      html+='<div class="dcard"><div class="dlabel">Last week opex</div><div class="chips">'
+        +'<span class="schip">rent <b>'+fmt$(last.rent)+'</b></span>'
+        +'<span class="schip">wages <b>'+fmt$(last.wages)+'</b></span>'
+        +'<span class="schip">marketing <b>'+fmt$(last.marketing)+'</b></span>'
+        +'<span class="schip">interest <b>'+fmt$(last.interest)+'</b></span>'
+        +(last.rentIncome?'<span class="schip">rent income <b class="green">+'+fmt$(last.rentIncome)+'</b></span>':'')
+        +(last.overtime?'<span class="schip">overtime <b>'+fmt$(last.overtime)+'</b></span>':'')
+        +(last.wholesale?'<span class="schip">wholesale <b class="green">+'+fmt$(last.wholesale)+'</b></span>':'')
+        +'</div></div>';
+    } else html+='<div class="dsub">First week still trading…</div>';
+    html+='<div class="dcard"><div class="dlabel">Balance sheet</div><div class="chips">'
+      +'<span class="schip">cash <b>'+fmt$(S.cash)+'</b></span>'
+      +'<span class="schip">debt <b>'+fmt$(S.debt)+'</b></span>'
+      +'<span class="schip">net worth <b>'+fmt$(engine.netWorth())+'</b></span></div>'
+      +(S.debt>0?'<div class="dsub">Loans auto-draw when cash runs dry (1.2%/wk interest) and repay when cash is strong. Bank limit: '+fmt$(300000)+'.</div>':'')
+      +'</div>';
+    const pStockVal=DATA.stocks.reduce((a,st)=>a+S.stocks[st.id].price*S.stocks[st.id].shares,0);
+    const pPropInc=DATA.properties.filter(pr=>S.properties[pr.id]).reduce((a,pr)=>a+pr.rent,0);
+    html+='<button class="dcard" style="display:flex;align-items:center;justify-content:space-between;width:100%;text-align:left;cursor:pointer" onclick="openDrawer(\'invest\')">'
+      +'<div><div class="dname">Investments</div><div class="dsub">'+(pStockVal||pPropInc?('portfolio '+fmt$(pStockVal)+(pPropInc?' · +'+fmt$(pPropInc)+'/wk rent':'')):'Park spare cash in stocks &amp; property')+'</div></div>'
+      +'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>';
+
+  } else if (drawerType==='invest'){
+    title='Investments';
+    html+='<button class="btn btn-sm" style="margin-bottom:10px" onclick="openDrawer(\'finance\')"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px"><path d="m15 18-6-6 6-6"/></svg> Finance</button>';
+    html+='<div class="dsub" style="margin-bottom:8px">Park spare cash in the markets — stocks fluctuate with the economy, real estate pays steady weekly rent.</div>';
+    html+='<div class="dcard"><div class="dlabel">Stock Market</div>';
+    for (const st of DATA.stocks){
+      const cur=S.stocks[st.id], hold=cur.shares*cur.price;
+      html+='<div class="drow" style="justify-content:space-between;margin-top:6px">'
+        +'<span class="dname">'+st.name+' <span class="dsub">('+st.id+')</span></span>'
+        +'<span class="dsub">$'+cur.price.toFixed(2)+'</span></div>'
+        +'<div class="drow" style="justify-content:space-between">'
+        +'<span class="dsub">'+(cur.shares>0?('holding '+cur.shares+' sh · '+fmt$(hold)):'sector: '+st.sector)+'</span>'
+        +'<div class="drow">'
+        +'<button class="btn btn-sm" '+(S.cash<cur.price*10?'disabled':'')+' onclick="uiStock(\''+st.id+'\',10)">Buy 10</button>'
+        +'<button class="btn btn-sm" '+(cur.shares<10?'disabled':'')+' onclick="uiStock(\''+st.id+'\',-10)">Sell 10</button>'
+        +'</div></div>';
+    }
+    html+='</div>';
+    html+='<div class="dcard"><div class="dlabel">Real Estate</div>';
+    for (const pr of DATA.properties){
+      const owned=S.properties[pr.id];
+      html+='<div class="drow" style="justify-content:space-between;margin-top:6px">'
+        +'<span class="dname">'+pr.name+' <span class="dsub">('+districtById(pr.district).name+')</span></span>'
+        +(owned?'<span class="goldc" style="font-size:11px">+'+fmt$(pr.rent)+'/wk</span>'
+               :'<button class="btn btn-sm btn-gold" '+(S.cash<pr.price?'disabled':'')+' onclick="uiProperty(\''+pr.id+'\')">Buy '+fmt$(pr.price)+'</button>')
+        +'</div>';
+    }
+    html+='</div>';
+    const stockVal=DATA.stocks.reduce((a,st)=>a+S.stocks[st.id].price*S.stocks[st.id].shares,0);
+    const propVal=DATA.properties.filter(pr=>S.properties[pr.id]).reduce((a,pr)=>a+pr.price,0);
+    const propIncome=DATA.properties.filter(pr=>S.properties[pr.id]).reduce((a,pr)=>a+pr.rent,0);
+    html+='<div class="dcard"><div class="dlabel">Portfolio</div><div class="chips">'
+      +'<span class="schip">stocks <b>'+fmt$(stockVal)+'</b></span>'
+      +'<span class="schip">property <b>'+fmt$(propVal)+'</b></span>'
+      +'<span class="schip">rent income <b>'+fmt$(propIncome)+'/wk</b></span></div></div>';
+
+  } else if (drawerType==='goals'){
+    title='Objectives';
+    const icoDone='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="var(--pos)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>';
+    const icoCur='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/></svg>';
+    const icoLock='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>';
+    OBJECTIVES.forEach((o,i)=>{
+      const done=i<S.objIndex, cur=i===S.objIndex;
+      if (!done && !cur && i>S.objIndex+2) return;
+      html+='<div class="dcard" style="'+(cur?'border-color:var(--gold)':'')+(done?';opacity:.55':'')+'">'
+        +'<div class="drow" style="justify-content:space-between;flex-wrap:nowrap">'
+        +'<span class="dname" style="display:flex;align-items:center;gap:8px">'+(done?icoDone:cur?icoCur:icoLock)+'<span>'+o.name+'</span></span>'
+        +(o.reward?'<span class="'+(done?'mutedc':'goldc')+'" style="font-size:11px;white-space:nowrap">+'+fmt$(o.reward)+'</span>':'')
+        +'</div></div>';
+    });
+
+  } else if (drawerType==='settings'){
+    title='Settings';
+    html+='<div class="dcard"><div class="drow">'
+      +'<button class="btn" onclick="autosave();toast(\'Saved\',\'Progress stored on this device.\')"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg> Save now</button>'
+      +'<button class="btn" onclick="uiNewGame(false)"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg> New game</button></div>'
+      +'<div class="dsub" style="margin-top:8px">Autosaves every week. Seed '+S.rngA%100000+' · Week '+S.week+'</div></div>';
+    html+='<div class="dcard"><div class="dsub">Bar Empire — playable city prototype. The full 3D Unity build follows this exact simulation. Drag to pan, pinch to zoom, tap buildings to manage.</div></div>';
+  }
+
+  $('drawer-title').textContent=title;
+  $('drawer-body').innerHTML=html;
+  $('drawer-body').addEventListener(noteTouch,()=>{ lastDrawerTouch=performance.now(); },{passive:true});
+}
+
+// ----------------------------------------------------------- ui actions
+function uiStaff(did,d){ engine.setStaff(did,d); lastDrawerTouch=performance.now(); updateHUD(); renderDrawer(); }
+function uiUpgrade(did){
+  if (engine.upgradeVenue(did)){
+    toast('🏗️ Upgrade started','Crews are moving in on '+districtById(did).name+'. A few weeks of work ahead.');
+    updateHUD(); renderDrawer(); closeDrawer(); showWeekOverlay(null);
+  } else toast('Not enough cash','Keep trading or take it slower.');
+}
+function uiBuyPrem(did){
+  if (engine.buyPremises(did)){
+    toast('🏛️ Premises bought','No more rent on '+districtById(did).name+'.');
+    updateHUD(); renderDrawer();
+  }
+}
+function uiOpenVenue(did){
+  if (engine.openVenue(did)){
+    toast('🏗️ Construction started','Your new pop-up in '+districtById(did).name+' breaks ground.');
+    updateHUD(); closeDrawer(); showWeekOverlay(null);
+  }
+}
+function uiToggleDrink(id){ const m=engine.S.menu[id]; m.on=!m.on; lastDrawerTouch=performance.now(); renderDrawer(); }
+function uiPrice(id,d){
+  const m=engine.S.menu[id], dr=drinkById(id);
+  m.price=clamp(Math.round((m.price+d)*10)/10, 1, dr.fair*3);
+  lastDrawerTouch=performance.now(); renderDrawer();
+}
+function uiSource(c,t){ engine.S.sourcing[c]=t; lastDrawerTouch=performance.now(); renderDrawer(); }
+function uiBuildLine(id){
+  if (engine.buildLine(id)){
+    const l=lineById(id);
+    toast(l.icon+' Construction started',l.name+' is being built.');
+    updateHUD(); renderDrawer(); closeDrawer(); showWeekOverlay(null);
+  }
+}
+function uiStock(id,qty){
+  const ok = qty>0 ? engine.buyStock(id,qty) : engine.sellStock(id,-qty);
+  if (ok){ updateHUD(); renderDrawer(); }
+}
+function uiProperty(id){
+  if (engine.buyProperty(id)){
+    const pr=DATA.properties.find(p=>p.id===id);
+    toast('🏢 Property bought',pr.name+' now earns '+fmt$(pr.rent)+'/wk in rent.');
+    updateHUD(); renderDrawer();
+  }
+}
+function uiLineScale(id,val){
+  const S=engine.S; if (!S.lineAlloc[id]) S.lineAlloc[id]={scale:1,wholesalePct:0};
+  S.lineAlloc[id].scale=val; lastDrawerTouch=performance.now(); updateHUD(); renderDrawer();
+}
+function uiLineWholesale(id,delta){
+  const S=engine.S; if (!S.lineAlloc[id]) S.lineAlloc[id]={scale:1,wholesalePct:0};
+  S.lineAlloc[id].wholesalePct=clamp(S.lineAlloc[id].wholesalePct+delta,0,100);
+  lastDrawerTouch=performance.now(); updateHUD(); renderDrawer();
+}
+function uiMkt(d){ engine.S.marketing=clamp(engine.S.marketing+d,0,6000); lastDrawerTouch=performance.now(); updateHUD(); renderDrawer(); }
+function uiEquip(){ if (engine.upgradeEquipment()){ toast('⭐ Equipment upgraded','Tier '+engine.S.equipment+' kit behind every bar.'); updateHUD(); renderDrawer(); } }
+function uiTrain(){ if (engine.upgradeTraining()){ toast('🎓 Crew trained','Tier '+engine.S.training+' service standard.'); updateHUD(); renderDrawer(); } }
+function uiNewGame(fromOver){
+  if (!fromOver && !confirm('Start a fresh empire? Current progress is replaced.')) return;
+  $('ob-over').hidden=true; $('ob-win').hidden=true; $('ob-week').hidden=true;
+  initGame(newGameState());
+  closeDrawer();
+  toast('🍸 Fresh start','Riverside pop-up open. Make it count.');
+}
+
+// ----------------------------------------------------------- save / load
+function autosave(){
+  try{ localStorage.setItem(SAVE_KEY,JSON.stringify({v:2,S:engine.S,ts:Date.now()})); }catch(e){}
+}
+// fill fields added after a save was written so old saves keep working
+function migrateSave(S){
+  if (!S.stocks) S.stocks={};
+  for (const st of DATA.stocks) if (!S.stocks[st.id]) S.stocks[st.id]={price:st.base,shares:0};
+  if (!S.properties) S.properties={};
+  for (const pr of DATA.properties) if (S.properties[pr.id]===undefined) S.properties[pr.id]=false;
+  if (!Array.isArray(S.projects)) S.projects=[];
+  if (!S.lineBonuses) S.lineBonuses={};
+  if (typeof S.wageBonus!=='number') S.wageBonus=0;
+  if (S.pendingEvent===undefined) S.pendingEvent=null;
+  if (typeof S.eventCooldown!=='number') S.eventCooldown=2;
+  if (!S.lineAlloc) S.lineAlloc={};
+  for (const id of S.ownedLines) if (!S.lineAlloc[id]) S.lineAlloc[id]={scale:1,wholesalePct:0};
+  if (!S.rivals) S.rivals={};
+  DATA.districts.forEach((d,i)=>{ if (!S.rivals[d.id]) S.rivals[d.id]={tier:1,nameIdx:i%DATA.rivalNames.length}; });
+  return S;
+}
+function loadSave(){
+  try{
+    const raw=localStorage.getItem(SAVE_KEY);
+    if (!raw) return null;
+    const j=JSON.parse(raw);
+    if (j&&j.v===2&&j.S&&j.S.week) return migrateSave(j.S);
+  }catch(e){}
+  return null;
+}
+
+// ----------------------------------------------------------- boot + loop
+function initGame(S){
+  engine=new SimEngine(S);
+  refreshBandRates();
+  updateHUD();
+}
+function loop(now){
+  requestAnimationFrame(loop);
+  const dt=Math.min(0.05,(now-lastFrame)/1000)||0.016;
+  lastFrame=now;
+  updateAgents(dt); updateCars(dt); updateParticles(dt,now);
+  render(now);
+}
+function startGame(){
+  $('ob-welcome').hidden=true;
+  pushTicker('Doors open on the Riverside Strip. Make Bayside drink well.');
+}
+function boot(){
+  canvas=$('city'); ctx=canvas.getContext('2d');
+  genCity(); initCars();
+  resize();
+  window.addEventListener('resize',resize);
+  if (window.visualViewport) visualViewport.addEventListener('resize',resize);
+  bindInput();
+  const saved=loadSave();
+  if (saved){
+    initGame(saved);
+    firstSessionPulse=false;
+    toast('Welcome back','Week '+saved.week+' — the city kept your seat.');
+  } else {
+    initGame(newGameState());
+    $('ob-welcome').hidden=false;
+  }
+  document.addEventListener('visibilitychange',()=>{ if (document.hidden&&engine) autosave(); });
+  requestAnimationFrame(t=>{ lastFrame=t; loop(t); });
+}
+if (IS_BROWSER) boot();
+else if (typeof module!=='undefined') module.exports={SimEngine,newGameState,DATA,OBJECTIVES,CATS,fmt$,season};
+</script>
+</body>
+</html>
