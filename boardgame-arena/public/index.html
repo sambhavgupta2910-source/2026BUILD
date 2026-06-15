@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Board Game Arena</title>
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#15182b" />
+  <link rel="apple-touch-icon" href="/icons/icon-192.svg" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div id="app">
+    <header class="topbar">
+      <h1>Board Game Arena</h1>
+      <div id="connectionStatus" class="status status-connecting">Connecting…</div>
+    </header>
+
+    <main id="main">
+      <section id="screen-connect" class="screen">
+        <div class="card">
+          <h2>Join the table</h2>
+          <label for="nameInput">Your name</label>
+          <input id="nameInput" type="text" placeholder="Your name" maxlength="20" autocomplete="off" />
+
+          <div class="actions">
+            <button id="createRoomBtn">Create Room</button>
+          </div>
+
+          <div class="divider">or join a room</div>
+
+          <label for="roomCodeInput">Room code</label>
+          <input id="roomCodeInput" type="text" placeholder="ABCD" maxlength="4" autocapitalize="characters" autocomplete="off" />
+          <div class="actions">
+            <button id="joinRoomBtn">Join Room</button>
+          </div>
+
+          <p id="connectError" class="error"></p>
+        </div>
+      </section>
+
+      <section id="screen-lobby" class="screen">
+        <div class="card">
+          <h2>Room <span id="roomCodeDisplay" class="room-code"></span></h2>
+          <p class="hint">Share this code with the other player so they can join.</p>
+
+          <ul id="playerList" class="player-list"></ul>
+
+          <div id="hostGameControls" class="host-only">
+            <label for="gameSelect">Game</label>
+            <select id="gameSelect"></select>
+            <div class="actions">
+              <button id="startGameBtn">Start Game</button>
+            </div>
+          </div>
+
+          <p id="lobbyHint" class="hint"></p>
+
+          <div class="actions">
+            <button id="leaveLobbyBtn" class="secondary">Leave Room</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="screen-game" class="screen">
+        <div class="game-layout">
+          <div id="turnBanner" class="turn-banner"></div>
+
+          <div class="board-wrap">
+            <canvas id="boardCanvas"></canvas>
+          </div>
+
+          <div class="side-panel">
+            <div id="playerSummaries" class="summaries"></div>
+            <div id="actionPanel" class="action-panel"></div>
+            <div id="eventLog" class="event-log"></div>
+          </div>
+
+          <div class="actions">
+            <button id="leaveGameBtn" class="secondary">Leave Room</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="gameOverModal" class="modal hidden">
+      <div class="modal-content">
+        <h2 id="gameOverText"></h2>
+        <button id="backToLobbyBtn">Back to Lobby</button>
+      </div>
+    </div>
+
+    <div id="tradeModal" class="modal hidden">
+      <div class="modal-content modal-wide">
+        <h2 id="tradeModalTitle">Propose Trade</h2>
+        <div id="tradeModalBody"></div>
+        <div class="actions">
+          <button id="tradeSubmitBtn">Send Offer</button>
+          <button id="tradeCancelBtn" class="secondary">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast" class="toast hidden"></div>
+  </div>
+
+  <script type="module" src="/app.js"></script>
+</body>
+</html>
