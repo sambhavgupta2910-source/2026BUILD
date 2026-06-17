@@ -462,7 +462,10 @@ async function getAnalysis(dataset, area) {
             'Write exactly 3-4 sentences of concise, data-driven market commentary. ' +
             'Be specific: cite the AED/sqft figures, transaction counts, and percentage changes from the data. ' +
             'Cover: (1) overall price level and recent trend direction, (2) what the off-plan share signals about buyer composition, ' +
-            '(3) one sharp, actionable insight about this sub-market. No filler, no caveats, no disclaimers.',
+            '(3) one sharp, actionable insight about this sub-market. No filler. ' +
+            'Calibrate your confidence to the sample size you are given: if total residential sales for this area is under 30, ' +
+            'say so plainly and frame the read as directional rather than definitive; if it is under 10, lead with that limitation. ' +
+            'Do not present a thin sample as a settled market view.',
         },
         { role: 'user', content: userContent },
       ],
@@ -532,6 +535,13 @@ async function getDealCheck(dataset, body) {
     `Comparables: ${val.compCount} transactions (${val.confidence} confidence — ${val.fallback.label})\n` +
     `Verdict: ${verdict} (${discountPct > 0 ? '+' : ''}${Math.round(discountPct * 10) / 10}% vs DLD median)`;
 
+  const confidenceInstruction =
+    val.confidence === 'High'
+      ? 'Confidence is High and the comparable basis is narrow (matched on area, project and rooms) — you can state the fair value plainly.'
+      : val.confidence === 'Medium'
+        ? 'Confidence is Medium — state the fair value but note in one clause that it is based on a widened comparable set (' + val.fallback.label.toLowerCase() + ').'
+        : 'Confidence is ' + val.confidence + ' and the comparable basis is broad (' + val.fallback.label.toLowerCase() + ', ' + val.compCount + ' comps) — explicitly flag that this estimate rests on a limited or widened comparable set and should be treated as a starting point, not a precise number.';
+
   try {
     const xaiRes = await fetch('https://api.x.ai/v1/chat/completions', {
       method: 'POST',
@@ -545,8 +555,10 @@ async function getDealCheck(dataset, body) {
             content:
               'You are Sambhav Gupta, Senior Investment Analyst at Sobha Realty Dubai. ' +
               'Return ONLY valid JSON with two keys: ' +
-              '"analystNote" (3-4 sentences, data-backed, cite AED figures and % gap, actionable investment framing, no disclaimers) and ' +
-              '"socialPost" (≤60 words, punchy hook + key stat + verdict + CTA, ready to paste on LinkedIn or Instagram).',
+              '"analystNote" (3-4 sentences, data-backed, cite AED figures and % gap, actionable investment framing) and ' +
+              '"socialPost" (≤60 words, punchy hook + key stat + verdict + CTA, ready to paste on LinkedIn or Instagram). ' +
+              confidenceInstruction +
+              ' Reflect that calibration naturally in both fields — do not bolt on a generic disclaimer, and do not undercut the verdict if confidence is High.',
           },
           { role: 'user', content: userContent },
         ],
@@ -747,12 +759,16 @@ const FALLBACK_LADDER = [
 ];
 
 function pickComparables(dataset, query) {
-  const candidates = dataset.byArea.get(query.area) || dataset.rows;
+  // An unrecognized area has no comparables to widen from — never fall back to
+  // the whole national dataset, since that would silently mislabel a market-wide
+  // average as an "Area only" estimate for a place we have no data on.
+  const candidates = dataset.byArea.get(query.area);
+  if (!candidates) return { step: null, matches: [] };
   for (const step of FALLBACK_LADDER) {
     const matches = candidates.filter((r) => step.match(r, query));
     if (matches.length >= MIN_COMPS) return { step, matches };
   }
-  // Worst case: return whatever area matched
+  // Worst case within a known area: return everything in that area, even if thin
   return { step: FALLBACK_LADDER.at(-1), matches: candidates };
 }
 
@@ -789,8 +805,8 @@ function valuation(dataset, body) {
   };
 
   const { step, matches } = pickComparables(dataset, query);
-  if (!matches.length) {
-    return { error: `No comparable transactions found for area "${body.area}".` };
+  if (!step || !matches.length) {
+    return { error: `No comparable transactions found for area "${body.area}". Check the spelling or pick a recognized Dubai area.` };
   }
 
   const psfs = matches.map((r) => r.aedPerSqft);
