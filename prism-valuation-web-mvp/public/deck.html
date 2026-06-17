@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="slides-format" content="viewport">
+    <title>Elevate Homes — End-to-End Investor & Feasibility Deck 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,600;0,700;1,400&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style type="text/tailwindcss">
+        @theme {
+            --color-bg: #0c1118;
+            --color-bg-deep: #060a0e;
+            --color-surface: #141c26;
+            --color-text: #f0ece4;
+            --color-text-secondary: #c2b89a;
+            --color-text-muted: #7a6f5e;
+            --color-accent-1: #c9a84c;
+            --color-accent-2: #e8d5a3;
+            --color-accent-3: #f0ece4;
+            --color-glass-bg: rgba(255,255,255,0.05);
+            --color-glass-border: rgba(201,168,76,0.15);
+            --color-vignette: rgba(0,0,0,0.55);
+            --font-display: 'Cormorant', serif;
+            --font-body: 'Manrope', sans-serif;
+        }
+    </style>
+    <style>
+        :root { --color-bg: #0c1118; --color-text: #f0ece4; --glow-color-rgb: 201,168,76; }
+        *, *::before, *::after { box-sizing: border-box; }
+        html, body { background: var(--color-bg); margin: 0; }
+        body { font-family: 'Manrope', sans-serif; color: var(--color-text); overflow: hidden; height: 100vh; width: 100vw; }
+        .deck { width: 100vw; height: 100vh; position: relative; }
+        .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--color-bg); display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; transform: scale(0.96); transition: opacity 0.65s ease, transform 0.65s ease; pointer-events: none; overflow: hidden; }
+        .slide.active { opacity: 1; transform: scale(1); pointer-events: all; }
+        .slide > .content { position: relative; z-index: 2; width: 100%; max-width: 1120px; padding: clamp(1.5rem, 4vw, 3.5rem); }
+        .nav-controls { position: fixed; bottom: 26px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 14px; z-index: 100; background: rgba(201,168,76,0.07); backdrop-filter: blur(12px); padding: 8px 22px; border-radius: 40px; border: 1px solid rgba(201,168,76,0.18); }
+        .nav-btn { width: 36px; height: 36px; border: none; background: rgba(201,168,76,0.1); color: #c9a84c; border-radius: 50%; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+        .nav-btn:hover { background: rgba(201,168,76,0.22); }
+        .slide-dots { display: flex; gap: 6px; flex-wrap: wrap; max-width: 360px; }
+        .slide-dots .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(201,168,76,0.2); cursor: pointer; transition: background 0.3s, transform 0.3s; }
+        .slide-dots .dot.active { background: #c9a84c; transform: scale(1.35); }
+        .slide-counter { font-size: 0.75rem; color: #7a6f5e; min-width: 44px; text-align: center; font-family: 'Manrope', sans-serif; }
+        .reveal { opacity: 0; transform: translateY(18px); }
+        .text-glow { text-shadow: 0 0 24px rgba(201,168,76,0.55), 0 0 48px rgba(201,168,76,0.22); }
+        .stat-glow { text-shadow: 0 0 32px rgba(201,168,76,0.65), 0 0 64px rgba(201,168,76,0.28); }
+        @keyframes glow-pulse { 0%,100%{text-shadow:0 0 20px rgba(201,168,76,0.5),0 0 40px rgba(201,168,76,0.2);}50%{text-shadow:0 0 36px rgba(201,168,76,0.85),0 0 72px rgba(201,168,76,0.35);} }
+        .glow-pulse { animation: glow-pulse 3s ease-in-out infinite; }
+        @keyframes float-slow { 0%{transform:translate(0,0) scale(1);}25%{transform:translate(55px,-45px) scale(1.1);}50%{transform:translate(-35px,38px) scale(0.9);}75%{transform:translate(48px,18px) scale(1.07);}100%{transform:translate(0,0) scale(1);} }
+        @keyframes float-drift { 0%{transform:translate(0,0) scale(1) rotate(0deg);}33%{transform:translate(-48px,-55px) scale(1.13) rotate(3deg);}66%{transform:translate(38px,28px) scale(0.87) rotate(-2deg);}100%{transform:translate(0,0) scale(1) rotate(0deg);} }
+        @keyframes float { 0%,100%{transform:translateY(0);}50%{transform:translateY(-14px);} }
+        .gradient-mesh { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+        .blob { position: absolute; border-radius: 50%; filter: blur(85px); animation: float-slow 11s ease-in-out infinite; }
+        .blob:nth-child(2) { animation: float-drift 15s ease-in-out infinite; }
+        .blob:nth-child(3) { animation: float-slow 19s ease-in-out infinite reverse; }
+        .slide::before { content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");background-repeat:repeat;background-size:256px 256px;opacity:0.03;mix-blend-mode:overlay; }
+        .slide::after { content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.55) 100%); }
+        .bar-track { background: rgba(201,168,76,0.08); border-radius: 4px; height: 10px; width: 100%; overflow: hidden; }
+        .bar-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, #c9a84c, #e8d5a3); width: 0%; transition: width 0.7s ease; }
+        .gold-line { height: 1px; background: linear-gradient(90deg, transparent, #c9a84c, transparent); margin: 1rem 0; opacity: 0.4; }
+        table.gt { width:100%; border-collapse:collapse; font-size:0.8rem; }
+        table.gt th { padding:9px 12px; text-align:left; color:#c9a84c; font-weight:600; background:rgba(201,168,76,0.12); }
+        table.gt td { padding:8px 12px; border-top:1px solid rgba(201,168,76,0.1); color:#c2b89a; }
+        table.gt tr:nth-child(even) td { background:rgba(255,255,255,0.02); }
+        .chip { font-size:0.7rem; font-weight:700; padding:2px 8px; border-radius:6px; }
+        @media (prefers-reduced-motion: reduce) { *,*::before,*::after { animation-duration:0.01ms !important; transition-duration:0.2s !important; } }
+    </style>
+</head>
+<body>
+<div class="mouse-spotlight" style="position:fixed;inset:0;z-index:99;pointer-events:none;"></div>
+<div class="deck">
+
+    <!-- 1 TITLE -->
+    <div class="slide active" data-slide="1">
+        <div class="gradient-mesh">
+            <div class="blob" style="width:520px;height:520px;top:-120px;right:-100px;background:#c9a84c;opacity:0.13;"></div>
+            <div class="blob" style="width:320px;height:320px;bottom:-80px;left:-60px;background:#8B6914;opacity:0.1;"></div>
+            <div class="blob" style="width:200px;height:200px;top:45%;left:12%;background:#e8d5a3;opacity:0.08;"></div>
+        </div>
+        <canvas class="particle-canvas" style="position:absolute;inset:0;z-index:1;"></canvas>
+        <div class="content text-center">
+            <div class="text-[68px] mb-3 animate-[float_3.2s_ease-in-out_infinite]">🏙️</div>
+            <h1 class="font-display text-[clamp(2.8rem,6.5vw,5.2rem)] font-bold bg-linear-to-br from-accent-1 via-accent-2 to-accent-1 bg-clip-text text-transparent tracking-tight mb-4 reveal">Elevate Homes</h1>
+            <p class="text-[clamp(0.85rem,1.4vw,1.2rem)] font-light text-text-muted tracking-[6px] uppercase mb-6 reveal">Dubai Resale Intelligence · Brokerage + PRISM SaaS</p>
+            <div class="gold-line reveal"></div>
+            <p class="text-text-secondary text-base mt-5 reveal" style="letter-spacing:0.04em;">End-to-End Investor &amp; Feasibility Briefing · June 2026</p>
+            <p class="text-text-muted text-xs mt-2 reveal">Sambhav Gupta — 3.5 yrs Dubai real estate · Senior Investment Analyst, Sobha Realty</p>
+        </div>
+    </div>
+
+    <!-- 2 THE MOMENT -->
+    <div class="slide" data-slide="2">
+        <div class="gradient-mesh">
+            <div class="blob" style="width:400px;height:400px;top:-80px;left:-80px;background:#8B1414;opacity:0.1;"></div>
+            <div class="blob" style="width:250px;height:250px;bottom:-60px;right:-40px;background:#c9a84c;opacity:0.08;"></div>
+        </div>
+        <div class="content">
+            <p class="text-accent-1 uppercase tracking-[5px] text-sm font-semibold mb-3 reveal">The Context</p>
+            <h2 class="font-display text-[clamp(2rem,4vw,3.2rem)] font-bold text-text mb-8 reveal">The Market Flipped to Resale.<br>We Were Built for This Moment.</h2>
+            <div class="grid grid-cols-3 gap-5">
+                <div class="bg-glass-bg backdrop-blur-xl border border-glass-border rounded-xl p-6 reveal" style="border-left:3px solid #8B1414;">
+                    <div class="text-3xl mb-3">📉</div>
+                    <div class="text-accent-1 font-bold text-xl mb-2">−27%</div>
+                    <p class="text-text-secondary text-sm">Off-plan secondary volume collapsed Q1 2026 as regional conflict broke flip strategies.</p>
+                </div>
+                <div class="bg-glass-bg backdrop-blur-xl border border-glass-border rounded-xl p-6 reveal" style="border-left:3px solid #c9a84c;">
+                    <div class="text-3xl mb-3">📈</div>
+                    <div class="text-accent-1 font-bold text-xl mb-2">+48%</div>
+                    <p class="text-text-secondary text-sm">Ready/resale values surged YoY Q1 2026 — buyers want certainty, not promises.</p>
+                </div>
+                <div class="bg-glass-bg backdrop-blur-xl border border-glass-border rounded-xl p-6 reveal" style="border-left:3px solid #e8d5a3;">
+                    <div class="text-3xl mb-3">🏦</div>
+                    <div class="text-accent-1 font-bold text-xl mb-2">AED 53B</div>
+                    <p class="text-text-secondary text-sm">Secondary transactions Q1 2026 (~14,399 deals) — motivated sellers, pricing opacity everywhere.</p>
+                </div>
+            </div>
+            <p class="text-text-muted text-sm mt-6 reveal">~65,000 units delivering through 2026 → a wave of owners who must price to sell. Sources: DLD Q1 2026; figures directional, validated live by PRISM.</p>
+        </div>
+    </div>
+
+    <!-- 3 PROBLEM -->
+    <div class="slide" data-slide="3">
+        <div class="gradient-mesh"><div class="blob" style="width:380px;height:380px;top:-60px;right:-70px;background:#c9a84c;opacity:0.07;"></div><div class="blob" style="width:220px;height:220px;bottom:-50px;left:-30px;background:#8B6914;opacity:0.07;"></div></div>
+        <div class="content">
+            <p class="text-accent-1 uppercase tracking-[5px] text-sm font-semibold mb-3 reveal">The Problem</p>
+            <h2 class="font-display text-[clamp(1.8rem,3.8vw,3rem)] font-bold mb-7 reveal">Sellers Guess. Buyers Distrust.<br>Agents Have No Evidence.</h2>
+            <div class="grid grid-cols-2 gap-5">
+                <div class="bg-glass-bg border border-glass-border rounded-xl p-6 reveal"><p class="text-accent-2 font-semibold mb-3">For Sellers</p><ul class="text-text-secondary text-sm space-y-2"><li>↳ No transparent tool to price using actual DLD data</li><li>↳ Opinion-based agent valuations, no evidence</li><li>↳ Post-wave sellers need a defensible exit price fast</li></ul></div>
+                <div class="bg-glass-bg border border-glass-border rounded-xl p-6 reveal"><p class="text-accent-2 font-semibold mb-3">For Buyers</p><ul class="text-text-secondary text-sm space-y-2"><li>↳ Can't verify if a listing is fair vs overpriced</li><li>↳ Portals show <em>asking</em>, not <em>sold</em> prices</li><li>↳ Need data before committing capital</li></ul></div>
+                <div class="bg-glass-bg border border-glass-border rounded-xl p-6 reveal"><p class="text-accent-2 font-semibold mb-3">For Brokerages</p><ul class="text-text-secondary text-sm space-y-2"><li>↳ Portal leads split across 5,700+ agents</li><li>↳ No tool to win mandates with pricing evidence</li><li>↳ Spend buys raw leads, not exclusive mandates</li></ul></div>
+                <div class="bg-glass-bg border border-glass-border rounded-xl p-6 reveal"><p class="text-accent-2 font-semibold mb-3">The Gap</p><ul class="text-text-secondary text-sm space-y-2"><li>↳ DLD data is public but not digestible</li><li>↳ Nobody closes data → trust → mandate → commission</li><li>↳ The window is now: motivated sellers, low noise</li></ul></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4 SOLUTION -->
+    <div class="slide" data-slide="4">
+        <div class="gradient-mesh"><div class="blob" style="width:450px;height:450px;top:-100px;right:-90px;background:#c9a84c;opacity:0.11;"></div><div class="blob" style="width:280px;height:280px;bottom:-60px;left:-50px;background:#e8d5a3;opacity:0.07;"></div></div>
+        <canvas class="particle-canvas-ambient" style="position:absolute;inset:0;z-index:1;"></canvas>
+        <div class="content">
+            <p class="text-accent-1 uppercase tracking-[5px] text-sm font-semibold mb-3 reveal">The Solution</p>
+            <h2 class="font-display text-[clamp(1.8rem,3.8vw,3rem)] font-bold mb-2 reveal">Elevate Homes + the PRISM Engine</h2>
+            <p class="text-text-secondary text-base mb-7 reveal">A DLD-powered pricing-intelligence layer that generates trust, captures leads, and converts them into exclusive resale mandates — and licenses the same engine as SaaS.</p>
+            <div class="grid grid-cols-3 gap-4 mb-6">
+                <div class="text-center bg-glass-bg border border-glass-border rounded-xl p-5 reveal"><div class="text-4xl mb-3">🔬</div><p class="text-accent-1 font-bold text-sm uppercase tracking-wide mb-2">PRISM Engine</p><p class="text-text-secondary text-xs">Hybrid valuation · 66,413 DLD records · log-size elasticity 0.2733 · recency + size-proximity weighting · confidence diagnostics</p></div>
+                <div class="text-center bg-glass-bg border border-glass-border rounded-xl p-5 reveal"><div class="text-4xl mb-3">📋</div><p class="text-accent-1 font-bold text-sm uppercase tracking-wide mb-2">Pricing Proof</p><p class="text-text-secondary text-xs">Shows the actual comparable transactions — date, project, rooms, AED/sqft — not a black-box number. Evidence sellers take to market.</p></div>
+                <div class="text-center bg-glass-bg border border-glass-border rounded-xl p-5 reveal"><div class="text-4xl mb-3">🎯</div><p class="text-accent-1 font-bold text-sm uppercase tracking-wide mb-2">Mandate Engine</p><p class="text-text-secondary text-xs">Valuation → lead → strategy call → exclusive mandate → listed → closed → commission. Tracked in the built-in CRM.</p></div>
+            </div>
+            <div class="bg-glass-bg border border-glass-border rounded-xl px-6 py-4 reveal"><p class="text-accent-2 font-semibold text-sm">The line for every investor conversation:</p><p class="text-text font-display text-xl italic mt-1">"We are not another brokerage. We are a data-led resale engine that uses pricing intelligence to acquire mandates and close transactions with higher trust."</p></div>
+        </div>
+    </div>
+
+    <!-- 5 PRODUCT (LIVE) -->
+    <div class="slide" data-slide="5">
+        <div class="gradient-mesh"><div class="blob" style="width:420px;height:420px;top:-90px;right:-80px;background:#c9a84c;opacity:0.09;"></div><div class="blob" style="width:250px;height:250px;bottom:-50px;left:-40px;background:#8B6914;opacity:0.07;"></div></div>
+        <div class="content">
+            <p class="text-accent-1 uppercase tracking-[5px] text-sm font-semibold mb-3 reveal">The Product · Working Prototype</p>
+            <h2 class="font-display text-[clamp(1.8rem,3.8vw,3rem)] font-bold mb-6 reveal">Three Flows. One Engine. Live Today.</h2>
+            <div class="grid grid-cols-3 gap-4 mb-5">
+                <div class="bg-glass-bg border border-glass-border rounded-xl p-5 reveal"><p class="text-accent-1 font-bold text-sm mb-3 uppercase tracking-wider">🏠 Seller · /sell</p><ol class="text-text-secondary text-xs space-y-1.5"><li>1. Area, project, beds, size</li><li>2. Fair-value band + liquidity</li><li>3. Comparable DLD rows shown</li><li>4. Lead captured → CRM</li><li>5. "Book pricing strategy call"</li><li>6. → Exclusive mandate</li></ol></div>
+                <div class="bg-glass-bg border border-glass-border rounded-xl p-5 reveal"><p class="text-accent-1 font-bold text-sm mb-3 uppercase tracking-wider">🔍 Buyer · /deal-check</p><ol class="text-text-secondary text-xs space-y-1.5"><li>1. Listing + asking price</li><li>2. Verdict: fair / over / under</li><li>3. Downloadable Pricing Proof</li><li>4. Lead captured → CRM</li><li>5. "Let us negotiate this unit"</li><li>6. → Buyer representation</li></ol></div>
+                <div class="bg-glass-bg border border-glass-border rounded-xl p-5 reveal"><p class="text-accent-1 font-bold text-sm mb-3 uppercase tracking-wider">🤝 Brokers · /brokers + /crm</p><ol class="text-text-secondary text-xs space-y-1.5"><li>1. Broker early-access signup</li><li>2. Agency + RERA BRN</li><li>3. Feeds SaaS pipeline</li><li>4. Agent CRM: New→Mandate→Closed</li><li>5. Notes, status, history</li><li>6. → Network + subscriptions</li></ol></div>
+            </div>
+            <div class="bg-glass-bg border border-glass-border rounded-xl px-6 py-3 reveal"><div class="flex items-center gap-4"><span class="text-accent-1 text-2xl">⚡</span><p class="text-text-secondary text-sm"><span class="text-accent-2 font-semibold">Live now:</span> 66,413 clean DLD records · PRISM Hybrid v1 · <code>/healthz</code> ok · <code>/api/engine</code> → "prism-hybrid-v1" · seller + buyer + broker funnels + branded reports + agent CRM all working in the prototype.</p></div></div>
+        </div>
+    </div>
+
+    <!-- 6 COMPETITIVE MOAT -->
+    <div class="slide" data-slide="6">
+        <div class="gradient-mesh"><div class="blob" style="width:360px;height:360px;top:-80px;left:-70px;background:#c9a84c;opacity:0.07;"></div><div class="blob" style="width:240px;height:240px;bottom:-60px;right:-40px;background:#8B6914;opacity:0.07;"></div></div>
+        <div class="content">
+            <p class="text-accent-1 uppercase tracking-[5px] text-sm font-semibold mb-3 reveal">Competitive Moat</p>
+            <h2 class="font-display text-[clamp(1.6rem,3.5vw,2.6rem)] font-bold mb-5 reveal">What No One Else Closes</h2>
+            <div class="overflow-hidden rounded-xl border border-glass-border reveal">
+                <table class="gt">
+                    <thead><tr><th>Platform</th><th>What They Do</th><th>What's Missing</th><th style="text-align:center;">Loop?</th></tr></thead>
+                    <tbody>
+                        <tr><td style="color:#f0ece4;font-weight:600;">DXB Interact</td><td>Free raw DLD data portal</td><td style="color:#7a6f5e;">No seller journey, no lead capture, no mandate, no revenue</td><td style="text-align:center;color:#8B1414;font-weight:700;">✗</td></tr>
+                        <tr><td style="color:#f0ece4;font-weight:600;">Property Monitor</td><td>B2B AVM for institutions</td><td style="color:#7a6f5e;">Enterprise-only · no consumer flow · no brokerage monetization</td><td style="text-align:center;color:#8B1414;font-weight:700;">✗</td></tr>
+                        <tr><td style="color:#f0ece4;font-weight:600;">Bayut TruEstimate™</td><td>300K+ AI valuations → 5,700 agents</td><td style="color:#7a6f5e;">Distributes trust to the whole network · no exclusivity · no comparable transparency</td><td style="text-align:center;color:#8B1414;font-weight:700;">✗</td></tr>
+                        <tr><td style="color:#f0ece4;font-weight:600;">Dubai REST (DLD)</td><td>Official govt AVM</td><td style="color:#7a6f5e;">Generic, no comparables shown, no brokerage, no actionability</td><td style="text-align:center;color:#8B1414;font-weight:700;">✗</td></tr>
+                        <tr style="background:rgba(201,168,76,0.07);"><td style="color:#c9a84c;font-weight:700;">Elevate Homes</td><td style="color:#e8d5a3;">Data → Proof → Lead → Mandate → Closed → Commission, + SaaS</td><td style="color:#e8d5a3;font-style:italic;">Nothing — we close the full loop</td><td style="text-align:center;color:#c9a84c;font-weight:700;font-size:1.1rem;">✓</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="text-text-muted text-xs mt-4 reveal">The moat compounds: every closed mandate adds a private comp the incumbents never see.</p>
+        </div>
+    </div>
+
+    <!-- 7 BUSINESS MODEL — BLENDED -->
+    <div class="slide" data-slide="7">
+        <div class="gradient-mesh"><div class="blob" style="width:400px;height:400px;top:-80px;right:-80px;background:#c9a84c;opacity:0.09;"></div><div class="blob" style="width:240px;height:240px;bottom:-60px;left:-50px;background:#e8d5a3;opacity:0.07;"></div></div>
+        <div class="content">
+            <p class="text-accent-1 uppercase tracking-[5px] text-sm font-semibold mb-3 reveal">Business Model · Blended</p>
+            <h2 class="font-display text-[clamp(1.8rem,3.8vw,3rem)] font-bold mb-3 reveal">Brokerage Funds It. SaaS Scales It.<br>Data Compounds Both.</h2>
+            <p class="text-text-secondary text-sm mb-5 reveal">Six revenue streams across two arms — the brokerage proves the product and pays the bills; the SaaS builds the moat and the multiple.</p>
+            <div class="overflow-hidden rounded-xl border border-glass-border reveal">
+                <table class="gt">
+                    <thead><tr><th>Revenue stream</th><th style="text-align:right;">Y1</th><th style="text-align:right;">Y2</th><th style="text-align:right;">Y3</th></tr></thead>
+                    <tbody>
+                        <tr><td style="color:#f0ece4;">1 · Resale mandates (GCI)</td><td style="text-align:right;">1.91M</td><td style="text-align:right;">5.73M</td><td style="text-align:right;color:#c9a84c;font-weight:700;">12.22M</td></tr>
+                        <tr><td style="color:#f0ece4;">2 · CPL agent pipeline</td><td style="text-align:right;">0.95M</td><td style="text-align:right;">2.42M</td><td style="text-align:right;">4.24M</td></tr>
+                        <tr><td style="color:#f0ece4;">3 · Founder personal deals</td><td style="text-align:right;">0.64M</td><td style="text-align:right;">0.81M</td><td style="text-align:right;">0.81M</td></tr>
+                        <tr><td style="color:#f0ece4;">4 · PRISM SaaS subscriptions</td><td style="text-align:right;">—</td><td style="text-align:right;">0.74M</td><td style="text-align:right;">1.85M</td></tr>
+                        <tr><td style="color:#f0ece4;">5 · Per-report credits / area packs</td><td style="text-align:right;">0.06M</td><td style="text-align:right;">0.20M</td><td style="text-align:right;">0.40M</td></tr>
+                        <tr><td style="color:#f0ece4;">6 · Enterprise data / API licensing</td><td style="text-align:right;">—</td><td style="text-align:right;">0.18M</td><td style="text-align:right;">0.46M</td></tr>
+                        <tr style="background:rgba(201,168,76,0.1);"><td style="color:#c9a84c;font-weight:700;">Combined (AED)</td><td style="text-align:right;color:#e8d5a3;font-weight:700;">3.56M</td><td style="text-align:right;color:#e8d5a3;font-weight:700;">10.07M</td><td style="text-align:right;color:#c9a84c;font-weight:700;">19.98M</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="text-text-muted text-xs mt-3 reveal">SaaS tiers: Free (own agents) · AED 199 Starter · 499 Pro · 999 Team · 2,500+ Enterprise. Forward projections (blended financial model).</p>
+        </div>
+    </div>
+
+    <!-- 8 UNIT ECONOMICS -->
+    <div class="slide" data-slide="8">
+        <div class="gradient-mesh"><div class="blob" style="width:380px;height:380px;top:-70px;right:-70px;background:#c9a84c;opacity:0.08;"></div><div class="blob" style="width:220px;height:220px;bottom:-50px;left:-40px;background:#8B6914;opacity:0.07;"></div></div>
+        <div class="content">
+            <p class="text-accent-1 uppercase tracking-[5px] text-sm font-semibold mb-3 reveal">Unit Economics</p>
+            <h2 class="font-display text-[clamp(1.8rem,3.8vw,3rem)] font-bold mb-6 reveal">The Numbers Work From Deal One</h2>
+            <div class="grid grid-cols-4 gap-4 mb-5">
+                <div class="text-center bg-glass-bg border border-glass-border rounded-xl p-5 reveal"><p class="stat-glow font-display text-3xl font-bold text-accent-1 glow-pulse">18.1×</p><p class="text-text-muted text-xs mt-2 uppercase tracking-wide">LTV : CAC</p><p class="text-text-secondary text-xs mt-1">Target &gt;10×</p></div>
+                <div class="text-center bg-glass-bg border border-glass-border rounded-xl p-5 reveal"><p class="stat-glow font-display text-3xl font-bold text-accent-1">AED 120K</p><p class="text-text-muted text-xs mt-2 uppercase tracking-wide">Avg GCI / Deal</p><p class="text-text-secondary text-xs mt-1">2% on ~AED 6M</p></div>
+                <div class="text-center bg-glass-bg border border-glass-border rounded-xl p-5 reveal"><p class="stat-glow font-display text-3xl font-bold text-accent-1">Month 7</p><p class="text-text-muted text-xs mt-2 uppercase tracking-wide">Breakeven</p><p class="text-text-secondary text-xs mt-1">Brokerage arm</p></div>
+                <div class="text-center bg-glass-bg border border-glass-border rounded-xl p-5 reveal"><p class="stat-glow font-display text-3xl font-bold text-accent-1">AED 20K</p><p class="text-text-muted text-xs mt-2 uppercase tracking-wide">Founder Salary</p><p class="text-text-secondary text-xs mt-1">/month · only fixed salary</p></div>
+            </div>
+            <div class="space-y-3">
+                <div class="bg-glass-bg border border-glass-border rounded-xl p-4 reveal"><div class="flex justify-between mb-2"><p class="text-text-secondary text-sm font-semibold">App submission → Qualified lead</p><p class="text-accent-1 text-sm font-bold">37%</p></div><div class="bar-track"><div class="bar-fill" data-width="37"></div></div></div>
+                <div class="bg-glass-bg border border-glass-border rounded-xl p-4 reveal"><div class="flex justify-between mb-2"><p class="text-text-secondary text-sm font-semibold">Qualified lead → Consultation</p><p class="text-accent-1 text-sm font-bold">28%</p></div><div class="bar-track"><div class="bar-fill" data-width="28"></div></div></div>
+                <div class="bg-glass-bg border border-glass-border rounded-xl p-4 reveal"><div class="flex justify-between mb-2"><p class="text-text-secondary text-sm font-semibold">Consultation → Exclusive mandate</p><p class="text-accent-1 text-sm font-bold">45%</p></div><div class="bar-track"><div class="bar-fill" data-width="45"></div></div></div>
+            </div>
+            <p class="text-text-muted text-xs mt-3 reveal">Break-even ≈ 1.5 mandates/month — reachable with the founder closing alone. Conversion rates are working assumptions to validate in Sprint 1.</p>
+        </div>
+    </div>
+
+    <!-- 9 FINANCIALS -->
+    <div class="slide" data-slide="9">
+        <div class="gradient-mesh"><div class="blob" style="width:400px;height:400px;top:-80px;right:-70px;background:#c9a84c;opacity:0.08;"></div><div class="blob" style="width:240px;height:240px;bottom:-60px;left:-40px;background:#e8d5a3;opacity:0.07;"></div></div>
+        <div class="content">
+            <p class="text-accent-1 uppercase tracking-[5px] text-sm font-semibold mb-3 reveal">Financial Model · 3 Years</p>
+            <h2 class="font-display text-[clamp(1.8rem,3.8vw,3rem)] font-bold mb-6 reveal">Capital-Light. Cash-Positive Fast.</h2>
+            <div class="grid grid-cols-3 gap-4 mb-5">
+                <div class="bg-glass-bg border border-glass-border rounded-xl p-5 text-center reveal"><p class="text-text-muted text-xs uppercase tracking-wide mb-3">Year 1</p><p class="font-display text-2xl text-accent-1 font-bold">AED 3.56M</p><p class="text-text-secondary text-xs mt-1">revenue · EBITDA 1.75M (49%)</p></div>
+                <div class="bg-glass-bg border border-glass-border rounded-xl p-5 text-center reveal" style="border-color:rgba(201,168,76,0.3);"><p class="text-text-muted text-xs uppercase tracking-wide mb-3">Year 2</p><p class="font-display text-2xl text-accent-1 font-bold">AED 10.07M</p><p class="text-text-secondary text-xs mt-1">revenue · EBITDA 6.53M (65%)</p></div>
+                <div class="bg-glass-bg border border-glass-border rounded-xl p-5 text-center reveal" style="border-color:rgba(201,168,76,0.45);"><p class="text-text-muted text-xs uppercase tracking-wide mb-3">Year 3</p><p class="font-display text-2xl text-accent-1 font-bold stat-glow">AED 19.98M</p><p class="text-text-secondary text-xs mt-1">revenue · EBITDA 15.12M (76%)</p></div>
+            </div>
+            <div class="grid grid-cols-3 gap-4">
+                <div class="bg-glass-bg border border-glass-border rounded-xl p-4 reveal"><p class="text-accent-2 text-sm font-semibold mb-1">Two arms</p><p class="text-text-secondary text-xs">Brokerage = transaction GCI (≈98% gross). SaaS = recurring + usage, COGS only AED 120K→264K.</p></div>
+                <div class="bg-glass-bg border border-glass-border rounded-xl p-4 reveal"><p class="text-accent-2 text-sm font-semibold mb-1">Breakeven</p><p class="text-text-secondary text-xs">Brokerage ~M7 (GCI carries Y1). SaaS self-sustaining ~M18. Positive EBITDA from Year 2.</p></div>
+                <div class="bg-glass-bg border border-glass-border rounded-xl p-4 reveal"><p class="text-accent-2 text-sm font-semibold mb-1">Indicative Y3 value</p><p class="text-text-secondary text-xs">SaaS ~1.85M ARR × ~10× + brokerage EBITDA × ~4× → ~AED 40–60M. Dual exit optionality.</p></div>
+            </div>
+            <p class="text-text-muted text-xs mt-4 reveal">Forward projections from the blended financial model; multiples illustrative, not a quote.</p>
+        </div>
+    </div>
+
+    <!-- 10 SCALABILITY I — FLYWHEEL -->
+    <div class="slide" data-slide="10">
+        <div class="gradient-mesh"><div class="blob" style="width:440px;height:440px;top:-90px;right:-80px;background:#c9a84c;opacity:0.1;"></div><div class="blob" style="width:260px;height:260px;bottom:-60px;left:-40px;background:#8B6914;opacity:0.08;"></div></div>
+        <canvas class="particle-canvas-ambient" style="position:absolute;inset:0;z-index:1;"></canvas>
+        <div class="content">
+            <p class="text-accent-1 uppercase tracking-[5px] text-sm font-semibold mb-3 reveal">Scalability · The Flywheel</p>
+            <h2 class="font-display text-[clamp(1.8rem,3.8vw,3rem)] font-bold mb-6 reveal">A Brokerage That Gets Smarter<br>With Every Deal</h2>
+            <div class="grid grid-cols-5 gap-2 mb-6 items-center">
+                <div class="bg-glass-bg border border-glass-border rounded-xl p-3 text-center reveal"><div class="text-2xl mb-1">📊</div><p class="text-text-secondary text-xs">More valuations</p></div>
+                <div class="text-accent-1 text-center text-xl reveal">→</div>
+                <div class="bg-glass-bg border border-glass-border rounded-xl p-3 text-center reveal"><div class="text-2xl mb-1">🤝</div><p class="text-text-secondary text-xs">More mandates &amp; closings</p></div>
+                <div class="text-accent-1 text-center text-xl reveal">→</div>
+                <div class="bg-glass-bg border border-glass-border rounded-xl p-3 text-center reveal"><div class="text-2xl mb-1">🧠</div><p class="text-text-secondary text-xs">Private comps PRISM owns</p></div>
+            </div>
+            <p class="text-center text-accent-2 text-sm mb-6 reveal">↳ smarter engine → sharper pricing → more trust → more valuations. The loop tightens every month.</p>
+            <div class="grid grid-cols-3 gap-4">
+                <div class="bg-glass-bg border border-glass-border rounded-xl p-5 reveal"><p class="text-accent-1 font-bold text-sm mb-2">Zero marginal data cost</p><p class="text-text-secondary text-xs">DLD refreshes nightly; the engine is zero-dependency Node. Adding the next area or the next 100K records costs compute, not headcount.</p></div>
+                <div class="bg-glass-bg border border-glass-border rounded-xl p-5 reveal"><p class="text-accent-1 font-bold text-sm mb-2">Product-led, not payroll-led</p><p class="text-text-secondary text-xs">Mandates come from the funnel, not from hiring 50 cold-callers. We hire to proven demand (1 agent per 8–10 active mandates).</p></div>
+                <div class="bg-glass-bg border border-glass-border rounded-xl p-5 reveal"><p class="text-accent-1 font-bold text-sm mb-2">Same engine, two buyers</p><p class="text-text-secondary text-xs">In-house agents use PRISM free; external agents and developers pay. Every subscriber surfaces a transaction the brokerage can capture.</p></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 11 SCALABILITY II — EXPANSION PATH -->
+    <div class="slide" data-slide="11">
+        <div class="gradient-mesh"><div class="blob" style="width:400px;height:400px;top:-80px;left:-70px;background:#c9a84c;opacity:0.08;"></div><div class="blob" style="width:240px;height:240px;bottom:-60px;right:-40px;background:#e8d5a3;opacity:0.07;"></div></div>
+        <div class="content">
+            <p class="text-accent-1 uppercase tracking-[5px] text-sm font-semibold mb-3 reveal">Scalability · Expansion Path</p>
+            <h2 class="font-display text-[clamp(1.8rem,3.8vw,3rem)] font-bold mb-6 reveal">Win Density First, Then Widen</h2>
+            <div class="space-y-3">
+                <div class="bg-glass-bg border border-glass-border rounded-xl p-4 reveal" style="border-left:3px solid #c9a84c;"><p class="text-accent-2 font-semibold text-sm">Stage 1 — Depth (Now → M6)</p><p class="text-text-secondary text-xs mt-1">Dominate 3–5 high-liquidity communities (Business Bay, Marina, JVC, Downtown, Dubai Hills). Repeatable mandates + a private comp set no portal has.</p></div>
+                <div class="bg-glass-bg border border-glass-border rounded-xl p-4 reveal" style="border-left:3px solid #b3923f;"><p class="text-accent-2 font-semibold text-sm">Stage 2 — Breadth (M6 → M18)</p><p class="text-text-secondary text-xs mt-1">Roll the same playbook across all Dubai resale communities. Activate the broker network (/brokers) + launch PRISM SaaS to external agents.</p></div>
+                <div class="bg-glass-bg border border-glass-border rounded-xl p-4 reveal" style="border-left:3px solid #8B6914;"><p class="text-accent-2 font-semibold text-sm">Stage 3 — Platform (M18 → Y3)</p><p class="text-text-secondary text-xs mt-1">Enterprise data/API + white-label PRISM for brokerages &amp; banks. Buyer-side + off-plan referral channels layered on the same lead engine.</p></div>
+                <div class="bg-glass-bg border border-glass-border rounded-xl p-4 reveal" style="border-left:3px solid #4a4030;"><p class="text-accent-2 font-semibold text-sm">Stage 4 — Geographic (Y3+)</p><p class="text-text-secondary text-xs mt-1">Same architecture, new registries: Abu Dhabi, then GCG markets with open transaction data. The engine is portable; only the data source changes.</p></div>
+            </div>
+            <p class="text-text-muted text-xs mt-4 reveal">Each stage is gated by proof from the previous one — capital follows traction, not ambition.</p>
+        </div>
+    </div>
+
+    <!-- 12 ROADMAP -->
+    <div class="slide" data-slide="12">
+        <div class="gradient-mesh"><div class="blob" style="width:400px;height:400px;top:-80px;right:-70px;background:#c9a84c;opacity:0.08;"></div><div class="blob" style="width:240px;height:240px;bottom:-60px;left:-40px;background:#e8d5a3;opacity:0.07;"></div></div>
+        <div class="content">
+            <p class="text-accent-1 uppercase tracking-[5px] text-sm font-semibold mb-3 reveal">Roadmap · First 90 Days</p>
+            <h2 class="font-display text-[clamp(1.8rem,3.8vw,3rem)] font-bold mb-6 reveal">Traction Now. Scale on Proof.</h2>
+            <div class="space-y-4">
+                <div class="flex items-start gap-4 bg-glass-bg border border-glass-border rounded-xl p-5 reveal" style="border-left:3px solid #c9a84c;"><div class="flex-shrink-0 w-16 text-center"><p class="text-accent-1 font-bold text-xs uppercase">Now</p><p class="text-text-muted text-xs">Days 1–30</p></div><div><p class="text-text font-semibold text-sm mb-1">Resale Proof MVP (✓ prototype built)</p><p class="text-text-secondary text-xs">Seller + buyer funnels · lead gate · Pricing Proof PDF · agent CRM · 10 area pages · launch 3 seller campaigns.</p><p class="text-accent-2 text-xs mt-1">KPIs: 300 visitors · 50 submissions · 5 seller calls · 2 mandates</p></div></div>
+                <div class="flex items-start gap-4 bg-glass-bg border border-glass-border rounded-xl p-5 reveal" style="border-left:3px solid #8B6914;"><div class="flex-shrink-0 w-16 text-center"><p class="text-text-muted font-bold text-xs uppercase">Next</p><p class="text-text-muted text-xs">Days 31–60</p></div><div><p class="text-text font-semibold text-sm mb-1">Mandate Acquisition</p><p class="text-text-secondary text-xs">Full 7.71 GB DLD canonical cache · report share links · agent dashboard v1 · retargeting · activate 2 resale agents on proof.</p><p class="text-accent-2 text-xs mt-1">KPIs: 100+ submissions/mo · 10+ calls · 5+ mandates · 1–2 closings</p></div></div>
+                <div class="flex items-start gap-4 bg-glass-bg border border-glass-border rounded-xl p-5 reveal" style="border-left:3px solid #4a4030;"><div class="flex-shrink-0 w-16 text-center"><p class="text-text-muted font-bold text-xs uppercase">Scale</p><p class="text-text-muted text-xs">Days 61–90</p></div><div><p class="text-text font-semibold text-sm mb-1">Systemize &amp; Open SaaS Beta</p><p class="text-text-secondary text-xs">Area heatmap · seller dashboard · hiring gate (1 agent / 8–10 mandates) · PRISM SaaS beta to first external brokers.</p><p class="text-accent-2 text-xs mt-1">KPIs: 300+ submissions/mo · 15+ mandates · 3–5 closings · first SaaS signups</p></div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 13 FEASIBILITY I -->
+    <div class="slide" data-slide="13">
+        <div class="gradient-mesh"><div class="blob" style="width:380px;height:380px;top:-70px;left:-70px;background:#c9a84c;opacity:0.08;"></div><div class="blob" style="width:240px;height:240px;bottom:-60px;right:-40px;background:#8B6914;opacity:0.07;"></div></div>
+        <div class="content">
+            <p class="text-accent-1 uppercase tracking-[5px] text-sm font-semibold mb-3 reveal">Feasibility Check · 1 of 2</p>
+            <h2 class="font-display text-[clamp(1.8rem,3.8vw,3rem)] font-bold mb-6 reveal">Does This Actually Work?</h2>
+            <div class="grid grid-cols-3 gap-4">
+                <div class="bg-glass-bg border border-glass-border rounded-xl p-5 reveal"><div class="flex justify-between items-center mb-2"><p class="text-accent-2 font-semibold text-sm">Market</p><span class="chip" style="background:rgba(52,211,153,0.15);color:#34d399;">HIGH</span></div><p class="text-text-secondary text-xs">AED 53B secondary/quarter, motivated sellers, structural shift to resale. Demand is proven, not hypothetical.</p></div>
+                <div class="bg-glass-bg border border-glass-border rounded-xl p-5 reveal"><div class="flex justify-between items-center mb-2"><p class="text-accent-2 font-semibold text-sm">Technical</p><span class="chip" style="background:rgba(52,211,153,0.15);color:#34d399;">HIGH</span></div><p class="text-text-secondary text-xs">Prototype live: hybrid engine, funnels, CRM, reports — zero-dependency, refreshes nightly. Built by founder + AI.</p></div>
+                <div class="bg-glass-bg border border-glass-border rounded-xl p-5 reveal"><div class="flex justify-between items-center mb-2"><p class="text-accent-2 font-semibold text-sm">Financial</p><span class="chip" style="background:rgba(201,168,76,0.18);color:#c9a84c;">MED-HIGH</span></div><p class="text-text-secondary text-xs">Capital-light; brokerage GCI funds Y1; breakeven ~M7 at ~1.5 deals/mo. Sensitive to CAC + mandate conversion.</p></div>
+                <div class="bg-glass-bg border border-glass-border rounded-xl p-5 reveal"><div class="flex justify-between items-center mb-2"><p class="text-accent-2 font-semibold text-sm">Operational</p><span class="chip" style="background:rgba(201,168,76,0.18);color:#c9a84c;">MEDIUM</span></div><p class="text-text-secondary text-xs">Founder-led, commission-only agents, gated hiring. Key dependency: founder bandwidth + 5-min lead response SLA.</p></div>
+                <div class="bg-glass-bg border border-glass-border rounded-xl p-5 reveal"><div class="flex justify-between items-center mb-2"><p class="text-accent-2 font-semibold text-sm">Regulatory</p><span class="chip" style="background:rgba(201,168,76,0.18);color:#c9a84c;">MEDIUM</span></div><p class="text-text-secondary text-xs">RERA brokerage licence + BRN required; DLD data is open but redistribution terms must be respected. Known, navigable.</p></div>
+                <div class="bg-glass-bg border border-glass-border rounded-xl p-5 reveal"><div class="flex justify-between items-center mb-2"><p class="text-accent-2 font-semibold text-sm">Competitive</p><span class="chip" style="background:rgba(201,168,76,0.18);color:#c9a84c;">MED-HIGH</span></div><p class="text-text-secondary text-xs">No incumbent closes the loop; moat is the private mandate-comp set. Risk: a portal bolts on comparable transparency.</p></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 14 FEASIBILITY II — RISKS + VERDICT -->
+    <div class="slide" data-slide="14">
+        <div class="gradient-mesh"><div class="blob" style="width:400px;height:400px;top:-80px;right:-70px;background:#c9a84c;opacity:0.09;"></div><div class="blob" style="width:240px;height:240px;bottom:-60px;left:-40px;background:#8B6914;opacity:0.07;"></div></div>
+        <div class="content">
+            <p class="text-accent-1 uppercase tracking-[5px] text-sm font-semibold mb-3 reveal">Feasibility Check · 2 of 2</p>
+            <h2 class="font-display text-[clamp(1.7rem,3.6vw,2.8rem)] font-bold mb-5 reveal">Top Risks — and How We Kill Them</h2>
+            <div class="overflow-hidden rounded-xl border border-glass-border reveal mb-4">
+                <table class="gt">
+                    <thead><tr><th>Risk</th><th>Mitigation (founder's playbook)</th></tr></thead>
+                    <tbody>
+                        <tr><td style="color:#f0ece4;">Full DLD data access (Dubai Pulse pending)</td><td>Cached 66K extract works today; canonical builder ready for the 7.71 GB file; nightly refresh path live.</td></tr>
+                        <tr><td style="color:#f0ece4;">Mandate conversion below model</td><td>Founder closes first (3.5 yrs, Sobha). Don't hire until conversion proven. Exclusive 60–90 day mandates with repricing triggers.</td></tr>
+                        <tr><td style="color:#f0ece4;">CAC inflation on portals</td><td>Own-channel SEO/area pages + content + WhatsApp; NRI/diaspora targeting; report-as-content keeps CAC low.</td></tr>
+                        <tr><td style="color:#f0ece4;">Brokerage shakeout / crowded market</td><td>Lean by design: one salary, commission-only agents. Built to be the survivor, not the over-leveraged casualty.</td></tr>
+                        <tr><td style="color:#f0ece4;">Incumbent copies comparables</td><td>Speed + the private mandate-comp flywheel; consumer trust + brokerage loop they're not structured to run.</td></tr>
+                        <tr><td style="color:#f0ece4;">Valuation accuracy / trust</td><td>Show the comps, not a black box. Confidence diagnostics; methodology refined live, never over-claimed.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="bg-glass-bg border border-glass-border rounded-xl px-6 py-4 reveal" style="border-color:rgba(52,211,153,0.3);">
+                <p class="text-sm"><span class="font-display text-2xl text-accent-1 italic">Verdict: GO (conditional).</span> <span class="text-text-secondary">Capital-light, product already built, demand structurally validated, honest moat. Conditions: prove mandate conversion in 1–2 areas before scaling spend, and secure the full DLD data path. Risk is concentrated in <em>execution</em>, not in market or technology.</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 15 TEAM -->
+    <div class="slide" data-slide="15">
+        <div class="gradient-mesh"><div class="blob" style="width:380px;height:380px;top:-70px;left:-70px;background:#c9a84c;opacity:0.08;"></div><div class="blob" style="width:240px;height:240px;bottom:-60px;right:-40px;background:#e8d5a3;opacity:0.07;"></div></div>
+        <div class="content">
+            <p class="text-accent-1 uppercase tracking-[5px] text-sm font-semibold mb-3 reveal">Team &amp; Credibility</p>
+            <h2 class="font-display text-[clamp(1.8rem,3.8vw,3rem)] font-bold mb-6 reveal">Domain First. Code Followed.</h2>
+            <div class="grid grid-cols-3 gap-4 mb-5">
+                <div class="bg-glass-bg border border-glass-border rounded-xl p-5 reveal"><p class="text-accent-1 font-bold text-sm mb-2">The operator</p><p class="text-text-secondary text-xs">Sambhav Gupta — 3.5 yrs Dubai real estate, Senior Investment Analyst at Sobha Realty. Lives the seller/buyer/agent problem daily.</p></div>
+                <div class="bg-glass-bg border border-glass-border rounded-xl p-5 reveal"><p class="text-accent-1 font-bold text-sm mb-2">The research</p><p class="text-text-secondary text-xs">MBA hedonic-pricing dissertation on DLD branded-residence premiums (size elasticity ≈ 0.27 — now the engine's 0.2733). PRISM keeps re-testing it on live data.</p></div>
+                <div class="bg-glass-bg border border-glass-border rounded-xl p-5 reveal"><p class="text-accent-1 font-bold text-sm mb-2">The build</p><p class="text-text-secondary text-xs">Working prototype shipped solo with AI tooling — the bottleneck is no longer "do you have a dev team," it's domain depth. We have it.</p></div>
+            </div>
+            <div class="bg-glass-bg border border-glass-border rounded-xl px-6 py-4 reveal"><p class="text-text-secondary text-sm">Hiring philosophy: <span class="text-accent-2">earn the right to hire.</span> One founder salary today; commission-only agents added only as proven mandate flow demands — gated, not speculative.</p></div>
+        </div>
+    </div>
+
+    <!-- 16 THE ASK -->
+    <div class="slide" data-slide="16">
+        <div class="gradient-mesh"><div class="blob" style="width:500px;height:500px;top:-110px;right:-100px;background:#c9a84c;opacity:0.13;"></div><div class="blob" style="width:300px;height:300px;bottom:-70px;left:-60px;background:#8B6914;opacity:0.1;"></div></div>
+        <canvas class="particle-canvas" style="position:absolute;inset:0;z-index:1;"></canvas>
+        <div class="content">
+            <p class="text-accent-1 uppercase tracking-[5px] text-sm font-semibold mb-3 reveal">The Ask</p>
+            <h2 class="font-display text-[clamp(2rem,4vw,3.2rem)] font-bold mb-6 reveal">What We Need to Win</h2>
+            <div class="grid grid-cols-3 gap-4 mb-6">
+                <div class="text-center bg-glass-bg border border-glass-border rounded-xl p-5 reveal"><p class="font-display text-3xl text-accent-1 font-bold stat-glow">AED 630K</p><p class="text-text-muted text-xs mt-2 uppercase tracking-wide">Seed · 4 milestone tranches</p></div>
+                <div class="text-center bg-glass-bg border border-glass-border rounded-xl p-5 reveal"><p class="font-display text-3xl text-accent-1 font-bold">20%</p><p class="text-text-muted text-xs mt-2 uppercase tracking-wide">Equity</p></div>
+                <div class="text-center bg-glass-bg border border-glass-border rounded-xl p-5 reveal"><p class="font-display text-3xl text-accent-1 font-bold">Month 7</p><p class="text-text-muted text-xs mt-2 uppercase tracking-wide">Breakeven · ~AED 5M cash Y3</p></div>
+            </div>
+            <div class="grid grid-cols-2 gap-5 mb-6">
+                <div class="bg-glass-bg border border-glass-border rounded-xl p-6 reveal"><p class="text-accent-2 font-bold text-base mb-3">From the Incubator</p><ul class="text-text-secondary text-sm space-y-2"><li>✦ PropTech + brokerage mentorship</li><li>✦ Pilot users + test mandates via network</li><li>✦ RERA licensing + company setup guidance</li><li>✦ Investor-readiness review</li></ul></div>
+                <div class="bg-glass-bg border border-glass-border rounded-xl p-6 reveal"><p class="text-accent-2 font-bold text-base mb-3">Use of Funds</p><ul class="text-text-secondary text-sm space-y-2"><li>✦ RERA licence + office setup</li><li>✦ Mandate-acquisition marketing (gated)</li><li>✦ Full DLD data pipeline + SaaS build</li><li>✦ First agents — only on proven flow</li></ul></div>
+            </div>
+            <div class="text-center bg-glass-bg border border-glass-border rounded-xl px-6 py-4 reveal"><p class="font-display text-xl italic text-accent-2">"Every competitor generates data OR leads OR runs a brokerage.</p><p class="font-display text-xl italic text-accent-1">Elevate Homes closes the full loop — and licenses the engine."</p></div>
+        </div>
+    </div>
+
+    <!-- 17 CLOSING -->
+    <div class="slide" data-slide="17">
+        <div class="gradient-mesh"><div class="blob" style="width:550px;height:550px;top:-120px;right:-110px;background:#c9a84c;opacity:0.14;"></div><div class="blob" style="width:350px;height:350px;bottom:-80px;left:-70px;background:#8B6914;opacity:0.1;"></div><div class="blob" style="width:220px;height:220px;top:42%;left:14%;background:#e8d5a3;opacity:0.09;"></div></div>
+        <canvas class="particle-canvas" style="position:absolute;inset:0;z-index:1;"></canvas>
+        <div class="content text-center">
+            <div class="text-[68px] mb-4 animate-[float_3.2s_ease-in-out_infinite]">🏙️</div>
+            <h1 class="font-display text-[clamp(2.5rem,6vw,4.8rem)] font-bold bg-linear-to-br from-accent-1 via-accent-2 to-accent-1 bg-clip-text text-transparent tracking-tight mb-4 reveal">Elevate Homes</h1>
+            <p class="text-text-secondary text-base tracking-[3px] uppercase mb-8 reveal">Resale Intelligence · Brokerage + PRISM SaaS</p>
+            <div class="gold-line reveal"></div>
+            <div class="grid grid-cols-4 gap-4 mt-8">
+                <div class="bg-glass-bg border border-glass-border rounded-xl p-4 reveal text-center"><p class="text-accent-1 font-bold text-lg">66,413</p><p class="text-text-muted text-xs mt-1">DLD records live</p></div>
+                <div class="bg-glass-bg border border-glass-border rounded-xl p-4 reveal text-center"><p class="text-accent-1 font-bold text-lg">AED 20M</p><p class="text-text-muted text-xs mt-1">Y3 revenue (modeled)</p></div>
+                <div class="bg-glass-bg border border-glass-border rounded-xl p-4 reveal text-center"><p class="text-accent-1 font-bold text-lg">~AED 40–60M</p><p class="text-text-muted text-xs mt-1">Y3 valuation (indicative)</p></div>
+                <div class="bg-glass-bg border border-glass-border rounded-xl p-4 reveal text-center"><p class="text-accent-1 font-bold text-lg">GO</p><p class="text-text-muted text-xs mt-1">Feasibility verdict</p></div>
+            </div>
+            <p class="text-text-muted text-sm mt-8 reveal">Sambhav Gupta · Elevate Homes · June 2026 · prototype live at /</p>
+        </div>
+    </div>
+
+</div>
+
+<div class="nav-controls">
+    <button class="nav-btn" onclick="changeSlide(-1)">&#8249;</button>
+    <div class="slide-dots" id="dots"></div>
+    <button class="nav-btn" onclick="changeSlide(1)">&#8250;</button>
+    <span class="slide-counter" id="counter">1 / 17</span>
+</div>
+
+<script>
+    let current = 1;
+    const total = document.querySelectorAll('.slide').length;
+    const dotsContainer = document.getElementById('dots');
+    const counter = document.getElementById('counter');
+    for (let i = 1; i <= total; i++) { const dot = document.createElement('div'); dot.className = 'dot' + (i === 1 ? ' active' : ''); dot.onclick = () => goToSlide(i); dotsContainer.appendChild(dot); }
+    function goToSlide(n) {
+        const prev = document.querySelector('.slide.active');
+        const next = document.querySelector(`.slide[data-slide="${n}"]`);
+        if (prev) prev.classList.remove('active');
+        if (next) { next.classList.add('active'); animateSlide(next); }
+        current = n; updateNav();
+    }
+    function changeSlide(dir) { let next = current + dir; if (next < 1) next = total; if (next > total) next = 1; goToSlide(next); }
+    function updateNav() { document.querySelectorAll('.dot').forEach((d, i) => { d.classList.toggle('active', i + 1 === current); }); counter.textContent = current + ' / ' + total; }
+    document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); changeSlide(1); } if (e.key === 'ArrowLeft') { e.preventDefault(); changeSlide(-1); } });
+    let touchStartX = 0;
+    document.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; });
+    document.addEventListener('touchend', (e) => { const diff = touchStartX - e.changedTouches[0].clientX; if (Math.abs(diff) > 50) changeSlide(diff > 0 ? 1 : -1); });
+    function animateSlide(slide) {
+        slide.querySelectorAll('.reveal').forEach((el, i) => {
+            el.style.transition = 'none'; el.style.opacity = '0'; el.style.transform = 'translateY(18px)'; el.offsetHeight;
+            const delay = i * 0.06;
+            el.style.transition = `opacity 0.38s ease ${delay}s, transform 0.38s ease ${delay}s`;
+            el.style.opacity = '1'; el.style.transform = 'translateY(0px)';
+        });
+        animateSlideEffects(slide);
+    }
+    function animateSlideEffects(slide) {
+        slide.querySelectorAll('.bar-fill:not(.fill-init)').forEach((bar, i) => {
+            bar.classList.add('fill-init'); bar.style.width = '0%'; bar.style.transition = `width 0.65s ease ${i * 0.1}s`; bar.offsetHeight; bar.style.width = bar.dataset.width + '%';
+        });
+    }
+    document.addEventListener('mousemove', (e) => { const s = document.querySelector('.mouse-spotlight'); if (s) s.style.background = `radial-gradient(600px circle at ${e.clientX}px ${e.clientY}px, rgba(201,168,76,0.055), transparent 40%)`; });
+    window.initParticles = function(canvas, options) {
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d'); canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight;
+        const interactive = options.interactive !== false, count = options.count || (interactive ? 45 : 16);
+        let mx = -1000, my = -1000;
+        const particles = Array.from({ length: count }, () => ({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, vx: (Math.random() - 0.5) * 0.28, vy: (Math.random() - 0.5) * 0.28, size: Math.random() * 2.2 + 0.7, alpha: Math.random() * 0.3 + 0.08 }));
+        if (interactive) { canvas.addEventListener('mousemove', (e) => { const r = canvas.getBoundingClientRect(); mx = e.clientX - r.left; my = e.clientY - r.top; }); canvas.addEventListener('mouseleave', () => { mx = -1000; my = -1000; }); }
+        (function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                if (interactive) { const dx = p.x - mx, dy = p.y - my, dist = Math.sqrt(dx*dx+dy*dy); if (dist < 110) { const f = (110-dist)/110*2; p.vx += (dx/dist)*f*0.1; p.vy += (dy/dist)*f*0.1; } }
+                p.vx *= 0.98; p.vy *= 0.98; p.x += p.vx; p.y += p.vy;
+                if (p.x < 0) p.x = canvas.width; if (p.x > canvas.width) p.x = 0; if (p.y < 0) p.y = canvas.height; if (p.y > canvas.height) p.y = 0;
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fillStyle = `rgba(201,168,76,${p.alpha})`; ctx.fill();
+            });
+            requestAnimationFrame(animate);
+        })();
+    };
+    document.querySelectorAll('.particle-canvas').forEach(c => window.initParticles(c, { interactive: true, count: 45 }));
+    document.querySelectorAll('.particle-canvas-ambient').forEach(c => window.initParticles(c, { interactive: false, count: 16 }));
+    try { animateSlide(document.querySelector('.slide.active')); } catch(e) { console.warn(e); }
+</script>
+</body>
+</html>
