@@ -93,6 +93,29 @@ The public site now covers the full resale loop, not just buyer deal-checks:
   **Never present synthetic figures as real market data** (see framing
   constraint below).
 
+### Codex resale-funnel merge (17 Jun 2026)
+
+Merged from `codex/resale-funnel-handoff` (see `_codex/` docs). Codex deliberately
+did **not** push over `preview-better-ui`; its actual code shipped as a Drive
+patch, so this was an intentional port — keeping the `/crm` + `/report` + unified
+lead store and adding Codex's resale-funnel concepts on top:
+
+- **PRISM hybrid engine (`prism-hybrid-v1`)** — `hybridValuation()` adds a log-size
+  adjustment (elasticity `0.2733`), recency + size-proximity weighting, a
+  same-project boost, and `effective_comps` / `dispersion_pct` / `size_adjustment`
+  diagnostics. Powers `/api/deal-check` and `/api/seller-valuation`; `GET /api/engine`
+  reports it. The legacy `POST /api/valuation` still uses plain comparable-median.
+- **`/sell`** (`sell.html` + `funnel.js`) — dedicated seller mandate funnel.
+- **`/brokers`** (`brokers.html` + `funnel.js`) — broker early-access signup; posts
+  to the unified `POST /api/leads` with `intent: 'broker'` (+ agency/BRN), surfaced
+  in `/crm`.
+- **`scripts/build-canonical-cache.py`** — full-DLD → canonical cache (data upgrade).
+- **Revenue architecture** — `elevate-homes-resale-synergy-plan.md`: resale GCI is
+  core; buyer rep / off-plan / paid reports / broker network / SaaS / WaaS are ancillary.
+
+API contract to preserve: `POST /api/deal-check` (**never** `GET`), `POST /api/leads`,
+`GET /api/engine`, `POST /api/valuation`, `POST /api/inquiry`, `GET /api/metadata`.
+
 ### Known gaps / honest limitations
 
 - Real live DLD data access is blocked on Dubai Pulse API approval. Until

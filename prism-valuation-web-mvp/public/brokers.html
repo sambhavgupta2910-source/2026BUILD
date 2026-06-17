@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>For Brokers & Brokerages — PRISM Pricing Network | Elevate Homes</title>
+  <meta name="description" content="Give your agents DLD-backed pricing proof and join the Elevate resale network. Register your brokerage for early access." />
+  <meta name="theme-color" content="#060c12" />
+  <link rel="icon" href="/icon-192.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/site.css" />
+</head>
+<body>
+  <header class="nav" id="top">
+    <div class="nav-inner">
+      <a class="logo" href="/"><span class="logo-mark">E</span><span class="logo-text">Elevate<span> Homes</span></span></a>
+      <nav class="nav-links">
+        <a href="/sell">Sell</a>
+        <a href="/#deal-check">Deal Check</a>
+        <a href="/brokers" class="active">For Brokers</a>
+        <a href="/#market">Market Data</a>
+      </nav>
+      <a class="btn btn-gold nav-cta" href="#register">Register your brokerage</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <p class="hero-kicker">Phase 2 · Broker network — early access</p>
+      <h1>Give your agents<br /><em>proof</em> on every price.</h1>
+      <p class="hero-sub">
+        Small and mid-size brokerages compete against franchise data teams with "trust me, I've sold here for years."
+        PRISM lets your agents pull a live, DLD-backed verdict in front of any client — and plugs you into our resale network.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-gold" href="#register">Register for early access</a>
+        <a class="btn btn-ghost" href="/sell">See the seller tool</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-inner">
+      <div class="section-head">
+        <p class="eyebrow">Why join</p>
+        <h2>Look — and be — as data-literate as the biggest names.</h2>
+      </div>
+      <div class="why-grid">
+        <div class="why card"><h3>Pricing proof on demand</h3><p>Every listing scored against live DLD comparables — Strong Buy / Fair Value / Overpriced — with the transactions behind it.</p></div>
+        <div class="why card"><h3>Win more mandates</h3><p>Walk into seller meetings with a defensible price, not an opinion. Evidence wins the room.</p></div>
+        <div class="why card"><h3>Network &amp; referrals</h3><p>Qualified buyer and seller leads, matched across the Elevate network as it grows in your areas.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="register">
+    <div class="section-inner narrow">
+      <div class="section-head">
+        <p class="eyebrow">Register your brokerage</p>
+        <h2>Request early access.</h2>
+        <p class="section-sub">Tell us about your brokerage. We're onboarding a small group of RERA-registered brokers first — vetted before network access.</p>
+      </div>
+
+      <form class="deal-form card" id="brokerForm" autocomplete="off">
+        <div class="field-row two">
+          <div class="field"><label for="bName">Your name <span class="req">*</span></label><input id="bName" required placeholder="Full name" /></div>
+          <div class="field"><label for="bAgency">Brokerage / Agency <span class="req">*</span></label><input id="bAgency" required placeholder="Agency name" /></div>
+        </div>
+        <div class="field-row two">
+          <div class="field"><label for="bBrn">RERA BRN <span class="opt">if you have it</span></label><input id="bBrn" placeholder="e.g. 12345" /></div>
+          <div class="field"><label for="bPhone">WhatsApp / Phone <span class="req">*</span></label><input id="bPhone" required placeholder="+971 50 123 4567" /></div>
+        </div>
+        <div class="field"><label for="bEmail">Work email <span class="opt">optional</span></label><input id="bEmail" type="email" placeholder="you@brokerage.com" /></div>
+        <div class="field"><label for="bAreas">Areas you focus on <span class="opt">optional</span></label><input id="bAreas" list="areaList" placeholder="e.g. Business Bay, Dubai Marina" /><datalist id="areaList"></datalist></div>
+        <div class="field"><label for="bMessage">Anything else? <span class="opt">optional</span></label><input id="bMessage" placeholder="Team size, what you're hoping for…" /></div>
+        <button class="btn btn-gold btn-block" type="submit" id="bSubmit">Request early access</button>
+        <p class="form-note">No commitment. We'll reach out on WhatsApp to set up a walkthrough.</p>
+      </form>
+
+      <div class="card broker-success hidden" id="brokerSuccess">
+        <div class="result-empty-icon">✓</div>
+        <h3>Thanks — you're on the early-access list.</h3>
+        <p>An Elevate Homes advisor will reach out on WhatsApp shortly to set up a walkthrough of the PRISM pricing tools and the network.</p>
+        <a class="btn btn-ghost" href="/sell">Try the seller tool while you wait</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div><span class="logo-mark sm">E</span><span>Elevate Homes — Elevated Investment Insights</span></div>
+        <a class="footer-link" href="/crm">For Agents → CRM</a>
+      </div>
+      <p>Resale brokerage GCI is the core business; broker network access, paid reports, and SaaS are ancillary streams developed after resale mandates are proven. Pricing data derived from Dubai Land Department records.</p>
+    </div>
+  </footer>
+
+  <script src="/funnel.js" type="module"></script>
+</body>
+</html>

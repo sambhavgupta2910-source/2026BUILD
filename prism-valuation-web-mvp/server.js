@@ -72,6 +72,8 @@ function recordLead(rec) {
     email: (rec.email || '').toString().slice(0, 160),
     intent: (rec.intent || '').toString().slice(0, 40),
     source: (rec.source || 'website').toString().slice(0, 60),
+    agency: (rec.agency || '').toString().slice(0, 160),
+    brn: (rec.brn || '').toString().slice(0, 40),
     area: (rec.area || '').toString().slice(0, 120),
     project: (rec.project || '').toString().slice(0, 160),
     rooms: (rec.rooms || '').toString().slice(0, 40),
@@ -559,7 +561,7 @@ async function getDealCheck(dataset, body) {
     return { error: 'price must be a positive number' };
   }
 
-  const val = valuation(dataset, {
+  const val = hybridValuation(dataset, {
     area: body.area || '',
     project: body.project || '',
     size: body.size,
@@ -588,6 +590,10 @@ async function getDealCheck(dataset, body) {
     resolvedArea: val.resolvedArea,
     resolvedProject: val.resolvedProject,
     comparables: val.comparables,
+    engine: val.engine,
+    effectiveComps: val.effectiveComps,
+    dispersionPct: val.dispersionPct,
+    sizeAdjustment: val.sizeAdjustment,
   };
 
   if (!XAI_API_KEY) return { ...base, analystNote: null, socialPost: null };
@@ -663,7 +669,7 @@ function recentActivity(dataset, areaKey, days = 90) {
 }
 
 async function getSellerValuation(dataset, body) {
-  const val = valuation(dataset, {
+  const val = hybridValuation(dataset, {
     area: body.area || '',
     project: body.project || '',
     size: body.size,
@@ -710,6 +716,10 @@ async function getSellerValuation(dataset, body) {
     listingGuidance: { quickSale, market: fairValue, ambitious },
     liquidity,
     recentComps: recent,
+    engine: val.engine,
+    effectiveComps: val.effectiveComps,
+    dispersionPct: val.dispersionPct,
+    sizeAdjustment: val.sizeAdjustment,
     compCount: val.compCount,
     confidence: val.confidence,
     fallback: val.fallback,
@@ -1035,6 +1045,97 @@ function valuation(dataset, body) {
 }
 
 // ---------------------------------------------------------------------------
+// PRISM hybrid valuation engine (prism-hybrid-v1)
+//
+// Builds on the same comparable selection + fallback ladder as valuation(),
+// then refines the estimate the way the notebook hedonic model does:
+//   1. Log-size adjustment — each comp's AED/sqft is adjusted toward the
+//      subject size using elasticity 0.2733 (larger units carry lower psf).
+//   2. Recency weighting — recent sales count more (180-day half-life).
+//   3. Size-proximity weighting — closer-sized comps count more.
+//   4. Same-project boost — exact-project comps weighted higher.
+// It also reports confidence diagnostics: effective_comps (Kish effective
+// sample size), dispersion_pct (IQR / median of adjusted psf), and
+// size_adjustment (net % the hybrid fair value moved vs the naive median).
+// Returns a superset of valuation()'s shape so callers change minimally.
+// ---------------------------------------------------------------------------
+
+const SIZE_ELASTICITY = 0.2733;       // from the notebook log-size regression
+const RECENCY_HALFLIFE_DAYS = 180;    // recency weight half-life
+
+function hybridValuation(dataset, body) {
+  const sizeRaw = toNumber(body.size);
+  if (!Number.isFinite(sizeRaw) || sizeRaw <= 0) {
+    return { error: 'Size must be a positive number.' };
+  }
+  const sizeSqft = body.sizeUnit === 'sqm' ? sizeRaw * SQM_TO_SQFT : sizeRaw;
+
+  const areaKey = [...dataset.byArea.keys()].find((k) => norm(k) === norm(body.area)) || body.area;
+  const projectKey = body.project
+    ? [...dataset.byProject.keys()].find((k) => norm(k) === norm(body.project)) || body.project
+    : '';
+
+  const query = {
+    area: areaKey, project: projectKey,
+    rooms: body.rooms || '', propertyType: body.propertyType || '',
+    propertySubtype: body.propertySubtype || '', sizeSqft,
+  };
+
+  const { step, matches } = pickComparables(dataset, query);
+  if (!step || !matches.length) {
+    return { error: `No comparable transactions found for area "${body.area}". Check the spelling or pick a recognized Dubai area.` };
+  }
+
+  const dateMaxMs = dataset.dateMax ? new Date(dataset.dateMax + 'T00:00:00Z').getTime() : Date.now();
+
+  const scored = matches.map((r) => {
+    const sizeRatio = r.areaSqft > 0 ? r.areaSqft / sizeSqft : 1;
+    const adjPsf = r.aedPerSqft * Math.pow(sizeRatio, SIZE_ELASTICITY);
+    const ageDays = r.date ? Math.max(0, (dateMaxMs - new Date(r.date + 'T00:00:00Z').getTime()) / 86400000) : 365;
+    const wRecency = Math.exp(-ageDays / RECENCY_HALFLIFE_DAYS);
+    const wSize = Math.exp(-2 * Math.abs(Math.log((r.areaSqft || sizeSqft) / sizeSqft)));
+    const boost = projectKey && norm(r.project) === norm(projectKey) ? 1.5 : 1;
+    return { r, adjPsf, weight: wRecency * wSize * boost };
+  });
+
+  const totW = scored.reduce((s, x) => s + x.weight, 0) || 1;
+  const fairPsf = scored.reduce((s, x) => s + x.adjPsf * x.weight, 0) / totW;
+  const adjPsfs = scored.map((x) => x.adjPsf);
+  const lowPsf = percentile(adjPsfs, 0.25);
+  const highPsf = percentile(adjPsfs, 0.75);
+  const medAdj = median(adjPsfs);
+  const dispersionPct = medAdj > 0 ? ((highPsf - lowPsf) / medAdj) * 100 : 0;
+  const sumW2 = scored.reduce((s, x) => s + x.weight * x.weight, 0) || 1;
+  const effectiveComps = Math.max(1, Math.round((totW * totW) / sumW2));
+  const rawMedianPsf = median(matches.map((r) => r.aedPerSqft));
+  const sizeAdjustment = rawMedianPsf > 0 ? ((fairPsf - rawMedianPsf) / rawMedianPsf) * 100 : 0;
+
+  const comparables = [...scored]
+    .sort((a, b) => (a.r.date < b.r.date ? 1 : -1))
+    .slice(0, 25)
+    .map((x) => ({
+      date: x.r.date, area: x.r.area, project: x.r.project, rooms: x.r.rooms,
+      sizeSqft: x.r.areaSqft, transValue: x.r.transValue,
+      aedPerSqft: x.r.aedPerSqft, adjusted: Math.round(x.adjPsf),
+    }));
+
+  return {
+    engine: 'prism-hybrid-v1',
+    basePsf: fairPsf, lowPsf, highPsf,
+    baseValue: fairPsf * sizeSqft, lowValue: lowPsf * sizeSqft, highValue: highPsf * sizeSqft,
+    sizeSqft,
+    compCount: matches.length,
+    effectiveComps,
+    dispersionPct: Math.round(dispersionPct * 10) / 10,
+    sizeAdjustment: Math.round(sizeAdjustment * 10) / 10,
+    confidence: confidenceLabel(step, matches.length),
+    fallback: { id: step.id, label: step.label },
+    resolvedArea: areaKey, resolvedProject: projectKey,
+    comparables,
+  };
+}
+
+// ---------------------------------------------------------------------------
 // HTTP server
 // ---------------------------------------------------------------------------
 
@@ -1167,6 +1268,15 @@ async function start() {
         return send(res, 200, { ok: true, rows: state.dataset.cleanRows });
       }
 
+      if (req.method === 'GET' && req.url === '/api/engine') {
+        return send(res, 200, {
+          engine: 'prism-hybrid-v1',
+          rows: dataset.cleanRows,
+          dateMax: dataset.dateMax,
+          sizeElasticity: SIZE_ELASTICITY,
+          recencyHalflifeDays: RECENCY_HALFLIFE_DAYS,
+        });
+      }
       if (req.method === 'GET' && req.url === '/api/metadata') {
         return send(res, 200, metadata);
       }
@@ -1515,6 +1625,8 @@ async function start() {
           email: body.email,
           intent: body.intent,
           source: body.source || body.sourcePage || 'website',
+          agency: body.agency,
+          brn: body.brn,
           area: body.area,
           project: body.project,
           rooms: body.rooms,

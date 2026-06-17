@@ -12,7 +12,7 @@ const STAGE_LABEL = {
   consultation: 'Consultation', mandate: 'Mandate', listed: 'Listed',
   closed: 'Closed Won', lost: 'Lost',
 };
-const INTENTS = ['sell', 'buy', 'invest', 'research'];
+const INTENTS = ['sell', 'buy', 'invest', 'broker', 'research'];
 
 let STATE = { leads: [], stats: {}, stages: [], filter: 'all', search: '', selected: null };
 
@@ -161,6 +161,8 @@ function renderDetail(lead) {
     ['Rooms', lead.rooms || '—'],
     ['Size', lead.sizeSqft ? `${lead.sizeSqft} sqft` : '—'],
   ];
+  if (lead.agency) propRows.push(['Agency', lead.agency]);
+  if (lead.brn) propRows.push(['RERA BRN', lead.brn]);
   if (lead.askingPrice) propRows.push(['Stated price', fmtAed(lead.askingPrice)]);
 
   const stageBtns = STATE.stages

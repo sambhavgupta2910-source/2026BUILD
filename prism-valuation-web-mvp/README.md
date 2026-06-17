@@ -77,10 +77,27 @@ low/high = 25th/75th percentile (IQR). Total AED = AED/sqft × requested size
 (converted to sqft once if input is sqm). The UI shows which level was used
 and the comparable count, which drive the confidence label.
 
+### Hybrid layer (`prism-hybrid-v1`)
+
+The seller (`/api/seller-valuation`) and buyer (`/api/deal-check`) funnels run
+on `hybridValuation()`, which builds on the same comparable selection and then
+refines the estimate:
+
+- **Log-size adjustment** (elasticity `0.2733`) brings each comp's AED/sqft
+  toward the subject size.
+- **Recency** (180-day half-life) and **size-proximity** weighting.
+- **Same-project boost** for exact-project comps.
+- Diagnostics returned: `effective_comps`, `dispersion_pct`, `size_adjustment`.
+
+`GET /api/engine` reports the engine id and active coefficients. The legacy
+`POST /api/valuation` (advisor tool) still uses the plain comparable-median.
+
 ## API
 
 - `GET /api/metadata` — row counts, median AED/sqft, datalist values for the
   form, and top areas/projects by Sales count.
+- `GET /api/engine` — engine id (`prism-hybrid-v1`), row count, data date, and
+  the active hybrid coefficients (size elasticity, recency half-life).
 - `POST /api/valuation` — body fields: `area`, `project`, `rooms`,
   `propertyType`, `propertySubtype`, `offplan`, `freehold`, `size`,
   `sizeUnit` (`sqft` or `sqm`). Returns base/low/high AED, AED/sqft,
@@ -104,6 +121,8 @@ and the comparable count, which drive the confidence label.
 
 - `/` — Elevate Homes public site (Sell, Deal Check, Market, Off-Plan, New
   Launches).
+- `/sell` — dedicated seller valuation funnel (mandate acquisition).
+- `/brokers` — broker/brokerage early-access signup (Phase-2 network).
 - `/report` — printable pricing report (reads the last result from the
   browser's `sessionStorage`; opened via the "Get my full pricing report"
   buttons).
