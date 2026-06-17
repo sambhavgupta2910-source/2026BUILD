@@ -10,6 +10,8 @@ const fmtNum = (n) => Math.round(n).toLocaleString();
 
 let agentWhatsapp = '';
 let lastSocialPost = '';
+let lastDeal = null;   // last buyer deal-check response (for report)
+let lastSeller = null; // last seller-valuation response (for report)
 
 // ── Boot ──────────────────────────────────────────────────────────────
 
@@ -30,9 +32,11 @@ async function boot() {
 
     $('areaList').innerHTML = metadata.areas.map((a) => `<option value="${esc(a)}">`).join('');
     $('projectList').innerHTML = metadata.projects.map((p) => `<option value="${esc(p)}">`).join('');
-    $('dcRooms').innerHTML =
+    const roomsOptions =
       '<option value="">Any</option>' +
       metadata.rooms.map((r) => `<option value="${esc(r)}">${esc(r)}</option>`).join('');
+    $('dcRooms').innerHTML = roomsOptions;
+    if ($('seRooms')) $('seRooms').innerHTML = roomsOptions;
   }
 
   loadMarket();
@@ -261,6 +265,7 @@ $('dealForm').addEventListener('submit', async (e) => {
 });
 
 function renderVerdict(d) {
+  lastDeal = d;
   $('resultEmpty').classList.add('hidden');
   $('resultCard').classList.remove('hidden');
 
@@ -329,6 +334,267 @@ $('rCopyPost').addEventListener('click', async () => {
   const orig = btn.textContent;
   btn.textContent = 'Copied ✓';
   setTimeout(() => (btn.textContent = orig), 1600);
+});
+
+// ── Seller valuation ──────────────────────────────────────────────────
+
+const CONF_NOTE = {
+  High: 'Tight comparable match — you can list on this with confidence.',
+  Medium: 'Based on a widened comparable set — a solid starting point to refine on a call.',
+  Low: 'Limited comparable match — treat this as directional and confirm with an advisor.',
+  Insufficient: 'Very thin comparable data here — book a call for a proper read.',
+};
+
+$('sellForm')?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = $('seSubmit');
+  const orig = btn.textContent;
+  btn.disabled = true;
+  btn.innerHTML = '<span class="btn-spinner"></span> Valuing against DLD sales…';
+  $('sellError').classList.add('hidden');
+  try {
+    const res = await fetch('/api/seller-valuation', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        area: $('seArea').value.trim(),
+        project: $('seProject').value.trim(),
+        size: Number($('seSize').value),
+        sizeUnit: $('seUnit').value,
+        rooms: $('seRooms').value,
+        targetPrice: $('sePrice').value ? Number($('sePrice').value) : undefined,
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok || data.error) throw new Error(data.error || `Request failed (${res.status})`);
+    renderSeller(data);
+  } catch (err) {
+    $('sellEmpty').classList.add('hidden');
+    $('sellCard').classList.add('hidden');
+    const el = $('sellError');
+    el.textContent = err.message;
+    el.classList.remove('hidden');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = orig;
+  }
+});
+
+function renderSeller(d) {
+  lastSeller = d;
+  $('sellEmpty').classList.add('hidden');
+  $('sellError').classList.add('hidden');
+  $('sellCard').classList.remove('hidden');
+
+  $('sFairValue').textContent = fmtAed(d.fairValue);
+  $('sFairPsf').textContent = `${fmtNum(d.fairPsf)} AED/sqft · ${fmtNum(d.sizeSqft)} sqft`;
+  $('sQuick').textContent = fmtAed(d.listingGuidance.quickSale);
+  $('sMarket').textContent = fmtAed(d.listingGuidance.market);
+  $('sAmbitious').textContent = fmtAed(d.listingGuidance.ambitious);
+
+  $('sLiquidity').textContent = d.liquidity;
+  $('sRecent').textContent = fmtNum(d.recentComps);
+  $('sComps').textContent = fmtNum(d.compCount);
+  $('sConfidence').textContent = d.confidence;
+  $('sBasis').textContent = `Comparable basis: ${d.fallback?.label || '—'}. ${CONF_NOTE[d.confidence] || ''}`;
+
+  drawSellerBand(d);
+
+  const tw = $('sTargetWrap');
+  if (d.targetVerdict) {
+    const tv = d.targetVerdict;
+    const cls = tv.gapPct > 8 ? 'over' : tv.gapPct < -8 ? 'under' : 'inline';
+    const sign = tv.gapPct > 0 ? '+' : '';
+    tw.className = `target-verdict ${cls}`;
+    tw.innerHTML =
+      `<div class="tv-head"><span class="tv-gap">${sign}${tv.gapPct}%</span>` +
+      `<span class="tv-label">at your target of ${fmtAed(tv.targetPrice)} vs DLD fair value</span></div>` +
+      `<div class="tv-label">${esc(tv.label)}.</div>`;
+    tw.classList.remove('hidden');
+  } else {
+    tw.classList.add('hidden');
+  }
+
+  const nw = $('sNoteWrap');
+  if (d.sellerNote) { nw.classList.remove('hidden'); $('sNote').textContent = d.sellerNote; }
+  else nw.classList.add('hidden');
+
+  if (agentWhatsapp) {
+    const msg = encodeURIComponent(
+      `Hi Sambhav — I valued my ${$('seArea').value} property on Elevate Homes.\n` +
+        `DLD fair value: AED ${d.fairValue.toLocaleString()} (${d.confidence} confidence).\n` +
+        `I'd like to discuss listing it.`,
+    );
+    $('sWhatsapp').href = `https://wa.me/${agentWhatsapp}?text=${msg}`;
+  }
+
+  $('sellCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function drawSellerBand(d) {
+  const marker = d.targetVerdict ? Math.round(d.targetVerdict.targetPrice / d.sizeSqft) : null;
+  const vals = [d.lowPsf, d.highPsf, d.fairPsf].concat(marker ? [marker] : []);
+  const lo = Math.min(...vals) * 0.95;
+  const hi = Math.max(...vals) * 1.05;
+  const pct = (v) => Math.max(1, Math.min(99, ((v - lo) / (hi - lo)) * 100));
+  $('sBandRange').style.left = `${pct(d.lowPsf)}%`;
+  $('sBandRange').style.width = `${pct(d.highPsf) - pct(d.lowPsf)}%`;
+  $('sBandMedian').style.left = `${pct(d.fairPsf)}%`;
+  const mk = $('sBandMarker');
+  if (marker) {
+    mk.style.left = `${pct(marker)}%`;
+    $('sBandMarkerLabel').textContent = `Your target ${fmtNum(marker)}`;
+    mk.classList.remove('hidden');
+  } else {
+    mk.classList.add('hidden');
+  }
+  $('sBandLow').textContent = `P25 · ${fmtNum(d.lowPsf)}`;
+  $('sBandMid').textContent = `DLD median ${fmtNum(d.fairPsf)}`;
+  $('sBandHigh').textContent = `P75 · ${fmtNum(d.highPsf)}`;
+}
+
+// ── Lead capture modal ────────────────────────────────────────────────
+
+let leadCtx = null;
+let leadOnSuccess = null;
+
+function openLeadModal({ title, sub, submitLabel, intent, source, context, onSuccess }) {
+  leadCtx = { intent, source, ...(context || {}) };
+  leadOnSuccess = onSuccess || null;
+  $('leadModalTitle').textContent = title || 'Get your full pricing report';
+  $('leadModalSub').textContent = sub || 'Where should we send it? An Elevate Homes advisor will follow up with the full comparable breakdown.';
+  $('leadSubmit').textContent = submitLabel || 'Generate my report';
+  $('leadModal').classList.remove('hidden');
+  setTimeout(() => $('leadName').focus(), 60);
+}
+function closeLeadModal() { $('leadModal').classList.add('hidden'); }
+
+$('leadClose')?.addEventListener('click', closeLeadModal);
+$('leadModal')?.addEventListener('click', (e) => { if (e.target.id === 'leadModal') closeLeadModal(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('leadModal').classList.contains('hidden')) closeLeadModal(); });
+
+$('leadForm')?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = $('leadSubmit');
+  const orig = btn.textContent;
+  btn.disabled = true;
+  btn.innerHTML = '<span class="btn-spinner"></span> Preparing…';
+  const lead = {
+    name: $('leadName').value.trim(),
+    phone: $('leadPhone').value.trim(),
+    email: $('leadEmail').value.trim(),
+  };
+  try {
+    await fetch('/api/leads', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...lead, ...(leadCtx || {}) }),
+    }).then((r) => r.json()).catch(() => ({}));
+  } finally {
+    btn.disabled = false;
+    btn.textContent = orig;
+    $('leadForm').reset();
+    closeLeadModal();
+    if (typeof leadOnSuccess === 'function') leadOnSuccess(lead);
+  }
+});
+
+// ── Report generation (branded, printable) ────────────────────────────
+
+function openReport(payload) {
+  if (!payload) return;
+  try { sessionStorage.setItem('prismReport', JSON.stringify(payload)); } catch {}
+  window.open('/report', '_blank');
+}
+
+function sellerReportPayload(lead) {
+  const d = lastSeller;
+  if (!d) return null;
+  return {
+    type: 'seller',
+    generatedAt: new Date().toISOString(),
+    client: lead && lead.name ? { name: lead.name, phone: lead.phone } : null,
+    property: {
+      area: $('seArea').value.trim() || d.resolvedArea,
+      project: $('seProject').value.trim() || d.resolvedProject,
+      rooms: $('seRooms').value,
+      sizeSqft: d.sizeSqft,
+    },
+    valuation: d,
+    agentWhatsapp,
+  };
+}
+
+function buyerReportPayload(lead) {
+  const d = lastDeal;
+  if (!d) return null;
+  return {
+    type: 'buyer',
+    generatedAt: new Date().toISOString(),
+    client: lead && lead.name ? { name: lead.name, phone: lead.phone } : null,
+    property: {
+      area: $('dcArea').value.trim() || d.resolvedArea,
+      project: $('dcProject').value.trim() || d.resolvedProject,
+      rooms: $('dcRooms').value,
+      sizeSqft: d.sizeSqft,
+      askingPrice: Number($('dcPrice').value) || null,
+    },
+    valuation: d,
+    agentWhatsapp,
+  };
+}
+
+// Seller: gate the full report behind lead capture
+$('sGetReport')?.addEventListener('click', () => {
+  if (!lastSeller) return;
+  openLeadModal({
+    title: 'Get your full pricing report',
+    sub: 'Your branded report with every comparable transaction. An advisor will follow up to help you list.',
+    submitLabel: 'Generate my report',
+    intent: 'sell',
+    source: 'seller-valuation',
+    context: {
+      area: $('seArea').value.trim(),
+      project: $('seProject').value.trim(),
+      rooms: $('seRooms').value,
+      sizeSqft: lastSeller.sizeSqft,
+      targetPrice: $('sePrice').value ? Number($('sePrice').value) : undefined,
+      valuation: {
+        fairValue: lastSeller.fairValue,
+        listingGuidance: lastSeller.listingGuidance,
+        confidence: lastSeller.confidence,
+        liquidity: lastSeller.liquidity,
+        compCount: lastSeller.compCount,
+      },
+    },
+    onSuccess: (lead) => openReport(sellerReportPayload(lead)),
+  });
+});
+
+// Buyer: gate the downloadable proof report behind lead capture
+$('rGetReport')?.addEventListener('click', () => {
+  if (!lastDeal) return;
+  openLeadModal({
+    title: 'Download your pricing proof',
+    sub: 'Your branded report with the comparable evidence behind this verdict — useful in any negotiation.',
+    submitLabel: 'Generate my report',
+    intent: 'buy',
+    source: 'buyer-deal-check',
+    context: {
+      area: $('dcArea').value.trim(),
+      project: $('dcProject').value.trim(),
+      rooms: $('dcRooms').value,
+      askingPrice: Number($('dcPrice').value) || undefined,
+      valuation: {
+        verdict: lastDeal.verdict,
+        fairValue: lastDeal.fairValue,
+        discountPct: lastDeal.discountPct,
+        confidence: lastDeal.confidence,
+        compCount: lastDeal.compCount,
+      },
+    },
+    onSuccess: (lead) => openReport(buyerReportPayload(lead)),
+  });
 });
 
 boot();

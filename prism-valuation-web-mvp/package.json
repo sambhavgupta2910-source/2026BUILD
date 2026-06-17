@@ -8,7 +8,9 @@
   },
   "scripts": {
     "start": "node server.js",
-    "dev": "node --watch server.js"
+    "dev": "node --watch server.js",
+    "demo": "node scripts/start-demo.js",
+    "generate:demo-data": "node scripts/generate-sample.js"
   },
   "dependencies": {}
 }

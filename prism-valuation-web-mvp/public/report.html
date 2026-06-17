@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pricing Report — Elevate Homes</title>
+  <link rel="icon" href="/icon-192.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/report.css" />
+</head>
+<body>
+  <!-- Toolbar (not printed) -->
+  <div class="toolbar no-print">
+    <a class="tb-link" href="/">← Back to Elevate Homes</a>
+    <button class="tb-btn" id="printBtn">Print / Save as PDF</button>
+  </div>
+
+  <main class="sheet" id="sheet">
+    <div class="empty" id="empty">
+      <h1>No report data found</h1>
+      <p>Run a valuation or deal check on the Elevate Homes site, then choose “Get my full pricing report”.</p>
+      <a class="tb-btn" href="/">Go to Elevate Homes</a>
+    </div>
+
+    <div id="report" class="hidden">
+      <header class="rep-head">
+        <div class="brand">
+          <span class="brand-mark">E</span>
+          <div>
+            <strong>Elevate Homes</strong>
+            <span>Pricing Intelligence · powered by PRISM</span>
+          </div>
+        </div>
+        <div class="rep-meta">
+          <div class="rep-title" id="repTitle">Pricing Report</div>
+          <div id="repDate">—</div>
+          <div class="rep-source">Source: Dubai Land Department transaction registry</div>
+        </div>
+      </header>
+
+      <section class="prop" id="propSummary"></section>
+
+      <section class="headline" id="headline"></section>
+
+      <section class="band-block" id="bandBlock">
+        <div class="band-title">Where this sits across comparable registered sales (AED/sqft)</div>
+        <div class="rband">
+          <div class="rband-range" id="rbandRange"></div>
+          <div class="rband-median" id="rbandMedian"></div>
+          <div class="rband-marker hidden" id="rbandMarker"><span id="rbandMarkerLabel"></span></div>
+        </div>
+        <div class="rband-labels">
+          <span id="rbandLow">—</span>
+          <span class="mid" id="rbandMid">—</span>
+          <span id="rbandHigh">—</span>
+        </div>
+      </section>
+
+      <section class="note-block hidden" id="noteBlock">
+        <div class="note-head"><span class="note-av">SG</span><div><strong>Advisor note</strong><span>Sambhav Gupta · Elevate Homes</span></div></div>
+        <p id="noteText"></p>
+      </section>
+
+      <section class="comps">
+        <h2>Comparable transactions <span id="compCount"></span></h2>
+        <table class="comp-table">
+          <thead>
+            <tr><th>Date</th><th>Project</th><th>Rooms</th><th class="num">Size (sqft)</th><th class="num">Price (AED)</th><th class="num">AED/sqft</th></tr>
+          </thead>
+          <tbody id="compBody"></tbody>
+        </table>
+      </section>
+
+      <section class="method">
+        <h3>How this is calculated</h3>
+        <p id="methodText"></p>
+        <p class="disclaimer">
+          This report is an analytical estimate based on comparable transactions registered with the Dubai Land
+          Department. It is not a formal valuation, a mortgage valuation, or a guarantee of sale price, and it is not
+          financial advice. PRISM's methodology — outlier handling, comparable selection and unit normalisation — is
+          actively being refined. Confirm any pricing decision with an Elevate Homes advisor.
+        </p>
+      </section>
+
+      <footer class="rep-foot">
+        <div>
+          <strong>Elevate Homes</strong> — Elevated Investment Insights<br />
+          <span id="contactLine">Speak to an advisor about this report.</span>
+        </div>
+        <a class="rep-cta" id="repWhatsapp" href="#" target="_blank" rel="noopener">Discuss on WhatsApp</a>
+      </footer>
+    </div>
+  </main>
+
+  <script src="/report.js"></script>
+</body>
+</html>

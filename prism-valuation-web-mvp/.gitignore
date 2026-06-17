@@ -3,3 +3,7 @@ node_modules/
 *.log
 transactions-*.csv
 .cache/
+
+# Lead data — captured PII / client details, never commit
+.data/
+leads.csv

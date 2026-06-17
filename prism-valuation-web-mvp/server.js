@@ -25,10 +25,73 @@ const PORT = Number(process.env.PORT || 4173);
 const SQM_TO_SQFT = 10.764;
 const XAI_API_KEY = process.env.XAI_API_KEY || null;
 const AGENT_WHATSAPP = (process.env.AGENT_WHATSAPP || '').replace(/\D/g, '');
+const CRM_TOKEN = process.env.CRM_TOKEN || '';
 const analysisCache = new Map();
 
 const DEFAULT_DRIVE_FILE_ID = '1mo0YAYfbBMguqk1qQ4E2XT06rxuJWzCa';
 const DEFAULT_URL = `https://drive.google.com/uc?export=download&id=${DEFAULT_DRIVE_FILE_ID}`;
+
+// ---------------------------------------------------------------------------
+// Lead store — file-backed JSON so the agent CRM survives restarts. Kept out
+// of git (.data/ is gitignored). Holds seller/buyer leads + their valuation
+// snapshot and a status pipeline the agent can advance.
+// ---------------------------------------------------------------------------
+
+const DATA_DIR = path.join(__dirname, '.data');
+const LEADS_PATH = path.join(DATA_DIR, 'leads.json');
+
+// CRM pipeline stages (mirror the mandate workflow: capture → mandate → close)
+const LEAD_STAGES = [
+  'new', 'qualified', 'valuation_sent', 'consultation',
+  'mandate', 'listed', 'closed', 'lost',
+];
+
+function readLeads() {
+  try {
+    return JSON.parse(fs.readFileSync(LEADS_PATH, 'utf8'));
+  } catch {
+    return [];
+  }
+}
+
+function writeLeads(leads) {
+  fs.mkdirSync(DATA_DIR, { recursive: true });
+  fs.writeFileSync(LEADS_PATH, JSON.stringify(leads, null, 2));
+}
+
+function recordLead(rec) {
+  const leads = readLeads();
+  const ts = new Date().toISOString();
+  const id = 'L-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 6);
+  const lead = {
+    id,
+    ts,
+    status: 'new',
+    name: (rec.name || '').toString().slice(0, 120),
+    phone: (rec.phone || '').toString().slice(0, 40),
+    email: (rec.email || '').toString().slice(0, 160),
+    intent: (rec.intent || '').toString().slice(0, 40),
+    source: (rec.source || 'website').toString().slice(0, 60),
+    area: (rec.area || '').toString().slice(0, 120),
+    project: (rec.project || '').toString().slice(0, 160),
+    rooms: (rec.rooms || '').toString().slice(0, 40),
+    sizeSqft: Number.isFinite(rec.sizeSqft) ? Math.round(rec.sizeSqft) : null,
+    askingPrice: Number.isFinite(rec.askingPrice) ? Math.round(rec.askingPrice) : null,
+    message: (rec.message || '').toString().slice(0, 600),
+    valuation: rec.valuation && typeof rec.valuation === 'object' ? rec.valuation : null,
+    notes: [],
+    history: [{ ts, status: 'new' }],
+  };
+  leads.push(lead);
+  writeLeads(leads);
+  return lead;
+}
+
+function crmAuthorized(req) {
+  if (!CRM_TOKEN) return true; // open on local/dev when no token configured
+  const token = new URL(req.url, 'http://x').searchParams.get('token');
+  return token === CRM_TOKEN;
+}
 
 // ---------------------------------------------------------------------------
 // CSV loading
@@ -518,9 +581,13 @@ async function getDealCheck(dataset, body) {
     askingPsf: Math.round(listPrice / val.sizeSqft),
     lowPsf: Math.round(val.lowPsf),
     highPsf: Math.round(val.highPsf),
+    sizeSqft: Math.round(val.sizeSqft),
     compCount: val.compCount,
     confidence: val.confidence,
     fallback: val.fallback,
+    resolvedArea: val.resolvedArea,
+    resolvedProject: val.resolvedProject,
+    comparables: val.comparables,
   };
 
   if (!XAI_API_KEY) return { ...base, analystNote: null, socialPost: null };
@@ -576,6 +643,129 @@ async function getDealCheck(dataset, body) {
   } catch (err) {
     console.error('[deal-check]', err.message);
     return { ...base, analystNote: null, socialPost: null };
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Seller valuation — fair value + listing-price guidance grounded in the
+// comparable band, a liquidity read from recent area activity, and (optional)
+// an AI seller note calibrated to the same confidence the engine computes.
+// ---------------------------------------------------------------------------
+
+function recentActivity(dataset, areaKey, days = 90) {
+  const rows = dataset.byArea.get(areaKey) || [];
+  if (!rows.length || !dataset.dateMax) return { recent: 0, total: rows.length };
+  const cutoff = new Date(dataset.dateMax + 'T00:00:00Z');
+  cutoff.setUTCDate(cutoff.getUTCDate() - days);
+  const cutoffStr = cutoff.toISOString().slice(0, 10);
+  const recent = rows.filter((r) => r.date >= cutoffStr).length;
+  return { recent, total: rows.length };
+}
+
+async function getSellerValuation(dataset, body) {
+  const val = valuation(dataset, {
+    area: body.area || '',
+    project: body.project || '',
+    size: body.size,
+    sizeUnit: body.sizeUnit || 'sqft',
+    rooms: body.rooms || '',
+    propertySubtype: body.propertySubtype || '',
+  });
+  if (val.error) return { error: val.error };
+
+  const fairValue = Math.round(val.baseValue);
+  // Listing guidance stays grounded in the comparable band (P25–P75) — not
+  // invented multipliers: lower band = priced to move, median = fair value,
+  // upper band = maximise (longer expected time on market).
+  const quickSale = Math.round(val.lowValue);
+  const ambitious = Math.round(val.highValue);
+
+  // Liquidity read from recent comparable activity in the area
+  const { recent } = recentActivity(dataset, val.resolvedArea, 90);
+  const liquidity = recent >= 40 ? 'Fast' : recent >= 12 ? 'Normal' : 'Thin';
+
+  // Optional: seller already has a price in mind — score it vs the evidence
+  const target = toNumber(body.targetPrice);
+  let targetVerdict = null;
+  if (Number.isFinite(target) && target > 0) {
+    const gap = ((target - fairValue) / fairValue) * 100;
+    targetVerdict = {
+      targetPrice: Math.round(target),
+      gapPct: Math.round(gap * 10) / 10,
+      label:
+        gap > 8 ? 'Above the comparable evidence — expect a longer time on market'
+        : gap < -8 ? 'Below the comparable evidence — likely a fast sale, but money may be left on the table'
+        : 'In line with the comparable evidence',
+    };
+  }
+
+  const base = {
+    fairValue,
+    fairPsf: Math.round(val.basePsf),
+    lowValue: quickSale,
+    highValue: ambitious,
+    lowPsf: Math.round(val.lowPsf),
+    highPsf: Math.round(val.highPsf),
+    sizeSqft: Math.round(val.sizeSqft),
+    listingGuidance: { quickSale, market: fairValue, ambitious },
+    liquidity,
+    recentComps: recent,
+    compCount: val.compCount,
+    confidence: val.confidence,
+    fallback: val.fallback,
+    resolvedArea: val.resolvedArea,
+    resolvedProject: val.resolvedProject,
+    comparables: val.comparables,
+    targetVerdict,
+  };
+
+  if (!XAI_API_KEY) return { ...base, sellerNote: null };
+
+  const projectLabel = (val.resolvedProject || body.project || val.resolvedArea || body.area || '').trim();
+  const userContent =
+    `Seller's property: ${projectLabel}, ${val.resolvedArea || body.area}\n` +
+    `Rooms: ${body.rooms || 'not specified'} | Size: ${Math.round(val.sizeSqft)} sqft\n` +
+    `DLD fair value: AED ${fairValue.toLocaleString()} (${Math.round(val.basePsf).toLocaleString()} AED/sqft median)\n` +
+    `Comparable band: AED ${quickSale.toLocaleString()} – ${ambitious.toLocaleString()}\n` +
+    `Comparables: ${val.compCount} (${val.confidence} confidence — ${val.fallback.label})\n` +
+    `Recent area sales (90d): ${recent} (${liquidity} liquidity)` +
+    (targetVerdict ? `\nSeller's target: AED ${targetVerdict.targetPrice.toLocaleString()} (${targetVerdict.gapPct > 0 ? '+' : ''}${targetVerdict.gapPct}% vs fair value)` : '');
+
+  const confidenceInstruction =
+    val.confidence === 'High'
+      ? 'Confidence is High (matched on area, project and rooms) — you can state the recommended listing price plainly.'
+      : val.confidence === 'Medium'
+        ? 'Confidence is Medium — give the listing range but note in one clause it rests on a widened comparable set (' + val.fallback.label.toLowerCase() + ').'
+        : 'Confidence is ' + val.confidence + ' and the comparable basis is broad (' + val.fallback.label.toLowerCase() + ', ' + val.compCount + ' comps) — frame this as a directional starting range to refine on a call, not a precise number.';
+
+  try {
+    const xaiRes = await fetch('https://api.x.ai/v1/chat/completions', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${XAI_API_KEY}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'grok-3-mini',
+        max_tokens: 320,
+        messages: [
+          {
+            role: 'system',
+            content:
+              'You are Sambhav Gupta, a Dubai resale advisor at Elevate Homes, writing directly to a homeowner who just valued their property. ' +
+              'Write 3-4 sentences: what the DLD comparables say their property is worth, a clear listing-price recommendation, and what the recent sales pace means for how fast it could sell. ' +
+              'Warm, direct, no hype, no generic disclaimers. End by inviting them to book a pricing call. ' +
+              confidenceInstruction,
+          },
+          { role: 'user', content: userContent },
+        ],
+      }),
+    });
+    if (!xaiRes.ok) return { ...base, sellerNote: null };
+    const xaiData = await xaiRes.json();
+    const sellerNote = xaiData.choices?.[0]?.message?.content?.trim() || null;
+    console.log(`[seller-valuation] ${projectLabel} — AED ${fairValue.toLocaleString()} (${val.confidence})`);
+    return { ...base, sellerNote };
+  } catch (err) {
+    console.error('[seller-valuation]', err.message);
+    return { ...base, sellerNote: null };
   }
 }
 
@@ -869,8 +1059,12 @@ function send(res, status, body, headers = {}) {
 function serveStatic(req, res) {
   let pathname = decodeURIComponent(new URL(req.url, 'http://x').pathname);
   if (pathname === '/') pathname = '/index.html';
-  const filePath = path.join(PUBLIC_DIR, pathname);
+  let filePath = path.join(PUBLIC_DIR, pathname);
   if (!filePath.startsWith(PUBLIC_DIR)) return send(res, 403, { error: 'forbidden' });
+  // Clean URLs: /sell, /crm, /report → their .html files when no extension given
+  if (!path.extname(filePath) && fs.existsSync(filePath + '.html')) {
+    filePath += '.html';
+  }
   fs.readFile(filePath, (err, data) => {
     if (err) return send(res, 404, { error: 'not found' });
     const ext = path.extname(filePath).toLowerCase();
@@ -1288,6 +1482,12 @@ async function start() {
         const leadsPath = path.join(__dirname, 'leads.csv');
         const header = !fs.existsSync(leadsPath) ? 'timestamp,listingId,name,whatsapp,unitType,budget,message\n' : '';
         fs.appendFileSync(leadsPath, header + row + '\n');
+        // Also record into the unified lead store so it surfaces in the agent CRM
+        recordLead({
+          name, phone: whatsapp, intent: 'buy', source: 'offplan-inquiry',
+          project: listingId || '', message: [unitType, budget, message].filter(Boolean).join(' · '),
+          askingPrice: toNumber(budget) || null,
+        });
         return send(res, 200, { ok: true, message: 'Inquiry received. Our team will contact you on WhatsApp within 24 hours.' });
       }
 
@@ -1296,6 +1496,70 @@ async function start() {
         const body = await readJson(req);
         const result = await getDealCheck(dataset, body);
         return send(res, result.error ? 400 : 200, result);
+      }
+
+      // Seller valuation — POST /api/seller-valuation
+      if (req.method === 'POST' && req.url === '/api/seller-valuation') {
+        const body = await readJson(req);
+        const result = await getSellerValuation(dataset, body);
+        return send(res, result.error ? 400 : 200, result);
+      }
+
+      // Lead capture — POST /api/leads (seller/buyer site leads + valuation snapshot)
+      if (req.method === 'POST' && req.url === '/api/leads') {
+        const body = await readJson(req);
+        if (!body.name || !body.phone) return send(res, 400, { error: 'name and phone are required' });
+        const lead = recordLead({
+          name: body.name,
+          phone: body.phone,
+          email: body.email,
+          intent: body.intent,
+          source: body.source || body.sourcePage || 'website',
+          area: body.area,
+          project: body.project,
+          rooms: body.rooms,
+          sizeSqft: toNumber(body.sizeSqft ?? body.size),
+          askingPrice: toNumber(body.askingPrice ?? body.price ?? body.targetPrice),
+          message: body.message,
+          valuation: body.valuation || body.valuationResult || null,
+        });
+        console.log(`[lead] ${lead.intent || 'lead'} — ${lead.name} (${lead.area || 'n/a'}) [${lead.source}]`);
+        const greet = encodeURIComponent(
+          `Hi Sambhav — this is ${lead.name}. I just used Elevate Homes` +
+            (lead.area ? ` for my ${lead.area} property` : '') + ' and would like to discuss.',
+        );
+        return send(res, 200, {
+          ok: true,
+          id: lead.id,
+          whatsapp: AGENT_WHATSAPP ? `https://wa.me/${AGENT_WHATSAPP}?text=${greet}` : null,
+          message: 'Thank you — your report is ready and our team will reach out shortly.',
+        });
+      }
+
+      // Agent CRM — list leads (GET /api/crm/leads) and update (POST /api/crm/update)
+      if (req.method === 'GET' && req.url.startsWith('/api/crm/leads')) {
+        if (!crmAuthorized(req)) return send(res, 401, { error: 'unauthorized' });
+        const leads = readLeads().sort((a, b) => (b.ts || '').localeCompare(a.ts || ''));
+        const stats = Object.fromEntries(LEAD_STAGES.map((s) => [s, 0]));
+        for (const l of leads) if (l.status in stats) stats[l.status]++;
+        return send(res, 200, { leads, stats, stages: LEAD_STAGES, total: leads.length });
+      }
+      if (req.method === 'POST' && req.url.startsWith('/api/crm/update')) {
+        if (!crmAuthorized(req)) return send(res, 401, { error: 'unauthorized' });
+        const body = await readJson(req);
+        const leads = readLeads();
+        const lead = leads.find((l) => l.id === body.id);
+        if (!lead) return send(res, 404, { error: 'lead not found' });
+        const ts = new Date().toISOString();
+        if (body.status && LEAD_STAGES.includes(body.status) && body.status !== lead.status) {
+          lead.status = body.status;
+          lead.history.push({ ts, status: body.status });
+        }
+        if (body.note && body.note.toString().trim()) {
+          lead.notes.push({ ts, text: body.note.toString().trim().slice(0, 600) });
+        }
+        writeLeads(leads);
+        return send(res, 200, { ok: true, lead });
       }
 
       // Content draft — GET /api/content-draft?topic=Business+Bay+PSF

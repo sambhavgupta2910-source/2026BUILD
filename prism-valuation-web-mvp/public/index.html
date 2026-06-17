@@ -26,6 +26,7 @@
         <span class="logo-text">Elevate<span> Homes</span></span>
       </a>
       <nav class="nav-links">
+        <a href="#sell">Sell</a>
         <a href="#deal-check">Deal Check</a>
         <a href="#market">Market Data</a>
         <a href="#offplan">Off-Plan</a>
@@ -45,8 +46,9 @@
         and tell you in seconds whether a deal is priced right.
       </p>
       <div class="hero-actions">
-        <a class="btn btn-gold" href="#deal-check">Check a Deal Free</a>
-        <a class="btn btn-ghost" href="#market">Explore Market Data</a>
+        <a class="btn btn-gold" href="#sell">What's my home worth?</a>
+        <a class="btn btn-ghost" href="#deal-check">Check a listing's price</a>
+        <a class="btn btn-ghost" href="#market">Explore market data</a>
       </div>
 
       <div class="stat-strip" id="statStrip">
@@ -60,6 +62,123 @@
         <span class="trust-pill"><span class="trust-dot"></span>Source: Dubai Land Department open transaction registry</span>
         <span class="trust-pill">Actual sold prices — not asking prices</span>
         <span class="trust-pill">Refreshed daily</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Seller Valuation ─────────────────────────────────────────────── -->
+  <section class="section section-alt" id="sell">
+    <div class="section-inner">
+      <div class="section-head">
+        <p class="eyebrow">For Sellers</p>
+        <h2>What is your property <em>really</em> worth?</h2>
+        <p class="section-sub">
+          Get a fair-value estimate and a recommended listing price, scored against
+          real registered DLD sales for your area, project and unit type — then
+          download a branded pricing report to price with confidence.
+        </p>
+      </div>
+
+      <div class="deal-grid">
+        <form class="deal-form card" id="sellForm" autocomplete="off">
+          <div class="field">
+            <label for="seArea">Area / Community <span class="req">*</span></label>
+            <input id="seArea" list="areaList" placeholder="e.g. Business Bay" required />
+          </div>
+          <div class="field">
+            <label for="seProject">Project / Building <span class="opt">optional</span></label>
+            <input id="seProject" list="projectList" placeholder="e.g. The Crestmark" />
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="seSize">Size <span class="req">*</span></label>
+              <input id="seSize" type="number" min="100" step="1" placeholder="900" required />
+            </div>
+            <div class="field field-narrow">
+              <label for="seUnit">Unit</label>
+              <select id="seUnit">
+                <option value="sqft" selected>sqft</option>
+                <option value="sqm">sqm</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="seRooms">Rooms</label>
+              <select id="seRooms"><option value="">Any</option></select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="sePrice">Price you have in mind (AED) <span class="opt">optional</span></label>
+            <input id="sePrice" type="number" min="100000" step="1000" placeholder="We'll tell you how it compares" />
+          </div>
+          <button class="btn btn-gold btn-block" type="submit" id="seSubmit">Estimate my sale price</button>
+          <p class="form-note">Free. See your estimate instantly — no sign-up to view it.</p>
+        </form>
+
+        <div class="deal-result" id="sellResult">
+          <div class="result-empty" id="sellEmpty">
+            <div class="result-empty-icon">⌂</div>
+            <p>Your valuation appears here.</p>
+            <span>A fair-value estimate, a recommended listing-price range, the recent sales pace in your area, and the comparable transactions behind it.</span>
+          </div>
+
+          <div class="result-card card hidden" id="sellCard">
+            <div class="seller-headline">
+              <div>
+                <span class="seller-label">DLD fair value</span>
+                <span class="seller-value" id="sFairValue">—</span>
+              </div>
+              <span class="seller-psf" id="sFairPsf">—</span>
+            </div>
+
+            <div class="guidance-grid">
+              <div class="guidance"><span>Price to sell faster</span><strong id="sQuick">—</strong></div>
+              <div class="guidance featured"><span>Recommended listing</span><strong id="sMarket">—</strong></div>
+              <div class="guidance"><span>Maximise (patient)</span><strong id="sAmbitious">—</strong></div>
+            </div>
+
+            <div class="price-band" id="sBand">
+              <div class="band-head"><span>Where prices sit across comparable sales (AED/sqft)</span></div>
+              <div class="band-track">
+                <div class="band-range" id="sBandRange"></div>
+                <div class="band-median" id="sBandMedian"></div>
+                <div class="band-marker hidden" id="sBandMarker"><span id="sBandMarkerLabel">—</span></div>
+              </div>
+              <div class="band-labels">
+                <span id="sBandLow">—</span>
+                <span class="band-mid" id="sBandMid">DLD median —</span>
+                <span id="sBandHigh">—</span>
+              </div>
+            </div>
+
+            <div class="result-metrics">
+              <div class="metric"><span>Liquidity</span><strong id="sLiquidity">—</strong></div>
+              <div class="metric"><span>Recent sales · 90d</span><strong id="sRecent">—</strong></div>
+              <div class="metric"><span>Comparables</span><strong id="sComps">—</strong></div>
+              <div class="metric"><span>Confidence</span><strong id="sConfidence">—</strong></div>
+            </div>
+
+            <p class="comp-basis" id="sBasis"></p>
+            <div class="target-verdict hidden" id="sTargetWrap"></div>
+
+            <div class="analyst-note hidden" id="sNoteWrap">
+              <div class="analyst-head">
+                <span class="analyst-avatar">SG</span>
+                <div>
+                  <strong>Advisor note</strong>
+                  <span>Sambhav Gupta · Elevate Homes</span>
+                </div>
+              </div>
+              <p id="sNote"></p>
+            </div>
+
+            <div class="result-actions">
+              <button class="btn btn-gold" id="sGetReport" type="button">Get my full pricing report</button>
+              <a class="btn btn-ghost" id="sWhatsapp" href="#" target="_blank" rel="noopener">Book a valuation call</a>
+            </div>
+          </div>
+
+          <div class="result-error card hidden" id="sellError"></div>
+        </div>
       </div>
     </div>
   </section>
@@ -162,6 +281,7 @@
             </div>
             <div class="result-actions">
               <a class="btn btn-gold" id="rWhatsapp" href="#" target="_blank" rel="noopener">Discuss this deal on WhatsApp</a>
+              <button class="btn btn-ghost" id="rGetReport" type="button">Download report</button>
               <button class="btn btn-ghost" id="rCopyPost" type="button">Copy social post</button>
             </div>
           </div>
@@ -269,13 +389,41 @@
 
   <footer class="footer">
     <div class="footer-inner">
-      <div>
-        <span class="logo-mark sm">E</span>
-        <span>Elevate Homes — Elevated Investment Insights</span>
+      <div class="footer-top">
+        <div>
+          <span class="logo-mark sm">E</span>
+          <span>Elevate Homes — Elevated Investment Insights</span>
+        </div>
+        <a class="footer-link" href="/crm">For Agents → CRM</a>
       </div>
-      <p>Pricing data derived from Dubai Land Department open transaction records. Verdicts are analytical opinions, not financial advice.</p>
+      <p>Pricing data derived from Dubai Land Department open transaction records. Estimates and verdicts are analytical opinions based on comparable transactions, not a guarantee of sale price or financial advice. Methodology is actively being refined.</p>
     </div>
   </footer>
+
+  <!-- ── Lead capture modal (seller + buyer report gate) ─────────────────── -->
+  <div class="modal-overlay hidden" id="leadModal" role="dialog" aria-modal="true" aria-labelledby="leadModalTitle">
+    <div class="modal card">
+      <button class="modal-close" id="leadClose" aria-label="Close">✕</button>
+      <h3 id="leadModalTitle">Get your full pricing report</h3>
+      <p class="modal-sub" id="leadModalSub">Where should we send it? An Elevate Homes advisor will follow up with the full comparable breakdown.</p>
+      <form id="leadForm" autocomplete="off">
+        <div class="field">
+          <label for="leadName">Name <span class="req">*</span></label>
+          <input id="leadName" required placeholder="Your name" />
+        </div>
+        <div class="field">
+          <label for="leadPhone">WhatsApp / Phone <span class="req">*</span></label>
+          <input id="leadPhone" required placeholder="+971 50 123 4567" />
+        </div>
+        <div class="field">
+          <label for="leadEmail">Email <span class="opt">optional</span></label>
+          <input id="leadEmail" type="email" placeholder="you@email.com" />
+        </div>
+        <button class="btn btn-gold btn-block" type="submit" id="leadSubmit">Generate my report</button>
+        <p class="form-note" id="leadNote">Your details are used only to prepare and discuss your report.</p>
+      </form>
+    </div>
+  </div>
 
   <script src="/site.js" type="module"></script>
 </body>

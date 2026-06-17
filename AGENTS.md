@@ -66,6 +66,33 @@ purchase, or revenue share. See `business/brokerage-pitch.md` and
   `/healthz` route. Not yet actually deployed anywhere — still running
   locally only as of this writing.
 
+### Resale loop: seller valuation, leads, reports, CRM
+
+The public site now covers the full resale loop, not just buyer deal-checks:
+
+- **Seller valuation** (`POST /api/seller-valuation`, `#sell` on the home
+  page) reuses `valuation()` and adds listing-price guidance (the P25/median/
+  P75 of the comparable band — *not* invented multipliers), a liquidity read
+  from recent area activity, and an optional `targetVerdict`. Keep the
+  guidance grounded in the band; don't fabricate "recommended" multipliers.
+- **Lead capture** (`POST /api/leads`, plus the existing `/api/inquiry`)
+  writes to one shared store, `.data/leads.json` (**gitignored** — it holds
+  PII / client details, never commit it; same for `leads.csv`). Helpers:
+  `recordLead()`, `readLeads()`, `writeLeads()`.
+- **Report** (`/report`, `report.html/.css/.js`) is a branded, print-to-PDF
+  pricing report. It reads the last result from the browser's
+  `sessionStorage` (key `prismReport`) — there is no server-side PDF step
+  (keeps the zero-dep rule).
+- **Agent CRM** (`/crm`, `GET /api/crm/leads` + `POST /api/crm/update`)
+  advances leads through `LEAD_STAGES` and logs notes/history. Gated by
+  `CRM_TOKEN` (`?token=`) only when that env var is set; open on local/dev.
+- **Local demo data:** `npm run demo` (→ `scripts/start-demo.js` →
+  `scripts/generate-sample.js`) writes a synthetic, clearly-labelled
+  `transactions-dev.csv` (gitignored) so the app boots with zero setup when
+  no real source is configured. Production (`npm start`) is unchanged.
+  **Never present synthetic figures as real market data** (see framing
+  constraint below).
+
 ### Known gaps / honest limitations
 
 - Real live DLD data access is blocked on Dubai Pulse API approval. Until

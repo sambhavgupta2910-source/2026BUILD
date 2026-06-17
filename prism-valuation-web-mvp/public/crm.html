@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agent CRM — Elevate Homes</title>
+  <meta name="robots" content="noindex" />
+  <link rel="icon" href="/icon-192.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/crm.css" />
+</head>
+<body>
+  <header class="crm-nav">
+    <div class="crm-brand">
+      <span class="logo-mark">E</span>
+      <div><strong>Elevate Homes</strong><span>Agent CRM · lead pipeline</span></div>
+    </div>
+    <div class="crm-nav-right">
+      <span class="crm-live"><span class="dot"></span><span id="liveLabel">Live</span></span>
+      <a class="crm-link" href="/">View public site →</a>
+    </div>
+  </header>
+
+  <section class="pipeline" id="pipeline"><!-- stage stat cards --></section>
+
+  <main class="crm-main">
+    <aside class="lead-list-wrap">
+      <div class="list-head">
+        <input id="search" type="search" placeholder="Search name, area, project…" />
+        <div class="filter-chips" id="filterChips"></div>
+      </div>
+      <div class="lead-list" id="leadList"></div>
+    </aside>
+
+    <section class="lead-detail" id="leadDetail">
+      <div class="detail-empty" id="detailEmpty">
+        <p>Select a lead to manage it.</p>
+        <span>Move it through the pipeline, log call notes, and open its pricing context.</span>
+      </div>
+      <div class="detail-card hidden" id="detailCard"><!-- populated by JS --></div>
+    </section>
+  </main>
+
+  <script src="/crm.js"></script>
+</body>
+</html>
