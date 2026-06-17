@@ -2,22 +2,32 @@
 
 You are working in `sambhavgupta2910-source/2026BUILD`.
 
-Important: do not overwrite your current `preview-better-ui` CRM/report work. Codex discovered that GitHub `preview-better-ui` already contains Claude work for `/crm`, `/report`, and related product pages. Codex therefore published its work as a separate handoff patch instead of pushing over that branch.
+Important: do not overwrite your current `preview-better-ui` CRM/report work. Codex discovered that GitHub `preview-better-ui` already contains Claude work for `/crm`, `/report`, and related product pages. Codex therefore did **not** push over that branch.
 
-## Read First
+## What Is Published
 
-Read:
+GitHub handoff branch:
 
-- `_codex/CODEX_DEMARKATION_2026-06-17.md`
-- `_codex/codex-resale-funnel.patch`
+- `codex/resale-funnel-handoff`
+- Prompt: `_codex/CLAUDE_HANDOFF_PROMPT_2026-06-17.md`
+- Demarcation: `_codex/CODEX_DEMARKATION_2026-06-17.md`
+
+Full Codex patch is on Drive:
+
+- https://drive.google.com/file/d/1hN9QeYobkhljvFH2l93dnd8SGq42TroE/view?usp=drivesdk
+
+Investor deck artifact is on Drive:
+
+- https://docs.google.com/presentation/d/17Vdh09vipQxesHbci4KxirBBH1eBfagU/edit?usp=drivesdk&ouid=106654177551330515915&rtpof=true&sd=true
+
+Local Codex commits in the user's workspace:
+
+- `7b7fe9a codex demarcate resale funnel work`
+- `ccb9e11 codex add claude handoff patch`
 
 ## What Codex Built
 
-Codex made a local commit:
-
-`7b7fe9a codex demarcate resale funnel work`
-
-That work includes:
+Codex's work includes:
 
 - PRISM hybrid valuation engine improvements.
 - Comparable transaction output for deal checks.
@@ -32,12 +42,13 @@ That work includes:
 ## What To Do
 
 1. Keep your current `preview-better-ui` work as the main UI/product track.
-2. Apply or cherry-pick Codex work only intentionally from `_codex/codex-resale-funnel.patch`.
-3. Preserve the revenue architecture:
+2. Do not overwrite `/crm`, `/report`, or your newer page structure.
+3. Pull concepts/code from the Drive patch or local Codex commits only intentionally.
+4. Preserve the revenue architecture:
    - Main revenue stream: resale brokerage GCI from PRISM-led seller mandates.
    - Ancillary streams: buyer representation, off-plan referrals, paid reports, broker network, SaaS, website-as-a-service.
-4. Merge the concepts into your current `/crm` and `/report` work rather than replacing them.
-5. If there are conflicts, prefer:
+5. Merge the concepts into your current `/crm` and `/report` work rather than replacing them.
+6. If there are conflicts, prefer:
    - Your newer CRM/report UI structure.
    - Codex's PRISM engine improvements, comparable output, seller/broker funnel logic, and revenue demarcation.
 
@@ -80,13 +91,21 @@ Natural progression:
 
 ## Suggested Merge Strategy
 
-From your current branch:
+If running in the same local workspace:
+
+```bash
+git log --oneline --decorate -5
+git show --stat 7b7fe9a
+git show --stat ccb9e11
+```
+
+If using the Drive patch:
 
 ```bash
 git fetch origin
 git checkout preview-better-ui
 git checkout -b claude-merge-codex-resale
-cat _codex/codex-resale-funnel.patch.part-* > _codex/codex-resale-funnel.patch
+# download codex-resale-funnel.patch from the Drive link into _codex/
 git apply --3way _codex/codex-resale-funnel.patch
 ```
 
