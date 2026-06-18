@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Elevate Price Dispersion Index — Elevate Homes</title>
+  <meta name="description" content="Which Dubai communities are pricing on evidence, and which are pricing on guesswork — measured straight from registered DLD sales." />
+  <meta name="theme-color" content="#060c12" />
+  <link rel="icon" href="/icon-192.svg" type="image/svg+xml" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="/site.css" />
+  <link rel="stylesheet" href="/dispersion-index.css" />
+</head>
+<body>
+  <header class="nav" id="top">
+    <div class="nav-inner">
+      <a class="logo" href="/">
+        <span class="logo-mark">E</span>
+        <span class="logo-text">Elevate<span> Homes</span></span>
+      </a>
+      <nav class="nav-links">
+        <a href="/#sell">Sell</a>
+        <a href="/#deal-check">Deal Check</a>
+        <a href="/brokers">For Brokers</a>
+      </nav>
+      <a class="btn btn-gold nav-cta" href="/#deal-check">Check a listing</a>
+    </div>
+  </header>
+
+  <main class="di-wrap">
+    <div id="synthBanner" class="di-banner hidden">
+      PREVIEW — built on a synthetic demo dataset, not live DLD transactions. Numbers below are
+      placeholders to show the format; nothing here should be quoted or shared as a real market figure
+      until the live index replaces this notice.
+    </div>
+
+    <section class="di-hero">
+      <p class="di-kicker">Source: Dubai Land Department registered sales · no asking-price data used</p>
+      <h1>The Elevate Price Dispersion Index</h1>
+      <p class="di-sub">
+        Every month we measure something brokers don't publish: how much registered sale prices for the
+        <em>same</em> home type, in the <em>same</em> community, actually vary. A wide spread means the
+        market is pricing on guesswork. A tight spread means the comparable evidence is doing its job.
+        This is computed directly from DLD records — no scraped listings, no asking prices, nothing we can't prove.
+      </p>
+      <div class="di-meta" id="diMeta">Loading current data window…</div>
+    </section>
+
+    <section class="di-list" id="diList">
+      <div class="di-loading">Pulling the latest comparable sales…</div>
+    </section>
+
+    <section class="di-method">
+      <h3>How this is calculated</h3>
+      <p>
+        For each community + room-count cohort with at least <strong id="methodMinComps">8</strong> registered
+        sales in the trailing window, we take the 25th and 75th percentile of AED/sqft among those sales and
+        express the gap as a percentage of the median. That percentage is the dispersion score — the same
+        diagnostic PRISM's valuation engine reports on every individual deal check, just aggregated across the
+        whole market instead of one listing. Higher dispersion means buyers and sellers in that cohort are
+        agreeing on price far less than the data says they should.
+      </p>
+      <p class="di-disclaimer">
+        This is an analytical reading of registered DLD transactions, not a rating of any brokerage, agent, or
+        named project. Methodology is actively being refined — see the
+        <a href="/deck">investor deck</a> for the full PRISM engine notes.
+      </p>
+    </section>
+
+    <section class="di-cta">
+      <h2>Want this number for your own listing?</h2>
+      <p>Run an actual deal check against live comparables in under a minute.</p>
+      <a class="btn btn-gold" href="/#deal-check">Check a price now</a>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div>
+          <span class="logo-mark sm">E</span>
+          <span>Elevate Homes — Elevated Investment Insights</span>
+        </div>
+        <div class="footer-links">
+          <a class="footer-link" href="/sell">Sell a property</a>
+          <a class="footer-link" href="/brokers">For Brokers</a>
+          <a class="footer-link" href="/deck">Investor Deck</a>
+        </div>
+      </div>
+      <p>Pricing data derived from Dubai Land Department open transaction records. The dispersion index is an analytical reading of registered sales, not a guarantee of sale price or financial advice. Methodology is actively being refined.</p>
+    </div>
+  </footer>
+
+  <script src="/dispersion-index.js"></script>
+</body>
+</html>

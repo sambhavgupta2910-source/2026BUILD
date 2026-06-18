@@ -140,19 +140,27 @@ async function fetchPulseCsv(apiUrl, apiKey) {
   return [headers.join(','), ...records.map((r) => headers.map((h) => esc(r[h])).join(','))].join('\r\n');
 }
 
+// A source is "synthetic" if it's the generated dev/demo dataset rather than
+// a real DLD extract. Anything derived from it (e.g. the public dispersion
+// index) must self-label as preview data — never presented as real market
+// figures (see AGENTS.md framing constraint).
+function isSyntheticSource(sourcePath) {
+  return /transactions-dev\.csv$|[/\\](sample|synthetic|demo)/i.test(sourcePath || '');
+}
+
 async function loadCsvText() {
   // Priority 1 — local file (fastest, for development)
   const localPath = process.env.TRANSACTIONS_CSV;
   if (localPath && fs.existsSync(localPath)) {
     console.log(`[data] reading local CSV: ${localPath}`);
-    return fs.readFileSync(localPath, 'utf8');
+    return { text: fs.readFileSync(localPath, 'utf8'), isSynthetic: isSyntheticSource(localPath) };
   }
 
   // Priority 2 — Dubai Pulse CKAN API (live daily data, requires API key)
   const pulseUrl = process.env.DUBAI_PULSE_API_URL;
   const pulseKey = process.env.DUBAI_PULSE_API_KEY;
   if (pulseUrl && pulseKey) {
-    return fetchPulseCsv(pulseUrl, pulseKey);
+    return { text: await fetchPulseCsv(pulseUrl, pulseKey), isSynthetic: false };
   }
 
   // Priority 3 — any CSV URL (Drive, S3, etc.) with local .cache/ fallback
@@ -160,7 +168,7 @@ async function loadCsvText() {
   const cachePath = path.join(CACHE_DIR, 'transactions.csv');
   if (fs.existsSync(cachePath) && !process.env.PRISM_REFRESH) {
     console.log(`[data] using cached CSV: ${cachePath}`);
-    return fs.readFileSync(cachePath, 'utf8');
+    return { text: fs.readFileSync(cachePath, 'utf8'), isSynthetic: false };
   }
 
   console.log(`[data] fetching CSV from ${url}`);
@@ -176,7 +184,7 @@ async function loadCsvText() {
   fs.mkdirSync(CACHE_DIR, { recursive: true });
   fs.writeFileSync(cachePath, text);
   console.log(`[data] cached ${(buf.length / 1024 / 1024).toFixed(1)} MB to ${cachePath}`);
-  return text;
+  return { text, isSynthetic: false };
 }
 
 // ---------------------------------------------------------------------------
@@ -238,7 +246,7 @@ function toNumber(v) {
   return Number.isFinite(n) ? n : NaN;
 }
 
-function buildDataset(text) {
+function buildDataset(text, isSynthetic = false) {
   const t0 = Date.now();
   const { header, records } = parseCsv(text);
   const colIndex = Object.fromEntries(header.map((h, i) => [h, i]));
@@ -326,6 +334,7 @@ function buildDataset(text) {
     rows: trimmed,
     byArea,
     byProject,
+    isSynthetic,
   };
 
   console.log(
@@ -1136,6 +1145,55 @@ function hybridValuation(dataset, body) {
 }
 
 // ---------------------------------------------------------------------------
+// Price Dispersion Index — ranks area+room cohorts by how inconsistently
+// comparable units actually sold (IQR / median AED/sqft, the same dispersion
+// math hybridValuation() already reports per-query). Fully DLD-native: it
+// only needs registered sale prices, never an external "asking price" feed,
+// so it stays accurate to what PRISM can actually prove.
+// ---------------------------------------------------------------------------
+
+const DISPERSION_MIN_COMPS = 8;
+const DISPERSION_LOOKBACK_DAYS = 270; // wide enough to stay stable on thin/synthetic data
+
+function buildDispersionIndex(dataset, limit = 10) {
+  const cutoffMs = dataset.dateMax
+    ? new Date(dataset.dateMax + 'T00:00:00Z').getTime() - DISPERSION_LOOKBACK_DAYS * 86400000
+    : null;
+
+  const cohorts = new Map(); // "area|rooms" -> rows[]
+  for (const r of dataset.rows) {
+    if (!r.area || !r.rooms) continue;
+    if (cutoffMs !== null && r.date && new Date(r.date + 'T00:00:00Z').getTime() < cutoffMs) continue;
+    const key = `${r.area}␟${r.rooms}`;
+    if (!cohorts.has(key)) cohorts.set(key, []);
+    cohorts.get(key).push(r);
+  }
+
+  const results = [];
+  for (const [key, rows] of cohorts) {
+    if (rows.length < DISPERSION_MIN_COMPS) continue;
+    const psfs = rows.map((r) => r.aedPerSqft);
+    const medianPsf = median(psfs);
+    if (medianPsf <= 0) continue;
+    const p25Psf = percentile(psfs, 0.25);
+    const p75Psf = percentile(psfs, 0.75);
+    const [area, rooms] = key.split('␟');
+    results.push({
+      area,
+      rooms,
+      compCount: rows.length,
+      medianPsf: Math.round(medianPsf),
+      p25Psf: Math.round(p25Psf),
+      p75Psf: Math.round(p75Psf),
+      dispersionPct: Math.round(((p75Psf - p25Psf) / medianPsf) * 1000) / 10,
+    });
+  }
+
+  results.sort((a, b) => b.dispersionPct - a.dispersionPct);
+  return results.slice(0, limit);
+}
+
+// ---------------------------------------------------------------------------
 // HTTP server
 // ---------------------------------------------------------------------------
 
@@ -1201,8 +1259,8 @@ function readJson(req) {
 let state = { dataset: null, metadata: null, trends: null };
 
 async function rebuildDataset() {
-  const csvText = await loadCsvText();
-  const dataset = buildDataset(csvText);
+  const { text: csvText, isSynthetic } = await loadCsvText();
+  const dataset = buildDataset(csvText, isSynthetic);
   const metadata = buildMetadata(dataset);
   const trends = buildTrends(dataset);
   analysisCache.clear();
@@ -1282,6 +1340,17 @@ async function start() {
       }
       if (req.method === 'GET' && req.url === '/api/trends') {
         return send(res, 200, trends);
+      }
+      if (req.method === 'GET' && req.url.startsWith('/api/dispersion-index')) {
+        return send(res, 200, {
+          generatedAt: new Date().toISOString(),
+          dataDate: { min: dataset.dateMin, max: dataset.dateMax },
+          rowCount: dataset.cleanRows,
+          isSynthetic: !!dataset.isSynthetic,
+          minComps: DISPERSION_MIN_COMPS,
+          lookbackDays: DISPERSION_LOOKBACK_DAYS,
+          top: buildDispersionIndex(dataset, 10),
+        });
       }
       if (req.method === 'GET' && req.url.startsWith('/api/analysis')) {
         const qs = new URL(req.url, 'http://x').searchParams;
