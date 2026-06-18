@@ -282,6 +282,7 @@ function renderVerdict(d) {
   $('rConfidence').textContent = d.confidence;
   $('rBasis').textContent = `Comparable basis: ${d.fallback?.label || '—'}.`;
   renderPriceBand(d);
+  renderComps(d.comparables);
 
   const noteWrap = $('analystNoteWrap');
   if (d.analystNote) {
@@ -305,6 +306,28 @@ function renderVerdict(d) {
   }
 
   $('resultCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// Show the comparable DLD transactions inline — the evidence behind the verdict
+function renderComps(comps) {
+  const wrap = $('compsInline');
+  if (!wrap) return;
+  if (!Array.isArray(comps) || !comps.length) { wrap.classList.add('hidden'); return; }
+  $('compsCount').textContent = `${comps.length} shown`;
+  $('compsBody').innerHTML = comps
+    .slice(0, 8)
+    .map(
+      (c) => `<tr>
+        <td>${esc((c.date || '').slice(0, 10))}</td>
+        <td>${esc(c.project || '—')}</td>
+        <td>${esc(c.rooms || '—')}</td>
+        <td>${fmtNum(c.sizeSqft)}</td>
+        <td>${fmtAed(c.transValue)}</td>
+        <td class="psf">${fmtNum(c.aedPerSqft)}</td>
+      </tr>`,
+    )
+    .join('');
+  wrap.classList.remove('hidden');
 }
 
 // Visualize where the asking PSF sits on the DLD comparable band (P25–P75)
