@@ -193,6 +193,29 @@ para(tf, "LIVE NOW: 66,413 clean DLD records · PRISM Hybrid v1 · /healthz ok �
      12, SEC, font=BODY, first=True)
 notes(s, "This is the differentiator vs a slideware startup: the product already runs.")
 
+# 5B FEATURE LIST
+s = slide()
+kicker_title(s, "Feature List · No Ambiguity", "Exactly What We're Building")
+rows = [
+    ["Module", "What it does - precisely", "Status"],
+    ["PRISM hybrid engine", "DLD comp median + log-size 0.2733 + recency/size weighting + diagnostics", "LIVE"],
+    ["Seller valuation /sell", "Fair value, 3-tier listing range, liquidity, target-price check", "LIVE"],
+    ["Buyer deal-check", "Verdict (Buy/Fair/Over) + fair value + P25-P75 band position", "LIVE"],
+    ["Comparable transactions", "Actual DLD rows inline: date, project, rooms, sqft, price, AED/sqft", "LIVE"],
+    ["Pricing Proof report /report", "Branded print-to-PDF with comparables + methodology", "LIVE"],
+    ["Lead capture /api/leads", "Soft-gate; stores intent + property + valuation snapshot", "LIVE"],
+    ["Agent CRM /crm", "Pipeline New->Mandate->Closed, notes, history, stage control", "LIVE"],
+    ["Broker signup /brokers", "Agency + RERA BRN early access -> CRM", "LIVE"],
+    ["Engine API /api/engine", "Programmatic engine + health; foundation for SaaS/licensing", "LIVE"],
+]
+table(s, 0.7, 1.95, 11.95, rows, [3.0, 7.35, 1.6], row_h=0.4, fsize=9.5)
+panel(s, 0.7, 6.15, 11.95, 0.95, fill=RGBColor(0x1A, 0x16, 0x0C), line=GOLD)
+_, tf = box(s, 0.95, 6.27, 11.45, 0.75, anchor=MSO_ANCHOR.MIDDLE)
+para(tf, "Planned (Phase 2-3 - explicitly NOT built yet): SaaS subscriptions & billing (AED 199-2,500/mo) · "
+         "pay-per-report credits · buyer-requirements auto-matching · white-label / enterprise data API · "
+         "full 7.71 GB DLD cache in production (builder ready).", 10.5, SEC, font=BODY, first=True, line=1.1)
+notes(s, "Unambiguous: green = working in the prototype today; the planned list is what we explicitly have NOT built yet.")
+
 # 6 COMPETITIVE
 s = slide()
 kicker_title(s, "Competitive Moat", "What No One Else Closes")

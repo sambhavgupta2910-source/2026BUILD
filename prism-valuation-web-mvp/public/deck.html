@@ -167,6 +167,35 @@
         </div>
     </div>
 
+    <!-- 5B FEATURE LIST -->
+    <div class="slide" data-slide="5b">
+        <div class="gradient-mesh"><div class="blob" style="width:400px;height:400px;top:-80px;left:-70px;background:#c9a84c;opacity:0.08;"></div><div class="blob" style="width:240px;height:240px;bottom:-60px;right:-40px;background:#8B6914;opacity:0.07;"></div></div>
+        <div class="content">
+            <p class="text-accent-1 uppercase tracking-[5px] text-sm font-semibold mb-3 reveal">Feature List · No Ambiguity</p>
+            <h2 class="font-display text-[clamp(1.7rem,3.6vw,2.8rem)] font-bold mb-4 reveal">Exactly What We're Building</h2>
+            <div class="overflow-hidden rounded-xl border border-glass-border reveal">
+                <table class="gt">
+                    <thead><tr><th style="width:24%;">Module</th><th>What it does — precisely</th><th style="text-align:center;width:9%;">Status</th></tr></thead>
+                    <tbody>
+                        <tr><td style="color:#f0ece4;font-weight:600;">PRISM hybrid engine</td><td>Median of DLD comparables + log-size adjustment (0.2733) + recency & size-proximity weighting + confidence diagnostics</td><td style="text-align:center;"><span class="chip" style="background:rgba(52,211,153,0.18);color:#34d399;">LIVE</span></td></tr>
+                        <tr><td style="color:#f0ece4;font-weight:600;">Seller valuation · /sell</td><td>Fair value, 3-tier listing range (sell-faster / recommended / maximise), liquidity score, target-price check</td><td style="text-align:center;"><span class="chip" style="background:rgba(52,211,153,0.18);color:#34d399;">LIVE</span></td></tr>
+                        <tr><td style="color:#f0ece4;font-weight:600;">Buyer deal-check</td><td>Verdict (Strong Buy / Fair Value / Overpriced) + fair value + position on the P25–P75 band</td><td style="text-align:center;"><span class="chip" style="background:rgba(52,211,153,0.18);color:#34d399;">LIVE</span></td></tr>
+                        <tr><td style="color:#f0ece4;font-weight:600;">Comparable transactions</td><td>The actual DLD rows shown inline — date, project, rooms, sqft, price, AED/sqft — not a black box</td><td style="text-align:center;"><span class="chip" style="background:rgba(52,211,153,0.18);color:#34d399;">LIVE</span></td></tr>
+                        <tr><td style="color:#f0ece4;font-weight:600;">Pricing Proof report · /report</td><td>Branded, print-to-PDF report with the comparable table, methodology and advisor contact</td><td style="text-align:center;"><span class="chip" style="background:rgba(52,211,153,0.18);color:#34d399;">LIVE</span></td></tr>
+                        <tr><td style="color:#f0ece4;font-weight:600;">Lead capture · /api/leads</td><td>Soft-gate form; stores name/phone/intent + property + a snapshot of the valuation</td><td style="text-align:center;"><span class="chip" style="background:rgba(52,211,153,0.18);color:#34d399;">LIVE</span></td></tr>
+                        <tr><td style="color:#f0ece4;font-weight:600;">Agent CRM · /crm</td><td>Pipeline New→Qualified→Mandate→Listed→Closed, with call notes, status history and stage control</td><td style="text-align:center;"><span class="chip" style="background:rgba(52,211,153,0.18);color:#34d399;">LIVE</span></td></tr>
+                        <tr><td style="color:#f0ece4;font-weight:600;">Broker signup · /brokers</td><td>Agency + RERA BRN early-access form → lands in the CRM as a broker lead</td><td style="text-align:center;"><span class="chip" style="background:rgba(52,211,153,0.18);color:#34d399;">LIVE</span></td></tr>
+                        <tr><td style="color:#f0ece4;font-weight:600;">Engine API · /api/engine</td><td>Programmatic engine + health endpoints — the foundation for SaaS and data licensing</td><td style="text-align:center;"><span class="chip" style="background:rgba(52,211,153,0.18);color:#34d399;">LIVE</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="bg-glass-bg border border-glass-border rounded-xl px-5 py-3 mt-4 reveal">
+                <span class="text-accent-2 text-xs font-semibold">Planned (Phase 2–3 — explicitly NOT built yet): </span>
+                <span class="text-text-secondary text-xs">SaaS subscriptions &amp; billing (AED 199–2,500/mo) · pay-per-report credits · buyer-requirements auto-matching · white-label / enterprise data API · full 7.71 GB DLD cache in production (builder script ready).</span>
+            </div>
+        </div>
+    </div>
+
     <!-- 6 COMPETITIVE MOAT -->
     <div class="slide" data-slide="6">
         <div class="gradient-mesh"><div class="blob" style="width:360px;height:360px;top:-80px;left:-70px;background:#c9a84c;opacity:0.07;"></div><div class="blob" style="width:240px;height:240px;bottom:-60px;right:-40px;background:#8B6914;opacity:0.07;"></div></div>
@@ -414,10 +443,13 @@
 </div>
 
 <script>
+    // Number slides by DOM order so inserting a slide never breaks navigation
+    document.querySelectorAll('.slide').forEach((s, i) => s.setAttribute('data-slide', i + 1));
     let current = 1;
     const total = document.querySelectorAll('.slide').length;
     const dotsContainer = document.getElementById('dots');
     const counter = document.getElementById('counter');
+    counter.textContent = '1 / ' + total;
     for (let i = 1; i <= total; i++) { const dot = document.createElement('div'); dot.className = 'dot' + (i === 1 ? ' active' : ''); dot.onclick = () => goToSlide(i); dotsContainer.appendChild(dot); }
     function goToSlide(n) {
         const prev = document.querySelector('.slide.active');

@@ -95,6 +95,23 @@ Three flows on one engine:
 
 ---
 
+## 5b. Feature list (exactly what we're building — status-marked)
+
+**LIVE in the prototype today:**
+- **PRISM hybrid engine** — median of DLD comparables + log-size adjustment (0.2733) + recency & size-proximity weighting + confidence diagnostics.
+- **Seller valuation (`/sell`)** — fair value, 3-tier listing range (sell-faster / recommended / maximise), liquidity score, target-price check.
+- **Buyer deal-check** — verdict (Strong Buy / Fair Value / Overpriced) + fair value + P25–P75 band position.
+- **Comparable transactions** — the actual DLD rows shown inline (date, project, rooms, sqft, price, AED/sqft), not a black box.
+- **Pricing Proof report (`/report`)** — branded, print-to-PDF, with the comparable table + methodology + advisor contact.
+- **Lead capture (`/api/leads`)** — soft-gate form; stores name/phone/intent + property + a valuation snapshot.
+- **Agent CRM (`/crm`)** — pipeline New→Qualified→Mandate→Listed→Closed, call notes, status history, stage control.
+- **Broker signup (`/brokers`)** — agency + RERA BRN early-access → lands in the CRM.
+- **Engine API (`/api/engine`, `/healthz`)** — programmatic engine + health; foundation for SaaS/licensing.
+
+**PLANNED (Phase 2–3 — explicitly NOT built yet):** SaaS subscriptions & billing (AED 199–2,500/mo) · pay-per-report credits · buyer-requirements auto-matching · white-label / enterprise data API · full 7.71 GB DLD cache in production (builder script ready).
+
+---
+
 ## 6. Competitive moat
 
 | Platform | What they do | What's missing | Closes the loop? |
