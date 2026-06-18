@@ -48,7 +48,7 @@
       <div class="hero-actions">
         <a class="btn btn-gold" href="#sell">What's my home worth?</a>
         <a class="btn btn-ghost" href="#deal-check">Check a listing's price</a>
-        <a class="btn btn-ghost" href="#market">Explore market data</a>
+        <a class="btn btn-ghost" href="#explorer">Explore market data</a>
       </div>
 
       <div class="stat-strip" id="statStrip">
@@ -63,6 +63,45 @@
         <span class="trust-pill">Actual sold prices — not asking prices</span>
         <span class="trust-pill">Refreshed daily</span>
       </div>
+    </div>
+  </section>
+
+  <!-- ── Live Data by Location (data-first explorer) ──────────────────── -->
+  <section class="section" id="explorer">
+    <div class="section-inner">
+      <div class="section-head">
+        <p class="eyebrow">Live DLD Data</p>
+        <h2>Start with the data.</h2>
+        <p class="section-sub">Real registered Dubai Land Department sales, by community. Pick an area — then see what your own property is worth.</p>
+      </div>
+
+      <div class="explorer-bar" id="areaChips"></div>
+
+      <div class="explorer-grid">
+        <div class="explorer-stats" id="explorerStats">
+          <div class="stat"><strong id="exPsf">—</strong><span>median AED / sqft</span></div>
+          <div class="stat"><strong id="exTxns">—</strong><span>registered sales</span></div>
+          <div class="stat"><strong id="exTrend">—</strong><span>price trend</span></div>
+          <div class="stat"><strong id="exOffplan">—</strong><span>off-plan share</span></div>
+        </div>
+        <div class="explorer-cta card">
+          <p class="eyebrow">Your property</p>
+          <h3 id="exCtaTitle">What's your Downtown Dubai property worth?</h3>
+          <p>Get a DLD-backed fair value, a recommended listing price, and a branded pricing report — free, in seconds.</p>
+          <div class="explorer-cta-actions">
+            <a class="btn btn-gold" id="exSellBtn" href="#sell">Value my property</a>
+            <a class="btn btn-ghost" href="#deal-check">Check a listing's price</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-wrap card">
+        <table class="market-table">
+          <thead><tr><th>Date</th><th>Project</th><th>Rooms</th><th>Size sqft</th><th>Price</th><th>AED/sqft</th></tr></thead>
+          <tbody id="exTxnBody"><tr><td colspan="6" class="loading-cell">Loading transactions…</td></tr></tbody>
+        </table>
+      </div>
+      <p class="form-note" style="text-align:left;margin-top:10px;">Most recent registered sales in the selected community. Source: Dubai Land Department.</p>
     </div>
   </section>
 

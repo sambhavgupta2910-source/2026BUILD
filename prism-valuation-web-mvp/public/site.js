@@ -42,7 +42,88 @@ async function boot() {
   loadMarket();
   loadListings();
   loadLaunches();
+  initExplorer();
   setupScrollspy();
+}
+
+// ── Live data explorer (by location, default Downtown) ─────────────────
+
+const EXPLORER_PREFERRED = [
+  'Downtown Dubai', 'Business Bay', 'Dubai Marina', 'Jumeirah Village Circle',
+  'Dubai Hills Estate', 'Palm Jumeirah', 'Mohammed Bin Rashid City', 'Jumeirah Lake Towers',
+];
+let areaStatsMap = {};
+let exCurrentArea = '';
+
+async function initExplorer() {
+  let trends;
+  try {
+    trends = await fetch('/api/trends').then((r) => r.json());
+  } catch {
+    return;
+  }
+  const stats = trends.areaStats || [];
+  stats.forEach((a) => { areaStatsMap[a.label.toLowerCase()] = a; });
+
+  const available = stats.map((a) => a.label);
+  let chips = EXPLORER_PREFERRED.filter((a) => available.some((x) => x.toLowerCase() === a.toLowerCase()));
+  for (const a of available) {
+    if (chips.length >= 8) break;
+    if (!chips.some((c) => c.toLowerCase() === a.toLowerCase())) chips.push(a);
+  }
+  if (!chips.length) return;
+  const def = chips.find((c) => c.toLowerCase() === 'downtown dubai') || chips[0];
+
+  $('areaChips').innerHTML = chips
+    .map((c) => `<button class="area-chip" data-area="${esc(c)}">${esc(c)}</button>`)
+    .join('');
+  $('areaChips').querySelectorAll('.area-chip').forEach((b) => {
+    b.addEventListener('click', () => selectArea(b.dataset.area));
+  });
+  $('exSellBtn').addEventListener('click', () => {
+    if (exCurrentArea && $('seArea')) $('seArea').value = exCurrentArea;
+  });
+  selectArea(def);
+}
+
+function selectArea(area) {
+  exCurrentArea = area;
+  $('areaChips').querySelectorAll('.area-chip').forEach((b) => b.classList.toggle('active', b.dataset.area === area));
+
+  const a = areaStatsMap[area.toLowerCase()];
+  if (a) {
+    $('exPsf').textContent = fmtNum(a.medianPsf);
+    $('exTxns').textContent = fmtNum(a.count);
+    const up = a.trend >= 0;
+    const tr = $('exTrend');
+    tr.textContent = `${up ? '▲' : '▼'} ${Math.abs(a.trend).toFixed(1)}%`;
+    tr.style.color = up ? 'var(--green)' : 'var(--red)';
+    $('exOffplan').textContent = `${a.offplanPct}%`;
+  }
+  $('exCtaTitle').textContent = `What's your ${area} property worth?`;
+
+  fetch(`/api/properties?area=${encodeURIComponent(area)}&limit=6&sort=date`)
+    .then((r) => r.json())
+    .then((d) => {
+      const rows = d.results || [];
+      $('exTxnBody').innerHTML = rows.length
+        ? rows
+            .map(
+              (r) => `<tr>
+                <td>${esc((r.date || '').slice(0, 10))}</td>
+                <td class="area-name">${esc(r.project || '—')}</td>
+                <td>${esc(r.rooms || '—')}</td>
+                <td>${fmtNum(r.sizeSqft)}</td>
+                <td>${fmtAed(r.transValue)}</td>
+                <td class="psf">${fmtNum(r.aedPerSqft)}</td>
+              </tr>`,
+            )
+            .join('')
+        : '<tr><td colspan="6" class="loading-cell">No recent transactions for this area.</td></tr>';
+    })
+    .catch(() => {
+      $('exTxnBody').innerHTML = '<tr><td colspan="6" class="loading-cell">Transactions unavailable right now.</td></tr>';
+    });
 }
 
 // Highlight the nav link for the section currently in view
