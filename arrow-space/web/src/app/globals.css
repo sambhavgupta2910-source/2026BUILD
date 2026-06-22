@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+/* ----------------------------------------------------------------------------
+   Arrow Space design tokens
+   Aerospace B2B portal — deep navy chrome, clean workspace, sky/brand accent.
+---------------------------------------------------------------------------- */
+@theme {
+  --color-brand-50: #eef5ff;
+  --color-brand-100: #d9e8ff;
+  --color-brand-200: #bcd6ff;
+  --color-brand-300: #8ebcff;
+  --color-brand-400: #5996ff;
+  --color-brand-500: #2f6df6;
+  --color-brand-600: #1d4fd8;
+  --color-brand-700: #1a3fae;
+  --color-brand-800: #1b3789;
+  --color-brand-900: #1c336f;
+  --color-brand-950: #0d1b3e;
+
+  --color-ink: #0d1b3e;
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+:root {
+  --background: #f4f6fb;
+  --foreground: #0d1b3e;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Part numbers, order ids, tracking refs */
+.mono {
+  font-family: var(--font-mono);
+  font-variant-ligatures: none;
+}
