@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build output
+dist/
+build/
+.next/
+out/
+.turbo/
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+.claude/audit.log
+
+# OS / editor
+.DS_Store
+*.swp
+.idea/
+.vscode/
+
+# Test / coverage
+coverage/
+
+# NOTE: data/synthetic/ is intentionally NOT ignored — generated datasets are
+# committed as versioned fixtures (clearly labelled synthetic). See BUILD_PLAN.md.
