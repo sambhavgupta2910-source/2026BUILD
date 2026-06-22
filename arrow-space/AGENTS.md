@@ -28,7 +28,8 @@ Aviation Services. This file tells you how to pick up the work. **Read `CLAUDE.m
 ## Suggested first moves (Phase 0)
 1. Scaffold the pnpm + Turborepo monorepo per `docs/BUILD_PLAN.md` → "Repo structure."
 2. Implement `packages/schema` (zod + TS types) for Part, SupplierPath, RFQ, Quote, TraceDoc,
-   AogEvent — exactly the fields in the data-contract tables.
+   AogEvent, Customer, Aircraft, CustomerInventory, Order — exactly the fields in the data-contract
+   tables (`docs/BUILD_PLAN.md §3`). RFQ.channel now includes `portal` (customer reorder).
 3. Implement `packages/data` synthetic generator → `pnpm gen:synthetic` writing `data/synthetic/`
    (deterministic by seed, realistic distributions).
 4. Add the `.claude/` operator layer (agents, commands, hooks) per spec Sections 5.3–5.5.
@@ -39,6 +40,13 @@ Institutional site (Next.js → Vercel): authorization-led hero, Authorizations 
 spine, capabilities, markets (defense-first), AOG desk page. Strip retail signals. Structured RFQ +
 AOG intake forms that validate against the `RFQ` schema and write objects to the intake queue.
 Demote the David Clark / Bose store to a self-serve section (no checkout / payment-card signals).
+
+## Phase 3 (apps/portal) — customer fleet, inventory & reorder
+Gated per-customer portal: customers list their **aircraft** and see **inventory bought from Arrow**,
+then **reorder** in one click. A reorder is just an `RFQ` with `channel = portal` into the same
+queue — **inquiry, not auto-order**: no price shown, margin floor + human approval still gate it, and
+vendor dispatch stays human via existing channels. See `docs/BUILD_PLAN.md §6.5`. Entities are in the
+Phase 0 contract now; UI lands in Phase 3.
 
 ## Definition of done (every unit)
 - Types + zod validate; `pnpm typecheck` clean; `pnpm test` green.

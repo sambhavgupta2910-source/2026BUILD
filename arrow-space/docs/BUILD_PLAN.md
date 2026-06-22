@@ -107,7 +107,7 @@ unless marked nullable/optional. Use string enums exactly as listed.
 |---|---|---|
 | `id` | string | |
 | `received_at` | datetime (ISO string) | |
-| `channel` | enum | `email \| whatsapp \| form \| phone` |
+| `channel` | enum | `email \| whatsapp \| form \| phone \| portal` (`portal` = customer reorder) |
 | `customer_id` | string | |
 | `end_user_type` | enum | `defense \| govt \| airline \| operator \| mro \| ga` |
 | `lines` | object[] | `{ part_number, qty, condition, ata_chapter }` |
@@ -147,9 +147,54 @@ unless marked nullable/optional. Use string enums exactly as listed.
 | `sla_minutes` | number | response target |
 | `resolved` | boolean | |
 
-**Schema acceptance:** all six exported as zod schemas + inferred types; an `index.ts` barrel;
-helper `assertRfq`, `assertQuote`, etc.; a `SYNTHETIC` provenance marker on generated records so
-synthetic data can never be mistaken for real (see §4).
+### 3.7 `Customer` (a company that buys from Arrow)
+| Field | Type | Notes |
+|---|---|---|
+| `id` | string | (RFQ.customer_id, Order.customer_id FK here) |
+| `name` | string | company name |
+| `type` | enum | `defense \| govt \| airline \| operator \| mro \| ga` (mirrors `end_user_type`) |
+| `country` | string | |
+| `contacts` | object[] | `{ name, email, phone, role }` |
+| `portal_enabled` | boolean | gated portal access |
+
+### 3.8 `Aircraft` (a customer's fleet entry)
+| Field | Type | Notes |
+|---|---|---|
+| `id` | string | |
+| `customer_id` | string | FK → Customer.id |
+| `registration` | string | tail number |
+| `type_model` | string | e.g. "Beechcraft King Air B200" (aligns with `Part.applicable_aircraft`) |
+| `serial_number` | string \| null | |
+| `in_service` | boolean | |
+
+### 3.9 `CustomerInventory` (parts a customer owns / has bought from Arrow)
+| Field | Type | Notes |
+|---|---|---|
+| `id` | string | |
+| `customer_id` | string | FK → Customer.id |
+| `part_id` | string | FK → Part.id |
+| `aircraft_id` | string \| null | which fleet entry it's installed on / assigned to |
+| `condition` | enum | `NEW \| OH \| SV \| AR` |
+| `qty_on_hand` | number | |
+| `last_purchased_at` | datetime \| null | |
+| `source_order_id` | string \| null | FK → Order.id (provenance + reorder reference) |
+
+### 3.10 `Order` (a won quote → fulfilled order; provenance for bought inventory)
+| Field | Type | Notes |
+|---|---|---|
+| `id` | string | |
+| `quote_id` | string | FK → Quote.id |
+| `rfq_id` | string | FK → RFQ.id |
+| `customer_id` | string | FK → Customer.id |
+| `lines` | object[] | `{ part_id, qty, unit_price, condition }` |
+| `status` | enum | `placed \| sourcing \| shipped \| delivered \| closed` |
+| `placed_at` | datetime (ISO string) | |
+| `trace_doc_ids` | string[] | FK → TraceDoc.id (the part's traceability) |
+
+**Schema acceptance:** all ten entities exported as zod schemas + inferred types; an `index.ts`
+barrel; helpers `assertRfq`, `assertQuote`, etc.; a `SYNTHETIC` provenance marker on generated
+records so synthetic data can never be mistaken for real (see §4). `TraceDoc.order_id` and
+`Order.trace_doc_ids` close the part↔traceability loop the portal renders.
 
 ---
 
@@ -253,14 +298,64 @@ capture begins. Next.js (App Router) + Tailwind, deployed to **Vercel**.
 
 ---
 
+## 6.5 Customer fleet, inventory & reorder — `apps/portal` (gated)
+
+**The capability (in the principal's words):** each customer (a company that buys from Arrow) gets a
+backend where they **list their aircraft** and see **the inventory they've bought from us**, so they
+can **go to the website and order again**. A reorder becomes an **inquiry Arrow receives and pushes
+to its vendors to deliver to them.**
+
+This lives in the **gated customer portal** (`apps/portal`) and **reuses the existing RFQ pipeline** —
+a reorder is just an `RFQ` with `channel = portal`. Nothing about pricing/compliance changes.
+
+### What a customer sees (gated, per-account)
+- **My fleet** — their `Aircraft` (tail, type/model, serial, in-service). Customer can add/edit.
+- **My inventory** — their `CustomerInventory` (parts owned, condition, qty, which aircraft,
+  traceability docs for each via `Order.trace_doc_ids`). Seeded from their `Order` history; customer
+  may also self-declare holdings.
+- **Order history** — past `Order`s (what was bought, when). *Shows history, **not** auto-current
+  pricing.*
+- **Reorder** — one click on an inventory line or aircraft → opens a reorder request.
+
+### Reorder → inquiry → vendor (the flow)
+1. Customer hits **Reorder** on a part (or "need this for tail X") → portal creates an `RFQ`
+   (`channel = portal`, `customer_id`, line = the part + qty + condition), `status = new`.
+2. That RFQ lands in **the same operator queue** as web/email/WhatsApp intake (one queue).
+3. `rfq-triage` runs; `quote-builder` matches a `SupplierPath` and drafts a quote **within the
+   margin floor** — labelled DRAFT.
+4. **A human approves the price** (non-negotiable). The approved quote goes back to the customer in
+   the portal.
+5. On acceptance → an `Order` is created; Arrow **sources from vendors** and arranges delivery to the
+   customer.
+
+### Guardrails (how this respects the non-negotiables)
+- **Reorder = inquiry, not auto-order.** No price is shown or committed on reorder; it generates an
+  RFQ. Margin floor + human approval still gate every quote.
+- **"Push to vendors"** = the platform routes/drafts the sourcing request to the operator (console);
+  the **human dispatches via the existing authorized channels**. We do **not** wire the platform
+  directly into OEM/Textron/David Clark authorized ordering channels (do-not-touch).
+- **Real customer data, when live, is NOT synthetic** — keep it cleanly separated from
+  `data/synthetic/`; same schema/IDs so it swaps in. Until then, portal runs on labelled synthetic
+  customers/fleets/inventory.
+- **Traceability surfaced, not invented** — the portal shows the `TraceDoc`s that exist for an
+  order; it never fabricates 8130-3/EASA Form 1/CoC/ATA106.
+
+### Phase mapping
+Belongs to **Phase 3** (the gated portal) in the spec roadmap. The schema entities it needs
+(`Customer`, `Aircraft`, `CustomerInventory`, `Order`) are added to the **Phase 0 data contract now**
+so the shape is locked and the synthetic generator can populate them — the UI follows in Phase 3.
+*(Open decision in §9: whether to pull a thin reorder MVP earlier.)*
+
+---
+
 ## 7. Task breakdown (ordered, each a reviewable unit)
 
 **Phase 0 — foundation**
 1. `chore: scaffold pnpm + turborepo monorepo` (root `package.json`, `pnpm-workspace.yaml`,
    `turbo.json`, `tsconfig.base.json`); stub `apps/web|portal|console`, `packages/*`.
-2. `feat(schema): data contract` — zod + types for all six entities (§3) + barrel + asserts.
+2. `feat(schema): data contract` — zod + types for all ten entities (§3) + barrel + asserts.
 3. `feat(data): synthetic generator` — `pnpm gen:synthetic`, deterministic, distributions (§4),
-   dataset v1 in `data/synthetic/` + MANIFEST.
+   dataset v1 in `data/synthetic/` + MANIFEST (incl. synthetic customers, fleets, inventory, orders).
 4. `test: validate generated data against schema` — wire `pnpm test` + `pnpm typecheck`.
 5. `chore(claude): operator layer` — agents, commands, hooks, `.mcp.json` (§5).
 
@@ -272,6 +367,15 @@ capture begins. Next.js (App Router) + Tailwind, deployed to **Vercel**.
 9. `feat(web): RFQ + AOG intake → schema` — forms + Route Handler validating against `RFQ`, writing
    to `data/synthetic/intake/` (§6).
 10. `chore(web): Vercel deploy config` — deploy; confirm exit criteria.
+
+**Phase 3 — gated portal + customer inventory/reorder** (§6.5)
+11. `feat(portal): auth + gated shell` — per-customer accounts, gated routes.
+12. `feat(portal): my-fleet + my-inventory` — `Aircraft` + `CustomerInventory` views, seeded from
+    `Order` history; traceability docs per owned part.
+13. `feat(portal): reorder → RFQ` — reorder action creates an `RFQ` (`channel = portal`) into the one
+    queue; no pricing shown; human-approval path downstream.
+14. `feat(console): vendor sourcing handoff` — approved reorder/RFQ surfaced to the operator to push
+    to vendors via existing channels (drafts/assists; human dispatches).
 
 Each unit: typecheck + tests green, non-negotiables upheld (encode as tests where possible),
 conventional commit, session summary logged to Notion.
@@ -287,6 +391,8 @@ conventional commit, session summary logged to Notion.
 | Export control (US-origin → defense/govt) | `RFQ.export_control_review` set by rule; intake test covers it; human sign-off required downstream |
 | Synthetic ≠ real | `_synthetic` marker + MANIFEST provenance; never rendered as a real quote; lint/test guards |
 | Do-not-touch list | No code paths into OEM/Textron/David Clark ordering, Tally, workshop, WhatsApp/phone automation, or final pricing/compliance authority |
+| Reorder = inquiry, not auto-order | Portal reorder creates an `RFQ` (`channel = portal`); no price shown/committed; margin floor + human approval still gate the quote; vendor dispatch stays human |
+| Real customer data ≠ synthetic | Portal customer/fleet/inventory data kept separate from `data/synthetic/`; same schema/IDs for clean swap |
 
 ---
 
@@ -298,6 +404,12 @@ conventional commit, session summary logged to Notion.
   self-serve checkout for the GA tail. (Checkout currently out of scope; conflicts with stripping
   retail signals.)
 - **Brand/domain + visual identity** for `apps/web` (logo, palette, type).
+- **Reorder sequencing** — keep customer fleet/inventory + reorder in Phase 3 (default), or pull a
+  thin reorder MVP earlier (right after intake) since it's a defining capability?
+- **Inventory seeding** — seed `CustomerInventory` from Arrow's `Order` history only, allow customer
+  self-declared holdings, or both (default: both)?
+- **Vendor push** — how far should the platform go? Default: draft/route the sourcing request to the
+  operator; human dispatches via existing channels (no direct platform→vendor ordering).
 
 ---
 
