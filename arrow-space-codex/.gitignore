@@ -1,0 +1,4 @@
+# Runtime lead store and uploads (created by the server at runtime)
+data/
+node_modules/
+*.log

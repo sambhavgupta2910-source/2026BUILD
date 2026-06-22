@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Arrow Space | Codex Prototype</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="public-site" id="public-site">
+      <div class="utility-bar">
+        <span>25+ years of excellence</span>
+        <span>24 / 7 aviation requirements support</span>
+        <span>Kolkata · Delhi · Mumbai · Sharjah</span>
+      </div>
+
+      <header class="public-nav">
+        <a class="public-brand" href="#top" aria-label="Arrow Space home">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span>
+            <strong>Arrow Space</strong>
+            <small>by Arrow Aviation Services</small>
+          </span>
+        </a>
+        <nav aria-label="Company navigation">
+          <a href="#inventory">Inventory search</a>
+          <a href="#aog-support">AOG support</a>
+          <a href="#parts">Capabilities</a>
+          <a href="#quality">Quality</a>
+          <a href="#rfq">Request quote</a>
+        </nav>
+        <button class="ghost-button" type="button" data-login>Client login</button>
+      </header>
+
+      <main id="top">
+        <section class="company-hero">
+          <div class="hero-copy">
+            <p class="eyebrow">Global aircraft parts supply</p>
+            <h1>The parts company for aviation buyers who need certainty before dispatch.</h1>
+            <p class="hero-lede">
+              Arrow Space is the digital front door for Arrow Aviation Services: aviation spares, David Clark equipment,
+              AOG response, repair coordination, and release documentation for defense, airline, MRO, and business aviation buyers.
+            </p>
+            <div class="hero-actions">
+              <a class="primary-button" href="#rfq">Request a quote</a>
+              <a class="ghost-button" href="#inventory">Search live inventory</a>
+            </div>
+          </div>
+          <aside class="inventory-console" aria-label="Live inventory search">
+            <span class="panel-label">Search our live inventory</span>
+            <label>Part number, NSN, or keyword
+              <input id="hero-q" type="search" placeholder="Brake assembly, DC-ONE-X, 130-384045-1" />
+            </label>
+            <div class="finder-grid">
+              <label>Type
+                <select>
+                  <option>Fixed wing</option>
+                  <option>Rotor wing</option>
+                  <option>Ground support</option>
+                </select>
+              </label>
+              <label>Condition
+                <select>
+                  <option>Any</option>
+                  <option>New</option>
+                  <option>Overhauled</option>
+                  <option>Serviceable</option>
+                </select>
+              </label>
+            </div>
+            <button class="primary-button" type="button" id="inventory-search">Search parts</button>
+            <p>Prototype search only. Production connects catalog, RFQ, and document availability.</p>
+          </aside>
+        </section>
+
+        <section class="credential-ledger" aria-label="Certifications and distributions">
+          <div class="section-heading compact">
+            <p class="eyebrow">Certifications and distributions</p>
+            <h2>Start with the credentials buyers use to qualify a supplier.</h2>
+          </div>
+          <div class="trust-strip">
+            <span>Authorized channel partner of Textron Aviation</span>
+            <span>Authorized David Clark dealer</span>
+            <span>Authorized Bose aviation dealer</span>
+            <span>DGCA-approved propeller workshop</span>
+          </div>
+        </section>
+
+        <section class="parts-counter" id="inventory">
+          <div>
+            <p class="eyebrow">Parts counter</p>
+            <h2>Search, request, or route a requirement without guessing the right inbox.</h2>
+          </div>
+          <div class="counter-grid">
+            <article>
+              <strong>4</strong>
+              <span>regional desks</span>
+            </article>
+            <article>
+              <strong>24/7</strong>
+              <span>AOG response path</span>
+            </article>
+            <article>
+              <strong>25+</strong>
+              <span>years in aviation supply</span>
+            </article>
+          </div>
+          <div class="quick-actions">
+            <article>
+              <span class="panel-label">Parts</span>
+              <h3>Search parts</h3>
+              <p>Find stock, source paths, lead-time tiers, condition options, and document expectations.</p>
+            </article>
+            <article>
+              <span class="panel-label">Repairs</span>
+              <h3>Search repairs</h3>
+              <p>Route overhaul, exchange, and repair-management requests through approved repair centers and MRO partners.</p>
+            </article>
+            <article>
+              <span class="panel-label">Procurement</span>
+              <h3>Upload RFP</h3>
+              <p>Send multi-line RFQs, tender packs, or fleet requirements for structured review and response.</p>
+              <input id="rfp-ref" type="text" placeholder="Reference / project" />
+              <input id="rfp-email" type="email" placeholder="Work email" />
+              <input id="rfp-file" type="file" aria-label="RFP file" />
+              <button class="primary-button" type="button" id="rfp-submit">Upload RFP</button>
+            </article>
+            <article>
+              <span class="panel-label">Portal</span>
+              <h3>Client account</h3>
+              <p>Returning customers can view quotes, order status, release documents, and AOG records.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="company-section" id="parts">
+          <div class="section-heading">
+            <p class="eyebrow">What we do</p>
+            <h2>Parts supply, aircraft support, repairs, exchange, logistics, and MRO services.</h2>
+          </div>
+          <div class="company-grid three-col">
+            <article class="service-card">
+              <span>01</span>
+              <h3>OEM and authorized paths</h3>
+              <p>Hawker, Beechcraft, Textron-line parts with condition, lead-time, and release document expectations visible from the start.</p>
+            </article>
+            <article class="service-card">
+              <span>02</span>
+              <h3>Consumables and equipment</h3>
+              <p>David Clark aviation headsets, crew equipment, ground-support items, and recurring operational requirements.</p>
+            </article>
+            <article class="service-card">
+              <span>03</span>
+              <h3>Repair and exchange support</h3>
+              <p>Exchange sourcing, overhaul coordination, propeller workshop support, and traceable supplier-path records.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="company-section product-section">
+          <div class="section-heading">
+            <p class="eyebrow">Aircraft products</p>
+            <h2>Navigate by the categories parts buyers actually use.</h2>
+          </div>
+          <div class="product-grid">
+            <span>Airframe</span>
+            <span>Engines</span>
+            <span>Avionics and instruments</span>
+            <span>Landing gear</span>
+            <span>Wheels and brakes</span>
+            <span>Hydraulic systems</span>
+            <span>Electrical components</span>
+            <span>Ground support equipment</span>
+            <span>Lubricants and consumables</span>
+            <span>Tools and test equipment</span>
+            <span>Rotor wing support</span>
+            <span>Propeller parts</span>
+          </div>
+        </section>
+
+        <section class="company-section split" id="aog-support">
+          <div>
+            <p class="eyebrow">AOG support</p>
+            <h2>For grounded aircraft, the first response is structured immediately.</h2>
+            <p>
+              Submit tail number, part number, required condition, location, and required-by time. The portal captures the request,
+              flags export or defense review where needed, and routes the case for human response.
+            </p>
+          </div>
+          <div class="aog-panel">
+            <strong>11 min</strong>
+            <span>sample active response</span>
+            <p>Synthetic demo metric. Real AOG handling stays phone-backed and operator-owned.</p>
+            <form class="rfq-form" aria-label="AOG request">
+              <label>Aircraft / tail <input id="aog-aircraft" type="text" placeholder="e.g. VT-ABC / King Air B300" /></label>
+              <label>Part number <input id="aog-part" type="text" placeholder="e.g. 130-384045-1" /></label>
+              <label>Condition <input id="aog-condition" type="text" placeholder="NEW / OH / SV" /></label>
+              <label>Location <input id="aog-location" type="text" placeholder="Base / airport" /></label>
+              <label>Required by <input id="aog-needed" type="text" placeholder="e.g. Today 18:00" /></label>
+              <label>Work email <input id="aog-email" type="email" placeholder="ops@operator.com" /></label>
+              <button class="primary-button" type="button" id="aog-submit">Submit AOG request</button>
+            </form>
+          </div>
+        </section>
+
+        <section class="company-section" id="quality">
+          <div class="section-heading">
+            <p class="eyebrow">Quality and release control</p>
+            <h2>Built for buyers who check documents before they check price.</h2>
+          </div>
+          <div class="proof-list">
+            <article><strong>Traceability</strong><p>FAA 8130-3, EASA Form 1, CoC, ATA Spec 106, workshop release, and supplier-path records.</p></article>
+            <article><strong>Export review</strong><p>US-origin and defense end-use cases are flagged before pricing is released.</p></article>
+            <article><strong>Human approval</strong><p>Draft quotes, compliance holds, and release packs require operator sign-off.</p></article>
+          </div>
+        </section>
+
+        <section class="company-section markets-section">
+          <div class="section-heading">
+            <p class="eyebrow">Markets served</p>
+            <h2>Support paths for defense, airlines, MROs, business aviation, and rotor-wing operators.</h2>
+          </div>
+          <div class="market-grid">
+            <article><strong>Defense and government</strong><p>End-use review, document discipline, and approval-led sourcing.</p></article>
+            <article><strong>Airlines and operators</strong><p>AOG, recurring consumables, repair exchange, and order visibility.</p></article>
+            <article><strong>MRO and Part-145</strong><p>Traceable supplier paths, release documents, and multi-line RFQ handling.</p></article>
+            <article><strong>Business, GA, and training</strong><p>Headsets, consumables, GSE, and self-serve long-tail requirements.</p></article>
+          </div>
+        </section>
+
+        <section class="company-section rfq-panel" id="rfq">
+          <div>
+            <p class="eyebrow">New client intake</p>
+            <h2>Send a parts request with enough detail to quote correctly.</h2>
+            <p>For the prototype, this form demonstrates the intake path. Existing customers can log in to see quotes, orders, and documents.</p>
+          </div>
+          <form class="rfq-form">
+            <label>Part number <input id="rfq-part" type="text" placeholder="e.g. 130-384045-1" /></label>
+            <label>Aircraft / fleet <input id="rfq-aircraft" type="text" placeholder="e.g. King Air B300" /></label>
+            <label>Required condition
+              <select id="rfq-condition">
+                <option>New</option>
+                <option>Overhauled</option>
+                <option>Serviceable</option>
+                <option>As removed</option>
+              </select>
+            </label>
+            <label>End user
+              <select id="rfq-enduser">
+                <option value="">Select…</option>
+                <option value="airline">Airline / operator</option>
+                <option value="mro">MRO / Part-145</option>
+                <option value="defense">Defense / government</option>
+                <option value="ga">Business / GA / training</option>
+              </select>
+            </label>
+            <label>Company <input id="rfq-company" type="text" placeholder="Organization" /></label>
+            <label>Work email <input id="rfq-email" type="email" placeholder="you@operator.com" /></label>
+            <button class="primary-button" type="button" id="public-rfq">Request quote</button>
+          </form>
+        </section>
+      </main>
+    </div>
+
+    <div class="app-shell is-hidden" id="portal-app">
+      <aside class="sidebar" aria-label="Primary">
+        <a class="brand" href="#dashboard" data-view-link="dashboard" aria-label="Arrow Space dashboard">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span>
+            <strong>Arrow Space</strong>
+            <small>Digital operations by Arrow Aviation Services</small>
+          </span>
+        </a>
+
+        <nav class="nav-links" aria-label="Portal views">
+          <a href="#dashboard" data-view-link="dashboard" class="active">Operations</a>
+          <a href="#rfqs" data-view-link="rfqs">RFQ queue</a>
+          <a href="#catalog" data-view-link="catalog">Catalog</a>
+          <a href="#trace" data-view-link="trace">Trace packs</a>
+          <a href="#aog" data-view-link="aog">AOG desk</a>
+          <a href="#account" data-view-link="account">Account</a>
+        </nav>
+
+        <section class="sidebar-panel">
+          <span class="panel-label">Authorizations</span>
+          <p>Hawker Beechcraft / Textron parts, David Clark India distribution, DGCA-approved propeller workshop.</p>
+        </section>
+
+        <section class="sidebar-panel urgent">
+          <span class="panel-label">Open AOG response</span>
+          <strong id="sidebar-sla">11 min</strong>
+          <p>Fastest active response in the synthetic operating set.</p>
+        </section>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Synthetic data prototype</p>
+            <h1 id="view-title">Operations control</h1>
+          </div>
+          <div class="topbar-actions">
+            <button class="ghost-button" type="button" data-logout>Back to site</button>
+            <button class="ghost-button" type="button" id="simulate-rfq">Add sample RFQ</button>
+            <button class="primary-button" type="button" id="open-aog">Open AOG protocol</button>
+          </div>
+        </header>
+
+        <section class="hero-strip" aria-label="Portal positioning">
+          <div>
+            <span class="status-pill green">Institutional aviation operations</span>
+            <h2>RFQs, sourcing paths, traceability, and AOG response in one controlled workspace.</h2>
+          </div>
+          <div class="credential-panel" aria-label="Corridor coverage">
+            <span>Coverage</span>
+            <strong>Kolkata · Delhi · Mumbai · Sharjah FZE</strong>
+            <p>Designed for institutional buyers who qualify suppliers on authorization, response discipline, and document control.</p>
+          </div>
+        </section>
+
+        <section class="view active" id="view-dashboard" data-view="dashboard"></section>
+        <section class="view" id="view-rfqs" data-view="rfqs"></section>
+        <section class="view" id="view-catalog" data-view="catalog"></section>
+        <section class="view" id="view-trace" data-view="trace"></section>
+        <section class="view" id="view-aog" data-view="aog"></section>
+        <section class="view" id="view-account" data-view="account"></section>
+      </main>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

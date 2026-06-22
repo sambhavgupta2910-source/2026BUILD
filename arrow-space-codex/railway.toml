@@ -1,0 +1,15 @@
+# Railway deploy config. The server is dependency-free (Node built-ins only),
+# so no build step is required. Mount a persistent volume at /data and set
+# DATA_DIR=/data so captured leads survive restarts and redeploys.
+[build]
+builder = "NIXPACKS"
+
+[deploy]
+startCommand = "node server/index.js"
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 5
+
+# Required environment variables (set in the Railway dashboard):
+#   OPERATOR_PASSCODE  — passcode for the /operator console
+#   DATA_DIR=/data     — path to the mounted persistent volume
+#   PORT               — injected by Railway automatically

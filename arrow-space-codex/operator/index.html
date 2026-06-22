@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Arrow Space | Operator console</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell" id="operator-login">
+      <main class="main" style="margin:auto; max-width:420px">
+        <section class="card" style="margin-top:18vh">
+          <p class="eyebrow">Internal — operator access</p>
+          <h2>Arrow Space lead desk</h2>
+          <p class="muted">
+            Captured RFQ, AOG, RFP, and inventory inquiries route here for human review.
+            Pricing and release stay operator-approved.
+          </p>
+          <label style="display:block; margin-top:14px">Operator passcode
+            <input id="passcode" type="password" placeholder="Enter passcode" autocomplete="current-password" />
+          </label>
+          <button class="primary-button" type="button" id="login-button" style="margin-top:12px">Open console</button>
+          <p class="muted" id="login-error" style="color:var(--red); display:none">Invalid passcode.</p>
+        </section>
+      </main>
+    </div>
+
+    <div class="app-shell is-hidden" id="operator-console">
+      <aside class="sidebar" aria-label="Operator">
+        <span class="brand">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span>
+            <strong>Arrow Space</strong>
+            <small>Operator lead desk</small>
+          </span>
+        </span>
+        <section class="sidebar-panel">
+          <span class="panel-label">Discipline</span>
+          <p>No price is auto-sent. Quotes require explicit human approval and must clear the margin floor.</p>
+        </section>
+        <section class="sidebar-panel urgent">
+          <span class="panel-label">Open RFQs</span>
+          <strong id="kpi-open">0</strong>
+          <p>Awaiting triage or quote.</p>
+        </section>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Live intake queue</p>
+            <h1>Operator console</h1>
+          </div>
+          <div class="topbar-actions">
+            <button class="ghost-button" type="button" id="refresh">Refresh</button>
+          </div>
+        </header>
+
+        <section class="view active">
+          <div class="grid metrics" id="metrics"></div>
+          <div class="grid two-col" style="margin-top:16px">
+            <section class="card">
+              <p class="eyebrow">Priority queue</p>
+              <h3>Ranked by urgency, export review, and wait time</h3>
+              <div class="list" id="lead-list"></div>
+            </section>
+            <aside class="card detail-panel" id="lead-detail">
+              <p class="eyebrow">Lead record</p>
+              <p class="muted">Select a lead to review and act.</p>
+            </aside>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script type="module" src="/operator/app.js"></script>
+  </body>
+</html>
