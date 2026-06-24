@@ -1,0 +1,6 @@
+{
+  "name": "@arrow-space/portal",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Gated customer portal (fleet, inventory, reorder). Built in Phase 3 — placeholder for now."
+}

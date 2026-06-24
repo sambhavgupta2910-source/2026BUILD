@@ -14,11 +14,14 @@ now** behind a schema that swaps to real data later.
 
 ---
 
-## Status: planning / foundation
+## Status: Phase 0 foundation in progress
 
-This project is at **Phase 0 → Phase 1**. Nothing is built yet — this directory currently holds the
-**build plan and handoff docs** so the next agent (Codex or Claude) can scaffold and build with zero
-ambiguity.
+The monorepo is scaffolded (pnpm + Turborepo, TypeScript strict) and **`packages/schema` — the data
+contract — is built and tested**: all ten entities as zod schemas + inferred types, with the
+non-negotiables encoded as functions (`exportControlRequired`, `marginFloorOk`, `canQuoteBeSent`).
+`pnpm typecheck` and `pnpm test` are green (32 tests). Next: `packages/data` synthetic generator,
+then the `.claude/` operator layer, then Phase 1 (`apps/web`). See `docs/BUILD_PLAN.md` → "Task
+breakdown" for what's done and what's next.
 
 - **`CLAUDE.md`** — always-loaded project memory + non-negotiables.
 - **`AGENTS.md`** — handoff for Codex/Claude: how to pick up, working rules, build sequence.

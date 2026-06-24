@@ -29,11 +29,16 @@ zero refactor.
 
 ## 1. Current state (read this)
 
-- **Nothing is implemented yet.** Phase 0 was never built or merged in any repo. This subproject is
-  a clean slate that begins the foundation.
-- This directory currently contains **plan + handoff docs only** (`CLAUDE.md`, `AGENTS.md`,
-  `README.md`, `docs/`).
-- The next builder starts at **§7 Task breakdown**, top to bottom.
+- **Phase 0 is underway on this branch.** The monorepo is scaffolded and `packages/schema` — the
+  data contract — is built and tested (`pnpm typecheck` + `pnpm test` green, 32 tests).
+- Done so far: **Task 1** (pnpm + Turborepo scaffold; `apps/{web,portal,console}` stubs;
+  `packages/schema`) and **Task 2** (all ten entities as zod + inferred types, the `syntheticOf`
+  marker, `assert*` helpers, and the non-negotiables encoded in `rules.ts`).
+- Two parallel prototypes exist on other (unmerged) branches and are reference-only: a Next.js
+  portal (`claude/focused-keller-4jpxy3`, under `arrow-space/web/`) and a vanilla-JS clickable demo
+  (`codex/arrow-space-build-1`, under `arrow-space-codex/`). We port copy/ideas from them; the
+  schema-first monorepo on this branch is the base.
+- The next builder continues at **§7 Task breakdown** — next up is **Task 3** (synthetic generator).
 
 ---
 
@@ -351,9 +356,10 @@ so the shape is locked and the synthetic generator can populate them — the UI 
 ## 7. Task breakdown (ordered, each a reviewable unit)
 
 **Phase 0 — foundation**
-1. `chore: scaffold pnpm + turborepo monorepo` (root `package.json`, `pnpm-workspace.yaml`,
-   `turbo.json`, `tsconfig.base.json`); stub `apps/web|portal|console`, `packages/*`.
-2. `feat(schema): data contract` — zod + types for all ten entities (§3) + barrel + asserts.
+1. ✅ `chore: scaffold pnpm + turborepo monorepo` (root `package.json`, `pnpm-workspace.yaml`,
+   `turbo.json`, `tsconfig.base.json`); stub `apps/web|portal|console`, `packages/schema`.
+2. ✅ `feat(schema): data contract` — zod + types for all ten entities (§3) + barrel + `assert*`
+   helpers + `syntheticOf` marker + non-negotiables encoded in `rules.ts` (32 tests green).
 3. `feat(data): synthetic generator` — `pnpm gen:synthetic`, deterministic, distributions (§4),
    dataset v1 in `data/synthetic/` + MANIFEST (incl. synthetic customers, fleets, inventory, orders).
 4. `test: validate generated data against schema` — wire `pnpm test` + `pnpm typecheck`.
