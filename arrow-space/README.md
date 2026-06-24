@@ -14,9 +14,9 @@ now** behind a schema that swaps to real data later.
 
 ---
 
-## Status: Phase 0 foundation in progress
+## Status: Phase 0 complete → Phase 1 next
 
-The monorepo is scaffolded (pnpm + Turborepo, TypeScript strict). Built and tested so far:
+The monorepo is scaffolded (pnpm + Turborepo, TypeScript strict). Built and tested:
 
 - **`packages/schema`** — the data contract: all ten entities as zod schemas + inferred types, the
   `syntheticOf` provenance marker, `assert*` helpers, and the non-negotiables encoded as functions
@@ -24,9 +24,12 @@ The monorepo is scaffolded (pnpm + Turborepo, TypeScript strict). Built and test
 - **`packages/data`** — a deterministic synthetic generator (`pnpm gen:synthetic`) and the committed
   `data/synthetic/` dataset v1 (1,429 records, seed 42, byte-identical on regen, every record
   validated against the schema and stamped synthetic).
+- **`.claude/` operator layer** — `rfq-triage` + `synthetic-data` subagents, `/new-rfq` +
+  `/gen-synthetic` commands, and hooks that enforce the guardrails (block hand-edits to synthetic
+  data + secrets, audit log, verify typecheck/tests before finishing).
 
-`pnpm typecheck` and `pnpm test` are green (47 tests). Next: the `.claude/` operator layer, then
-Phase 1 (`apps/web`). See `docs/BUILD_PLAN.md` → "Task breakdown" for what's done and what's next.
+`pnpm typecheck` and `pnpm test` are green (47 tests). Next: **Phase 1 (`apps/web`)** — the
+institutional site. See `docs/BUILD_PLAN.md` → "Task breakdown" for what's done and what's next.
 
 - **`CLAUDE.md`** — always-loaded project memory + non-negotiables.
 - **`AGENTS.md`** — handoff for Codex/Claude: how to pick up, working rules, build sequence.

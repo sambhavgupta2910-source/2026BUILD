@@ -22,18 +22,23 @@ Aviation Services. This file tells you how to pick up the work. **Read `CLAUDE.m
    WhatsApp/phone as human channels, or the principal's final pricing + compliance authority.
 
 ## Where things stand
-- **Phase 0 (foundation) is NOT built yet.** This subproject holds the plan only.
-- Build order is in `docs/BUILD_PLAN.md` → **"Task breakdown."** Start at the top.
+- **Phase 0 (foundation) is COMPLETE** on branch `claude/nice-darwin-9q52dd`: monorepo scaffold,
+  `packages/schema` (data contract), `packages/data` (deterministic synthetic generator + committed
+  `data/synthetic/` dataset v1), the test suite, and the `.claude/` operator layer.
+  `pnpm typecheck` + `pnpm test` green (47 tests).
+- **Next: Phase 1 (`apps/web`)** — start at `docs/BUILD_PLAN.md` → "Task breakdown," **Task 6**.
 
-## Suggested first moves (Phase 0)
-1. Scaffold the pnpm + Turborepo monorepo per `docs/BUILD_PLAN.md` → "Repo structure."
-2. Implement `packages/schema` (zod + TS types) for Part, SupplierPath, RFQ, Quote, TraceDoc,
-   AogEvent, Customer, Aircraft, CustomerInventory, Order — exactly the fields in the data-contract
-   tables (`docs/BUILD_PLAN.md §3`). RFQ.channel now includes `portal` (customer reorder).
-3. Implement `packages/data` synthetic generator → `pnpm gen:synthetic` writing `data/synthetic/`
-   (deterministic by seed, realistic distributions).
-4. Add the `.claude/` operator layer (agents, commands, hooks) per spec Sections 5.3–5.5.
-5. Add a test that validates generated data against the schema; wire `pnpm test` + `pnpm typecheck`.
+## Working in this repo
+- Install: `pnpm install`. Verify: `pnpm typecheck` + `pnpm test`. Regenerate data: `pnpm gen:synthetic`.
+- The schema (`packages/schema`) is the contract — extend it first, then everything else.
+- Don't hand-edit `data/synthetic/` — regenerate. The operator-layer hook blocks it anyway.
+
+## Phase 1 first moves (apps/web)
+1. App shell + design system (Next.js App Router + Tailwind, brand-forward, deploy to Vercel).
+2. Institutional pages: authorization-led hero, Authorizations & Quality trust spine, capabilities,
+   markets (defense-first), AOG desk. Strip retail signals. (`docs/BUILD_PLAN.md §6`.)
+3. Demoted self-serve store (no checkout / payment-card signals).
+4. RFQ + AOG intake forms that validate against the `RFQ` schema and write to the intake queue.
 
 ## Then Phase 1 (apps/web)
 Institutional site (Next.js → Vercel): authorization-led hero, Authorizations & Quality trust

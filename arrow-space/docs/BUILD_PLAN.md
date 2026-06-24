@@ -29,8 +29,9 @@ zero refactor.
 
 ## 1. Current state (read this)
 
-- **Phase 0 is underway on this branch.** The monorepo is scaffolded and `packages/schema` — the
-  data contract — is built and tested (`pnpm typecheck` + `pnpm test` green, 32 tests).
+- **Phase 0 is complete on this branch.** Monorepo scaffolded; data contract, synthetic generator +
+  dataset, the test suite, and the `.claude/` operator layer are all built (`pnpm typecheck` +
+  `pnpm test` green, 47 tests). Next is Phase 1 (`apps/web`).
 - Done so far: **Task 1** (pnpm + Turborepo scaffold; `apps/{web,portal,console}` stubs;
   `packages/schema`), **Task 2** (all ten entities as zod + inferred types, the `syntheticOf`
   marker, `assert*` helpers, and the non-negotiables encoded in `rules.ts`), **Task 3** (the
@@ -40,8 +41,8 @@ zero refactor.
   portal (`claude/focused-keller-4jpxy3`, under `arrow-space/web/`) and a vanilla-JS clickable demo
   (`codex/arrow-space-build-1`, under `arrow-space-codex/`). We port copy/ideas from them; the
   schema-first monorepo on this branch is the base.
-- The next builder continues at **§7 Task breakdown** — next up is **Task 5** (the `.claude/`
-  operator layer), then Phase 1 (`apps/web`).
+- The next builder continues at **§7 Task breakdown** — Phase 0 is done; next up is **Task 6**
+  (Phase 1 `apps/web`: app shell + design system), then the institutional pages and intake forms.
 
 ---
 
@@ -368,7 +369,9 @@ so the shape is locked and the synthetic generator can populate them — the UI 
    provenance. All output validated against the schema before write; byte-identical on regen.
 4. ✅ `test: validate generated data against schema` — `pnpm test` (47 tests) + `pnpm typecheck`
    green: schema validation, determinism, referential integrity, and non-negotiables-in-the-data.
-5. `chore(claude): operator layer` — agents, commands, hooks, `.mcp.json` (§5). ← next.
+5. ✅ `chore(claude): operator layer` — `rfq-triage` + `synthetic-data` subagents, `/new-rfq` +
+   `/gen-synthetic` commands, PreToolUse/PostToolUse/Stop hooks (guard synthetic + secrets, audit
+   log, verify before stop), `.mcp.json`. **Phase 0 complete.**
 
 **Phase 1 — front door**
 6. `feat(web): app shell + design system` — Next.js App Router + Tailwind, brand-forward base.
