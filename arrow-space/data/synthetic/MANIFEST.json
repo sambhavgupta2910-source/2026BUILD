@@ -1,0 +1,19 @@
+{
+  "provenance": "SYNTHETIC — NOT REAL. Never quote a customer from this.",
+  "dataset_version": "v1",
+  "seed": 42,
+  "deterministic": true,
+  "note": "Regenerate with `pnpm gen:synthetic` (optionally `--seed <n>`). Same seed ⇒ identical output.",
+  "counts": {
+    "parts": 150,
+    "supplier_paths": 284,
+    "customers": 24,
+    "aircraft": 57,
+    "rfqs": 300,
+    "quotes": 216,
+    "orders": 76,
+    "trace_docs": 169,
+    "aog_events": 50,
+    "customer_inventory": 103
+  }
+}

@@ -1,0 +1,2842 @@
+[
+  {
+    "id": "sp_000001",
+    "part_id": "part_000001",
+    "source_type": "gse_alliance",
+    "unit_cost": 38420.28,
+    "currency": "USD",
+    "lead_time_days": 14,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000002",
+    "part_id": "part_000001",
+    "source_type": "usm_broker",
+    "unit_cost": 28430.96,
+    "currency": "INR",
+    "lead_time_days": 13,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000003",
+    "part_id": "part_000002",
+    "source_type": "authorized",
+    "unit_cost": 1326.57,
+    "currency": "INR",
+    "lead_time_days": 15,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000004",
+    "part_id": "part_000002",
+    "source_type": "usm_broker",
+    "unit_cost": 808.67,
+    "currency": "USD",
+    "lead_time_days": 24,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000005",
+    "part_id": "part_000003",
+    "source_type": "gse_alliance",
+    "unit_cost": 2244.72,
+    "currency": "USD",
+    "lead_time_days": 6,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000006",
+    "part_id": "part_000003",
+    "source_type": "usm_broker",
+    "unit_cost": 1734.64,
+    "currency": "USD",
+    "lead_time_days": 6,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000007",
+    "part_id": "part_000004",
+    "source_type": "david_clark",
+    "unit_cost": 656.03,
+    "currency": "USD",
+    "lead_time_days": 2,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000008",
+    "part_id": "part_000005",
+    "source_type": "gse_alliance",
+    "unit_cost": 1163.61,
+    "currency": "USD",
+    "lead_time_days": 6,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000009",
+    "part_id": "part_000006",
+    "source_type": "david_clark",
+    "unit_cost": 417.88,
+    "currency": "USD",
+    "lead_time_days": 1,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000010",
+    "part_id": "part_000006",
+    "source_type": "usm_broker",
+    "unit_cost": 275.87,
+    "currency": "USD",
+    "lead_time_days": 30,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000011",
+    "part_id": "part_000007",
+    "source_type": "authorized",
+    "unit_cost": 972.46,
+    "currency": "USD",
+    "lead_time_days": 6,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000012",
+    "part_id": "part_000008",
+    "source_type": "gse_alliance",
+    "unit_cost": 4184.51,
+    "currency": "INR",
+    "lead_time_days": 6,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000013",
+    "part_id": "part_000008",
+    "source_type": "usm_broker",
+    "unit_cost": 3834.22,
+    "currency": "USD",
+    "lead_time_days": 25,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000014",
+    "part_id": "part_000009",
+    "source_type": "gse_alliance",
+    "unit_cost": 4849.68,
+    "currency": "USD",
+    "lead_time_days": 6,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000015",
+    "part_id": "part_000009",
+    "source_type": "usm_broker",
+    "unit_cost": 4111.78,
+    "currency": "USD",
+    "lead_time_days": 21,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000016",
+    "part_id": "part_000010",
+    "source_type": "gse_alliance",
+    "unit_cost": 1183.67,
+    "currency": "INR",
+    "lead_time_days": 3,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000017",
+    "part_id": "part_000010",
+    "source_type": "usm_broker",
+    "unit_cost": 889.48,
+    "currency": "USD",
+    "lead_time_days": 24,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000018",
+    "part_id": "part_000011",
+    "source_type": "gse_alliance",
+    "unit_cost": 561.89,
+    "currency": "USD",
+    "lead_time_days": 8,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000019",
+    "part_id": "part_000011",
+    "source_type": "usm_broker",
+    "unit_cost": 527.82,
+    "currency": "USD",
+    "lead_time_days": 12,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000020",
+    "part_id": "part_000012",
+    "source_type": "gse_alliance",
+    "unit_cost": 397.71,
+    "currency": "USD",
+    "lead_time_days": 3,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000021",
+    "part_id": "part_000012",
+    "source_type": "usm_broker",
+    "unit_cost": 406.86,
+    "currency": "INR",
+    "lead_time_days": 8,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000022",
+    "part_id": "part_000013",
+    "source_type": "gse_alliance",
+    "unit_cost": 3594.01,
+    "currency": "USD",
+    "lead_time_days": 9,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000023",
+    "part_id": "part_000013",
+    "source_type": "usm_broker",
+    "unit_cost": 3349.85,
+    "currency": "USD",
+    "lead_time_days": 25,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000024",
+    "part_id": "part_000014",
+    "source_type": "gse_alliance",
+    "unit_cost": 1428.7,
+    "currency": "USD",
+    "lead_time_days": 7,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000025",
+    "part_id": "part_000014",
+    "source_type": "usm_broker",
+    "unit_cost": 1411.56,
+    "currency": "INR",
+    "lead_time_days": 25,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000026",
+    "part_id": "part_000015",
+    "source_type": "gse_alliance",
+    "unit_cost": 6122.8,
+    "currency": "INR",
+    "lead_time_days": 8,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000027",
+    "part_id": "part_000015",
+    "source_type": "usm_broker",
+    "unit_cost": 5642.41,
+    "currency": "USD",
+    "lead_time_days": 4,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000028",
+    "part_id": "part_000016",
+    "source_type": "gse_alliance",
+    "unit_cost": 7464.57,
+    "currency": "USD",
+    "lead_time_days": 8,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000029",
+    "part_id": "part_000017",
+    "source_type": "authorized",
+    "unit_cost": 1044.48,
+    "currency": "USD",
+    "lead_time_days": 19,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000030",
+    "part_id": "part_000017",
+    "source_type": "gse_alliance",
+    "unit_cost": 915.16,
+    "currency": "USD",
+    "lead_time_days": 5,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000031",
+    "part_id": "part_000017",
+    "source_type": "usm_broker",
+    "unit_cost": 775.53,
+    "currency": "USD",
+    "lead_time_days": 26,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000032",
+    "part_id": "part_000018",
+    "source_type": "authorized",
+    "unit_cost": 37450.47,
+    "currency": "USD",
+    "lead_time_days": 15,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000033",
+    "part_id": "part_000019",
+    "source_type": "gse_alliance",
+    "unit_cost": 239.3,
+    "currency": "USD",
+    "lead_time_days": 6,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000034",
+    "part_id": "part_000019",
+    "source_type": "usm_broker",
+    "unit_cost": 208.17,
+    "currency": "USD",
+    "lead_time_days": 2,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000035",
+    "part_id": "part_000020",
+    "source_type": "authorized",
+    "unit_cost": 1426.28,
+    "currency": "INR",
+    "lead_time_days": 18,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000036",
+    "part_id": "part_000020",
+    "source_type": "gse_alliance",
+    "unit_cost": 1249.69,
+    "currency": "USD",
+    "lead_time_days": 7,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000037",
+    "part_id": "part_000020",
+    "source_type": "usm_broker",
+    "unit_cost": 1200.23,
+    "currency": "USD",
+    "lead_time_days": 13,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000038",
+    "part_id": "part_000021",
+    "source_type": "gse_alliance",
+    "unit_cost": 5094.28,
+    "currency": "USD",
+    "lead_time_days": 14,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000039",
+    "part_id": "part_000021",
+    "source_type": "usm_broker",
+    "unit_cost": 3874.18,
+    "currency": "USD",
+    "lead_time_days": 30,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000040",
+    "part_id": "part_000022",
+    "source_type": "authorized",
+    "unit_cost": 26124.3,
+    "currency": "USD",
+    "lead_time_days": 19,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000041",
+    "part_id": "part_000022",
+    "source_type": "gse_alliance",
+    "unit_cost": 22889.87,
+    "currency": "INR",
+    "lead_time_days": 9,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000042",
+    "part_id": "part_000022",
+    "source_type": "usm_broker",
+    "unit_cost": 19081.56,
+    "currency": "USD",
+    "lead_time_days": 9,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000043",
+    "part_id": "part_000023",
+    "source_type": "gse_alliance",
+    "unit_cost": 1432.84,
+    "currency": "USD",
+    "lead_time_days": 5,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000044",
+    "part_id": "part_000023",
+    "source_type": "usm_broker",
+    "unit_cost": 1449.04,
+    "currency": "USD",
+    "lead_time_days": 8,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000045",
+    "part_id": "part_000024",
+    "source_type": "gse_alliance",
+    "unit_cost": 4388.44,
+    "currency": "USD",
+    "lead_time_days": 14,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000046",
+    "part_id": "part_000024",
+    "source_type": "usm_broker",
+    "unit_cost": 2937.01,
+    "currency": "USD",
+    "lead_time_days": 16,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000047",
+    "part_id": "part_000025",
+    "source_type": "david_clark",
+    "unit_cost": 702.89,
+    "currency": "USD",
+    "lead_time_days": 3,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000048",
+    "part_id": "part_000025",
+    "source_type": "usm_broker",
+    "unit_cost": 610.96,
+    "currency": "USD",
+    "lead_time_days": 8,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000049",
+    "part_id": "part_000026",
+    "source_type": "gse_alliance",
+    "unit_cost": 1075.78,
+    "currency": "USD",
+    "lead_time_days": 4,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000050",
+    "part_id": "part_000026",
+    "source_type": "usm_broker",
+    "unit_cost": 863.52,
+    "currency": "USD",
+    "lead_time_days": 16,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000051",
+    "part_id": "part_000027",
+    "source_type": "gse_alliance",
+    "unit_cost": 12639.13,
+    "currency": "USD",
+    "lead_time_days": 10,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000052",
+    "part_id": "part_000027",
+    "source_type": "usm_broker",
+    "unit_cost": 11836.87,
+    "currency": "USD",
+    "lead_time_days": 22,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000053",
+    "part_id": "part_000028",
+    "source_type": "gse_alliance",
+    "unit_cost": 1299.28,
+    "currency": "USD",
+    "lead_time_days": 14,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000054",
+    "part_id": "part_000029",
+    "source_type": "gse_alliance",
+    "unit_cost": 9377.78,
+    "currency": "USD",
+    "lead_time_days": 13,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000055",
+    "part_id": "part_000029",
+    "source_type": "usm_broker",
+    "unit_cost": 7890.47,
+    "currency": "USD",
+    "lead_time_days": 4,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000056",
+    "part_id": "part_000030",
+    "source_type": "authorized",
+    "unit_cost": 5996.12,
+    "currency": "USD",
+    "lead_time_days": 18,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000057",
+    "part_id": "part_000030",
+    "source_type": "gse_alliance",
+    "unit_cost": 5253.74,
+    "currency": "USD",
+    "lead_time_days": 5,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000058",
+    "part_id": "part_000031",
+    "source_type": "gse_alliance",
+    "unit_cost": 1262.18,
+    "currency": "USD",
+    "lead_time_days": 7,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000059",
+    "part_id": "part_000031",
+    "source_type": "usm_broker",
+    "unit_cost": 1038.66,
+    "currency": "USD",
+    "lead_time_days": 22,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000060",
+    "part_id": "part_000032",
+    "source_type": "gse_alliance",
+    "unit_cost": 383.22,
+    "currency": "USD",
+    "lead_time_days": 7,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000061",
+    "part_id": "part_000032",
+    "source_type": "usm_broker",
+    "unit_cost": 324.02,
+    "currency": "INR",
+    "lead_time_days": 8,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000062",
+    "part_id": "part_000033",
+    "source_type": "authorized",
+    "unit_cost": 35640.96,
+    "currency": "USD",
+    "lead_time_days": 17,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000063",
+    "part_id": "part_000033",
+    "source_type": "gse_alliance",
+    "unit_cost": 31228.27,
+    "currency": "USD",
+    "lead_time_days": 5,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000064",
+    "part_id": "part_000033",
+    "source_type": "usm_broker",
+    "unit_cost": 28610.02,
+    "currency": "USD",
+    "lead_time_days": 9,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000065",
+    "part_id": "part_000034",
+    "source_type": "gse_alliance",
+    "unit_cost": 630.85,
+    "currency": "USD",
+    "lead_time_days": 3,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000066",
+    "part_id": "part_000035",
+    "source_type": "authorized",
+    "unit_cost": 19936.69,
+    "currency": "USD",
+    "lead_time_days": 5,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000067",
+    "part_id": "part_000036",
+    "source_type": "gse_alliance",
+    "unit_cost": 11291.86,
+    "currency": "INR",
+    "lead_time_days": 11,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000068",
+    "part_id": "part_000037",
+    "source_type": "gse_alliance",
+    "unit_cost": 26705.76,
+    "currency": "USD",
+    "lead_time_days": 7,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000069",
+    "part_id": "part_000037",
+    "source_type": "usm_broker",
+    "unit_cost": 25303.71,
+    "currency": "USD",
+    "lead_time_days": 6,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000070",
+    "part_id": "part_000038",
+    "source_type": "gse_alliance",
+    "unit_cost": 6172.42,
+    "currency": "USD",
+    "lead_time_days": 10,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000071",
+    "part_id": "part_000038",
+    "source_type": "usm_broker",
+    "unit_cost": 6058.57,
+    "currency": "USD",
+    "lead_time_days": 1,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000072",
+    "part_id": "part_000039",
+    "source_type": "david_clark",
+    "unit_cost": 627.57,
+    "currency": "USD",
+    "lead_time_days": 0,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000073",
+    "part_id": "part_000039",
+    "source_type": "gse_alliance",
+    "unit_cost": 577.36,
+    "currency": "USD",
+    "lead_time_days": 14,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000074",
+    "part_id": "part_000040",
+    "source_type": "gse_alliance",
+    "unit_cost": 3903.62,
+    "currency": "USD",
+    "lead_time_days": 8,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000075",
+    "part_id": "part_000041",
+    "source_type": "authorized",
+    "unit_cost": 39494.98,
+    "currency": "USD",
+    "lead_time_days": 16,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000076",
+    "part_id": "part_000041",
+    "source_type": "gse_alliance",
+    "unit_cost": 34605.13,
+    "currency": "USD",
+    "lead_time_days": 12,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000077",
+    "part_id": "part_000041",
+    "source_type": "usm_broker",
+    "unit_cost": 33853.45,
+    "currency": "USD",
+    "lead_time_days": 1,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000078",
+    "part_id": "part_000042",
+    "source_type": "gse_alliance",
+    "unit_cost": 2170.37,
+    "currency": "USD",
+    "lead_time_days": 11,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000079",
+    "part_id": "part_000042",
+    "source_type": "usm_broker",
+    "unit_cost": 2043.2,
+    "currency": "USD",
+    "lead_time_days": 18,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000080",
+    "part_id": "part_000043",
+    "source_type": "authorized",
+    "unit_cost": 15847.36,
+    "currency": "INR",
+    "lead_time_days": 13,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000081",
+    "part_id": "part_000043",
+    "source_type": "usm_broker",
+    "unit_cost": 12925.42,
+    "currency": "USD",
+    "lead_time_days": 27,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000082",
+    "part_id": "part_000044",
+    "source_type": "david_clark",
+    "unit_cost": 668.74,
+    "currency": "USD",
+    "lead_time_days": 1,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000083",
+    "part_id": "part_000044",
+    "source_type": "gse_alliance",
+    "unit_cost": 615.24,
+    "currency": "USD",
+    "lead_time_days": 14,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000084",
+    "part_id": "part_000044",
+    "source_type": "usm_broker",
+    "unit_cost": 419.68,
+    "currency": "USD",
+    "lead_time_days": 15,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000085",
+    "part_id": "part_000045",
+    "source_type": "authorized",
+    "unit_cost": 855.19,
+    "currency": "INR",
+    "lead_time_days": 15,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000086",
+    "part_id": "part_000045",
+    "source_type": "gse_alliance",
+    "unit_cost": 749.31,
+    "currency": "USD",
+    "lead_time_days": 10,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000087",
+    "part_id": "part_000045",
+    "source_type": "usm_broker",
+    "unit_cost": 565.99,
+    "currency": "USD",
+    "lead_time_days": 30,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000088",
+    "part_id": "part_000046",
+    "source_type": "authorized",
+    "unit_cost": 4418.06,
+    "currency": "USD",
+    "lead_time_days": 7,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000089",
+    "part_id": "part_000046",
+    "source_type": "gse_alliance",
+    "unit_cost": 3871.07,
+    "currency": "INR",
+    "lead_time_days": 14,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000090",
+    "part_id": "part_000047",
+    "source_type": "authorized",
+    "unit_cost": 3754.36,
+    "currency": "USD",
+    "lead_time_days": 20,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000091",
+    "part_id": "part_000048",
+    "source_type": "gse_alliance",
+    "unit_cost": 11965.98,
+    "currency": "USD",
+    "lead_time_days": 13,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000092",
+    "part_id": "part_000048",
+    "source_type": "usm_broker",
+    "unit_cost": 12103.97,
+    "currency": "USD",
+    "lead_time_days": 22,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000093",
+    "part_id": "part_000049",
+    "source_type": "authorized",
+    "unit_cost": 3202.01,
+    "currency": "INR",
+    "lead_time_days": 19,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000094",
+    "part_id": "part_000049",
+    "source_type": "usm_broker",
+    "unit_cost": 2829.16,
+    "currency": "USD",
+    "lead_time_days": 12,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000095",
+    "part_id": "part_000050",
+    "source_type": "authorized",
+    "unit_cost": 296.76,
+    "currency": "USD",
+    "lead_time_days": 7,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000096",
+    "part_id": "part_000050",
+    "source_type": "gse_alliance",
+    "unit_cost": 260.02,
+    "currency": "USD",
+    "lead_time_days": 14,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000097",
+    "part_id": "part_000051",
+    "source_type": "authorized",
+    "unit_cost": 25520.55,
+    "currency": "USD",
+    "lead_time_days": 9,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000098",
+    "part_id": "part_000051",
+    "source_type": "usm_broker",
+    "unit_cost": 18614.77,
+    "currency": "USD",
+    "lead_time_days": 17,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000099",
+    "part_id": "part_000052",
+    "source_type": "gse_alliance",
+    "unit_cost": 4641.79,
+    "currency": "USD",
+    "lead_time_days": 10,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000100",
+    "part_id": "part_000052",
+    "source_type": "usm_broker",
+    "unit_cost": 3799.56,
+    "currency": "USD",
+    "lead_time_days": 29,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000101",
+    "part_id": "part_000053",
+    "source_type": "gse_alliance",
+    "unit_cost": 1413.49,
+    "currency": "USD",
+    "lead_time_days": 5,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000102",
+    "part_id": "part_000054",
+    "source_type": "authorized",
+    "unit_cost": 21117.13,
+    "currency": "USD",
+    "lead_time_days": 20,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000103",
+    "part_id": "part_000054",
+    "source_type": "gse_alliance",
+    "unit_cost": 18502.63,
+    "currency": "USD",
+    "lead_time_days": 12,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000104",
+    "part_id": "part_000055",
+    "source_type": "gse_alliance",
+    "unit_cost": 339.19,
+    "currency": "USD",
+    "lead_time_days": 11,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000105",
+    "part_id": "part_000055",
+    "source_type": "usm_broker",
+    "unit_cost": 336.49,
+    "currency": "USD",
+    "lead_time_days": 7,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000106",
+    "part_id": "part_000056",
+    "source_type": "david_clark",
+    "unit_cost": 645.27,
+    "currency": "USD",
+    "lead_time_days": 1,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000107",
+    "part_id": "part_000056",
+    "source_type": "gse_alliance",
+    "unit_cost": 593.65,
+    "currency": "USD",
+    "lead_time_days": 13,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000108",
+    "part_id": "part_000056",
+    "source_type": "usm_broker",
+    "unit_cost": 450.86,
+    "currency": "USD",
+    "lead_time_days": 16,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000109",
+    "part_id": "part_000057",
+    "source_type": "authorized",
+    "unit_cost": 5253.54,
+    "currency": "INR",
+    "lead_time_days": 7,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000110",
+    "part_id": "part_000057",
+    "source_type": "gse_alliance",
+    "unit_cost": 4603.1,
+    "currency": "USD",
+    "lead_time_days": 4,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000111",
+    "part_id": "part_000057",
+    "source_type": "usm_broker",
+    "unit_cost": 4368.9,
+    "currency": "INR",
+    "lead_time_days": 16,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000112",
+    "part_id": "part_000058",
+    "source_type": "gse_alliance",
+    "unit_cost": 176.08,
+    "currency": "USD",
+    "lead_time_days": 13,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000113",
+    "part_id": "part_000058",
+    "source_type": "usm_broker",
+    "unit_cost": 168.72,
+    "currency": "USD",
+    "lead_time_days": 16,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000114",
+    "part_id": "part_000059",
+    "source_type": "gse_alliance",
+    "unit_cost": 719.93,
+    "currency": "USD",
+    "lead_time_days": 6,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000115",
+    "part_id": "part_000059",
+    "source_type": "usm_broker",
+    "unit_cost": 635.32,
+    "currency": "USD",
+    "lead_time_days": 14,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000116",
+    "part_id": "part_000060",
+    "source_type": "gse_alliance",
+    "unit_cost": 68.53,
+    "currency": "USD",
+    "lead_time_days": 9,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000117",
+    "part_id": "part_000061",
+    "source_type": "authorized",
+    "unit_cost": 4049.55,
+    "currency": "USD",
+    "lead_time_days": 21,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000118",
+    "part_id": "part_000061",
+    "source_type": "gse_alliance",
+    "unit_cost": 3548.17,
+    "currency": "USD",
+    "lead_time_days": 13,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000119",
+    "part_id": "part_000062",
+    "source_type": "gse_alliance",
+    "unit_cost": 14467.19,
+    "currency": "USD",
+    "lead_time_days": 7,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000120",
+    "part_id": "part_000062",
+    "source_type": "usm_broker",
+    "unit_cost": 12539.06,
+    "currency": "USD",
+    "lead_time_days": 2,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000121",
+    "part_id": "part_000063",
+    "source_type": "gse_alliance",
+    "unit_cost": 796.65,
+    "currency": "USD",
+    "lead_time_days": 12,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000122",
+    "part_id": "part_000063",
+    "source_type": "usm_broker",
+    "unit_cost": 585.93,
+    "currency": "USD",
+    "lead_time_days": 13,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000123",
+    "part_id": "part_000064",
+    "source_type": "gse_alliance",
+    "unit_cost": 1067.45,
+    "currency": "INR",
+    "lead_time_days": 12,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000124",
+    "part_id": "part_000065",
+    "source_type": "gse_alliance",
+    "unit_cost": 797.58,
+    "currency": "USD",
+    "lead_time_days": 8,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000125",
+    "part_id": "part_000065",
+    "source_type": "usm_broker",
+    "unit_cost": 532.43,
+    "currency": "USD",
+    "lead_time_days": 25,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000126",
+    "part_id": "part_000066",
+    "source_type": "gse_alliance",
+    "unit_cost": 25171.31,
+    "currency": "USD",
+    "lead_time_days": 11,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000127",
+    "part_id": "part_000067",
+    "source_type": "gse_alliance",
+    "unit_cost": 9250.67,
+    "currency": "USD",
+    "lead_time_days": 7,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000128",
+    "part_id": "part_000067",
+    "source_type": "usm_broker",
+    "unit_cost": 8161.47,
+    "currency": "USD",
+    "lead_time_days": 30,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000129",
+    "part_id": "part_000068",
+    "source_type": "authorized",
+    "unit_cost": 1638.82,
+    "currency": "USD",
+    "lead_time_days": 15,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000130",
+    "part_id": "part_000068",
+    "source_type": "usm_broker",
+    "unit_cost": 1391.89,
+    "currency": "INR",
+    "lead_time_days": 20,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000131",
+    "part_id": "part_000069",
+    "source_type": "gse_alliance",
+    "unit_cost": 343.14,
+    "currency": "USD",
+    "lead_time_days": 3,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000132",
+    "part_id": "part_000070",
+    "source_type": "authorized",
+    "unit_cost": 20203.54,
+    "currency": "USD",
+    "lead_time_days": 5,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000133",
+    "part_id": "part_000070",
+    "source_type": "gse_alliance",
+    "unit_cost": 17702.15,
+    "currency": "USD",
+    "lead_time_days": 3,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000134",
+    "part_id": "part_000070",
+    "source_type": "usm_broker",
+    "unit_cost": 17299.57,
+    "currency": "USD",
+    "lead_time_days": 10,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000135",
+    "part_id": "part_000071",
+    "source_type": "gse_alliance",
+    "unit_cost": 210.16,
+    "currency": "USD",
+    "lead_time_days": 6,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000136",
+    "part_id": "part_000071",
+    "source_type": "usm_broker",
+    "unit_cost": 213.6,
+    "currency": "USD",
+    "lead_time_days": 11,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000137",
+    "part_id": "part_000072",
+    "source_type": "gse_alliance",
+    "unit_cost": 416.9,
+    "currency": "USD",
+    "lead_time_days": 6,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000138",
+    "part_id": "part_000073",
+    "source_type": "gse_alliance",
+    "unit_cost": 1400.19,
+    "currency": "USD",
+    "lead_time_days": 13,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000139",
+    "part_id": "part_000073",
+    "source_type": "usm_broker",
+    "unit_cost": 1432.71,
+    "currency": "USD",
+    "lead_time_days": 22,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000140",
+    "part_id": "part_000074",
+    "source_type": "authorized",
+    "unit_cost": 1059.51,
+    "currency": "USD",
+    "lead_time_days": 16,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000141",
+    "part_id": "part_000074",
+    "source_type": "gse_alliance",
+    "unit_cost": 928.34,
+    "currency": "USD",
+    "lead_time_days": 5,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000142",
+    "part_id": "part_000074",
+    "source_type": "usm_broker",
+    "unit_cost": 722.35,
+    "currency": "USD",
+    "lead_time_days": 18,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000143",
+    "part_id": "part_000075",
+    "source_type": "gse_alliance",
+    "unit_cost": 5618.74,
+    "currency": "USD",
+    "lead_time_days": 3,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000144",
+    "part_id": "part_000075",
+    "source_type": "usm_broker",
+    "unit_cost": 4854.97,
+    "currency": "USD",
+    "lead_time_days": 11,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000145",
+    "part_id": "part_000076",
+    "source_type": "authorized",
+    "unit_cost": 346.89,
+    "currency": "USD",
+    "lead_time_days": 6,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000146",
+    "part_id": "part_000076",
+    "source_type": "usm_broker",
+    "unit_cost": 292.27,
+    "currency": "USD",
+    "lead_time_days": 28,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000147",
+    "part_id": "part_000077",
+    "source_type": "gse_alliance",
+    "unit_cost": 116.03,
+    "currency": "USD",
+    "lead_time_days": 11,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000148",
+    "part_id": "part_000077",
+    "source_type": "usm_broker",
+    "unit_cost": 79.52,
+    "currency": "USD",
+    "lead_time_days": 3,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000149",
+    "part_id": "part_000078",
+    "source_type": "authorized",
+    "unit_cost": 127.07,
+    "currency": "USD",
+    "lead_time_days": 16,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000150",
+    "part_id": "part_000078",
+    "source_type": "gse_alliance",
+    "unit_cost": 111.34,
+    "currency": "USD",
+    "lead_time_days": 5,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000151",
+    "part_id": "part_000079",
+    "source_type": "gse_alliance",
+    "unit_cost": 1323.02,
+    "currency": "USD",
+    "lead_time_days": 13,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000152",
+    "part_id": "part_000079",
+    "source_type": "usm_broker",
+    "unit_cost": 1315.48,
+    "currency": "INR",
+    "lead_time_days": 12,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000153",
+    "part_id": "part_000080",
+    "source_type": "authorized",
+    "unit_cost": 19415.49,
+    "currency": "USD",
+    "lead_time_days": 19,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000154",
+    "part_id": "part_000080",
+    "source_type": "gse_alliance",
+    "unit_cost": 17011.66,
+    "currency": "USD",
+    "lead_time_days": 6,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000155",
+    "part_id": "part_000081",
+    "source_type": "authorized",
+    "unit_cost": 24242.4,
+    "currency": "USD",
+    "lead_time_days": 8,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000156",
+    "part_id": "part_000081",
+    "source_type": "usm_broker",
+    "unit_cost": 18631.48,
+    "currency": "USD",
+    "lead_time_days": 7,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000157",
+    "part_id": "part_000082",
+    "source_type": "gse_alliance",
+    "unit_cost": 353.05,
+    "currency": "USD",
+    "lead_time_days": 5,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000158",
+    "part_id": "part_000082",
+    "source_type": "usm_broker",
+    "unit_cost": 265.66,
+    "currency": "USD",
+    "lead_time_days": 14,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000159",
+    "part_id": "part_000083",
+    "source_type": "gse_alliance",
+    "unit_cost": 6177.14,
+    "currency": "USD",
+    "lead_time_days": 11,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000160",
+    "part_id": "part_000084",
+    "source_type": "authorized",
+    "unit_cost": 585.97,
+    "currency": "USD",
+    "lead_time_days": 7,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000161",
+    "part_id": "part_000084",
+    "source_type": "gse_alliance",
+    "unit_cost": 513.42,
+    "currency": "USD",
+    "lead_time_days": 5,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000162",
+    "part_id": "part_000085",
+    "source_type": "authorized",
+    "unit_cost": 26336.55,
+    "currency": "USD",
+    "lead_time_days": 18,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000163",
+    "part_id": "part_000085",
+    "source_type": "gse_alliance",
+    "unit_cost": 23075.84,
+    "currency": "INR",
+    "lead_time_days": 4,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000164",
+    "part_id": "part_000086",
+    "source_type": "authorized",
+    "unit_cost": 7715.05,
+    "currency": "INR",
+    "lead_time_days": 10,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000165",
+    "part_id": "part_000086",
+    "source_type": "gse_alliance",
+    "unit_cost": 6759.86,
+    "currency": "USD",
+    "lead_time_days": 14,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000166",
+    "part_id": "part_000087",
+    "source_type": "gse_alliance",
+    "unit_cost": 9760.77,
+    "currency": "USD",
+    "lead_time_days": 7,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000167",
+    "part_id": "part_000087",
+    "source_type": "usm_broker",
+    "unit_cost": 9884.38,
+    "currency": "INR",
+    "lead_time_days": 21,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000168",
+    "part_id": "part_000088",
+    "source_type": "gse_alliance",
+    "unit_cost": 112.2,
+    "currency": "INR",
+    "lead_time_days": 5,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000169",
+    "part_id": "part_000088",
+    "source_type": "usm_broker",
+    "unit_cost": 102.37,
+    "currency": "USD",
+    "lead_time_days": 6,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000170",
+    "part_id": "part_000089",
+    "source_type": "authorized",
+    "unit_cost": 6447.27,
+    "currency": "USD",
+    "lead_time_days": 7,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000171",
+    "part_id": "part_000089",
+    "source_type": "usm_broker",
+    "unit_cost": 5468.95,
+    "currency": "USD",
+    "lead_time_days": 6,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000172",
+    "part_id": "part_000090",
+    "source_type": "gse_alliance",
+    "unit_cost": 31068.92,
+    "currency": "USD",
+    "lead_time_days": 8,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000173",
+    "part_id": "part_000090",
+    "source_type": "usm_broker",
+    "unit_cost": 24772.08,
+    "currency": "USD",
+    "lead_time_days": 23,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000174",
+    "part_id": "part_000091",
+    "source_type": "gse_alliance",
+    "unit_cost": 27663.26,
+    "currency": "USD",
+    "lead_time_days": 11,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000175",
+    "part_id": "part_000092",
+    "source_type": "gse_alliance",
+    "unit_cost": 782.84,
+    "currency": "USD",
+    "lead_time_days": 9,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000176",
+    "part_id": "part_000092",
+    "source_type": "usm_broker",
+    "unit_cost": 526.44,
+    "currency": "INR",
+    "lead_time_days": 16,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000177",
+    "part_id": "part_000093",
+    "source_type": "gse_alliance",
+    "unit_cost": 22899.53,
+    "currency": "USD",
+    "lead_time_days": 7,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000178",
+    "part_id": "part_000094",
+    "source_type": "gse_alliance",
+    "unit_cost": 1313.32,
+    "currency": "USD",
+    "lead_time_days": 8,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000179",
+    "part_id": "part_000094",
+    "source_type": "usm_broker",
+    "unit_cost": 1013.52,
+    "currency": "USD",
+    "lead_time_days": 5,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000180",
+    "part_id": "part_000095",
+    "source_type": "gse_alliance",
+    "unit_cost": 5464.13,
+    "currency": "USD",
+    "lead_time_days": 7,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000181",
+    "part_id": "part_000096",
+    "source_type": "gse_alliance",
+    "unit_cost": 12550.18,
+    "currency": "USD",
+    "lead_time_days": 9,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000182",
+    "part_id": "part_000096",
+    "source_type": "usm_broker",
+    "unit_cost": 9842.71,
+    "currency": "USD",
+    "lead_time_days": 27,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000183",
+    "part_id": "part_000097",
+    "source_type": "gse_alliance",
+    "unit_cost": 12515.32,
+    "currency": "INR",
+    "lead_time_days": 6,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000184",
+    "part_id": "part_000097",
+    "source_type": "usm_broker",
+    "unit_cost": 9286.73,
+    "currency": "USD",
+    "lead_time_days": 30,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000185",
+    "part_id": "part_000098",
+    "source_type": "gse_alliance",
+    "unit_cost": 276.03,
+    "currency": "USD",
+    "lead_time_days": 12,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000186",
+    "part_id": "part_000098",
+    "source_type": "usm_broker",
+    "unit_cost": 281.85,
+    "currency": "USD",
+    "lead_time_days": 23,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000187",
+    "part_id": "part_000099",
+    "source_type": "authorized",
+    "unit_cost": 5016.66,
+    "currency": "USD",
+    "lead_time_days": 21,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000188",
+    "part_id": "part_000099",
+    "source_type": "gse_alliance",
+    "unit_cost": 4395.55,
+    "currency": "USD",
+    "lead_time_days": 9,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000189",
+    "part_id": "part_000100",
+    "source_type": "authorized",
+    "unit_cost": 41715.43,
+    "currency": "USD",
+    "lead_time_days": 11,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000190",
+    "part_id": "part_000100",
+    "source_type": "gse_alliance",
+    "unit_cost": 36550.66,
+    "currency": "INR",
+    "lead_time_days": 12,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000191",
+    "part_id": "part_000100",
+    "source_type": "usm_broker",
+    "unit_cost": 25908.59,
+    "currency": "USD",
+    "lead_time_days": 14,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000192",
+    "part_id": "part_000101",
+    "source_type": "gse_alliance",
+    "unit_cost": 11236.81,
+    "currency": "USD",
+    "lead_time_days": 14,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000193",
+    "part_id": "part_000102",
+    "source_type": "authorized",
+    "unit_cost": 43885.46,
+    "currency": "USD",
+    "lead_time_days": 5,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000194",
+    "part_id": "part_000102",
+    "source_type": "gse_alliance",
+    "unit_cost": 38452.03,
+    "currency": "USD",
+    "lead_time_days": 3,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000195",
+    "part_id": "part_000103",
+    "source_type": "gse_alliance",
+    "unit_cost": 23238.97,
+    "currency": "USD",
+    "lead_time_days": 14,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000196",
+    "part_id": "part_000103",
+    "source_type": "usm_broker",
+    "unit_cost": 16722.87,
+    "currency": "USD",
+    "lead_time_days": 5,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000197",
+    "part_id": "part_000104",
+    "source_type": "gse_alliance",
+    "unit_cost": 8910.86,
+    "currency": "USD",
+    "lead_time_days": 13,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000198",
+    "part_id": "part_000104",
+    "source_type": "usm_broker",
+    "unit_cost": 6242.73,
+    "currency": "USD",
+    "lead_time_days": 22,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000199",
+    "part_id": "part_000105",
+    "source_type": "gse_alliance",
+    "unit_cost": 18422.37,
+    "currency": "INR",
+    "lead_time_days": 9,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000200",
+    "part_id": "part_000106",
+    "source_type": "gse_alliance",
+    "unit_cost": 1105.64,
+    "currency": "INR",
+    "lead_time_days": 11,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000201",
+    "part_id": "part_000107",
+    "source_type": "authorized",
+    "unit_cost": 19997.27,
+    "currency": "INR",
+    "lead_time_days": 16,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000202",
+    "part_id": "part_000107",
+    "source_type": "usm_broker",
+    "unit_cost": 15577.23,
+    "currency": "USD",
+    "lead_time_days": 27,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000203",
+    "part_id": "part_000108",
+    "source_type": "gse_alliance",
+    "unit_cost": 3985.21,
+    "currency": "INR",
+    "lead_time_days": 5,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000204",
+    "part_id": "part_000108",
+    "source_type": "usm_broker",
+    "unit_cost": 3913.34,
+    "currency": "USD",
+    "lead_time_days": 16,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000205",
+    "part_id": "part_000109",
+    "source_type": "gse_alliance",
+    "unit_cost": 1902.68,
+    "currency": "USD",
+    "lead_time_days": 7,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000206",
+    "part_id": "part_000109",
+    "source_type": "usm_broker",
+    "unit_cost": 1863.55,
+    "currency": "INR",
+    "lead_time_days": 24,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000207",
+    "part_id": "part_000110",
+    "source_type": "authorized",
+    "unit_cost": 28646.05,
+    "currency": "INR",
+    "lead_time_days": 14,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000208",
+    "part_id": "part_000110",
+    "source_type": "gse_alliance",
+    "unit_cost": 25099.39,
+    "currency": "INR",
+    "lead_time_days": 12,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000209",
+    "part_id": "part_000111",
+    "source_type": "gse_alliance",
+    "unit_cost": 1388.44,
+    "currency": "USD",
+    "lead_time_days": 6,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000210",
+    "part_id": "part_000111",
+    "source_type": "usm_broker",
+    "unit_cost": 1269.35,
+    "currency": "USD",
+    "lead_time_days": 1,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000211",
+    "part_id": "part_000112",
+    "source_type": "gse_alliance",
+    "unit_cost": 8796.86,
+    "currency": "USD",
+    "lead_time_days": 11,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000212",
+    "part_id": "part_000113",
+    "source_type": "gse_alliance",
+    "unit_cost": 14049.34,
+    "currency": "USD",
+    "lead_time_days": 14,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000213",
+    "part_id": "part_000114",
+    "source_type": "gse_alliance",
+    "unit_cost": 7669.91,
+    "currency": "INR",
+    "lead_time_days": 4,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000214",
+    "part_id": "part_000114",
+    "source_type": "usm_broker",
+    "unit_cost": 7878.58,
+    "currency": "USD",
+    "lead_time_days": 3,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000215",
+    "part_id": "part_000115",
+    "source_type": "gse_alliance",
+    "unit_cost": 10775.77,
+    "currency": "USD",
+    "lead_time_days": 11,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000216",
+    "part_id": "part_000115",
+    "source_type": "usm_broker",
+    "unit_cost": 9557.96,
+    "currency": "USD",
+    "lead_time_days": 7,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000217",
+    "part_id": "part_000116",
+    "source_type": "authorized",
+    "unit_cost": 14763.46,
+    "currency": "USD",
+    "lead_time_days": 10,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000218",
+    "part_id": "part_000116",
+    "source_type": "gse_alliance",
+    "unit_cost": 12935.6,
+    "currency": "USD",
+    "lead_time_days": 14,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000219",
+    "part_id": "part_000116",
+    "source_type": "usm_broker",
+    "unit_cost": 9644.07,
+    "currency": "USD",
+    "lead_time_days": 26,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000220",
+    "part_id": "part_000117",
+    "source_type": "gse_alliance",
+    "unit_cost": 10262.35,
+    "currency": "USD",
+    "lead_time_days": 9,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000221",
+    "part_id": "part_000118",
+    "source_type": "gse_alliance",
+    "unit_cost": 502.23,
+    "currency": "USD",
+    "lead_time_days": 14,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000222",
+    "part_id": "part_000119",
+    "source_type": "gse_alliance",
+    "unit_cost": 20939.81,
+    "currency": "USD",
+    "lead_time_days": 13,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000223",
+    "part_id": "part_000120",
+    "source_type": "authorized",
+    "unit_cost": 22879.06,
+    "currency": "USD",
+    "lead_time_days": 19,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000224",
+    "part_id": "part_000120",
+    "source_type": "gse_alliance",
+    "unit_cost": 20046.41,
+    "currency": "USD",
+    "lead_time_days": 8,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000225",
+    "part_id": "part_000121",
+    "source_type": "gse_alliance",
+    "unit_cost": 10372.14,
+    "currency": "USD",
+    "lead_time_days": 8,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000226",
+    "part_id": "part_000121",
+    "source_type": "usm_broker",
+    "unit_cost": 7612.46,
+    "currency": "INR",
+    "lead_time_days": 22,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000227",
+    "part_id": "part_000122",
+    "source_type": "authorized",
+    "unit_cost": 711.48,
+    "currency": "USD",
+    "lead_time_days": 12,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000228",
+    "part_id": "part_000122",
+    "source_type": "gse_alliance",
+    "unit_cost": 623.39,
+    "currency": "USD",
+    "lead_time_days": 5,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000229",
+    "part_id": "part_000123",
+    "source_type": "gse_alliance",
+    "unit_cost": 7935.55,
+    "currency": "USD",
+    "lead_time_days": 11,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000230",
+    "part_id": "part_000123",
+    "source_type": "usm_broker",
+    "unit_cost": 5902.23,
+    "currency": "USD",
+    "lead_time_days": 20,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000231",
+    "part_id": "part_000124",
+    "source_type": "authorized",
+    "unit_cost": 1645.22,
+    "currency": "USD",
+    "lead_time_days": 18,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000232",
+    "part_id": "part_000124",
+    "source_type": "gse_alliance",
+    "unit_cost": 1441.53,
+    "currency": "USD",
+    "lead_time_days": 12,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000233",
+    "part_id": "part_000125",
+    "source_type": "authorized",
+    "unit_cost": 43307.23,
+    "currency": "USD",
+    "lead_time_days": 16,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000234",
+    "part_id": "part_000125",
+    "source_type": "gse_alliance",
+    "unit_cost": 37945.38,
+    "currency": "USD",
+    "lead_time_days": 3,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000235",
+    "part_id": "part_000125",
+    "source_type": "usm_broker",
+    "unit_cost": 37380.68,
+    "currency": "USD",
+    "lead_time_days": 4,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000236",
+    "part_id": "part_000126",
+    "source_type": "gse_alliance",
+    "unit_cost": 328.02,
+    "currency": "USD",
+    "lead_time_days": 4,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000237",
+    "part_id": "part_000126",
+    "source_type": "usm_broker",
+    "unit_cost": 320.93,
+    "currency": "USD",
+    "lead_time_days": 3,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000238",
+    "part_id": "part_000127",
+    "source_type": "gse_alliance",
+    "unit_cost": 680.17,
+    "currency": "USD",
+    "lead_time_days": 13,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000239",
+    "part_id": "part_000127",
+    "source_type": "usm_broker",
+    "unit_cost": 693.03,
+    "currency": "USD",
+    "lead_time_days": 15,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000240",
+    "part_id": "part_000128",
+    "source_type": "gse_alliance",
+    "unit_cost": 16286.47,
+    "currency": "USD",
+    "lead_time_days": 9,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000241",
+    "part_id": "part_000128",
+    "source_type": "usm_broker",
+    "unit_cost": 15134.6,
+    "currency": "USD",
+    "lead_time_days": 9,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000242",
+    "part_id": "part_000129",
+    "source_type": "gse_alliance",
+    "unit_cost": 36800.04,
+    "currency": "USD",
+    "lead_time_days": 7,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000243",
+    "part_id": "part_000129",
+    "source_type": "usm_broker",
+    "unit_cost": 34220.91,
+    "currency": "INR",
+    "lead_time_days": 24,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000244",
+    "part_id": "part_000130",
+    "source_type": "gse_alliance",
+    "unit_cost": 936.08,
+    "currency": "USD",
+    "lead_time_days": 3,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000245",
+    "part_id": "part_000130",
+    "source_type": "usm_broker",
+    "unit_cost": 929.96,
+    "currency": "USD",
+    "lead_time_days": 23,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000246",
+    "part_id": "part_000131",
+    "source_type": "gse_alliance",
+    "unit_cost": 428.61,
+    "currency": "USD",
+    "lead_time_days": 12,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000247",
+    "part_id": "part_000132",
+    "source_type": "authorized",
+    "unit_cost": 12755.23,
+    "currency": "USD",
+    "lead_time_days": 10,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000248",
+    "part_id": "part_000132",
+    "source_type": "gse_alliance",
+    "unit_cost": 11176.01,
+    "currency": "USD",
+    "lead_time_days": 12,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000249",
+    "part_id": "part_000132",
+    "source_type": "usm_broker",
+    "unit_cost": 10061.67,
+    "currency": "USD",
+    "lead_time_days": 22,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000250",
+    "part_id": "part_000133",
+    "source_type": "gse_alliance",
+    "unit_cost": 21764.91,
+    "currency": "USD",
+    "lead_time_days": 14,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000251",
+    "part_id": "part_000133",
+    "source_type": "usm_broker",
+    "unit_cost": 17136.69,
+    "currency": "USD",
+    "lead_time_days": 9,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000252",
+    "part_id": "part_000134",
+    "source_type": "authorized",
+    "unit_cost": 14611.74,
+    "currency": "USD",
+    "lead_time_days": 14,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000253",
+    "part_id": "part_000134",
+    "source_type": "gse_alliance",
+    "unit_cost": 12802.66,
+    "currency": "INR",
+    "lead_time_days": 10,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000254",
+    "part_id": "part_000134",
+    "source_type": "usm_broker",
+    "unit_cost": 11840.12,
+    "currency": "USD",
+    "lead_time_days": 17,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000255",
+    "part_id": "part_000135",
+    "source_type": "authorized",
+    "unit_cost": 1467.9,
+    "currency": "INR",
+    "lead_time_days": 18,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000256",
+    "part_id": "part_000135",
+    "source_type": "gse_alliance",
+    "unit_cost": 1286.16,
+    "currency": "USD",
+    "lead_time_days": 11,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000257",
+    "part_id": "part_000135",
+    "source_type": "usm_broker",
+    "unit_cost": 892.02,
+    "currency": "USD",
+    "lead_time_days": 14,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000258",
+    "part_id": "part_000136",
+    "source_type": "gse_alliance",
+    "unit_cost": 3134.5,
+    "currency": "USD",
+    "lead_time_days": 5,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000259",
+    "part_id": "part_000137",
+    "source_type": "gse_alliance",
+    "unit_cost": 827.97,
+    "currency": "USD",
+    "lead_time_days": 3,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000260",
+    "part_id": "part_000137",
+    "source_type": "usm_broker",
+    "unit_cost": 754.83,
+    "currency": "USD",
+    "lead_time_days": 30,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000261",
+    "part_id": "part_000138",
+    "source_type": "authorized",
+    "unit_cost": 679.26,
+    "currency": "USD",
+    "lead_time_days": 6,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000262",
+    "part_id": "part_000138",
+    "source_type": "gse_alliance",
+    "unit_cost": 595.16,
+    "currency": "USD",
+    "lead_time_days": 13,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000263",
+    "part_id": "part_000138",
+    "source_type": "usm_broker",
+    "unit_cost": 477.11,
+    "currency": "USD",
+    "lead_time_days": 22,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000264",
+    "part_id": "part_000139",
+    "source_type": "gse_alliance",
+    "unit_cost": 22324.73,
+    "currency": "INR",
+    "lead_time_days": 11,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000265",
+    "part_id": "part_000139",
+    "source_type": "usm_broker",
+    "unit_cost": 15708.81,
+    "currency": "USD",
+    "lead_time_days": 26,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000266",
+    "part_id": "part_000140",
+    "source_type": "gse_alliance",
+    "unit_cost": 457.88,
+    "currency": "USD",
+    "lead_time_days": 8,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000267",
+    "part_id": "part_000140",
+    "source_type": "usm_broker",
+    "unit_cost": 398.78,
+    "currency": "INR",
+    "lead_time_days": 6,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000268",
+    "part_id": "part_000141",
+    "source_type": "gse_alliance",
+    "unit_cost": 730.56,
+    "currency": "USD",
+    "lead_time_days": 7,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000269",
+    "part_id": "part_000141",
+    "source_type": "usm_broker",
+    "unit_cost": 650.33,
+    "currency": "USD",
+    "lead_time_days": 23,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000270",
+    "part_id": "part_000142",
+    "source_type": "authorized",
+    "unit_cost": 1363.71,
+    "currency": "USD",
+    "lead_time_days": 15,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000271",
+    "part_id": "part_000142",
+    "source_type": "gse_alliance",
+    "unit_cost": 1194.87,
+    "currency": "USD",
+    "lead_time_days": 11,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000272",
+    "part_id": "part_000142",
+    "source_type": "usm_broker",
+    "unit_cost": 871.13,
+    "currency": "USD",
+    "lead_time_days": 5,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000273",
+    "part_id": "part_000143",
+    "source_type": "authorized",
+    "unit_cost": 1008.37,
+    "currency": "USD",
+    "lead_time_days": 5,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000274",
+    "part_id": "part_000143",
+    "source_type": "usm_broker",
+    "unit_cost": 854.5,
+    "currency": "INR",
+    "lead_time_days": 27,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000275",
+    "part_id": "part_000144",
+    "source_type": "gse_alliance",
+    "unit_cost": 721.83,
+    "currency": "USD",
+    "lead_time_days": 3,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000276",
+    "part_id": "part_000145",
+    "source_type": "gse_alliance",
+    "unit_cost": 13730.93,
+    "currency": "USD",
+    "lead_time_days": 14,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000277",
+    "part_id": "part_000145",
+    "source_type": "usm_broker",
+    "unit_cost": 12915.86,
+    "currency": "USD",
+    "lead_time_days": 30,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000278",
+    "part_id": "part_000146",
+    "source_type": "gse_alliance",
+    "unit_cost": 500.57,
+    "currency": "USD",
+    "lead_time_days": 14,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000279",
+    "part_id": "part_000147",
+    "source_type": "gse_alliance",
+    "unit_cost": 22077,
+    "currency": "USD",
+    "lead_time_days": 13,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000280",
+    "part_id": "part_000147",
+    "source_type": "usm_broker",
+    "unit_cost": 14748.02,
+    "currency": "USD",
+    "lead_time_days": 17,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000281",
+    "part_id": "part_000148",
+    "source_type": "authorized",
+    "unit_cost": 26301,
+    "currency": "USD",
+    "lead_time_days": 11,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000282",
+    "part_id": "part_000149",
+    "source_type": "gse_alliance",
+    "unit_cost": 2983.76,
+    "currency": "USD",
+    "lead_time_days": 12,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000283",
+    "part_id": "part_000150",
+    "source_type": "authorized",
+    "unit_cost": 13848.66,
+    "currency": "USD",
+    "lead_time_days": 9,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "sp_000284",
+    "part_id": "part_000150",
+    "source_type": "usm_broker",
+    "unit_cost": 10072.16,
+    "currency": "USD",
+    "lead_time_days": 18,
+    "_synthetic": true,
+    "_dataset": "v1"
+  }
+]

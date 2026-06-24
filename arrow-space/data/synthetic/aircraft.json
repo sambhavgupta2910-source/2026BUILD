@@ -1,0 +1,572 @@
+[
+  {
+    "id": "ac_000001",
+    "customer_id": "cust_000001",
+    "registration": "VT-DJO",
+    "type_model": "Robinson R66",
+    "serial_number": "LJ-7176",
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000002",
+    "customer_id": "cust_000001",
+    "registration": "VT-KRI",
+    "type_model": "Airbus H125",
+    "serial_number": "FL-8942",
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000003",
+    "customer_id": "cust_000002",
+    "registration": "VT-EXI",
+    "type_model": "Hawker 900XP",
+    "serial_number": "BB-1065",
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000004",
+    "customer_id": "cust_000002",
+    "registration": "VT-SZO",
+    "type_model": "Hawker 850XP",
+    "serial_number": "BB-2775",
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000005",
+    "customer_id": "cust_000003",
+    "registration": "VT-EZU",
+    "type_model": "Airbus H125",
+    "serial_number": "BB-6309",
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000006",
+    "customer_id": "cust_000003",
+    "registration": "VT-BJO",
+    "type_model": "Hawker 900XP",
+    "serial_number": "FL-5960",
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000007",
+    "customer_id": "cust_000004",
+    "registration": "VT-KBA",
+    "type_model": "Pilatus PC-12",
+    "serial_number": "FL-2477",
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000008",
+    "customer_id": "cust_000004",
+    "registration": "VT-EZE",
+    "type_model": "Robinson R66",
+    "serial_number": "BB-7373",
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000009",
+    "customer_id": "cust_000004",
+    "registration": "VT-BXI",
+    "type_model": "Hawker 850XP",
+    "serial_number": "BB-7748",
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000010",
+    "customer_id": "cust_000004",
+    "registration": "VT-SRU",
+    "type_model": "Airbus H125",
+    "serial_number": "BB-5565",
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000011",
+    "customer_id": "cust_000005",
+    "registration": "VT-BBO",
+    "type_model": "Bell 407",
+    "serial_number": "LJ-2132",
+    "in_service": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000012",
+    "customer_id": "cust_000006",
+    "registration": "VT-AZI",
+    "type_model": "Pilatus PC-12",
+    "serial_number": "BB-3330",
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000013",
+    "customer_id": "cust_000006",
+    "registration": "VT-BZI",
+    "type_model": "Bell 407",
+    "serial_number": "LJ-5124",
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000014",
+    "customer_id": "cust_000006",
+    "registration": "VT-ABU",
+    "type_model": "Airbus H125",
+    "serial_number": "FL-5136",
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000015",
+    "customer_id": "cust_000007",
+    "registration": "VT-BZU",
+    "type_model": "Pilatus PC-12",
+    "serial_number": "BB-5229",
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000016",
+    "customer_id": "cust_000007",
+    "registration": "VT-DJI",
+    "type_model": "Hawker 900XP",
+    "serial_number": "HK-3699",
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000017",
+    "customer_id": "cust_000008",
+    "registration": "VT-AXA",
+    "type_model": "Cessna Citation CJ3",
+    "serial_number": null,
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000018",
+    "customer_id": "cust_000008",
+    "registration": "VT-SBI",
+    "type_model": "Cessna Caravan 208B",
+    "serial_number": "FL-5173",
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000019",
+    "customer_id": "cust_000009",
+    "registration": "VT-AXA",
+    "type_model": "Cessna Citation CJ3",
+    "serial_number": "BB-3753",
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000020",
+    "customer_id": "cust_000009",
+    "registration": "VT-BXU",
+    "type_model": "Robinson R66",
+    "serial_number": "BB-5717",
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000021",
+    "customer_id": "cust_000010",
+    "registration": "VT-SBO",
+    "type_model": "Hawker 900XP",
+    "serial_number": "HK-8347",
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000022",
+    "customer_id": "cust_000010",
+    "registration": "VT-KBI",
+    "type_model": "Beechcraft King Air B200",
+    "serial_number": "LJ-5596",
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000023",
+    "customer_id": "cust_000011",
+    "registration": "VT-KZU",
+    "type_model": "Cessna Caravan 208B",
+    "serial_number": "HK-8131",
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000024",
+    "customer_id": "cust_000011",
+    "registration": "VT-KBI",
+    "type_model": "Beechcraft King Air 350",
+    "serial_number": null,
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000025",
+    "customer_id": "cust_000011",
+    "registration": "VT-CZI",
+    "type_model": "Bell 407",
+    "serial_number": null,
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000026",
+    "customer_id": "cust_000011",
+    "registration": "VT-BJO",
+    "type_model": "Beechcraft Bonanza G36",
+    "serial_number": "BB-2469",
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000027",
+    "customer_id": "cust_000012",
+    "registration": "VT-KRO",
+    "type_model": "Cessna Caravan 208B",
+    "serial_number": "BB-6872",
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000028",
+    "customer_id": "cust_000012",
+    "registration": "VT-EZI",
+    "type_model": "Beechcraft Bonanza G36",
+    "serial_number": "HK-6348",
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000029",
+    "customer_id": "cust_000013",
+    "registration": "VT-KBI",
+    "type_model": "Cessna Citation CJ3",
+    "serial_number": "LJ-7975",
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000030",
+    "customer_id": "cust_000013",
+    "registration": "VT-SJI",
+    "type_model": "Cessna Caravan 208B",
+    "serial_number": "HK-1894",
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000031",
+    "customer_id": "cust_000014",
+    "registration": "VT-DXU",
+    "type_model": "Cessna Citation CJ3",
+    "serial_number": "BB-697",
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000032",
+    "customer_id": "cust_000014",
+    "registration": "VT-ABI",
+    "type_model": "Airbus H125",
+    "serial_number": "LJ-6376",
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000033",
+    "customer_id": "cust_000014",
+    "registration": "VT-SJA",
+    "type_model": "Hawker 850XP",
+    "serial_number": "LJ-594",
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000034",
+    "customer_id": "cust_000015",
+    "registration": "VT-ERI",
+    "type_model": "Airbus H125",
+    "serial_number": "LJ-2026",
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000035",
+    "customer_id": "cust_000015",
+    "registration": "VT-SJU",
+    "type_model": "Pilatus PC-12",
+    "serial_number": null,
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000036",
+    "customer_id": "cust_000015",
+    "registration": "VT-CXU",
+    "type_model": "Cessna Caravan 208B",
+    "serial_number": null,
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000037",
+    "customer_id": "cust_000016",
+    "registration": "VT-DZE",
+    "type_model": "Airbus H125",
+    "serial_number": "FL-9828",
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000038",
+    "customer_id": "cust_000016",
+    "registration": "VT-AXO",
+    "type_model": "Robinson R66",
+    "serial_number": null,
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000039",
+    "customer_id": "cust_000017",
+    "registration": "VT-KJI",
+    "type_model": "Beechcraft Baron G58",
+    "serial_number": "BB-2948",
+    "in_service": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000040",
+    "customer_id": "cust_000017",
+    "registration": "VT-CRE",
+    "type_model": "Cessna Caravan 208B",
+    "serial_number": "BB-5746",
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000041",
+    "customer_id": "cust_000017",
+    "registration": "VT-DZI",
+    "type_model": "Cessna Caravan 208B",
+    "serial_number": null,
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000042",
+    "customer_id": "cust_000017",
+    "registration": "VT-DRO",
+    "type_model": "Cessna Caravan 208B",
+    "serial_number": "FL-1813",
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000043",
+    "customer_id": "cust_000018",
+    "registration": "VT-CBA",
+    "type_model": "Hawker 850XP",
+    "serial_number": "FL-525",
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000044",
+    "customer_id": "cust_000018",
+    "registration": "VT-AXE",
+    "type_model": "Pilatus PC-12",
+    "serial_number": "LJ-3468",
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000045",
+    "customer_id": "cust_000018",
+    "registration": "VT-DZA",
+    "type_model": "Cessna Caravan 208B",
+    "serial_number": "FL-8858",
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000046",
+    "customer_id": "cust_000019",
+    "registration": "VT-BXO",
+    "type_model": "Hawker 900XP",
+    "serial_number": "HK-4112",
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000047",
+    "customer_id": "cust_000019",
+    "registration": "VT-KRA",
+    "type_model": "Beechcraft King Air 350",
+    "serial_number": "HK-1040",
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000048",
+    "customer_id": "cust_000019",
+    "registration": "VT-EZI",
+    "type_model": "Cessna Citation CJ3",
+    "serial_number": "LJ-9017",
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000049",
+    "customer_id": "cust_000019",
+    "registration": "VT-BZE",
+    "type_model": "Beechcraft King Air 350",
+    "serial_number": "LJ-4462",
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000050",
+    "customer_id": "cust_000020",
+    "registration": "VT-EZU",
+    "type_model": "Hawker 850XP",
+    "serial_number": "LJ-4975",
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000051",
+    "customer_id": "cust_000020",
+    "registration": "VT-ERU",
+    "type_model": "Pilatus PC-12",
+    "serial_number": "FL-518",
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000052",
+    "customer_id": "cust_000021",
+    "registration": "VT-CXI",
+    "type_model": "Beechcraft King Air 350",
+    "serial_number": "FL-9970",
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000053",
+    "customer_id": "cust_000022",
+    "registration": "VT-SJI",
+    "type_model": "Hawker 850XP",
+    "serial_number": "BB-8459",
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000054",
+    "customer_id": "cust_000022",
+    "registration": "VT-KBO",
+    "type_model": "Beechcraft King Air 350",
+    "serial_number": "BB-6234",
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000055",
+    "customer_id": "cust_000023",
+    "registration": "VT-BZI",
+    "type_model": "Airbus H125",
+    "serial_number": "BB-4008",
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000056",
+    "customer_id": "cust_000024",
+    "registration": "VT-CBU",
+    "type_model": "Hawker 900XP",
+    "serial_number": "BB-1332",
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "ac_000057",
+    "customer_id": "cust_000024",
+    "registration": "VT-SZU",
+    "type_model": "Pilatus PC-12",
+    "serial_number": null,
+    "in_service": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  }
+]

@@ -1,0 +1,22 @@
+{
+  "name": "@arrow-space/data",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Deterministic synthetic-data generator + committed datasets (clearly labelled synthetic).",
+  "type": "module",
+  "scripts": {
+    "gen": "tsx src/gen.ts",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@arrow-space/schema": "workspace:*",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "tsx": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}

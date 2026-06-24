@@ -1,0 +1,2162 @@
+[
+  {
+    "id": "order_000001",
+    "quote_id": "quote_000004",
+    "rfq_id": "rfq_000005",
+    "customer_id": "cust_000006",
+    "lines": [
+      {
+        "part_id": "part_000119",
+        "qty": 7,
+        "unit_price": 24436.76,
+        "condition": "NEW"
+      },
+      {
+        "part_id": "part_000094",
+        "qty": 1,
+        "unit_price": 1713.88,
+        "condition": "SV"
+      },
+      {
+        "part_id": "part_000142",
+        "qty": 8,
+        "unit_price": 1688.27,
+        "condition": "SV"
+      }
+    ],
+    "status": "delivered",
+    "placed_at": "2025-09-29T03:55:23.597Z",
+    "trace_doc_ids": [
+      "trace_000001",
+      "trace_000002"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000002",
+    "quote_id": "quote_000011",
+    "rfq_id": "rfq_000017",
+    "customer_id": "cust_000017",
+    "lines": [
+      {
+        "part_id": "part_000045",
+        "qty": 8,
+        "unit_price": 1021.1,
+        "condition": "NEW"
+      },
+      {
+        "part_id": "part_000011",
+        "qty": 4,
+        "unit_price": 653.48,
+        "condition": "NEW"
+      },
+      {
+        "part_id": "part_000142",
+        "qty": 5,
+        "unit_price": 1120.27,
+        "condition": "SV"
+      }
+    ],
+    "status": "delivered",
+    "placed_at": "2025-12-30T08:03:16.201Z",
+    "trace_doc_ids": [
+      "trace_000003",
+      "trace_000004",
+      "trace_000005"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000003",
+    "quote_id": "quote_000012",
+    "rfq_id": "rfq_000018",
+    "customer_id": "cust_000023",
+    "lines": [
+      {
+        "part_id": "part_000127",
+        "qty": 7,
+        "unit_price": 928.43,
+        "condition": "NEW"
+      }
+    ],
+    "status": "closed",
+    "placed_at": "2025-08-15T15:34:08.667Z",
+    "trace_doc_ids": [
+      "trace_000006",
+      "trace_000007",
+      "trace_000008",
+      "trace_000009"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000004",
+    "quote_id": "quote_000017",
+    "rfq_id": "rfq_000027",
+    "customer_id": "cust_000014",
+    "lines": [
+      {
+        "part_id": "part_000020",
+        "qty": 7,
+        "unit_price": 1717.07,
+        "condition": "SV"
+      },
+      {
+        "part_id": "part_000054",
+        "qty": 6,
+        "unit_price": 26502,
+        "condition": "AR"
+      }
+    ],
+    "status": "closed",
+    "placed_at": "2025-10-14T00:43:52.524Z",
+    "trace_doc_ids": [
+      "trace_000010",
+      "trace_000011"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000005",
+    "quote_id": "quote_000018",
+    "rfq_id": "rfq_000028",
+    "customer_id": "cust_000021",
+    "lines": [
+      {
+        "part_id": "part_000052",
+        "qty": 8,
+        "unit_price": 4027.53,
+        "condition": "SV"
+      },
+      {
+        "part_id": "part_000096",
+        "qty": 8,
+        "unit_price": 15700.28,
+        "condition": "SV"
+      }
+    ],
+    "status": "closed",
+    "placed_at": "2025-11-23T18:13:05.818Z",
+    "trace_doc_ids": [
+      "trace_000012",
+      "trace_000013"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000006",
+    "quote_id": "quote_000022",
+    "rfq_id": "rfq_000034",
+    "customer_id": "cust_000017",
+    "lines": [
+      {
+        "part_id": "part_000124",
+        "qty": 4,
+        "unit_price": 1794.7,
+        "condition": "OH"
+      },
+      {
+        "part_id": "part_000011",
+        "qty": 6,
+        "unit_price": 654.6,
+        "condition": "SV"
+      }
+    ],
+    "status": "shipped",
+    "placed_at": "2025-11-06T01:02:40.259Z",
+    "trace_doc_ids": [
+      "trace_000014",
+      "trace_000015",
+      "trace_000016",
+      "trace_000017"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000007",
+    "quote_id": "quote_000023",
+    "rfq_id": "rfq_000035",
+    "customer_id": "cust_000024",
+    "lines": [
+      {
+        "part_id": "part_000019",
+        "qty": 6,
+        "unit_price": 325.21,
+        "condition": "NEW"
+      },
+      {
+        "part_id": "part_000069",
+        "qty": 1,
+        "unit_price": 454.32,
+        "condition": "OH"
+      },
+      {
+        "part_id": "part_000119",
+        "qty": 2,
+        "unit_price": 23326.95,
+        "condition": "NEW"
+      }
+    ],
+    "status": "shipped",
+    "placed_at": "2025-08-19T21:50:01.592Z",
+    "trace_doc_ids": [
+      "trace_000018",
+      "trace_000019",
+      "trace_000020",
+      "trace_000021"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000008",
+    "quote_id": "quote_000025",
+    "rfq_id": "rfq_000038",
+    "customer_id": "cust_000018",
+    "lines": [
+      {
+        "part_id": "part_000063",
+        "qty": 5,
+        "unit_price": 742.37,
+        "condition": "NEW"
+      },
+      {
+        "part_id": "part_000044",
+        "qty": 3,
+        "unit_price": 879.39,
+        "condition": "NEW"
+      }
+    ],
+    "status": "shipped",
+    "placed_at": "2025-10-15T10:34:56.616Z",
+    "trace_doc_ids": [
+      "trace_000022",
+      "trace_000023",
+      "trace_000024"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000009",
+    "quote_id": "quote_000028",
+    "rfq_id": "rfq_000041",
+    "customer_id": "cust_000003",
+    "lines": [
+      {
+        "part_id": "part_000014",
+        "qty": 7,
+        "unit_price": 1915.89,
+        "condition": "SV"
+      },
+      {
+        "part_id": "part_000016",
+        "qty": 6,
+        "unit_price": 9017.2,
+        "condition": "NEW"
+      }
+    ],
+    "status": "closed",
+    "placed_at": "2025-11-25T20:16:20.391Z",
+    "trace_doc_ids": [
+      "trace_000025",
+      "trace_000026",
+      "trace_000027"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000010",
+    "quote_id": "quote_000029",
+    "rfq_id": "rfq_000042",
+    "customer_id": "cust_000003",
+    "lines": [
+      {
+        "part_id": "part_000028",
+        "qty": 5,
+        "unit_price": 1568.23,
+        "condition": "NEW"
+      },
+      {
+        "part_id": "part_000133",
+        "qty": 8,
+        "unit_price": 20683.98,
+        "condition": "OH"
+      },
+      {
+        "part_id": "part_000020",
+        "qty": 1,
+        "unit_price": 2023.89,
+        "condition": "SV"
+      }
+    ],
+    "status": "sourcing",
+    "placed_at": "2025-12-22T07:26:13.018Z",
+    "trace_doc_ids": [],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000011",
+    "quote_id": "quote_000035",
+    "rfq_id": "rfq_000048",
+    "customer_id": "cust_000018",
+    "lines": [
+      {
+        "part_id": "part_000127",
+        "qty": 7,
+        "unit_price": 927.27,
+        "condition": "SV"
+      }
+    ],
+    "status": "delivered",
+    "placed_at": "2025-11-06T17:08:16.877Z",
+    "trace_doc_ids": [
+      "trace_000028",
+      "trace_000029",
+      "trace_000030"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000012",
+    "quote_id": "quote_000036",
+    "rfq_id": "rfq_000050",
+    "customer_id": "cust_000003",
+    "lines": [
+      {
+        "part_id": "part_000033",
+        "qty": 1,
+        "unit_price": 40238.64,
+        "condition": "OH"
+      },
+      {
+        "part_id": "part_000043",
+        "qty": 6,
+        "unit_price": 18652.34,
+        "condition": "SV"
+      }
+    ],
+    "status": "closed",
+    "placed_at": "2025-10-25T16:58:27.724Z",
+    "trace_doc_ids": [
+      "trace_000031",
+      "trace_000032",
+      "trace_000033"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000013",
+    "quote_id": "quote_000038",
+    "rfq_id": "rfq_000053",
+    "customer_id": "cust_000012",
+    "lines": [
+      {
+        "part_id": "part_000058",
+        "qty": 3,
+        "unit_price": 210.42,
+        "condition": "SV"
+      },
+      {
+        "part_id": "part_000141",
+        "qty": 6,
+        "unit_price": 986.26,
+        "condition": "AR"
+      },
+      {
+        "part_id": "part_000123",
+        "qty": 2,
+        "unit_price": 9498.85,
+        "condition": "NEW"
+      }
+    ],
+    "status": "placed",
+    "placed_at": "2025-10-05T14:24:00.235Z",
+    "trace_doc_ids": [],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000014",
+    "quote_id": "quote_000040",
+    "rfq_id": "rfq_000057",
+    "customer_id": "cust_000008",
+    "lines": [
+      {
+        "part_id": "part_000123",
+        "qty": 3,
+        "unit_price": 6580.99,
+        "condition": "NEW"
+      },
+      {
+        "part_id": "part_000084",
+        "qty": 4,
+        "unit_price": 617.13,
+        "condition": "AR"
+      }
+    ],
+    "status": "closed",
+    "placed_at": "2026-01-30T21:16:26.788Z",
+    "trace_doc_ids": [
+      "trace_000034",
+      "trace_000035",
+      "trace_000036",
+      "trace_000037"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000015",
+    "quote_id": "quote_000044",
+    "rfq_id": "rfq_000066",
+    "customer_id": "cust_000017",
+    "lines": [
+      {
+        "part_id": "part_000131",
+        "qty": 2,
+        "unit_price": 539.62,
+        "condition": "SV"
+      }
+    ],
+    "status": "delivered",
+    "placed_at": "2026-04-19T08:48:31.957Z",
+    "trace_doc_ids": [
+      "trace_000038",
+      "trace_000039"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000016",
+    "quote_id": "quote_000048",
+    "rfq_id": "rfq_000072",
+    "customer_id": "cust_000004",
+    "lines": [
+      {
+        "part_id": "part_000011",
+        "qty": 4,
+        "unit_price": 639.72,
+        "condition": "NEW"
+      },
+      {
+        "part_id": "part_000085",
+        "qty": 5,
+        "unit_price": 33447.42,
+        "condition": "SV"
+      }
+    ],
+    "status": "closed",
+    "placed_at": "2026-01-01T23:05:28.054Z",
+    "trace_doc_ids": [
+      "trace_000040",
+      "trace_000041",
+      "trace_000042"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000017",
+    "quote_id": "quote_000051",
+    "rfq_id": "rfq_000080",
+    "customer_id": "cust_000007",
+    "lines": [
+      {
+        "part_id": "part_000085",
+        "qty": 7,
+        "unit_price": 31603.86,
+        "condition": "SV"
+      },
+      {
+        "part_id": "part_000024",
+        "qty": 5,
+        "unit_price": 4770.23,
+        "condition": "SV"
+      },
+      {
+        "part_id": "part_000090",
+        "qty": 6,
+        "unit_price": 36661.33,
+        "condition": "SV"
+      }
+    ],
+    "status": "delivered",
+    "placed_at": "2026-03-20T22:25:07.922Z",
+    "trace_doc_ids": [
+      "trace_000043",
+      "trace_000044",
+      "trace_000045",
+      "trace_000046"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000018",
+    "quote_id": "quote_000055",
+    "rfq_id": "rfq_000085",
+    "customer_id": "cust_000024",
+    "lines": [
+      {
+        "part_id": "part_000097",
+        "qty": 6,
+        "unit_price": 15118.51,
+        "condition": "OH"
+      },
+      {
+        "part_id": "part_000123",
+        "qty": 8,
+        "unit_price": 7088.58,
+        "condition": "NEW"
+      },
+      {
+        "part_id": "part_000102",
+        "qty": 8,
+        "unit_price": 53803.57,
+        "condition": "AR"
+      }
+    ],
+    "status": "delivered",
+    "placed_at": "2026-04-05T13:33:55.989Z",
+    "trace_doc_ids": [
+      "trace_000047",
+      "trace_000048",
+      "trace_000049",
+      "trace_000050"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000019",
+    "quote_id": "quote_000060",
+    "rfq_id": "rfq_000093",
+    "customer_id": "cust_000024",
+    "lines": [
+      {
+        "part_id": "part_000047",
+        "qty": 6,
+        "unit_price": 4463.93,
+        "condition": "OH"
+      },
+      {
+        "part_id": "part_000012",
+        "qty": 7,
+        "unit_price": 477.65,
+        "condition": "AR"
+      },
+      {
+        "part_id": "part_000142",
+        "qty": 4,
+        "unit_price": 1712.82,
+        "condition": "SV"
+      }
+    ],
+    "status": "delivered",
+    "placed_at": "2025-10-31T18:08:18.264Z",
+    "trace_doc_ids": [
+      "trace_000051",
+      "trace_000052",
+      "trace_000053"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000020",
+    "quote_id": "quote_000066",
+    "rfq_id": "rfq_000102",
+    "customer_id": "cust_000007",
+    "lines": [
+      {
+        "part_id": "part_000110",
+        "qty": 8,
+        "unit_price": 34833.6,
+        "condition": "OH"
+      }
+    ],
+    "status": "delivered",
+    "placed_at": "2025-07-21T22:01:55.888Z",
+    "trace_doc_ids": [
+      "trace_000054",
+      "trace_000055"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000021",
+    "quote_id": "quote_000067",
+    "rfq_id": "rfq_000103",
+    "customer_id": "cust_000016",
+    "lines": [
+      {
+        "part_id": "part_000081",
+        "qty": 1,
+        "unit_price": 30399.97,
+        "condition": "NEW"
+      }
+    ],
+    "status": "delivered",
+    "placed_at": "2025-12-11T14:50:36.512Z",
+    "trace_doc_ids": [
+      "trace_000056",
+      "trace_000057",
+      "trace_000058"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000022",
+    "quote_id": "quote_000069",
+    "rfq_id": "rfq_000109",
+    "customer_id": "cust_000020",
+    "lines": [
+      {
+        "part_id": "part_000072",
+        "qty": 3,
+        "unit_price": 530.71,
+        "condition": "SV"
+      },
+      {
+        "part_id": "part_000136",
+        "qty": 4,
+        "unit_price": 3551.39,
+        "condition": "NEW"
+      }
+    ],
+    "status": "closed",
+    "placed_at": "2025-08-10T16:28:31.225Z",
+    "trace_doc_ids": [
+      "trace_000059",
+      "trace_000060"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000023",
+    "quote_id": "quote_000074",
+    "rfq_id": "rfq_000115",
+    "customer_id": "cust_000005",
+    "lines": [
+      {
+        "part_id": "part_000104",
+        "qty": 6,
+        "unit_price": 7472.55,
+        "condition": "OH"
+      },
+      {
+        "part_id": "part_000113",
+        "qty": 6,
+        "unit_price": 17379.03,
+        "condition": "SV"
+      }
+    ],
+    "status": "shipped",
+    "placed_at": "2026-03-13T06:50:18.470Z",
+    "trace_doc_ids": [
+      "trace_000061",
+      "trace_000062"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000024",
+    "quote_id": "quote_000075",
+    "rfq_id": "rfq_000116",
+    "customer_id": "cust_000010",
+    "lines": [
+      {
+        "part_id": "part_000005",
+        "qty": 7,
+        "unit_price": 1398.66,
+        "condition": "OH"
+      },
+      {
+        "part_id": "part_000149",
+        "qty": 4,
+        "unit_price": 3323.91,
+        "condition": "AR"
+      }
+    ],
+    "status": "delivered",
+    "placed_at": "2025-11-13T23:36:08.004Z",
+    "trace_doc_ids": [
+      "trace_000063",
+      "trace_000064"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000025",
+    "quote_id": "quote_000076",
+    "rfq_id": "rfq_000117",
+    "customer_id": "cust_000009",
+    "lines": [
+      {
+        "part_id": "part_000012",
+        "qty": 2,
+        "unit_price": 473.27,
+        "condition": "AR"
+      },
+      {
+        "part_id": "part_000098",
+        "qty": 8,
+        "unit_price": 375.12,
+        "condition": "AR"
+      }
+    ],
+    "status": "closed",
+    "placed_at": "2026-02-14T19:09:45.929Z",
+    "trace_doc_ids": [
+      "trace_000065",
+      "trace_000066"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000026",
+    "quote_id": "quote_000081",
+    "rfq_id": "rfq_000122",
+    "customer_id": "cust_000010",
+    "lines": [
+      {
+        "part_id": "part_000150",
+        "qty": 1,
+        "unit_price": 10706.71,
+        "condition": "AR"
+      },
+      {
+        "part_id": "part_000060",
+        "qty": 5,
+        "unit_price": 84.5,
+        "condition": "AR"
+      },
+      {
+        "part_id": "part_000122",
+        "qty": 7,
+        "unit_price": 842.39,
+        "condition": "SV"
+      }
+    ],
+    "status": "closed",
+    "placed_at": "2026-07-10T04:10:15.990Z",
+    "trace_doc_ids": [
+      "trace_000067",
+      "trace_000068"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000027",
+    "quote_id": "quote_000082",
+    "rfq_id": "rfq_000123",
+    "customer_id": "cust_000007",
+    "lines": [
+      {
+        "part_id": "part_000133",
+        "qty": 1,
+        "unit_price": 24964.35,
+        "condition": "OH"
+      },
+      {
+        "part_id": "part_000064",
+        "qty": 1,
+        "unit_price": 1433.59,
+        "condition": "NEW"
+      }
+    ],
+    "status": "delivered",
+    "placed_at": "2026-04-18T06:27:17.384Z",
+    "trace_doc_ids": [
+      "trace_000069",
+      "trace_000070",
+      "trace_000071",
+      "trace_000072"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000028",
+    "quote_id": "quote_000085",
+    "rfq_id": "rfq_000126",
+    "customer_id": "cust_000014",
+    "lines": [
+      {
+        "part_id": "part_000107",
+        "qty": 8,
+        "unit_price": 19097.68,
+        "condition": "NEW"
+      }
+    ],
+    "status": "sourcing",
+    "placed_at": "2026-04-30T14:57:43.739Z",
+    "trace_doc_ids": [],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000029",
+    "quote_id": "quote_000089",
+    "rfq_id": "rfq_000132",
+    "customer_id": "cust_000015",
+    "lines": [
+      {
+        "part_id": "part_000048",
+        "qty": 8,
+        "unit_price": 13581.39,
+        "condition": "AR"
+      },
+      {
+        "part_id": "part_000118",
+        "qty": 4,
+        "unit_price": 647.88,
+        "condition": "NEW"
+      },
+      {
+        "part_id": "part_000057",
+        "qty": 3,
+        "unit_price": 5006.76,
+        "condition": "SV"
+      }
+    ],
+    "status": "closed",
+    "placed_at": "2025-12-23T04:26:57.715Z",
+    "trace_doc_ids": [
+      "trace_000073",
+      "trace_000074"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000030",
+    "quote_id": "quote_000093",
+    "rfq_id": "rfq_000137",
+    "customer_id": "cust_000018",
+    "lines": [
+      {
+        "part_id": "part_000058",
+        "qty": 1,
+        "unit_price": 210.24,
+        "condition": "OH"
+      }
+    ],
+    "status": "delivered",
+    "placed_at": "2026-04-30T01:56:10.433Z",
+    "trace_doc_ids": [
+      "trace_000075",
+      "trace_000076"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000031",
+    "quote_id": "quote_000094",
+    "rfq_id": "rfq_000138",
+    "customer_id": "cust_000010",
+    "lines": [
+      {
+        "part_id": "part_000086",
+        "qty": 5,
+        "unit_price": 7206.01,
+        "condition": "AR"
+      }
+    ],
+    "status": "delivered",
+    "placed_at": "2026-04-29T10:56:32.364Z",
+    "trace_doc_ids": [
+      "trace_000077",
+      "trace_000078",
+      "trace_000079",
+      "trace_000080"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000032",
+    "quote_id": "quote_000096",
+    "rfq_id": "rfq_000141",
+    "customer_id": "cust_000014",
+    "lines": [
+      {
+        "part_id": "part_000143",
+        "qty": 3,
+        "unit_price": 1030.53,
+        "condition": "AR"
+      },
+      {
+        "part_id": "part_000085",
+        "qty": 7,
+        "unit_price": 27990.99,
+        "condition": "NEW"
+      }
+    ],
+    "status": "delivered",
+    "placed_at": "2025-10-04T11:32:11.977Z",
+    "trace_doc_ids": [
+      "trace_000081",
+      "trace_000082"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000033",
+    "quote_id": "quote_000097",
+    "rfq_id": "rfq_000142",
+    "customer_id": "cust_000015",
+    "lines": [
+      {
+        "part_id": "part_000032",
+        "qty": 5,
+        "unit_price": 476.73,
+        "condition": "AR"
+      }
+    ],
+    "status": "shipped",
+    "placed_at": "2025-08-02T08:55:33.920Z",
+    "trace_doc_ids": [
+      "trace_000083",
+      "trace_000084",
+      "trace_000085"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000034",
+    "quote_id": "quote_000098",
+    "rfq_id": "rfq_000143",
+    "customer_id": "cust_000002",
+    "lines": [
+      {
+        "part_id": "part_000023",
+        "qty": 1,
+        "unit_price": 1799.71,
+        "condition": "OH"
+      },
+      {
+        "part_id": "part_000056",
+        "qty": 7,
+        "unit_price": 691.01,
+        "condition": "AR"
+      },
+      {
+        "part_id": "part_000146",
+        "qty": 2,
+        "unit_price": 646.24,
+        "condition": "OH"
+      }
+    ],
+    "status": "sourcing",
+    "placed_at": "2026-06-20T21:41:22.560Z",
+    "trace_doc_ids": [],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000035",
+    "quote_id": "quote_000102",
+    "rfq_id": "rfq_000148",
+    "customer_id": "cust_000019",
+    "lines": [
+      {
+        "part_id": "part_000121",
+        "qty": 5,
+        "unit_price": 8419.38,
+        "condition": "SV"
+      },
+      {
+        "part_id": "part_000008",
+        "qty": 3,
+        "unit_price": 4654.74,
+        "condition": "OH"
+      },
+      {
+        "part_id": "part_000030",
+        "qty": 3,
+        "unit_price": 6391.86,
+        "condition": "NEW"
+      }
+    ],
+    "status": "closed",
+    "placed_at": "2025-11-20T05:10:40.623Z",
+    "trace_doc_ids": [
+      "trace_000086",
+      "trace_000087",
+      "trace_000088"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000036",
+    "quote_id": "quote_000104",
+    "rfq_id": "rfq_000151",
+    "customer_id": "cust_000003",
+    "lines": [
+      {
+        "part_id": "part_000012",
+        "qty": 8,
+        "unit_price": 537.06,
+        "condition": "OH"
+      },
+      {
+        "part_id": "part_000114",
+        "qty": 8,
+        "unit_price": 8713.71,
+        "condition": "OH"
+      }
+    ],
+    "status": "delivered",
+    "placed_at": "2026-02-04T01:51:14.090Z",
+    "trace_doc_ids": [
+      "trace_000089",
+      "trace_000090"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000037",
+    "quote_id": "quote_000107",
+    "rfq_id": "rfq_000155",
+    "customer_id": "cust_000009",
+    "lines": [
+      {
+        "part_id": "part_000010",
+        "qty": 5,
+        "unit_price": 1072.71,
+        "condition": "OH"
+      },
+      {
+        "part_id": "part_000044",
+        "qty": 6,
+        "unit_price": 705.68,
+        "condition": "AR"
+      }
+    ],
+    "status": "shipped",
+    "placed_at": "2025-12-27T15:59:41.501Z",
+    "trace_doc_ids": [
+      "trace_000091",
+      "trace_000092",
+      "trace_000093"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000038",
+    "quote_id": "quote_000109",
+    "rfq_id": "rfq_000159",
+    "customer_id": "cust_000012",
+    "lines": [
+      {
+        "part_id": "part_000073",
+        "qty": 3,
+        "unit_price": 1678.83,
+        "condition": "OH"
+      }
+    ],
+    "status": "delivered",
+    "placed_at": "2026-05-29T14:52:06.018Z",
+    "trace_doc_ids": [
+      "trace_000094",
+      "trace_000095"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000039",
+    "quote_id": "quote_000114",
+    "rfq_id": "rfq_000167",
+    "customer_id": "cust_000014",
+    "lines": [
+      {
+        "part_id": "part_000096",
+        "qty": 5,
+        "unit_price": 11427.39,
+        "condition": "SV"
+      },
+      {
+        "part_id": "part_000018",
+        "qty": 2,
+        "unit_price": 43330.19,
+        "condition": "SV"
+      }
+    ],
+    "status": "closed",
+    "placed_at": "2025-09-25T04:54:18.214Z",
+    "trace_doc_ids": [
+      "trace_000096",
+      "trace_000097"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000040",
+    "quote_id": "quote_000116",
+    "rfq_id": "rfq_000170",
+    "customer_id": "cust_000006",
+    "lines": [
+      {
+        "part_id": "part_000102",
+        "qty": 5,
+        "unit_price": 48405.66,
+        "condition": "AR"
+      },
+      {
+        "part_id": "part_000009",
+        "qty": 1,
+        "unit_price": 4366.71,
+        "condition": "OH"
+      }
+    ],
+    "status": "closed",
+    "placed_at": "2026-02-24T07:16:26.670Z",
+    "trace_doc_ids": [
+      "trace_000098",
+      "trace_000099",
+      "trace_000100"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000041",
+    "quote_id": "quote_000117",
+    "rfq_id": "rfq_000171",
+    "customer_id": "cust_000008",
+    "lines": [
+      {
+        "part_id": "part_000141",
+        "qty": 6,
+        "unit_price": 877.3,
+        "condition": "OH"
+      }
+    ],
+    "status": "closed",
+    "placed_at": "2026-01-09T20:12:54.999Z",
+    "trace_doc_ids": [
+      "trace_000101",
+      "trace_000102",
+      "trace_000103"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000042",
+    "quote_id": "quote_000121",
+    "rfq_id": "rfq_000175",
+    "customer_id": "cust_000009",
+    "lines": [
+      {
+        "part_id": "part_000066",
+        "qty": 5,
+        "unit_price": 30507.63,
+        "condition": "SV"
+      },
+      {
+        "part_id": "part_000109",
+        "qty": 3,
+        "unit_price": 2159.54,
+        "condition": "OH"
+      },
+      {
+        "part_id": "part_000080",
+        "qty": 4,
+        "unit_price": 22386.06,
+        "condition": "SV"
+      }
+    ],
+    "status": "closed",
+    "placed_at": "2026-06-18T06:06:05.772Z",
+    "trace_doc_ids": [
+      "trace_000104",
+      "trace_000105",
+      "trace_000106",
+      "trace_000107"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000043",
+    "quote_id": "quote_000124",
+    "rfq_id": "rfq_000179",
+    "customer_id": "cust_000017",
+    "lines": [
+      {
+        "part_id": "part_000087",
+        "qty": 7,
+        "unit_price": 11830.05,
+        "condition": "NEW"
+      },
+      {
+        "part_id": "part_000098",
+        "qty": 8,
+        "unit_price": 355.41,
+        "condition": "AR"
+      },
+      {
+        "part_id": "part_000003",
+        "qty": 5,
+        "unit_price": 2121.46,
+        "condition": "NEW"
+      }
+    ],
+    "status": "delivered",
+    "placed_at": "2026-04-19T12:15:49.223Z",
+    "trace_doc_ids": [
+      "trace_000108",
+      "trace_000109",
+      "trace_000110"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000044",
+    "quote_id": "quote_000126",
+    "rfq_id": "rfq_000183",
+    "customer_id": "cust_000023",
+    "lines": [
+      {
+        "part_id": "part_000043",
+        "qty": 1,
+        "unit_price": 14256.74,
+        "condition": "SV"
+      },
+      {
+        "part_id": "part_000094",
+        "qty": 8,
+        "unit_price": 1278.05,
+        "condition": "NEW"
+      },
+      {
+        "part_id": "part_000023",
+        "qty": 3,
+        "unit_price": 1875.59,
+        "condition": "NEW"
+      }
+    ],
+    "status": "placed",
+    "placed_at": "2026-02-22T02:52:33.015Z",
+    "trace_doc_ids": [],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000045",
+    "quote_id": "quote_000129",
+    "rfq_id": "rfq_000186",
+    "customer_id": "cust_000017",
+    "lines": [
+      {
+        "part_id": "part_000121",
+        "qty": 6,
+        "unit_price": 8579.24,
+        "condition": "AR"
+      },
+      {
+        "part_id": "part_000036",
+        "qty": 6,
+        "unit_price": 13776.07,
+        "condition": "NEW"
+      },
+      {
+        "part_id": "part_000082",
+        "qty": 5,
+        "unit_price": 497.8,
+        "condition": "OH"
+      }
+    ],
+    "status": "shipped",
+    "placed_at": "2026-05-12T01:05:59.919Z",
+    "trace_doc_ids": [
+      "trace_000111",
+      "trace_000112",
+      "trace_000113"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000046",
+    "quote_id": "quote_000130",
+    "rfq_id": "rfq_000187",
+    "customer_id": "cust_000014",
+    "lines": [
+      {
+        "part_id": "part_000119",
+        "qty": 4,
+        "unit_price": 25797.85,
+        "condition": "NEW"
+      }
+    ],
+    "status": "delivered",
+    "placed_at": "2025-10-11T04:23:35.213Z",
+    "trace_doc_ids": [
+      "trace_000114",
+      "trace_000115",
+      "trace_000116"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000047",
+    "quote_id": "quote_000131",
+    "rfq_id": "rfq_000188",
+    "customer_id": "cust_000012",
+    "lines": [
+      {
+        "part_id": "part_000051",
+        "qty": 2,
+        "unit_price": 22281.88,
+        "condition": "SV"
+      },
+      {
+        "part_id": "part_000136",
+        "qty": 5,
+        "unit_price": 3723.79,
+        "condition": "SV"
+      }
+    ],
+    "status": "closed",
+    "placed_at": "2026-02-13T08:51:45.359Z",
+    "trace_doc_ids": [
+      "trace_000117",
+      "trace_000118"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000048",
+    "quote_id": "quote_000136",
+    "rfq_id": "rfq_000197",
+    "customer_id": "cust_000021",
+    "lines": [
+      {
+        "part_id": "part_000071",
+        "qty": 2,
+        "unit_price": 259.97,
+        "condition": "OH"
+      }
+    ],
+    "status": "sourcing",
+    "placed_at": "2025-11-25T06:06:36.390Z",
+    "trace_doc_ids": [],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000049",
+    "quote_id": "quote_000138",
+    "rfq_id": "rfq_000199",
+    "customer_id": "cust_000006",
+    "lines": [
+      {
+        "part_id": "part_000076",
+        "qty": 2,
+        "unit_price": 475.93,
+        "condition": "AR"
+      },
+      {
+        "part_id": "part_000060",
+        "qty": 2,
+        "unit_price": 90.46,
+        "condition": "AR"
+      }
+    ],
+    "status": "sourcing",
+    "placed_at": "2026-06-20T22:29:52.664Z",
+    "trace_doc_ids": [],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000050",
+    "quote_id": "quote_000140",
+    "rfq_id": "rfq_000201",
+    "customer_id": "cust_000015",
+    "lines": [
+      {
+        "part_id": "part_000140",
+        "qty": 8,
+        "unit_price": 473.35,
+        "condition": "OH"
+      },
+      {
+        "part_id": "part_000042",
+        "qty": 1,
+        "unit_price": 2216.87,
+        "condition": "OH"
+      },
+      {
+        "part_id": "part_000149",
+        "qty": 1,
+        "unit_price": 3628.25,
+        "condition": "AR"
+      }
+    ],
+    "status": "placed",
+    "placed_at": "2026-02-10T09:22:03.283Z",
+    "trace_doc_ids": [],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000051",
+    "quote_id": "quote_000146",
+    "rfq_id": "rfq_000210",
+    "customer_id": "cust_000009",
+    "lines": [
+      {
+        "part_id": "part_000033",
+        "qty": 6,
+        "unit_price": 35047.27,
+        "condition": "NEW"
+      },
+      {
+        "part_id": "part_000034",
+        "qty": 6,
+        "unit_price": 886.98,
+        "condition": "SV"
+      }
+    ],
+    "status": "shipped",
+    "placed_at": "2026-05-07T15:00:47.871Z",
+    "trace_doc_ids": [
+      "trace_000119",
+      "trace_000120"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000052",
+    "quote_id": "quote_000147",
+    "rfq_id": "rfq_000211",
+    "customer_id": "cust_000007",
+    "lines": [
+      {
+        "part_id": "part_000112",
+        "qty": 3,
+        "unit_price": 9676.55,
+        "condition": "OH"
+      },
+      {
+        "part_id": "part_000021",
+        "qty": 7,
+        "unit_price": 4695.51,
+        "condition": "AR"
+      },
+      {
+        "part_id": "part_000137",
+        "qty": 1,
+        "unit_price": 959.39,
+        "condition": "NEW"
+      }
+    ],
+    "status": "sourcing",
+    "placed_at": "2026-06-07T13:08:16.387Z",
+    "trace_doc_ids": [],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000053",
+    "quote_id": "quote_000149",
+    "rfq_id": "rfq_000214",
+    "customer_id": "cust_000016",
+    "lines": [
+      {
+        "part_id": "part_000053",
+        "qty": 8,
+        "unit_price": 1800.79,
+        "condition": "NEW"
+      }
+    ],
+    "status": "closed",
+    "placed_at": "2026-02-09T08:11:49.922Z",
+    "trace_doc_ids": [
+      "trace_000121",
+      "trace_000122",
+      "trace_000123"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000054",
+    "quote_id": "quote_000150",
+    "rfq_id": "rfq_000215",
+    "customer_id": "cust_000003",
+    "lines": [
+      {
+        "part_id": "part_000013",
+        "qty": 5,
+        "unit_price": 3870.75,
+        "condition": "OH"
+      },
+      {
+        "part_id": "part_000059",
+        "qty": 3,
+        "unit_price": 961.11,
+        "condition": "NEW"
+      }
+    ],
+    "status": "shipped",
+    "placed_at": "2026-06-13T21:47:20.294Z",
+    "trace_doc_ids": [
+      "trace_000124",
+      "trace_000125"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000055",
+    "quote_id": "quote_000151",
+    "rfq_id": "rfq_000216",
+    "customer_id": "cust_000019",
+    "lines": [
+      {
+        "part_id": "part_000035",
+        "qty": 3,
+        "unit_price": 23246.18,
+        "condition": "SV"
+      },
+      {
+        "part_id": "part_000127",
+        "qty": 1,
+        "unit_price": 810.08,
+        "condition": "SV"
+      },
+      {
+        "part_id": "part_000105",
+        "qty": 3,
+        "unit_price": 23083.23,
+        "condition": "NEW"
+      }
+    ],
+    "status": "shipped",
+    "placed_at": "2025-09-18T18:42:07.182Z",
+    "trace_doc_ids": [
+      "trace_000126",
+      "trace_000127",
+      "trace_000128"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000056",
+    "quote_id": "quote_000158",
+    "rfq_id": "rfq_000226",
+    "customer_id": "cust_000009",
+    "lines": [
+      {
+        "part_id": "part_000080",
+        "qty": 2,
+        "unit_price": 19002.02,
+        "condition": "OH"
+      }
+    ],
+    "status": "closed",
+    "placed_at": "2026-04-10T21:51:06.286Z",
+    "trace_doc_ids": [
+      "trace_000129",
+      "trace_000130",
+      "trace_000131",
+      "trace_000132"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000057",
+    "quote_id": "quote_000160",
+    "rfq_id": "rfq_000228",
+    "customer_id": "cust_000011",
+    "lines": [
+      {
+        "part_id": "part_000043",
+        "qty": 6,
+        "unit_price": 16376.51,
+        "condition": "AR"
+      }
+    ],
+    "status": "delivered",
+    "placed_at": "2025-12-22T15:25:48.326Z",
+    "trace_doc_ids": [
+      "trace_000133",
+      "trace_000134",
+      "trace_000135"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000058",
+    "quote_id": "quote_000164",
+    "rfq_id": "rfq_000235",
+    "customer_id": "cust_000012",
+    "lines": [
+      {
+        "part_id": "part_000127",
+        "qty": 1,
+        "unit_price": 932.51,
+        "condition": "NEW"
+      },
+      {
+        "part_id": "part_000040",
+        "qty": 4,
+        "unit_price": 4301.79,
+        "condition": "AR"
+      },
+      {
+        "part_id": "part_000005",
+        "qty": 2,
+        "unit_price": 1504.55,
+        "condition": "OH"
+      }
+    ],
+    "status": "closed",
+    "placed_at": "2025-07-10T22:13:45.798Z",
+    "trace_doc_ids": [
+      "trace_000136",
+      "trace_000137",
+      "trace_000138"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000059",
+    "quote_id": "quote_000166",
+    "rfq_id": "rfq_000238",
+    "customer_id": "cust_000013",
+    "lines": [
+      {
+        "part_id": "part_000051",
+        "qty": 6,
+        "unit_price": 22728.63,
+        "condition": "AR"
+      },
+      {
+        "part_id": "part_000079",
+        "qty": 6,
+        "unit_price": 1558.52,
+        "condition": "SV"
+      }
+    ],
+    "status": "shipped",
+    "placed_at": "2025-09-10T08:23:27.361Z",
+    "trace_doc_ids": [
+      "trace_000139",
+      "trace_000140",
+      "trace_000141"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000060",
+    "quote_id": "quote_000170",
+    "rfq_id": "rfq_000242",
+    "customer_id": "cust_000002",
+    "lines": [
+      {
+        "part_id": "part_000021",
+        "qty": 4,
+        "unit_price": 4761.37,
+        "condition": "NEW"
+      }
+    ],
+    "status": "closed",
+    "placed_at": "2026-05-31T03:31:10.275Z",
+    "trace_doc_ids": [
+      "trace_000142",
+      "trace_000143"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000061",
+    "quote_id": "quote_000174",
+    "rfq_id": "rfq_000247",
+    "customer_id": "cust_000014",
+    "lines": [
+      {
+        "part_id": "part_000036",
+        "qty": 2,
+        "unit_price": 13380.85,
+        "condition": "AR"
+      },
+      {
+        "part_id": "part_000121",
+        "qty": 1,
+        "unit_price": 11388.61,
+        "condition": "AR"
+      },
+      {
+        "part_id": "part_000001",
+        "qty": 1,
+        "unit_price": 41686,
+        "condition": "NEW"
+      }
+    ],
+    "status": "delivered",
+    "placed_at": "2026-01-04T00:22:31.025Z",
+    "trace_doc_ids": [
+      "trace_000144",
+      "trace_000145"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000062",
+    "quote_id": "quote_000179",
+    "rfq_id": "rfq_000252",
+    "customer_id": "cust_000018",
+    "lines": [
+      {
+        "part_id": "part_000043",
+        "qty": 6,
+        "unit_price": 18747.43,
+        "condition": "OH"
+      }
+    ],
+    "status": "delivered",
+    "placed_at": "2025-09-01T16:04:54.466Z",
+    "trace_doc_ids": [
+      "trace_000146",
+      "trace_000147"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000063",
+    "quote_id": "quote_000180",
+    "rfq_id": "rfq_000253",
+    "customer_id": "cust_000023",
+    "lines": [
+      {
+        "part_id": "part_000044",
+        "qty": 2,
+        "unit_price": 548.94,
+        "condition": "OH"
+      }
+    ],
+    "status": "closed",
+    "placed_at": "2025-07-23T03:37:52.487Z",
+    "trace_doc_ids": [
+      "trace_000148",
+      "trace_000149",
+      "trace_000150"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000064",
+    "quote_id": "quote_000183",
+    "rfq_id": "rfq_000257",
+    "customer_id": "cust_000015",
+    "lines": [
+      {
+        "part_id": "part_000065",
+        "qty": 2,
+        "unit_price": 654.89,
+        "condition": "NEW"
+      },
+      {
+        "part_id": "part_000005",
+        "qty": 3,
+        "unit_price": 1598.8,
+        "condition": "OH"
+      },
+      {
+        "part_id": "part_000100",
+        "qty": 1,
+        "unit_price": 29820.79,
+        "condition": "SV"
+      }
+    ],
+    "status": "delivered",
+    "placed_at": "2026-02-17T22:31:39.195Z",
+    "trace_doc_ids": [
+      "trace_000151",
+      "trace_000152",
+      "trace_000153"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000065",
+    "quote_id": "quote_000184",
+    "rfq_id": "rfq_000258",
+    "customer_id": "cust_000001",
+    "lines": [
+      {
+        "part_id": "part_000141",
+        "qty": 6,
+        "unit_price": 1015.48,
+        "condition": "NEW"
+      },
+      {
+        "part_id": "part_000069",
+        "qty": 6,
+        "unit_price": 451.57,
+        "condition": "OH"
+      },
+      {
+        "part_id": "part_000046",
+        "qty": 3,
+        "unit_price": 5367.94,
+        "condition": "SV"
+      }
+    ],
+    "status": "placed",
+    "placed_at": "2025-09-28T16:16:15.605Z",
+    "trace_doc_ids": [],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000066",
+    "quote_id": "quote_000185",
+    "rfq_id": "rfq_000260",
+    "customer_id": "cust_000012",
+    "lines": [
+      {
+        "part_id": "part_000041",
+        "qty": 2,
+        "unit_price": 41809.01,
+        "condition": "AR"
+      },
+      {
+        "part_id": "part_000020",
+        "qty": 4,
+        "unit_price": 1734.57,
+        "condition": "SV"
+      },
+      {
+        "part_id": "part_000068",
+        "qty": 6,
+        "unit_price": 1794.15,
+        "condition": "SV"
+      }
+    ],
+    "status": "sourcing",
+    "placed_at": "2025-08-20T12:49:05.425Z",
+    "trace_doc_ids": [],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000067",
+    "quote_id": "quote_000192",
+    "rfq_id": "rfq_000268",
+    "customer_id": "cust_000015",
+    "lines": [
+      {
+        "part_id": "part_000022",
+        "qty": 8,
+        "unit_price": 21524,
+        "condition": "SV"
+      },
+      {
+        "part_id": "part_000055",
+        "qty": 3,
+        "unit_price": 418.26,
+        "condition": "OH"
+      }
+    ],
+    "status": "sourcing",
+    "placed_at": "2026-01-30T04:40:15.203Z",
+    "trace_doc_ids": [],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000068",
+    "quote_id": "quote_000194",
+    "rfq_id": "rfq_000271",
+    "customer_id": "cust_000001",
+    "lines": [
+      {
+        "part_id": "part_000014",
+        "qty": 3,
+        "unit_price": 1883.02,
+        "condition": "NEW"
+      },
+      {
+        "part_id": "part_000131",
+        "qty": 2,
+        "unit_price": 587.62,
+        "condition": "SV"
+      }
+    ],
+    "status": "placed",
+    "placed_at": "2025-08-14T11:48:48.058Z",
+    "trace_doc_ids": [],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000069",
+    "quote_id": "quote_000197",
+    "rfq_id": "rfq_000274",
+    "customer_id": "cust_000022",
+    "lines": [
+      {
+        "part_id": "part_000118",
+        "qty": 2,
+        "unit_price": 637.83,
+        "condition": "SV"
+      },
+      {
+        "part_id": "part_000022",
+        "qty": 5,
+        "unit_price": 32890.49,
+        "condition": "SV"
+      },
+      {
+        "part_id": "part_000045",
+        "qty": 4,
+        "unit_price": 887.93,
+        "condition": "SV"
+      }
+    ],
+    "status": "delivered",
+    "placed_at": "2026-01-16T00:56:21.748Z",
+    "trace_doc_ids": [
+      "trace_000154",
+      "trace_000155",
+      "trace_000156"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000070",
+    "quote_id": "quote_000200",
+    "rfq_id": "rfq_000277",
+    "customer_id": "cust_000003",
+    "lines": [
+      {
+        "part_id": "part_000058",
+        "qty": 1,
+        "unit_price": 217.31,
+        "condition": "SV"
+      }
+    ],
+    "status": "closed",
+    "placed_at": "2026-04-07T22:19:22.434Z",
+    "trace_doc_ids": [
+      "trace_000157",
+      "trace_000158",
+      "trace_000159"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000071",
+    "quote_id": "quote_000202",
+    "rfq_id": "rfq_000280",
+    "customer_id": "cust_000014",
+    "lines": [
+      {
+        "part_id": "part_000150",
+        "qty": 8,
+        "unit_price": 16507.6,
+        "condition": "AR"
+      }
+    ],
+    "status": "closed",
+    "placed_at": "2026-03-25T12:07:45.947Z",
+    "trace_doc_ids": [
+      "trace_000160",
+      "trace_000161"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000072",
+    "quote_id": "quote_000203",
+    "rfq_id": "rfq_000281",
+    "customer_id": "cust_000009",
+    "lines": [
+      {
+        "part_id": "part_000048",
+        "qty": 4,
+        "unit_price": 13665.38,
+        "condition": "NEW"
+      }
+    ],
+    "status": "delivered",
+    "placed_at": "2025-10-14T10:35:19.341Z",
+    "trace_doc_ids": [
+      "trace_000162",
+      "trace_000163",
+      "trace_000164"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000073",
+    "quote_id": "quote_000204",
+    "rfq_id": "rfq_000284",
+    "customer_id": "cust_000007",
+    "lines": [
+      {
+        "part_id": "part_000134",
+        "qty": 7,
+        "unit_price": 17344.14,
+        "condition": "NEW"
+      },
+      {
+        "part_id": "part_000019",
+        "qty": 4,
+        "unit_price": 338.37,
+        "condition": "NEW"
+      },
+      {
+        "part_id": "part_000091",
+        "qty": 6,
+        "unit_price": 29931.65,
+        "condition": "AR"
+      }
+    ],
+    "status": "closed",
+    "placed_at": "2025-09-29T21:42:50.467Z",
+    "trace_doc_ids": [
+      "trace_000165",
+      "trace_000166",
+      "trace_000167"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000074",
+    "quote_id": "quote_000205",
+    "rfq_id": "rfq_000285",
+    "customer_id": "cust_000016",
+    "lines": [
+      {
+        "part_id": "part_000097",
+        "qty": 3,
+        "unit_price": 13666.73,
+        "condition": "AR"
+      },
+      {
+        "part_id": "part_000077",
+        "qty": 7,
+        "unit_price": 107.75,
+        "condition": "AR"
+      },
+      {
+        "part_id": "part_000101",
+        "qty": 3,
+        "unit_price": 12236.89,
+        "condition": "AR"
+      }
+    ],
+    "status": "closed",
+    "placed_at": "2025-10-17T08:35:13.055Z",
+    "trace_doc_ids": [
+      "trace_000168",
+      "trace_000169"
+    ],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000075",
+    "quote_id": "quote_000212",
+    "rfq_id": "rfq_000294",
+    "customer_id": "cust_000003",
+    "lines": [
+      {
+        "part_id": "part_000015",
+        "qty": 7,
+        "unit_price": 6325.14,
+        "condition": "NEW"
+      },
+      {
+        "part_id": "part_000113",
+        "qty": 1,
+        "unit_price": 17421.18,
+        "condition": "SV"
+      }
+    ],
+    "status": "placed",
+    "placed_at": "2025-09-05T16:04:59.687Z",
+    "trace_doc_ids": [],
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "order_000076",
+    "quote_id": "quote_000216",
+    "rfq_id": "rfq_000299",
+    "customer_id": "cust_000011",
+    "lines": [
+      {
+        "part_id": "part_000146",
+        "qty": 8,
+        "unit_price": 659.25,
+        "condition": "OH"
+      },
+      {
+        "part_id": "part_000018",
+        "qty": 6,
+        "unit_price": 42581.18,
+        "condition": "SV"
+      }
+    ],
+    "status": "placed",
+    "placed_at": "2026-02-26T09:56:05.052Z",
+    "trace_doc_ids": [],
+    "_synthetic": true,
+    "_dataset": "v1"
+  }
+]

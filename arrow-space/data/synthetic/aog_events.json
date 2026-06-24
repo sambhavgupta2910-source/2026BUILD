@@ -1,0 +1,502 @@
+[
+  {
+    "id": "aog_000001",
+    "rfq_id": "rfq_000008",
+    "opened_at": "2025-07-30T06:10:18.230Z",
+    "responded_at": "2025-07-30T07:40:18.230Z",
+    "sla_minutes": 120,
+    "resolved": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000002",
+    "rfq_id": "rfq_000010",
+    "opened_at": "2026-01-23T20:31:49.932Z",
+    "responded_at": "2026-01-23T21:57:49.932Z",
+    "sla_minutes": 30,
+    "resolved": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000003",
+    "rfq_id": "rfq_000015",
+    "opened_at": "2025-09-19T12:28:32.107Z",
+    "responded_at": "2025-09-19T13:18:32.107Z",
+    "sla_minutes": 120,
+    "resolved": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000004",
+    "rfq_id": "rfq_000017",
+    "opened_at": "2025-12-15T08:03:16.201Z",
+    "responded_at": "2025-12-15T11:56:16.201Z",
+    "sla_minutes": 120,
+    "resolved": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000005",
+    "rfq_id": "rfq_000024",
+    "opened_at": "2025-11-07T10:02:17.556Z",
+    "responded_at": "2025-11-07T12:42:17.556Z",
+    "sla_minutes": 30,
+    "resolved": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000006",
+    "rfq_id": "rfq_000027",
+    "opened_at": "2025-09-23T00:43:52.524Z",
+    "responded_at": null,
+    "sla_minutes": 60,
+    "resolved": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000007",
+    "rfq_id": "rfq_000052",
+    "opened_at": "2026-03-09T07:27:07.412Z",
+    "responded_at": "2026-03-09T08:37:07.412Z",
+    "sla_minutes": 60,
+    "resolved": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000008",
+    "rfq_id": "rfq_000054",
+    "opened_at": "2025-10-13T13:28:24.597Z",
+    "responded_at": "2025-10-13T16:31:24.597Z",
+    "sla_minutes": 30,
+    "resolved": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000009",
+    "rfq_id": "rfq_000061",
+    "opened_at": "2026-03-29T16:03:47.207Z",
+    "responded_at": "2026-03-29T19:46:47.207Z",
+    "sla_minutes": 30,
+    "resolved": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000010",
+    "rfq_id": "rfq_000065",
+    "opened_at": "2025-10-27T23:36:00.604Z",
+    "responded_at": "2025-10-28T01:21:00.604Z",
+    "sla_minutes": 60,
+    "resolved": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000011",
+    "rfq_id": "rfq_000067",
+    "opened_at": "2026-04-24T23:14:42.480Z",
+    "responded_at": "2026-04-24T23:30:42.480Z",
+    "sla_minutes": 60,
+    "resolved": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000012",
+    "rfq_id": "rfq_000076",
+    "opened_at": "2026-04-25T19:22:24.897Z",
+    "responded_at": "2026-04-25T19:27:24.897Z",
+    "sla_minutes": 120,
+    "resolved": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000013",
+    "rfq_id": "rfq_000081",
+    "opened_at": "2026-04-30T01:37:33.365Z",
+    "responded_at": "2026-04-30T03:24:33.365Z",
+    "sla_minutes": 120,
+    "resolved": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000014",
+    "rfq_id": "rfq_000083",
+    "opened_at": "2025-11-16T21:31:34.488Z",
+    "responded_at": "2025-11-17T00:53:34.488Z",
+    "sla_minutes": 30,
+    "resolved": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000015",
+    "rfq_id": "rfq_000087",
+    "opened_at": "2025-07-07T04:03:13.324Z",
+    "responded_at": null,
+    "sla_minutes": 120,
+    "resolved": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000016",
+    "rfq_id": "rfq_000089",
+    "opened_at": "2025-08-24T11:04:16.218Z",
+    "responded_at": "2025-08-24T13:02:16.218Z",
+    "sla_minutes": 60,
+    "resolved": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000017",
+    "rfq_id": "rfq_000090",
+    "opened_at": "2025-10-25T09:22:57.246Z",
+    "responded_at": "2025-10-25T09:44:57.246Z",
+    "sla_minutes": 60,
+    "resolved": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000018",
+    "rfq_id": "rfq_000097",
+    "opened_at": "2026-06-03T07:57:23.419Z",
+    "responded_at": "2026-06-03T09:12:23.419Z",
+    "sla_minutes": 120,
+    "resolved": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000019",
+    "rfq_id": "rfq_000106",
+    "opened_at": "2025-10-03T11:42:16.603Z",
+    "responded_at": "2025-10-03T13:55:16.603Z",
+    "sla_minutes": 120,
+    "resolved": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000020",
+    "rfq_id": "rfq_000109",
+    "opened_at": "2025-07-26T16:28:31.225Z",
+    "responded_at": null,
+    "sla_minutes": 60,
+    "resolved": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000021",
+    "rfq_id": "rfq_000110",
+    "opened_at": "2025-09-05T16:51:24.133Z",
+    "responded_at": "2025-09-05T18:12:24.133Z",
+    "sla_minutes": 30,
+    "resolved": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000022",
+    "rfq_id": "rfq_000118",
+    "opened_at": "2025-11-21T06:27:18.875Z",
+    "responded_at": "2025-11-21T07:52:18.875Z",
+    "sla_minutes": 60,
+    "resolved": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000023",
+    "rfq_id": "rfq_000133",
+    "opened_at": "2025-08-22T06:48:42.162Z",
+    "responded_at": "2025-08-22T10:44:42.162Z",
+    "sla_minutes": 120,
+    "resolved": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000024",
+    "rfq_id": "rfq_000146",
+    "opened_at": "2026-04-13T12:04:02.575Z",
+    "responded_at": null,
+    "sla_minutes": 120,
+    "resolved": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000025",
+    "rfq_id": "rfq_000149",
+    "opened_at": "2026-06-07T23:33:39.184Z",
+    "responded_at": "2026-06-08T02:13:39.184Z",
+    "sla_minutes": 30,
+    "resolved": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000026",
+    "rfq_id": "rfq_000151",
+    "opened_at": "2026-01-28T01:51:14.090Z",
+    "responded_at": null,
+    "sla_minutes": 120,
+    "resolved": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000027",
+    "rfq_id": "rfq_000152",
+    "opened_at": "2025-08-25T01:51:02.707Z",
+    "responded_at": "2025-08-25T04:13:02.707Z",
+    "sla_minutes": 30,
+    "resolved": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000028",
+    "rfq_id": "rfq_000156",
+    "opened_at": "2025-09-07T01:16:03.901Z",
+    "responded_at": "2025-09-07T03:09:03.901Z",
+    "sla_minutes": 60,
+    "resolved": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000029",
+    "rfq_id": "rfq_000162",
+    "opened_at": "2025-09-18T21:55:07.979Z",
+    "responded_at": "2025-09-19T01:28:07.979Z",
+    "sla_minutes": 120,
+    "resolved": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000030",
+    "rfq_id": "rfq_000163",
+    "opened_at": "2026-03-17T04:20:00.603Z",
+    "responded_at": "2026-03-17T07:28:00.603Z",
+    "sla_minutes": 120,
+    "resolved": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000031",
+    "rfq_id": "rfq_000164",
+    "opened_at": "2025-12-05T00:09:00.949Z",
+    "responded_at": "2025-12-05T03:40:00.949Z",
+    "sla_minutes": 30,
+    "resolved": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000032",
+    "rfq_id": "rfq_000171",
+    "opened_at": "2026-01-03T20:12:54.999Z",
+    "responded_at": null,
+    "sla_minutes": 60,
+    "resolved": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000033",
+    "rfq_id": "rfq_000173",
+    "opened_at": "2025-08-31T14:44:25.532Z",
+    "responded_at": null,
+    "sla_minutes": 120,
+    "resolved": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000034",
+    "rfq_id": "rfq_000174",
+    "opened_at": "2025-10-20T23:35:13.546Z",
+    "responded_at": null,
+    "sla_minutes": 30,
+    "resolved": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000035",
+    "rfq_id": "rfq_000178",
+    "opened_at": "2025-07-15T01:29:22.328Z",
+    "responded_at": "2025-07-15T02:23:22.328Z",
+    "sla_minutes": 30,
+    "resolved": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000036",
+    "rfq_id": "rfq_000181",
+    "opened_at": "2025-10-01T05:19:18.674Z",
+    "responded_at": "2025-10-01T07:33:18.674Z",
+    "sla_minutes": 30,
+    "resolved": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000037",
+    "rfq_id": "rfq_000185",
+    "opened_at": "2026-01-28T04:37:01.814Z",
+    "responded_at": null,
+    "sla_minutes": 60,
+    "resolved": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000038",
+    "rfq_id": "rfq_000210",
+    "opened_at": "2026-04-27T15:00:47.871Z",
+    "responded_at": "2026-04-27T17:41:47.871Z",
+    "sla_minutes": 60,
+    "resolved": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000039",
+    "rfq_id": "rfq_000219",
+    "opened_at": "2026-02-12T07:46:55.690Z",
+    "responded_at": null,
+    "sla_minutes": 30,
+    "resolved": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000040",
+    "rfq_id": "rfq_000228",
+    "opened_at": "2025-12-01T15:25:48.326Z",
+    "responded_at": "2025-12-01T18:23:48.326Z",
+    "sla_minutes": 30,
+    "resolved": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000041",
+    "rfq_id": "rfq_000230",
+    "opened_at": "2026-06-09T07:21:04.142Z",
+    "responded_at": "2026-06-09T10:41:04.142Z",
+    "sla_minutes": 120,
+    "resolved": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000042",
+    "rfq_id": "rfq_000233",
+    "opened_at": "2026-01-25T21:55:27.555Z",
+    "responded_at": "2026-01-26T00:56:27.555Z",
+    "sla_minutes": 30,
+    "resolved": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000043",
+    "rfq_id": "rfq_000236",
+    "opened_at": "2025-11-29T00:22:36.767Z",
+    "responded_at": "2025-11-29T02:23:36.767Z",
+    "sla_minutes": 120,
+    "resolved": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000044",
+    "rfq_id": "rfq_000237",
+    "opened_at": "2025-09-04T10:29:34.717Z",
+    "responded_at": null,
+    "sla_minutes": 60,
+    "resolved": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000045",
+    "rfq_id": "rfq_000261",
+    "opened_at": "2026-06-14T02:26:16.915Z",
+    "responded_at": "2026-06-14T05:38:16.915Z",
+    "sla_minutes": 60,
+    "resolved": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000046",
+    "rfq_id": "rfq_000267",
+    "opened_at": "2025-07-15T01:34:51.495Z",
+    "responded_at": "2025-07-15T02:11:51.495Z",
+    "sla_minutes": 120,
+    "resolved": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000047",
+    "rfq_id": "rfq_000270",
+    "opened_at": "2025-07-13T18:52:14.868Z",
+    "responded_at": "2025-07-13T19:19:14.868Z",
+    "sla_minutes": 30,
+    "resolved": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000048",
+    "rfq_id": "rfq_000271",
+    "opened_at": "2025-08-11T11:48:48.058Z",
+    "responded_at": "2025-08-11T13:18:48.058Z",
+    "sla_minutes": 60,
+    "resolved": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000049",
+    "rfq_id": "rfq_000283",
+    "opened_at": "2025-09-16T12:03:00.835Z",
+    "responded_at": "2025-09-16T15:48:00.835Z",
+    "sla_minutes": 30,
+    "resolved": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "aog_000050",
+    "rfq_id": "rfq_000296",
+    "opened_at": "2026-06-19T03:31:28.655Z",
+    "responded_at": "2026-06-19T04:58:28.655Z",
+    "sla_minutes": 30,
+    "resolved": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  }
+]

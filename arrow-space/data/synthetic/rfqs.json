@@ -1,0 +1,8312 @@
+[
+  {
+    "id": "rfq_000001",
+    "received_at": "2026-06-17T05:53:05.335Z",
+    "channel": "email",
+    "customer_id": "cust_000013",
+    "end_user_type": "airline",
+    "lines": [
+      {
+        "part_number": "45-5547-15",
+        "qty": 5,
+        "condition": "AR",
+        "ata_chapter": 72
+      },
+      {
+        "part_number": "19-1765-45",
+        "qty": 3,
+        "condition": "SV",
+        "ata_chapter": 34
+      },
+      {
+        "part_number": "97-5211-33",
+        "qty": 7,
+        "condition": "NEW",
+        "ata_chapter": 28
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000002",
+    "received_at": "2025-09-05T15:18:04.647Z",
+    "channel": "phone",
+    "customer_id": "cust_000021",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "72-3884-25",
+        "qty": 2,
+        "condition": "NEW",
+        "ata_chapter": 33
+      },
+      {
+        "part_number": "25-2580-39",
+        "qty": 3,
+        "condition": "SV",
+        "ata_chapter": 77
+      },
+      {
+        "part_number": "40-6358-50",
+        "qty": 6,
+        "condition": "NEW",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000003",
+    "received_at": "2025-09-09T04:31:04.951Z",
+    "channel": "form",
+    "customer_id": "cust_000010",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "77-4462-49",
+        "qty": 4,
+        "condition": "NEW",
+        "ata_chapter": 77
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000004",
+    "received_at": "2025-12-28T06:34:29.326Z",
+    "channel": "phone",
+    "customer_id": "cust_000005",
+    "end_user_type": "ga",
+    "lines": [
+      {
+        "part_number": "83-8885-81",
+        "qty": 5,
+        "condition": "SV",
+        "ata_chapter": 28
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000005",
+    "received_at": "2025-09-28T03:55:23.597Z",
+    "channel": "form",
+    "customer_id": "cust_000006",
+    "end_user_type": "ga",
+    "lines": [
+      {
+        "part_number": "75-3731-16",
+        "qty": 7,
+        "condition": "NEW",
+        "ata_chapter": 34
+      },
+      {
+        "part_number": "86-8501-47",
+        "qty": 1,
+        "condition": "SV",
+        "ata_chapter": 24
+      },
+      {
+        "part_number": "46-5806-50",
+        "qty": 8,
+        "condition": "SV",
+        "ata_chapter": 33
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000006",
+    "received_at": "2026-05-02T02:23:31.410Z",
+    "channel": "email",
+    "customer_id": "cust_000010",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "61-4362-45",
+        "qty": 7,
+        "condition": "NEW",
+        "ata_chapter": 79
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000007",
+    "received_at": "2026-01-31T23:36:03.639Z",
+    "channel": "email",
+    "customer_id": "cust_000008",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "38-8034-97",
+        "qty": 5,
+        "condition": "OH",
+        "ata_chapter": 27
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "new",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000008",
+    "received_at": "2025-07-30T06:10:18.230Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000024",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "94-1384-05",
+        "qty": 5,
+        "condition": "NEW",
+        "ata_chapter": 33
+      },
+      {
+        "part_number": "91-9387-22",
+        "qty": 3,
+        "condition": "NEW",
+        "ata_chapter": 49
+      },
+      {
+        "part_number": "33-4702-16",
+        "qty": 3,
+        "condition": "AR",
+        "ata_chapter": 23
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": true,
+    "clarifications_needed": [
+      "qty unconfirmed"
+    ],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000009",
+    "received_at": "2025-12-11T02:53:15.648Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000014",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "88-9152-59",
+        "qty": 8,
+        "condition": "OH",
+        "ata_chapter": 28
+      },
+      {
+        "part_number": "72-3884-25",
+        "qty": 6,
+        "condition": "NEW",
+        "ata_chapter": 33
+      },
+      {
+        "part_number": "88-7467-83",
+        "qty": 5,
+        "condition": "OH",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000010",
+    "received_at": "2026-01-23T20:31:49.932Z",
+    "channel": "phone",
+    "customer_id": "cust_000024",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "28-4288-31",
+        "qty": 5,
+        "condition": "OH",
+        "ata_chapter": 49
+      },
+      {
+        "part_number": "65-4083-65",
+        "qty": 4,
+        "condition": "NEW",
+        "ata_chapter": 24
+      },
+      {
+        "part_number": "40-6358-50",
+        "qty": 2,
+        "condition": "OH",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": true,
+    "clarifications_needed": [
+      "missing condition"
+    ],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000011",
+    "received_at": "2025-11-17T13:38:48.190Z",
+    "channel": "form",
+    "customer_id": "cust_000016",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "72-3884-25",
+        "qty": 7,
+        "condition": "NEW",
+        "ata_chapter": 33
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [
+      "qty unconfirmed"
+    ],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000012",
+    "received_at": "2025-10-10T04:16:57.234Z",
+    "channel": "email",
+    "customer_id": "cust_000012",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "66-2518-98",
+        "qty": 8,
+        "condition": "AR",
+        "ata_chapter": 33
+      },
+      {
+        "part_number": "30-5636-67",
+        "qty": 3,
+        "condition": "AR",
+        "ata_chapter": 28
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000013",
+    "received_at": "2026-01-09T19:25:10.264Z",
+    "channel": "email",
+    "customer_id": "cust_000016",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "37-8759-80",
+        "qty": 2,
+        "condition": "AR",
+        "ata_chapter": 72
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [
+      "missing condition"
+    ],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000014",
+    "received_at": "2026-05-13T14:54:25.867Z",
+    "channel": "email",
+    "customer_id": "cust_000016",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "35-9967-66",
+        "qty": 6,
+        "condition": "OH",
+        "ata_chapter": 33
+      },
+      {
+        "part_number": "68-6493-69",
+        "qty": 6,
+        "condition": "NEW",
+        "ata_chapter": 71
+      },
+      {
+        "part_number": "43-4970-94",
+        "qty": 3,
+        "condition": "AR",
+        "ata_chapter": 71
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000015",
+    "received_at": "2025-09-19T12:28:32.107Z",
+    "channel": "form",
+    "customer_id": "cust_000006",
+    "end_user_type": "ga",
+    "lines": [
+      {
+        "part_number": "75-1446-75",
+        "qty": 1,
+        "condition": "OH",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "28-9864-22",
+        "qty": 8,
+        "condition": "SV",
+        "ata_chapter": 24
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000016",
+    "received_at": "2025-07-05T22:46:57.723Z",
+    "channel": "form",
+    "customer_id": "cust_000008",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "37-9687-46",
+        "qty": 8,
+        "condition": "NEW",
+        "ata_chapter": 77
+      },
+      {
+        "part_number": "22-8884-52",
+        "qty": 4,
+        "condition": "OH",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000017",
+    "received_at": "2025-12-15T08:03:16.201Z",
+    "channel": "email",
+    "customer_id": "cust_000017",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "52-8642-87",
+        "qty": 8,
+        "condition": "NEW",
+        "ata_chapter": 25
+      },
+      {
+        "part_number": "71-8294-61",
+        "qty": 4,
+        "condition": "NEW",
+        "ata_chapter": 28
+      },
+      {
+        "part_number": "46-5806-50",
+        "qty": 5,
+        "condition": "SV",
+        "ata_chapter": 33
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000018",
+    "received_at": "2025-07-28T15:34:08.667Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000023",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "43-5546-61",
+        "qty": 7,
+        "condition": "NEW",
+        "ata_chapter": 28
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000019",
+    "received_at": "2026-05-29T05:57:56.798Z",
+    "channel": "email",
+    "customer_id": "cust_000007",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "25-3674-47",
+        "qty": 4,
+        "condition": "NEW",
+        "ata_chapter": 33
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [
+      "qty unconfirmed"
+    ],
+    "status": "new",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000020",
+    "received_at": "2026-01-24T19:24:33.493Z",
+    "channel": "email",
+    "customer_id": "cust_000004",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "82-3875-89",
+        "qty": 5,
+        "condition": "AR",
+        "ata_chapter": 77
+      },
+      {
+        "part_number": "91-1334-39",
+        "qty": 2,
+        "condition": "NEW",
+        "ata_chapter": 71
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000021",
+    "received_at": "2026-03-05T08:00:11.801Z",
+    "channel": "email",
+    "customer_id": "cust_000008",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "51-8696-45",
+        "qty": 3,
+        "condition": "AR",
+        "ata_chapter": 23
+      },
+      {
+        "part_number": "25-2580-39",
+        "qty": 2,
+        "condition": "SV",
+        "ata_chapter": 77
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000022",
+    "received_at": "2026-04-23T08:20:23.350Z",
+    "channel": "phone",
+    "customer_id": "cust_000017",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "89-5325-55",
+        "qty": 7,
+        "condition": "SV",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "85-8706-60",
+        "qty": 7,
+        "condition": "SV",
+        "ata_chapter": 77
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [
+      "missing condition"
+    ],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000023",
+    "received_at": "2025-10-14T04:18:27.881Z",
+    "channel": "email",
+    "customer_id": "cust_000014",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "58-2386-74",
+        "qty": 8,
+        "condition": "NEW",
+        "ata_chapter": 49
+      },
+      {
+        "part_number": "86-9570-05",
+        "qty": 1,
+        "condition": "SV",
+        "ata_chapter": 25
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000024",
+    "received_at": "2025-11-07T10:02:17.556Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000010",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "19-1765-45",
+        "qty": 8,
+        "condition": "SV",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000025",
+    "received_at": "2026-01-09T18:09:06.823Z",
+    "channel": "email",
+    "customer_id": "cust_000018",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "86-5370-77",
+        "qty": 4,
+        "condition": "NEW",
+        "ata_chapter": 23
+      },
+      {
+        "part_number": "53-9657-97",
+        "qty": 6,
+        "condition": "SV",
+        "ata_chapter": 34
+      },
+      {
+        "part_number": "57-7930-06",
+        "qty": 7,
+        "condition": "NEW",
+        "ata_chapter": 27
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000026",
+    "received_at": "2026-04-08T07:34:35.743Z",
+    "channel": "portal",
+    "customer_id": "cust_000017",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "58-2386-74",
+        "qty": 8,
+        "condition": "OH",
+        "ata_chapter": 49
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000027",
+    "received_at": "2025-09-23T00:43:52.524Z",
+    "channel": "phone",
+    "customer_id": "cust_000014",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "17-6064-12",
+        "qty": 7,
+        "condition": "SV",
+        "ata_chapter": 57
+      },
+      {
+        "part_number": "97-1019-22",
+        "qty": 6,
+        "condition": "AR",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000028",
+    "received_at": "2025-11-19T18:13:05.818Z",
+    "channel": "form",
+    "customer_id": "cust_000021",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "22-8884-52",
+        "qty": 8,
+        "condition": "SV",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "92-2207-24",
+        "qty": 8,
+        "condition": "SV",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000029",
+    "received_at": "2025-09-21T07:27:08.638Z",
+    "channel": "form",
+    "customer_id": "cust_000003",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "24-1716-03",
+        "qty": 5,
+        "condition": "SV",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "45-5309-52",
+        "qty": 6,
+        "condition": "NEW",
+        "ata_chapter": 77
+      },
+      {
+        "part_number": "97-3951-24",
+        "qty": 6,
+        "condition": "SV",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000030",
+    "received_at": "2026-01-31T19:54:01.476Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000016",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "40-5708-44",
+        "qty": 8,
+        "condition": "SV",
+        "ata_chapter": 79
+      },
+      {
+        "part_number": "10-1580-62",
+        "qty": 6,
+        "condition": "NEW",
+        "ata_chapter": 34
+      },
+      {
+        "part_number": "83-6423-55",
+        "qty": 1,
+        "condition": "OH",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [
+      "ambiguous P/N"
+    ],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000031",
+    "received_at": "2025-07-19T10:27:38.362Z",
+    "channel": "form",
+    "customer_id": "cust_000005",
+    "end_user_type": "ga",
+    "lines": [
+      {
+        "part_number": "47-2048-14",
+        "qty": 5,
+        "condition": "AR",
+        "ata_chapter": 49
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "new",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000032",
+    "received_at": "2025-07-08T07:24:48.173Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000012",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "28-1303-81",
+        "qty": 8,
+        "condition": "NEW",
+        "ata_chapter": 28
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [
+      "qty unconfirmed"
+    ],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000033",
+    "received_at": "2025-11-27T22:51:27.201Z",
+    "channel": "email",
+    "customer_id": "cust_000015",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "97-1019-22",
+        "qty": 6,
+        "condition": "SV",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000034",
+    "received_at": "2025-10-18T01:02:40.259Z",
+    "channel": "form",
+    "customer_id": "cust_000017",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "25-3674-47",
+        "qty": 4,
+        "condition": "OH",
+        "ata_chapter": 33
+      },
+      {
+        "part_number": "71-8294-61",
+        "qty": 6,
+        "condition": "SV",
+        "ata_chapter": 28
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000035",
+    "received_at": "2025-07-25T21:50:01.592Z",
+    "channel": "email",
+    "customer_id": "cust_000024",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "65-4083-65",
+        "qty": 6,
+        "condition": "NEW",
+        "ata_chapter": 24
+      },
+      {
+        "part_number": "32-3437-58",
+        "qty": 1,
+        "condition": "OH",
+        "ata_chapter": 27
+      },
+      {
+        "part_number": "75-3731-16",
+        "qty": 2,
+        "condition": "NEW",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000036",
+    "received_at": "2025-08-22T08:17:10.403Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000022",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "17-6064-12",
+        "qty": 8,
+        "condition": "SV",
+        "ata_chapter": 57
+      },
+      {
+        "part_number": "37-5192-45",
+        "qty": 2,
+        "condition": "NEW",
+        "ata_chapter": 24
+      },
+      {
+        "part_number": "43-9613-87",
+        "qty": 6,
+        "condition": "AR",
+        "ata_chapter": 77
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000037",
+    "received_at": "2026-02-23T12:20:12.319Z",
+    "channel": "phone",
+    "customer_id": "cust_000011",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "88-9152-59",
+        "qty": 1,
+        "condition": "NEW",
+        "ata_chapter": 28
+      },
+      {
+        "part_number": "47-8273-22",
+        "qty": 8,
+        "condition": "NEW",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000038",
+    "received_at": "2025-09-25T10:34:56.616Z",
+    "channel": "email",
+    "customer_id": "cust_000018",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "97-9074-67",
+        "qty": 5,
+        "condition": "NEW",
+        "ata_chapter": 28
+      },
+      {
+        "part_number": "33-4702-16",
+        "qty": 3,
+        "condition": "NEW",
+        "ata_chapter": 23
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000039",
+    "received_at": "2026-01-25T15:15:33.442Z",
+    "channel": "phone",
+    "customer_id": "cust_000015",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "28-1303-81",
+        "qty": 8,
+        "condition": "OH",
+        "ata_chapter": 28
+      },
+      {
+        "part_number": "25-3674-47",
+        "qty": 1,
+        "condition": "NEW",
+        "ata_chapter": 33
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000040",
+    "received_at": "2025-10-15T16:39:21.644Z",
+    "channel": "form",
+    "customer_id": "cust_000023",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "78-7522-73",
+        "qty": 7,
+        "condition": "OH",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000041",
+    "received_at": "2025-11-22T20:16:20.391Z",
+    "channel": "phone",
+    "customer_id": "cust_000003",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "64-9144-37",
+        "qty": 7,
+        "condition": "SV",
+        "ata_chapter": 57
+      },
+      {
+        "part_number": "26-2783-50",
+        "qty": 6,
+        "condition": "NEW",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000042",
+    "received_at": "2025-12-04T07:26:13.018Z",
+    "channel": "form",
+    "customer_id": "cust_000003",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "37-5192-45",
+        "qty": 5,
+        "condition": "NEW",
+        "ata_chapter": 24
+      },
+      {
+        "part_number": "78-7522-73",
+        "qty": 8,
+        "condition": "OH",
+        "ata_chapter": 34
+      },
+      {
+        "part_number": "17-6064-12",
+        "qty": 1,
+        "condition": "SV",
+        "ata_chapter": 57
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000043",
+    "received_at": "2025-07-02T10:42:52.509Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000012",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "91-9387-22",
+        "qty": 3,
+        "condition": "AR",
+        "ata_chapter": 49
+      },
+      {
+        "part_number": "57-7930-06",
+        "qty": 5,
+        "condition": "NEW",
+        "ata_chapter": 27
+      },
+      {
+        "part_number": "32-8203-74",
+        "qty": 5,
+        "condition": "SV",
+        "ata_chapter": 71
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000044",
+    "received_at": "2025-07-12T06:21:53.789Z",
+    "channel": "email",
+    "customer_id": "cust_000007",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "83-8885-81",
+        "qty": 8,
+        "condition": "SV",
+        "ata_chapter": 28
+      },
+      {
+        "part_number": "61-7444-22",
+        "qty": 1,
+        "condition": "OH",
+        "ata_chapter": 71
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000045",
+    "received_at": "2025-07-13T09:28:08.478Z",
+    "channel": "email",
+    "customer_id": "cust_000015",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "52-8642-87",
+        "qty": 1,
+        "condition": "OH",
+        "ata_chapter": 25
+      },
+      {
+        "part_number": "61-9323-84",
+        "qty": 7,
+        "condition": "AR",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "30-3987-17",
+        "qty": 7,
+        "condition": "AR",
+        "ata_chapter": 77
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000046",
+    "received_at": "2026-04-26T23:01:52.522Z",
+    "channel": "portal",
+    "customer_id": "cust_000001",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "88-3977-07",
+        "qty": 6,
+        "condition": "OH",
+        "ata_chapter": 25
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000047",
+    "received_at": "2026-06-05T15:16:52.096Z",
+    "channel": "email",
+    "customer_id": "cust_000008",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "66-2518-98",
+        "qty": 8,
+        "condition": "AR",
+        "ata_chapter": 33
+      },
+      {
+        "part_number": "15-9098-24",
+        "qty": 3,
+        "condition": "AR",
+        "ata_chapter": 27
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000048",
+    "received_at": "2025-10-24T17:08:16.877Z",
+    "channel": "form",
+    "customer_id": "cust_000018",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "43-5546-61",
+        "qty": 7,
+        "condition": "SV",
+        "ata_chapter": 28
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [
+      "ambiguous P/N"
+    ],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000049",
+    "received_at": "2026-01-27T23:22:50.579Z",
+    "channel": "email",
+    "customer_id": "cust_000013",
+    "end_user_type": "airline",
+    "lines": [
+      {
+        "part_number": "83-8885-81",
+        "qty": 4,
+        "condition": "SV",
+        "ata_chapter": 28
+      },
+      {
+        "part_number": "84-4285-25",
+        "qty": 7,
+        "condition": "NEW",
+        "ata_chapter": 79
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [
+      "missing condition"
+    ],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000050",
+    "received_at": "2025-10-03T16:58:27.724Z",
+    "channel": "phone",
+    "customer_id": "cust_000003",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "90-8712-20",
+        "qty": 1,
+        "condition": "OH",
+        "ata_chapter": 49
+      },
+      {
+        "part_number": "28-9694-85",
+        "qty": 6,
+        "condition": "SV",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000051",
+    "received_at": "2026-03-21T08:34:28.831Z",
+    "channel": "phone",
+    "customer_id": "cust_000013",
+    "end_user_type": "airline",
+    "lines": [
+      {
+        "part_number": "26-3734-32",
+        "qty": 3,
+        "condition": "NEW",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "94-1384-05",
+        "qty": 1,
+        "condition": "SV",
+        "ata_chapter": 33
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000052",
+    "received_at": "2026-03-09T07:27:07.412Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000020",
+    "end_user_type": "airline",
+    "lines": [
+      {
+        "part_number": "19-1765-45",
+        "qty": 4,
+        "condition": "SV",
+        "ata_chapter": 34
+      },
+      {
+        "part_number": "13-5023-95",
+        "qty": 5,
+        "condition": "OH",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000053",
+    "received_at": "2025-09-11T14:24:00.235Z",
+    "channel": "portal",
+    "customer_id": "cust_000012",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "90-3066-04",
+        "qty": 3,
+        "condition": "SV",
+        "ata_chapter": 21
+      },
+      {
+        "part_number": "17-4902-24",
+        "qty": 6,
+        "condition": "AR",
+        "ata_chapter": 33
+      },
+      {
+        "part_number": "97-3094-38",
+        "qty": 2,
+        "condition": "NEW",
+        "ata_chapter": 72
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000054",
+    "received_at": "2025-10-13T13:28:24.597Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000020",
+    "end_user_type": "airline",
+    "lines": [
+      {
+        "part_number": "28-1303-81",
+        "qty": 5,
+        "condition": "OH",
+        "ata_chapter": 28
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000055",
+    "received_at": "2025-09-21T00:00:25.571Z",
+    "channel": "portal",
+    "customer_id": "cust_000003",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "90-3066-04",
+        "qty": 2,
+        "condition": "SV",
+        "ata_chapter": 21
+      },
+      {
+        "part_number": "89-1651-47",
+        "qty": 6,
+        "condition": "SV",
+        "ata_chapter": 52
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000056",
+    "received_at": "2026-05-06T04:32:54.572Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000024",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "65-8267-13",
+        "qty": 4,
+        "condition": "NEW",
+        "ata_chapter": 23
+      },
+      {
+        "part_number": "83-8885-81",
+        "qty": 5,
+        "condition": "SV",
+        "ata_chapter": 28
+      },
+      {
+        "part_number": "66-3821-95",
+        "qty": 2,
+        "condition": "NEW",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000057",
+    "received_at": "2026-01-25T21:16:26.788Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000008",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "97-3094-38",
+        "qty": 3,
+        "condition": "NEW",
+        "ata_chapter": 72
+      },
+      {
+        "part_number": "16-6778-21",
+        "qty": 4,
+        "condition": "AR",
+        "ata_chapter": 28
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000058",
+    "received_at": "2025-11-18T10:10:33.710Z",
+    "channel": "email",
+    "customer_id": "cust_000014",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "74-8750-99",
+        "qty": 6,
+        "condition": "AR",
+        "ata_chapter": 25
+      },
+      {
+        "part_number": "86-9570-05",
+        "qty": 7,
+        "condition": "SV",
+        "ata_chapter": 25
+      },
+      {
+        "part_number": "53-9657-97",
+        "qty": 6,
+        "condition": "OH",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000059",
+    "received_at": "2026-03-26T05:09:34.751Z",
+    "channel": "phone",
+    "customer_id": "cust_000018",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "81-9705-07",
+        "qty": 1,
+        "condition": "NEW",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "new",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000060",
+    "received_at": "2025-12-04T10:42:49.251Z",
+    "channel": "email",
+    "customer_id": "cust_000020",
+    "end_user_type": "airline",
+    "lines": [
+      {
+        "part_number": "59-6170-54",
+        "qty": 3,
+        "condition": "SV",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "90-8712-20",
+        "qty": 4,
+        "condition": "AR",
+        "ata_chapter": 49
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "new",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000061",
+    "received_at": "2026-03-29T16:03:47.207Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000017",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "75-1446-75",
+        "qty": 2,
+        "condition": "OH",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000062",
+    "received_at": "2026-04-24T09:09:20.808Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000007",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "10-7966-88",
+        "qty": 1,
+        "condition": "OH",
+        "ata_chapter": 21
+      },
+      {
+        "part_number": "59-5664-14",
+        "qty": 8,
+        "condition": "AR",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000063",
+    "received_at": "2025-11-07T06:27:49.010Z",
+    "channel": "portal",
+    "customer_id": "cust_000011",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "48-3717-41",
+        "qty": 3,
+        "condition": "SV",
+        "ata_chapter": 24
+      },
+      {
+        "part_number": "21-9569-84",
+        "qty": 1,
+        "condition": "AR",
+        "ata_chapter": 34
+      },
+      {
+        "part_number": "94-1384-05",
+        "qty": 6,
+        "condition": "NEW",
+        "ata_chapter": 33
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000064",
+    "received_at": "2026-04-15T08:54:21.718Z",
+    "channel": "email",
+    "customer_id": "cust_000023",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "67-9177-11",
+        "qty": 2,
+        "condition": "SV",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "88-3977-07",
+        "qty": 5,
+        "condition": "NEW",
+        "ata_chapter": 25
+      },
+      {
+        "part_number": "86-5370-77",
+        "qty": 6,
+        "condition": "NEW",
+        "ata_chapter": 23
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000065",
+    "received_at": "2025-10-27T23:36:00.604Z",
+    "channel": "phone",
+    "customer_id": "cust_000013",
+    "end_user_type": "airline",
+    "lines": [
+      {
+        "part_number": "85-8706-60",
+        "qty": 7,
+        "condition": "SV",
+        "ata_chapter": 77
+      },
+      {
+        "part_number": "28-9694-85",
+        "qty": 3,
+        "condition": "OH",
+        "ata_chapter": 34
+      },
+      {
+        "part_number": "84-1077-74",
+        "qty": 4,
+        "condition": "OH",
+        "ata_chapter": 24
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "new",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000066",
+    "received_at": "2026-04-13T08:48:31.957Z",
+    "channel": "form",
+    "customer_id": "cust_000017",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "28-9864-22",
+        "qty": 2,
+        "condition": "SV",
+        "ata_chapter": 24
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000067",
+    "received_at": "2026-04-24T23:14:42.480Z",
+    "channel": "form",
+    "customer_id": "cust_000022",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "78-7522-73",
+        "qty": 8,
+        "condition": "SV",
+        "ata_chapter": 34
+      },
+      {
+        "part_number": "10-7966-88",
+        "qty": 3,
+        "condition": "OH",
+        "ata_chapter": 21
+      },
+      {
+        "part_number": "52-8642-87",
+        "qty": 5,
+        "condition": "NEW",
+        "ata_chapter": 25
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000068",
+    "received_at": "2026-02-14T14:03:05.301Z",
+    "channel": "email",
+    "customer_id": "cust_000002",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "88-3977-07",
+        "qty": 6,
+        "condition": "OH",
+        "ata_chapter": 25
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000069",
+    "received_at": "2025-07-21T07:00:06.197Z",
+    "channel": "email",
+    "customer_id": "cust_000012",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "95-9456-37",
+        "qty": 2,
+        "condition": "OH",
+        "ata_chapter": 49
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "new",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000070",
+    "received_at": "2026-05-03T09:29:02.804Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000001",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "28-1303-81",
+        "qty": 8,
+        "condition": "NEW",
+        "ata_chapter": 28
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000071",
+    "received_at": "2026-04-16T17:40:31.788Z",
+    "channel": "phone",
+    "customer_id": "cust_000003",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "28-9864-22",
+        "qty": 1,
+        "condition": "SV",
+        "ata_chapter": 24
+      },
+      {
+        "part_number": "93-9576-56",
+        "qty": 8,
+        "condition": "SV",
+        "ata_chapter": 25
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000072",
+    "received_at": "2025-12-14T23:05:28.054Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000004",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "71-8294-61",
+        "qty": 4,
+        "condition": "NEW",
+        "ata_chapter": 28
+      },
+      {
+        "part_number": "50-5762-78",
+        "qty": 5,
+        "condition": "SV",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000073",
+    "received_at": "2025-12-05T04:36:46.102Z",
+    "channel": "form",
+    "customer_id": "cust_000002",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "47-4578-51",
+        "qty": 2,
+        "condition": "AR",
+        "ata_chapter": 28
+      },
+      {
+        "part_number": "88-9152-59",
+        "qty": 4,
+        "condition": "NEW",
+        "ata_chapter": 28
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [
+      "qty unconfirmed"
+    ],
+    "status": "new",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000074",
+    "received_at": "2026-01-30T08:51:55.969Z",
+    "channel": "phone",
+    "customer_id": "cust_000017",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "89-2053-70",
+        "qty": 3,
+        "condition": "AR",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "82-3875-89",
+        "qty": 1,
+        "condition": "NEW",
+        "ata_chapter": 77
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000075",
+    "received_at": "2026-06-10T13:49:25.847Z",
+    "channel": "email",
+    "customer_id": "cust_000010",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "52-2358-10",
+        "qty": 1,
+        "condition": "SV",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "92-2207-24",
+        "qty": 3,
+        "condition": "SV",
+        "ata_chapter": 34
+      },
+      {
+        "part_number": "57-7930-06",
+        "qty": 2,
+        "condition": "NEW",
+        "ata_chapter": 27
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000076",
+    "received_at": "2026-04-25T19:22:24.897Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000009",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "72-3884-25",
+        "qty": 2,
+        "condition": "NEW",
+        "ata_chapter": 33
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000077",
+    "received_at": "2026-01-30T18:46:50.135Z",
+    "channel": "phone",
+    "customer_id": "cust_000014",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "25-1019-82",
+        "qty": 3,
+        "condition": "OH",
+        "ata_chapter": 25
+      },
+      {
+        "part_number": "58-8875-69",
+        "qty": 4,
+        "condition": "OH",
+        "ata_chapter": 21
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000078",
+    "received_at": "2026-01-11T02:17:37.814Z",
+    "channel": "portal",
+    "customer_id": "cust_000024",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "81-9705-07",
+        "qty": 5,
+        "condition": "AR",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000079",
+    "received_at": "2026-04-07T12:19:08.235Z",
+    "channel": "form",
+    "customer_id": "cust_000023",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "97-1019-22",
+        "qty": 4,
+        "condition": "AR",
+        "ata_chapter": 34
+      },
+      {
+        "part_number": "88-7467-83",
+        "qty": 3,
+        "condition": "OH",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "19-1765-45",
+        "qty": 8,
+        "condition": "AR",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [
+      "ambiguous P/N"
+    ],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000080",
+    "received_at": "2026-03-19T22:25:07.922Z",
+    "channel": "portal",
+    "customer_id": "cust_000007",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "50-5762-78",
+        "qty": 7,
+        "condition": "SV",
+        "ata_chapter": 34
+      },
+      {
+        "part_number": "24-1716-03",
+        "qty": 5,
+        "condition": "SV",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "32-8203-74",
+        "qty": 6,
+        "condition": "SV",
+        "ata_chapter": 71
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [
+      "qty unconfirmed"
+    ],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000081",
+    "received_at": "2026-04-30T01:37:33.365Z",
+    "channel": "email",
+    "customer_id": "cust_000018",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "88-7467-83",
+        "qty": 5,
+        "condition": "OH",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "59-6170-54",
+        "qty": 1,
+        "condition": "SV",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "19-9919-84",
+        "qty": 4,
+        "condition": "NEW",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000082",
+    "received_at": "2026-01-23T06:14:32.801Z",
+    "channel": "portal",
+    "customer_id": "cust_000003",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "75-1446-75",
+        "qty": 6,
+        "condition": "OH",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000083",
+    "received_at": "2025-11-16T21:31:34.488Z",
+    "channel": "email",
+    "customer_id": "cust_000014",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "45-4265-51",
+        "qty": 7,
+        "condition": "SV",
+        "ata_chapter": 28
+      },
+      {
+        "part_number": "61-4362-45",
+        "qty": 8,
+        "condition": "NEW",
+        "ata_chapter": 79
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000084",
+    "received_at": "2025-08-03T02:20:59.754Z",
+    "channel": "form",
+    "customer_id": "cust_000002",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "45-4265-51",
+        "qty": 1,
+        "condition": "SV",
+        "ata_chapter": 28
+      },
+      {
+        "part_number": "61-7444-22",
+        "qty": 7,
+        "condition": "OH",
+        "ata_chapter": 71
+      },
+      {
+        "part_number": "78-7522-73",
+        "qty": 8,
+        "condition": "NEW",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000085",
+    "received_at": "2026-03-18T13:33:55.989Z",
+    "channel": "email",
+    "customer_id": "cust_000024",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "61-9323-84",
+        "qty": 6,
+        "condition": "OH",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "97-3094-38",
+        "qty": 8,
+        "condition": "NEW",
+        "ata_chapter": 72
+      },
+      {
+        "part_number": "86-3132-79",
+        "qty": 8,
+        "condition": "AR",
+        "ata_chapter": 49
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000086",
+    "received_at": "2025-12-06T02:45:58.430Z",
+    "channel": "email",
+    "customer_id": "cust_000007",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "65-5221-07",
+        "qty": 4,
+        "condition": "SV",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "38-8034-97",
+        "qty": 4,
+        "condition": "OH",
+        "ata_chapter": 27
+      },
+      {
+        "part_number": "19-1765-45",
+        "qty": 8,
+        "condition": "SV",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000087",
+    "received_at": "2025-07-07T04:03:13.324Z",
+    "channel": "portal",
+    "customer_id": "cust_000019",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "58-2386-74",
+        "qty": 3,
+        "condition": "NEW",
+        "ata_chapter": 49
+      },
+      {
+        "part_number": "28-4288-31",
+        "qty": 3,
+        "condition": "AR",
+        "ata_chapter": 49
+      },
+      {
+        "part_number": "81-9705-07",
+        "qty": 7,
+        "condition": "AR",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000088",
+    "received_at": "2026-03-29T01:31:48.484Z",
+    "channel": "portal",
+    "customer_id": "cust_000023",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "17-6064-12",
+        "qty": 6,
+        "condition": "SV",
+        "ata_chapter": 57
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000089",
+    "received_at": "2025-08-24T11:04:16.218Z",
+    "channel": "phone",
+    "customer_id": "cust_000011",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "91-9387-22",
+        "qty": 1,
+        "condition": "NEW",
+        "ata_chapter": 49
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": true,
+    "clarifications_needed": [
+      "qty unconfirmed"
+    ],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000090",
+    "received_at": "2025-10-25T09:22:57.246Z",
+    "channel": "portal",
+    "customer_id": "cust_000024",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "39-9507-43",
+        "qty": 4,
+        "condition": "SV",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "91-1334-39",
+        "qty": 5,
+        "condition": "OH",
+        "ata_chapter": 71
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000091",
+    "received_at": "2026-01-31T22:27:02.339Z",
+    "channel": "portal",
+    "customer_id": "cust_000017",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "25-2580-39",
+        "qty": 5,
+        "condition": "SV",
+        "ata_chapter": 77
+      },
+      {
+        "part_number": "16-6778-21",
+        "qty": 8,
+        "condition": "NEW",
+        "ata_chapter": 28
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000092",
+    "received_at": "2025-08-11T23:42:06.789Z",
+    "channel": "email",
+    "customer_id": "cust_000011",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "27-1537-50",
+        "qty": 2,
+        "condition": "SV",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "19-1765-45",
+        "qty": 2,
+        "condition": "NEW",
+        "ata_chapter": 34
+      },
+      {
+        "part_number": "28-1303-81",
+        "qty": 1,
+        "condition": "NEW",
+        "ata_chapter": 28
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000093",
+    "received_at": "2025-10-22T18:08:18.264Z",
+    "channel": "form",
+    "customer_id": "cust_000024",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "61-7444-22",
+        "qty": 6,
+        "condition": "OH",
+        "ata_chapter": 71
+      },
+      {
+        "part_number": "25-1019-82",
+        "qty": 7,
+        "condition": "AR",
+        "ata_chapter": 25
+      },
+      {
+        "part_number": "46-5806-50",
+        "qty": 4,
+        "condition": "SV",
+        "ata_chapter": 33
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000094",
+    "received_at": "2026-03-13T14:27:01.828Z",
+    "channel": "email",
+    "customer_id": "cust_000019",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "91-1334-39",
+        "qty": 1,
+        "condition": "AR",
+        "ata_chapter": 71
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000095",
+    "received_at": "2025-08-05T02:42:43.829Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000022",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "59-5664-14",
+        "qty": 7,
+        "condition": "SV",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000096",
+    "received_at": "2026-05-28T03:17:07.648Z",
+    "channel": "email",
+    "customer_id": "cust_000020",
+    "end_user_type": "airline",
+    "lines": [
+      {
+        "part_number": "89-2053-70",
+        "qty": 1,
+        "condition": "AR",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000097",
+    "received_at": "2026-06-03T07:57:23.419Z",
+    "channel": "portal",
+    "customer_id": "cust_000017",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "17-6064-12",
+        "qty": 6,
+        "condition": "NEW",
+        "ata_chapter": 57
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": false,
+    "clarifications_needed": [
+      "ambiguous P/N"
+    ],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000098",
+    "received_at": "2026-02-06T16:17:03.655Z",
+    "channel": "email",
+    "customer_id": "cust_000018",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "21-1928-10",
+        "qty": 7,
+        "condition": "AR",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "16-6778-21",
+        "qty": 2,
+        "condition": "AR",
+        "ata_chapter": 28
+      },
+      {
+        "part_number": "18-6097-03",
+        "qty": 7,
+        "condition": "AR",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000099",
+    "received_at": "2026-02-17T11:32:03.349Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000013",
+    "end_user_type": "airline",
+    "lines": [
+      {
+        "part_number": "83-6423-55",
+        "qty": 7,
+        "condition": "NEW",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "64-9144-37",
+        "qty": 2,
+        "condition": "AR",
+        "ata_chapter": 57
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000100",
+    "received_at": "2025-12-05T16:35:37.795Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000015",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "37-5192-45",
+        "qty": 3,
+        "condition": "NEW",
+        "ata_chapter": 24
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "new",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000101",
+    "received_at": "2026-01-06T09:39:02.317Z",
+    "channel": "phone",
+    "customer_id": "cust_000018",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "26-2783-50",
+        "qty": 6,
+        "condition": "NEW",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000102",
+    "received_at": "2025-07-13T22:01:55.888Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000007",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "95-9456-37",
+        "qty": 8,
+        "condition": "OH",
+        "ata_chapter": 49
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000103",
+    "received_at": "2025-11-14T14:50:36.512Z",
+    "channel": "phone",
+    "customer_id": "cust_000016",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "27-1840-04",
+        "qty": 1,
+        "condition": "NEW",
+        "ata_chapter": 77
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000104",
+    "received_at": "2026-05-18T10:33:15.475Z",
+    "channel": "email",
+    "customer_id": "cust_000010",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "47-8273-22",
+        "qty": 1,
+        "condition": "NEW",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": true,
+    "clarifications_needed": [
+      "qty unconfirmed"
+    ],
+    "status": "new",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000105",
+    "received_at": "2025-10-02T15:54:40.115Z",
+    "channel": "portal",
+    "customer_id": "cust_000010",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "64-7400-71",
+        "qty": 7,
+        "condition": "AR",
+        "ata_chapter": 27
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000106",
+    "received_at": "2025-10-03T11:42:16.603Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000003",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "48-3717-41",
+        "qty": 7,
+        "condition": "SV",
+        "ata_chapter": 24
+      },
+      {
+        "part_number": "16-7871-27",
+        "qty": 2,
+        "condition": "OH",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "86-8501-47",
+        "qty": 4,
+        "condition": "SV",
+        "ata_chapter": 24
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000107",
+    "received_at": "2026-04-15T17:14:53.282Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000008",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "64-9144-37",
+        "qty": 3,
+        "condition": "OH",
+        "ata_chapter": 57
+      },
+      {
+        "part_number": "38-6717-61",
+        "qty": 7,
+        "condition": "NEW",
+        "ata_chapter": 29
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000108",
+    "received_at": "2026-03-10T13:40:01.864Z",
+    "channel": "email",
+    "customer_id": "cust_000021",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "27-2748-45",
+        "qty": 7,
+        "condition": "OH",
+        "ata_chapter": 79
+      },
+      {
+        "part_number": "28-2271-04",
+        "qty": 8,
+        "condition": "SV",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": true,
+    "clarifications_needed": [
+      "qty unconfirmed"
+    ],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000109",
+    "received_at": "2025-07-26T16:28:31.225Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000020",
+    "end_user_type": "airline",
+    "lines": [
+      {
+        "part_number": "49-8344-04",
+        "qty": 3,
+        "condition": "SV",
+        "ata_chapter": 25
+      },
+      {
+        "part_number": "19-9919-84",
+        "qty": 4,
+        "condition": "NEW",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000110",
+    "received_at": "2025-09-05T16:51:24.133Z",
+    "channel": "email",
+    "customer_id": "cust_000010",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "65-4083-65",
+        "qty": 5,
+        "condition": "NEW",
+        "ata_chapter": 24
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000111",
+    "received_at": "2025-09-11T08:41:10.717Z",
+    "channel": "phone",
+    "customer_id": "cust_000023",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "12-8645-42",
+        "qty": 8,
+        "condition": "NEW",
+        "ata_chapter": 34
+      },
+      {
+        "part_number": "88-3977-07",
+        "qty": 7,
+        "condition": "OH",
+        "ata_chapter": 25
+      },
+      {
+        "part_number": "38-6717-61",
+        "qty": 7,
+        "condition": "NEW",
+        "ata_chapter": 29
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000112",
+    "received_at": "2025-07-24T17:34:18.791Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000006",
+    "end_user_type": "ga",
+    "lines": [
+      {
+        "part_number": "97-3951-24",
+        "qty": 2,
+        "condition": "SV",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "75-3731-16",
+        "qty": 2,
+        "condition": "NEW",
+        "ata_chapter": 34
+      },
+      {
+        "part_number": "56-9717-78",
+        "qty": 5,
+        "condition": "NEW",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "new",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000113",
+    "received_at": "2026-05-28T01:46:09.106Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000018",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "38-1638-13",
+        "qty": 4,
+        "condition": "SV",
+        "ata_chapter": 29
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000114",
+    "received_at": "2025-09-11T16:10:07.109Z",
+    "channel": "phone",
+    "customer_id": "cust_000005",
+    "end_user_type": "ga",
+    "lines": [
+      {
+        "part_number": "12-8645-42",
+        "qty": 5,
+        "condition": "OH",
+        "ata_chapter": 34
+      },
+      {
+        "part_number": "29-6720-55",
+        "qty": 8,
+        "condition": "SV",
+        "ata_chapter": 24
+      },
+      {
+        "part_number": "83-6423-55",
+        "qty": 4,
+        "condition": "NEW",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000115",
+    "received_at": "2026-02-17T06:50:18.470Z",
+    "channel": "phone",
+    "customer_id": "cust_000005",
+    "end_user_type": "ga",
+    "lines": [
+      {
+        "part_number": "25-2580-39",
+        "qty": 6,
+        "condition": "OH",
+        "ata_chapter": 77
+      },
+      {
+        "part_number": "38-8595-67",
+        "qty": 6,
+        "condition": "SV",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000116",
+    "received_at": "2025-10-30T23:36:08.004Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000010",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "96-1556-94",
+        "qty": 7,
+        "condition": "OH",
+        "ata_chapter": 27
+      },
+      {
+        "part_number": "89-2053-70",
+        "qty": 4,
+        "condition": "AR",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [
+      "ambiguous P/N"
+    ],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000117",
+    "received_at": "2026-02-09T19:09:45.929Z",
+    "channel": "phone",
+    "customer_id": "cust_000009",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "25-1019-82",
+        "qty": 2,
+        "condition": "AR",
+        "ata_chapter": 25
+      },
+      {
+        "part_number": "15-9098-24",
+        "qty": 8,
+        "condition": "AR",
+        "ata_chapter": 27
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [
+      "missing condition"
+    ],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000118",
+    "received_at": "2025-11-21T06:27:18.875Z",
+    "channel": "form",
+    "customer_id": "cust_000020",
+    "end_user_type": "airline",
+    "lines": [
+      {
+        "part_number": "94-8977-97",
+        "qty": 2,
+        "condition": "NEW",
+        "ata_chapter": 71
+      },
+      {
+        "part_number": "33-4702-16",
+        "qty": 3,
+        "condition": "AR",
+        "ata_chapter": 23
+      },
+      {
+        "part_number": "43-5546-61",
+        "qty": 8,
+        "condition": "SV",
+        "ata_chapter": 28
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000119",
+    "received_at": "2025-09-25T07:39:24.949Z",
+    "channel": "email",
+    "customer_id": "cust_000017",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "19-3813-17",
+        "qty": 7,
+        "condition": "NEW",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "91-9387-22",
+        "qty": 1,
+        "condition": "NEW",
+        "ata_chapter": 49
+      },
+      {
+        "part_number": "96-1492-60",
+        "qty": 8,
+        "condition": "OH",
+        "ata_chapter": 72
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000120",
+    "received_at": "2025-11-30T04:11:42.917Z",
+    "channel": "email",
+    "customer_id": "cust_000011",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "47-2048-14",
+        "qty": 5,
+        "condition": "SV",
+        "ata_chapter": 49
+      },
+      {
+        "part_number": "28-9864-22",
+        "qty": 4,
+        "condition": "SV",
+        "ata_chapter": 24
+      },
+      {
+        "part_number": "55-2378-79",
+        "qty": 2,
+        "condition": "OH",
+        "ata_chapter": 24
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000121",
+    "received_at": "2026-02-10T22:10:05.460Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000014",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "32-3437-58",
+        "qty": 2,
+        "condition": "OH",
+        "ata_chapter": 27
+      },
+      {
+        "part_number": "74-6673-41",
+        "qty": 6,
+        "condition": "NEW",
+        "ata_chapter": 71
+      },
+      {
+        "part_number": "17-1276-29",
+        "qty": 3,
+        "condition": "NEW",
+        "ata_chapter": 29
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [
+      "ambiguous P/N"
+    ],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000122",
+    "received_at": "2026-06-11T04:10:15.990Z",
+    "channel": "form",
+    "customer_id": "cust_000010",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "13-5023-95",
+        "qty": 1,
+        "condition": "AR",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "62-2962-18",
+        "qty": 5,
+        "condition": "AR",
+        "ata_chapter": 52
+      },
+      {
+        "part_number": "11-6701-48",
+        "qty": 7,
+        "condition": "SV",
+        "ata_chapter": 27
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000123",
+    "received_at": "2026-03-21T06:27:17.384Z",
+    "channel": "portal",
+    "customer_id": "cust_000007",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "78-7522-73",
+        "qty": 1,
+        "condition": "OH",
+        "ata_chapter": 34
+      },
+      {
+        "part_number": "72-3884-25",
+        "qty": 1,
+        "condition": "NEW",
+        "ata_chapter": 33
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000124",
+    "received_at": "2025-07-31T03:55:51.382Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000022",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "37-5192-45",
+        "qty": 8,
+        "condition": "NEW",
+        "ata_chapter": 24
+      },
+      {
+        "part_number": "18-3733-69",
+        "qty": 5,
+        "condition": "NEW",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000125",
+    "received_at": "2025-07-08T02:58:01.029Z",
+    "channel": "phone",
+    "customer_id": "cust_000024",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "42-7426-11",
+        "qty": 8,
+        "condition": "SV",
+        "ata_chapter": 52
+      },
+      {
+        "part_number": "73-4362-84",
+        "qty": 2,
+        "condition": "OH",
+        "ata_chapter": 24
+      },
+      {
+        "part_number": "61-4362-45",
+        "qty": 8,
+        "condition": "NEW",
+        "ata_chapter": 79
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000126",
+    "received_at": "2026-04-01T14:57:43.739Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000014",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "37-9687-46",
+        "qty": 8,
+        "condition": "NEW",
+        "ata_chapter": 77
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000127",
+    "received_at": "2025-07-23T06:19:21.118Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000021",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "86-5370-77",
+        "qty": 5,
+        "condition": "OH",
+        "ata_chapter": 23
+      },
+      {
+        "part_number": "74-8750-99",
+        "qty": 2,
+        "condition": "OH",
+        "ata_chapter": 25
+      },
+      {
+        "part_number": "12-8645-42",
+        "qty": 6,
+        "condition": "OH",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [
+      "qty unconfirmed"
+    ],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000128",
+    "received_at": "2026-01-23T14:56:02.086Z",
+    "channel": "form",
+    "customer_id": "cust_000024",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "95-9456-37",
+        "qty": 1,
+        "condition": "AR",
+        "ata_chapter": 49
+      },
+      {
+        "part_number": "26-2783-50",
+        "qty": 3,
+        "condition": "OH",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "17-6064-12",
+        "qty": 7,
+        "condition": "NEW",
+        "ata_chapter": 57
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000129",
+    "received_at": "2026-03-01T17:57:38.226Z",
+    "channel": "email",
+    "customer_id": "cust_000001",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "56-9717-78",
+        "qty": 2,
+        "condition": "OH",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000130",
+    "received_at": "2026-02-12T08:39:06.554Z",
+    "channel": "phone",
+    "customer_id": "cust_000016",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "47-4722-10",
+        "qty": 1,
+        "condition": "OH",
+        "ata_chapter": 23
+      },
+      {
+        "part_number": "89-1651-47",
+        "qty": 7,
+        "condition": "AR",
+        "ata_chapter": 52
+      },
+      {
+        "part_number": "28-9864-22",
+        "qty": 1,
+        "condition": "SV",
+        "ata_chapter": 24
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000131",
+    "received_at": "2025-12-07T05:42:07.256Z",
+    "channel": "phone",
+    "customer_id": "cust_000010",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "30-3987-17",
+        "qty": 1,
+        "condition": "AR",
+        "ata_chapter": 77
+      },
+      {
+        "part_number": "78-2711-30",
+        "qty": 7,
+        "condition": "NEW",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000132",
+    "received_at": "2025-12-05T04:26:57.715Z",
+    "channel": "email",
+    "customer_id": "cust_000015",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "68-6493-69",
+        "qty": 8,
+        "condition": "AR",
+        "ata_chapter": 71
+      },
+      {
+        "part_number": "94-1384-05",
+        "qty": 4,
+        "condition": "NEW",
+        "ata_chapter": 33
+      },
+      {
+        "part_number": "52-2358-10",
+        "qty": 3,
+        "condition": "SV",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000133",
+    "received_at": "2025-08-22T06:48:42.162Z",
+    "channel": "form",
+    "customer_id": "cust_000009",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "81-9705-07",
+        "qty": 2,
+        "condition": "AR",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "88-9152-59",
+        "qty": 7,
+        "condition": "OH",
+        "ata_chapter": 28
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000134",
+    "received_at": "2025-12-22T17:34:46.410Z",
+    "channel": "portal",
+    "customer_id": "cust_000007",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "48-3717-41",
+        "qty": 2,
+        "condition": "SV",
+        "ata_chapter": 24
+      },
+      {
+        "part_number": "75-1446-75",
+        "qty": 6,
+        "condition": "SV",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "77-5748-91",
+        "qty": 2,
+        "condition": "NEW",
+        "ata_chapter": 72
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "new",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000135",
+    "received_at": "2025-07-20T00:36:59.188Z",
+    "channel": "form",
+    "customer_id": "cust_000018",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "65-4083-65",
+        "qty": 3,
+        "condition": "NEW",
+        "ata_chapter": 24
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000136",
+    "received_at": "2026-02-12T08:39:57.820Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000024",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "82-3875-89",
+        "qty": 4,
+        "condition": "SV",
+        "ata_chapter": 77
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000137",
+    "received_at": "2026-04-18T01:56:10.433Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000018",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "90-3066-04",
+        "qty": 1,
+        "condition": "OH",
+        "ata_chapter": 21
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000138",
+    "received_at": "2026-04-24T10:56:32.364Z",
+    "channel": "phone",
+    "customer_id": "cust_000010",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "39-9507-43",
+        "qty": 5,
+        "condition": "AR",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": true,
+    "clarifications_needed": [
+      "missing condition"
+    ],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000139",
+    "received_at": "2025-11-17T04:02:17.735Z",
+    "channel": "email",
+    "customer_id": "cust_000002",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "18-6097-03",
+        "qty": 3,
+        "condition": "AR",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "78-7522-73",
+        "qty": 5,
+        "condition": "AR",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000140",
+    "received_at": "2026-04-06T00:40:14.011Z",
+    "channel": "email",
+    "customer_id": "cust_000012",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "39-5550-22",
+        "qty": 2,
+        "condition": "OH",
+        "ata_chapter": 24
+      },
+      {
+        "part_number": "47-8273-22",
+        "qty": 4,
+        "condition": "NEW",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000141",
+    "received_at": "2025-09-19T11:32:11.977Z",
+    "channel": "form",
+    "customer_id": "cust_000014",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "55-5890-02",
+        "qty": 3,
+        "condition": "AR",
+        "ata_chapter": 27
+      },
+      {
+        "part_number": "50-5762-78",
+        "qty": 7,
+        "condition": "NEW",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000142",
+    "received_at": "2025-07-19T08:55:33.920Z",
+    "channel": "form",
+    "customer_id": "cust_000015",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "64-7400-71",
+        "qty": 5,
+        "condition": "AR",
+        "ata_chapter": 27
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [
+      "missing condition"
+    ],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000143",
+    "received_at": "2026-06-08T21:41:22.560Z",
+    "channel": "form",
+    "customer_id": "cust_000002",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "76-3578-15",
+        "qty": 1,
+        "condition": "OH",
+        "ata_chapter": 24
+      },
+      {
+        "part_number": "51-8696-45",
+        "qty": 7,
+        "condition": "AR",
+        "ata_chapter": 23
+      },
+      {
+        "part_number": "73-4362-84",
+        "qty": 2,
+        "condition": "OH",
+        "ata_chapter": 24
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000144",
+    "received_at": "2026-06-06T09:01:54.290Z",
+    "channel": "portal",
+    "customer_id": "cust_000019",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "86-8501-47",
+        "qty": 6,
+        "condition": "NEW",
+        "ata_chapter": 24
+      },
+      {
+        "part_number": "55-5890-02",
+        "qty": 5,
+        "condition": "OH",
+        "ata_chapter": 27
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "new",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000145",
+    "received_at": "2026-01-06T23:48:37.428Z",
+    "channel": "email",
+    "customer_id": "cust_000012",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "47-2048-14",
+        "qty": 2,
+        "condition": "AR",
+        "ata_chapter": 49
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": true,
+    "clarifications_needed": [
+      "ambiguous P/N"
+    ],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000146",
+    "received_at": "2026-04-13T12:04:02.575Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000008",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "94-8977-97",
+        "qty": 1,
+        "condition": "NEW",
+        "ata_chapter": 71
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000147",
+    "received_at": "2026-03-26T15:56:00.778Z",
+    "channel": "form",
+    "customer_id": "cust_000024",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "28-2271-04",
+        "qty": 6,
+        "condition": "NEW",
+        "ata_chapter": 34
+      },
+      {
+        "part_number": "32-8203-74",
+        "qty": 8,
+        "condition": "NEW",
+        "ata_chapter": 71
+      },
+      {
+        "part_number": "85-9794-72",
+        "qty": 5,
+        "condition": "SV",
+        "ata_chapter": 27
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000148",
+    "received_at": "2025-11-14T05:10:40.623Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000019",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "19-3813-17",
+        "qty": 5,
+        "condition": "SV",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "84-4285-25",
+        "qty": 3,
+        "condition": "OH",
+        "ata_chapter": 79
+      },
+      {
+        "part_number": "26-3734-32",
+        "qty": 3,
+        "condition": "NEW",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000149",
+    "received_at": "2026-06-07T23:33:39.184Z",
+    "channel": "phone",
+    "customer_id": "cust_000010",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "76-3578-15",
+        "qty": 4,
+        "condition": "NEW",
+        "ata_chapter": 24
+      },
+      {
+        "part_number": "47-2048-14",
+        "qty": 7,
+        "condition": "SV",
+        "ata_chapter": 49
+      },
+      {
+        "part_number": "89-5325-55",
+        "qty": 1,
+        "condition": "SV",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": true,
+    "clarifications_needed": [
+      "ambiguous P/N"
+    ],
+    "status": "new",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000150",
+    "received_at": "2026-05-02T13:50:34.639Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000022",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "90-7407-29",
+        "qty": 1,
+        "condition": "SV",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "67-6321-30",
+        "qty": 1,
+        "condition": "NEW",
+        "ata_chapter": 23
+      },
+      {
+        "part_number": "35-9967-66",
+        "qty": 2,
+        "condition": "OH",
+        "ata_chapter": 33
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000151",
+    "received_at": "2026-01-28T01:51:14.090Z",
+    "channel": "phone",
+    "customer_id": "cust_000003",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "25-1019-82",
+        "qty": 8,
+        "condition": "OH",
+        "ata_chapter": 25
+      },
+      {
+        "part_number": "83-6423-55",
+        "qty": 8,
+        "condition": "OH",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000152",
+    "received_at": "2025-08-25T01:51:02.707Z",
+    "channel": "form",
+    "customer_id": "cust_000021",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "45-4265-51",
+        "qty": 3,
+        "condition": "SV",
+        "ata_chapter": 28
+      },
+      {
+        "part_number": "73-4451-16",
+        "qty": 8,
+        "condition": "OH",
+        "ata_chapter": 28
+      },
+      {
+        "part_number": "21-1928-10",
+        "qty": 7,
+        "condition": "AR",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000153",
+    "received_at": "2026-05-14T13:14:34.384Z",
+    "channel": "form",
+    "customer_id": "cust_000016",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "97-1019-22",
+        "qty": 6,
+        "condition": "SV",
+        "ata_chapter": 34
+      },
+      {
+        "part_number": "19-9919-84",
+        "qty": 4,
+        "condition": "SV",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000154",
+    "received_at": "2025-07-21T19:23:57.878Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000007",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "97-3951-24",
+        "qty": 7,
+        "condition": "SV",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "48-3717-41",
+        "qty": 2,
+        "condition": "SV",
+        "ata_chapter": 24
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [
+      "missing condition"
+    ],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000155",
+    "received_at": "2025-12-26T15:59:41.501Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000009",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "35-9967-66",
+        "qty": 5,
+        "condition": "OH",
+        "ata_chapter": 33
+      },
+      {
+        "part_number": "33-4702-16",
+        "qty": 6,
+        "condition": "AR",
+        "ata_chapter": 23
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000156",
+    "received_at": "2025-09-07T01:16:03.901Z",
+    "channel": "form",
+    "customer_id": "cust_000004",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "43-5546-61",
+        "qty": 6,
+        "condition": "SV",
+        "ata_chapter": 28
+      },
+      {
+        "part_number": "43-9613-87",
+        "qty": 6,
+        "condition": "AR",
+        "ata_chapter": 77
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000157",
+    "received_at": "2025-10-26T06:52:57.705Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000012",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "19-3813-17",
+        "qty": 4,
+        "condition": "AR",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "24-1716-03",
+        "qty": 7,
+        "condition": "SV",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000158",
+    "received_at": "2026-01-18T21:01:15.685Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000012",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "51-8696-45",
+        "qty": 1,
+        "condition": "AR",
+        "ata_chapter": 23
+      },
+      {
+        "part_number": "77-4462-49",
+        "qty": 1,
+        "condition": "SV",
+        "ata_chapter": 77
+      },
+      {
+        "part_number": "29-6720-55",
+        "qty": 1,
+        "condition": "NEW",
+        "ata_chapter": 24
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000159",
+    "received_at": "2026-04-30T14:52:06.018Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000012",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "74-8750-99",
+        "qty": 3,
+        "condition": "OH",
+        "ata_chapter": 25
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000160",
+    "received_at": "2025-10-09T08:01:54.844Z",
+    "channel": "phone",
+    "customer_id": "cust_000005",
+    "end_user_type": "ga",
+    "lines": [
+      {
+        "part_number": "43-4970-94",
+        "qty": 5,
+        "condition": "NEW",
+        "ata_chapter": 71
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000161",
+    "received_at": "2025-07-30T14:27:33.453Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000019",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "38-8595-67",
+        "qty": 6,
+        "condition": "SV",
+        "ata_chapter": 34
+      },
+      {
+        "part_number": "26-3657-10",
+        "qty": 7,
+        "condition": "OH",
+        "ata_chapter": 79
+      },
+      {
+        "part_number": "24-1716-03",
+        "qty": 1,
+        "condition": "SV",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "new",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000162",
+    "received_at": "2025-09-18T21:55:07.979Z",
+    "channel": "email",
+    "customer_id": "cust_000021",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "45-5547-15",
+        "qty": 1,
+        "condition": "AR",
+        "ata_chapter": 72
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000163",
+    "received_at": "2026-03-17T04:20:00.603Z",
+    "channel": "phone",
+    "customer_id": "cust_000016",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "85-8706-60",
+        "qty": 5,
+        "condition": "SV",
+        "ata_chapter": 77
+      },
+      {
+        "part_number": "85-9794-72",
+        "qty": 7,
+        "condition": "OH",
+        "ata_chapter": 27
+      },
+      {
+        "part_number": "65-5221-07",
+        "qty": 5,
+        "condition": "OH",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000164",
+    "received_at": "2025-12-05T00:09:00.949Z",
+    "channel": "email",
+    "customer_id": "cust_000009",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "50-5762-78",
+        "qty": 5,
+        "condition": "NEW",
+        "ata_chapter": 34
+      },
+      {
+        "part_number": "34-6013-32",
+        "qty": 3,
+        "condition": "AR",
+        "ata_chapter": 72
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": true,
+    "clarifications_needed": [
+      "ambiguous P/N"
+    ],
+    "status": "new",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000165",
+    "received_at": "2025-08-16T21:24:38.834Z",
+    "channel": "phone",
+    "customer_id": "cust_000011",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "52-2358-10",
+        "qty": 6,
+        "condition": "SV",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000166",
+    "received_at": "2025-11-25T01:24:49.299Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000023",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "84-4285-25",
+        "qty": 4,
+        "condition": "OH",
+        "ata_chapter": 79
+      },
+      {
+        "part_number": "64-8408-94",
+        "qty": 3,
+        "condition": "OH",
+        "ata_chapter": 34
+      },
+      {
+        "part_number": "86-8501-47",
+        "qty": 4,
+        "condition": "NEW",
+        "ata_chapter": 24
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000167",
+    "received_at": "2025-09-20T04:54:18.214Z",
+    "channel": "form",
+    "customer_id": "cust_000014",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "92-2207-24",
+        "qty": 5,
+        "condition": "SV",
+        "ata_chapter": 34
+      },
+      {
+        "part_number": "40-5708-44",
+        "qty": 2,
+        "condition": "SV",
+        "ata_chapter": 79
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000168",
+    "received_at": "2026-02-25T11:48:07.356Z",
+    "channel": "phone",
+    "customer_id": "cust_000007",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "62-2962-18",
+        "qty": 8,
+        "condition": "AR",
+        "ata_chapter": 52
+      },
+      {
+        "part_number": "67-9177-11",
+        "qty": 3,
+        "condition": "OH",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "97-9074-67",
+        "qty": 5,
+        "condition": "NEW",
+        "ata_chapter": 28
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "new",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000169",
+    "received_at": "2026-06-01T05:02:12.475Z",
+    "channel": "phone",
+    "customer_id": "cust_000023",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "46-5806-50",
+        "qty": 7,
+        "condition": "SV",
+        "ata_chapter": 33
+      },
+      {
+        "part_number": "65-4083-65",
+        "qty": 7,
+        "condition": "NEW",
+        "ata_chapter": 24
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000170",
+    "received_at": "2026-01-31T07:16:26.670Z",
+    "channel": "email",
+    "customer_id": "cust_000006",
+    "end_user_type": "ga",
+    "lines": [
+      {
+        "part_number": "86-3132-79",
+        "qty": 5,
+        "condition": "AR",
+        "ata_chapter": 49
+      },
+      {
+        "part_number": "88-7467-83",
+        "qty": 1,
+        "condition": "OH",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000171",
+    "received_at": "2026-01-03T20:12:54.999Z",
+    "channel": "form",
+    "customer_id": "cust_000008",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "17-4902-24",
+        "qty": 6,
+        "condition": "OH",
+        "ata_chapter": 33
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000172",
+    "received_at": "2026-04-21T07:09:47.700Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000008",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "42-7426-11",
+        "qty": 4,
+        "condition": "AR",
+        "ata_chapter": 52
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000173",
+    "received_at": "2025-08-31T14:44:25.532Z",
+    "channel": "email",
+    "customer_id": "cust_000018",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "72-3884-25",
+        "qty": 5,
+        "condition": "NEW",
+        "ata_chapter": 33
+      },
+      {
+        "part_number": "58-8875-69",
+        "qty": 3,
+        "condition": "AR",
+        "ata_chapter": 21
+      },
+      {
+        "part_number": "73-4451-16",
+        "qty": 3,
+        "condition": "OH",
+        "ata_chapter": 28
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000174",
+    "received_at": "2025-10-20T23:35:13.546Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000024",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "84-1077-74",
+        "qty": 8,
+        "condition": "NEW",
+        "ata_chapter": 24
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000175",
+    "received_at": "2026-05-22T06:06:05.772Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000009",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "96-1492-60",
+        "qty": 5,
+        "condition": "SV",
+        "ata_chapter": 72
+      },
+      {
+        "part_number": "73-5009-50",
+        "qty": 3,
+        "condition": "OH",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "59-5664-14",
+        "qty": 4,
+        "condition": "SV",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000176",
+    "received_at": "2026-01-23T13:20:28.557Z",
+    "channel": "email",
+    "customer_id": "cust_000011",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "28-2271-04",
+        "qty": 3,
+        "condition": "OH",
+        "ata_chapter": 34
+      },
+      {
+        "part_number": "50-5762-78",
+        "qty": 4,
+        "condition": "SV",
+        "ata_chapter": 34
+      },
+      {
+        "part_number": "28-1303-81",
+        "qty": 4,
+        "condition": "NEW",
+        "ata_chapter": 28
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000177",
+    "received_at": "2026-02-23T07:24:48.509Z",
+    "channel": "email",
+    "customer_id": "cust_000021",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "58-2386-74",
+        "qty": 8,
+        "condition": "SV",
+        "ata_chapter": 49
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000178",
+    "received_at": "2025-07-15T01:29:22.328Z",
+    "channel": "email",
+    "customer_id": "cust_000012",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "57-7930-06",
+        "qty": 5,
+        "condition": "NEW",
+        "ata_chapter": 27
+      },
+      {
+        "part_number": "90-8712-20",
+        "qty": 2,
+        "condition": "NEW",
+        "ata_chapter": 49
+      },
+      {
+        "part_number": "28-1303-81",
+        "qty": 3,
+        "condition": "NEW",
+        "ata_chapter": 28
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "new",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000179",
+    "received_at": "2026-04-02T12:15:49.223Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000017",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "10-1580-62",
+        "qty": 7,
+        "condition": "NEW",
+        "ata_chapter": 34
+      },
+      {
+        "part_number": "15-9098-24",
+        "qty": 8,
+        "condition": "AR",
+        "ata_chapter": 27
+      },
+      {
+        "part_number": "47-8273-22",
+        "qty": 5,
+        "condition": "NEW",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000180",
+    "received_at": "2025-11-19T16:26:25.040Z",
+    "channel": "phone",
+    "customer_id": "cust_000019",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "45-4265-51",
+        "qty": 1,
+        "condition": "SV",
+        "ata_chapter": 28
+      },
+      {
+        "part_number": "55-5890-02",
+        "qty": 8,
+        "condition": "AR",
+        "ata_chapter": 27
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000181",
+    "received_at": "2025-10-01T05:19:18.674Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000001",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "51-8696-45",
+        "qty": 6,
+        "condition": "AR",
+        "ata_chapter": 23
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000182",
+    "received_at": "2025-09-25T00:10:49.401Z",
+    "channel": "form",
+    "customer_id": "cust_000022",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "64-7400-71",
+        "qty": 1,
+        "condition": "AR",
+        "ata_chapter": 27
+      },
+      {
+        "part_number": "97-3951-24",
+        "qty": 5,
+        "condition": "SV",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "45-5547-15",
+        "qty": 2,
+        "condition": "AR",
+        "ata_chapter": 72
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000183",
+    "received_at": "2026-02-02T02:52:33.015Z",
+    "channel": "email",
+    "customer_id": "cust_000023",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "28-9694-85",
+        "qty": 1,
+        "condition": "SV",
+        "ata_chapter": 34
+      },
+      {
+        "part_number": "86-8501-47",
+        "qty": 8,
+        "condition": "NEW",
+        "ata_chapter": 24
+      },
+      {
+        "part_number": "76-3578-15",
+        "qty": 3,
+        "condition": "NEW",
+        "ata_chapter": 24
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000184",
+    "received_at": "2026-03-26T12:19:08.418Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000019",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "38-6717-61",
+        "qty": 3,
+        "condition": "AR",
+        "ata_chapter": 29
+      },
+      {
+        "part_number": "48-3717-41",
+        "qty": 1,
+        "condition": "SV",
+        "ata_chapter": 24
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [
+      "qty unconfirmed"
+    ],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000185",
+    "received_at": "2026-01-28T04:37:01.814Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000004",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "89-1651-47",
+        "qty": 8,
+        "condition": "AR",
+        "ata_chapter": 52
+      },
+      {
+        "part_number": "50-5762-78",
+        "qty": 8,
+        "condition": "AR",
+        "ata_chapter": 34
+      },
+      {
+        "part_number": "45-4265-51",
+        "qty": 2,
+        "condition": "SV",
+        "ata_chapter": 28
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": false,
+    "clarifications_needed": [
+      "qty unconfirmed"
+    ],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000186",
+    "received_at": "2026-04-22T01:05:59.919Z",
+    "channel": "email",
+    "customer_id": "cust_000017",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "19-3813-17",
+        "qty": 6,
+        "condition": "AR",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "65-5221-07",
+        "qty": 6,
+        "condition": "NEW",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "73-4451-16",
+        "qty": 5,
+        "condition": "OH",
+        "ata_chapter": 28
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000187",
+    "received_at": "2025-10-10T04:23:35.213Z",
+    "channel": "phone",
+    "customer_id": "cust_000014",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "75-3731-16",
+        "qty": 4,
+        "condition": "NEW",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [
+      "missing condition"
+    ],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000188",
+    "received_at": "2026-02-01T08:51:45.359Z",
+    "channel": "email",
+    "customer_id": "cust_000012",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "53-9657-97",
+        "qty": 2,
+        "condition": "SV",
+        "ata_chapter": 34
+      },
+      {
+        "part_number": "19-9919-84",
+        "qty": 5,
+        "condition": "SV",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000189",
+    "received_at": "2026-03-30T15:42:26.398Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000015",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "96-1556-94",
+        "qty": 1,
+        "condition": "AR",
+        "ata_chapter": 27
+      },
+      {
+        "part_number": "65-5221-07",
+        "qty": 5,
+        "condition": "AR",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "38-8034-97",
+        "qty": 2,
+        "condition": "OH",
+        "ata_chapter": 27
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [
+      "missing condition"
+    ],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000190",
+    "received_at": "2025-07-27T15:59:46.447Z",
+    "channel": "email",
+    "customer_id": "cust_000010",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "91-1334-39",
+        "qty": 4,
+        "condition": "SV",
+        "ata_chapter": 71
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": true,
+    "clarifications_needed": [
+      "missing condition"
+    ],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000191",
+    "received_at": "2026-06-14T03:13:09.458Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000023",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "24-1716-03",
+        "qty": 5,
+        "condition": "SV",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "47-8273-22",
+        "qty": 6,
+        "condition": "NEW",
+        "ata_chapter": 34
+      },
+      {
+        "part_number": "50-5762-78",
+        "qty": 7,
+        "condition": "OH",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "new",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000192",
+    "received_at": "2025-10-20T00:28:05.720Z",
+    "channel": "email",
+    "customer_id": "cust_000011",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "38-8595-67",
+        "qty": 6,
+        "condition": "SV",
+        "ata_chapter": 34
+      },
+      {
+        "part_number": "28-2271-04",
+        "qty": 6,
+        "condition": "OH",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "new",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000193",
+    "received_at": "2025-09-27T02:36:57.765Z",
+    "channel": "form",
+    "customer_id": "cust_000021",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "17-1276-29",
+        "qty": 7,
+        "condition": "NEW",
+        "ata_chapter": 29
+      },
+      {
+        "part_number": "61-4362-45",
+        "qty": 2,
+        "condition": "SV",
+        "ata_chapter": 79
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "new",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000194",
+    "received_at": "2026-05-02T18:22:49.610Z",
+    "channel": "form",
+    "customer_id": "cust_000017",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "74-8750-99",
+        "qty": 3,
+        "condition": "AR",
+        "ata_chapter": 25
+      },
+      {
+        "part_number": "46-5806-50",
+        "qty": 2,
+        "condition": "SV",
+        "ata_chapter": 33
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000195",
+    "received_at": "2025-09-21T09:38:36.478Z",
+    "channel": "phone",
+    "customer_id": "cust_000018",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "85-9794-72",
+        "qty": 2,
+        "condition": "NEW",
+        "ata_chapter": 27
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000196",
+    "received_at": "2026-05-01T20:02:08.478Z",
+    "channel": "email",
+    "customer_id": "cust_000001",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "97-5211-33",
+        "qty": 6,
+        "condition": "NEW",
+        "ata_chapter": 28
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000197",
+    "received_at": "2025-11-06T06:06:36.390Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000021",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "42-7426-11",
+        "qty": 2,
+        "condition": "OH",
+        "ata_chapter": 52
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000198",
+    "received_at": "2026-01-19T06:03:02.885Z",
+    "channel": "form",
+    "customer_id": "cust_000021",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "25-1019-82",
+        "qty": 6,
+        "condition": "NEW",
+        "ata_chapter": 25
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000199",
+    "received_at": "2026-06-02T22:29:52.664Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000006",
+    "end_user_type": "ga",
+    "lines": [
+      {
+        "part_number": "38-6717-61",
+        "qty": 2,
+        "condition": "AR",
+        "ata_chapter": 29
+      },
+      {
+        "part_number": "62-2962-18",
+        "qty": 2,
+        "condition": "AR",
+        "ata_chapter": 52
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000200",
+    "received_at": "2025-11-14T02:15:58.491Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000003",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "88-3977-07",
+        "qty": 3,
+        "condition": "OH",
+        "ata_chapter": 25
+      },
+      {
+        "part_number": "37-8759-80",
+        "qty": 4,
+        "condition": "AR",
+        "ata_chapter": 72
+      },
+      {
+        "part_number": "97-3094-38",
+        "qty": 4,
+        "condition": "NEW",
+        "ata_chapter": 72
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000201",
+    "received_at": "2026-02-01T09:22:03.283Z",
+    "channel": "email",
+    "customer_id": "cust_000015",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "18-2759-38",
+        "qty": 8,
+        "condition": "OH",
+        "ata_chapter": 21
+      },
+      {
+        "part_number": "75-1446-75",
+        "qty": 1,
+        "condition": "OH",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "89-2053-70",
+        "qty": 1,
+        "condition": "AR",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000202",
+    "received_at": "2025-11-28T21:29:44.638Z",
+    "channel": "form",
+    "customer_id": "cust_000023",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "24-1716-03",
+        "qty": 2,
+        "condition": "SV",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "77-4462-49",
+        "qty": 8,
+        "condition": "SV",
+        "ata_chapter": 77
+      },
+      {
+        "part_number": "35-9967-66",
+        "qty": 5,
+        "condition": "OH",
+        "ata_chapter": 33
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000203",
+    "received_at": "2025-08-16T07:44:46.396Z",
+    "channel": "email",
+    "customer_id": "cust_000012",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "68-6493-69",
+        "qty": 8,
+        "condition": "SV",
+        "ata_chapter": 71
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000204",
+    "received_at": "2026-02-10T06:57:59.806Z",
+    "channel": "phone",
+    "customer_id": "cust_000020",
+    "end_user_type": "airline",
+    "lines": [
+      {
+        "part_number": "40-6358-50",
+        "qty": 3,
+        "condition": "AR",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "34-6013-32",
+        "qty": 2,
+        "condition": "AR",
+        "ata_chapter": 72
+      },
+      {
+        "part_number": "88-7467-83",
+        "qty": 6,
+        "condition": "NEW",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000205",
+    "received_at": "2025-11-17T09:26:11.411Z",
+    "channel": "portal",
+    "customer_id": "cust_000012",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "53-9657-97",
+        "qty": 5,
+        "condition": "OH",
+        "ata_chapter": 34
+      },
+      {
+        "part_number": "25-1019-82",
+        "qty": 8,
+        "condition": "AR",
+        "ata_chapter": 25
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000206",
+    "received_at": "2025-08-05T14:04:38.672Z",
+    "channel": "portal",
+    "customer_id": "cust_000012",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "33-4702-16",
+        "qty": 2,
+        "condition": "NEW",
+        "ata_chapter": 23
+      },
+      {
+        "part_number": "30-5636-67",
+        "qty": 7,
+        "condition": "SV",
+        "ata_chapter": 28
+      },
+      {
+        "part_number": "50-5762-78",
+        "qty": 3,
+        "condition": "SV",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [
+      "missing condition"
+    ],
+    "status": "new",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000207",
+    "received_at": "2026-05-21T05:19:50.636Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000001",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "73-4451-16",
+        "qty": 5,
+        "condition": "OH",
+        "ata_chapter": 28
+      },
+      {
+        "part_number": "64-9144-37",
+        "qty": 6,
+        "condition": "NEW",
+        "ata_chapter": 57
+      },
+      {
+        "part_number": "88-7467-83",
+        "qty": 2,
+        "condition": "NEW",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000208",
+    "received_at": "2025-08-25T02:00:44.678Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000012",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "78-7522-73",
+        "qty": 8,
+        "condition": "OH",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000209",
+    "received_at": "2026-05-25T12:32:27.804Z",
+    "channel": "portal",
+    "customer_id": "cust_000012",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "66-1599-74",
+        "qty": 4,
+        "condition": "AR",
+        "ata_chapter": 33
+      },
+      {
+        "part_number": "17-4902-24",
+        "qty": 3,
+        "condition": "OH",
+        "ata_chapter": 33
+      },
+      {
+        "part_number": "90-8712-20",
+        "qty": 1,
+        "condition": "OH",
+        "ata_chapter": 49
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000210",
+    "received_at": "2026-04-27T15:00:47.871Z",
+    "channel": "email",
+    "customer_id": "cust_000009",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "90-8712-20",
+        "qty": 6,
+        "condition": "NEW",
+        "ata_chapter": 49
+      },
+      {
+        "part_number": "85-9794-72",
+        "qty": 6,
+        "condition": "SV",
+        "ata_chapter": 27
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000211",
+    "received_at": "2026-05-10T13:08:16.387Z",
+    "channel": "portal",
+    "customer_id": "cust_000007",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "40-6358-50",
+        "qty": 3,
+        "condition": "OH",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "26-2098-91",
+        "qty": 7,
+        "condition": "AR",
+        "ata_chapter": 77
+      },
+      {
+        "part_number": "97-5211-33",
+        "qty": 1,
+        "condition": "NEW",
+        "ata_chapter": 28
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000212",
+    "received_at": "2025-09-18T17:09:27.016Z",
+    "channel": "form",
+    "customer_id": "cust_000014",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "65-8267-13",
+        "qty": 4,
+        "condition": "AR",
+        "ata_chapter": 23
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000213",
+    "received_at": "2025-08-19T12:29:18.597Z",
+    "channel": "phone",
+    "customer_id": "cust_000019",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "43-9613-87",
+        "qty": 8,
+        "condition": "AR",
+        "ata_chapter": 77
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000214",
+    "received_at": "2026-01-29T08:11:49.922Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000016",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "84-1077-74",
+        "qty": 8,
+        "condition": "NEW",
+        "ata_chapter": 24
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000215",
+    "received_at": "2026-05-25T21:47:20.294Z",
+    "channel": "form",
+    "customer_id": "cust_000003",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "27-1537-50",
+        "qty": 5,
+        "condition": "OH",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "25-8347-57",
+        "qty": 3,
+        "condition": "NEW",
+        "ata_chapter": 21
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [
+      "missing condition"
+    ],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000216",
+    "received_at": "2025-08-29T18:42:07.182Z",
+    "channel": "phone",
+    "customer_id": "cust_000019",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "19-1765-45",
+        "qty": 3,
+        "condition": "SV",
+        "ata_chapter": 34
+      },
+      {
+        "part_number": "43-5546-61",
+        "qty": 1,
+        "condition": "SV",
+        "ata_chapter": 28
+      },
+      {
+        "part_number": "12-8645-42",
+        "qty": 3,
+        "condition": "NEW",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000217",
+    "received_at": "2026-03-29T10:48:57.724Z",
+    "channel": "email",
+    "customer_id": "cust_000003",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "59-6170-54",
+        "qty": 4,
+        "condition": "AR",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "75-1446-75",
+        "qty": 3,
+        "condition": "OH",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "22-8884-52",
+        "qty": 8,
+        "condition": "SV",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000218",
+    "received_at": "2025-10-14T15:13:13.714Z",
+    "channel": "phone",
+    "customer_id": "cust_000020",
+    "end_user_type": "airline",
+    "lines": [
+      {
+        "part_number": "16-6778-21",
+        "qty": 3,
+        "condition": "AR",
+        "ata_chapter": 28
+      },
+      {
+        "part_number": "82-3875-89",
+        "qty": 4,
+        "condition": "NEW",
+        "ata_chapter": 77
+      },
+      {
+        "part_number": "75-3731-16",
+        "qty": 1,
+        "condition": "NEW",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [
+      "ambiguous P/N"
+    ],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000219",
+    "received_at": "2026-02-12T07:46:55.690Z",
+    "channel": "phone",
+    "customer_id": "cust_000020",
+    "end_user_type": "airline",
+    "lines": [
+      {
+        "part_number": "47-4578-51",
+        "qty": 8,
+        "condition": "AR",
+        "ata_chapter": 28
+      },
+      {
+        "part_number": "17-4902-24",
+        "qty": 5,
+        "condition": "OH",
+        "ata_chapter": 33
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": false,
+    "clarifications_needed": [
+      "ambiguous P/N"
+    ],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000220",
+    "received_at": "2025-10-19T06:44:13.749Z",
+    "channel": "email",
+    "customer_id": "cust_000024",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "65-4083-65",
+        "qty": 7,
+        "condition": "NEW",
+        "ata_chapter": 24
+      },
+      {
+        "part_number": "53-9657-97",
+        "qty": 4,
+        "condition": "AR",
+        "ata_chapter": 34
+      },
+      {
+        "part_number": "64-8408-94",
+        "qty": 1,
+        "condition": "SV",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "new",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000221",
+    "received_at": "2025-09-04T06:16:01.480Z",
+    "channel": "portal",
+    "customer_id": "cust_000018",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "43-4970-94",
+        "qty": 6,
+        "condition": "NEW",
+        "ata_chapter": 71
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "new",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000222",
+    "received_at": "2026-03-25T17:36:32.439Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000001",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "26-2098-91",
+        "qty": 1,
+        "condition": "OH",
+        "ata_chapter": 77
+      },
+      {
+        "part_number": "26-2783-50",
+        "qty": 8,
+        "condition": "OH",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000223",
+    "received_at": "2026-04-05T04:19:03.928Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000008",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "47-4722-10",
+        "qty": 7,
+        "condition": "NEW",
+        "ata_chapter": 23
+      },
+      {
+        "part_number": "65-5221-07",
+        "qty": 8,
+        "condition": "AR",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [
+      "qty unconfirmed"
+    ],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000224",
+    "received_at": "2025-10-11T04:00:16.447Z",
+    "channel": "email",
+    "customer_id": "cust_000016",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "68-6493-69",
+        "qty": 8,
+        "condition": "SV",
+        "ata_chapter": 71
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000225",
+    "received_at": "2025-12-15T10:04:39.332Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000005",
+    "end_user_type": "ga",
+    "lines": [
+      {
+        "part_number": "28-9864-22",
+        "qty": 4,
+        "condition": "SV",
+        "ata_chapter": 24
+      },
+      {
+        "part_number": "65-5221-07",
+        "qty": 6,
+        "condition": "NEW",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000226",
+    "received_at": "2026-03-30T21:51:06.286Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000009",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "59-5664-14",
+        "qty": 2,
+        "condition": "OH",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000227",
+    "received_at": "2025-10-12T06:50:42.740Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000008",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "91-1334-39",
+        "qty": 7,
+        "condition": "SV",
+        "ata_chapter": 71
+      },
+      {
+        "part_number": "27-1840-04",
+        "qty": 6,
+        "condition": "AR",
+        "ata_chapter": 77
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000228",
+    "received_at": "2025-12-01T15:25:48.326Z",
+    "channel": "portal",
+    "customer_id": "cust_000011",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "28-9694-85",
+        "qty": 6,
+        "condition": "AR",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000229",
+    "received_at": "2025-07-31T21:10:05.223Z",
+    "channel": "email",
+    "customer_id": "cust_000001",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "68-6493-69",
+        "qty": 6,
+        "condition": "AR",
+        "ata_chapter": 71
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000230",
+    "received_at": "2026-06-09T07:21:04.142Z",
+    "channel": "portal",
+    "customer_id": "cust_000022",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "89-1651-47",
+        "qty": 1,
+        "condition": "AR",
+        "ata_chapter": 52
+      },
+      {
+        "part_number": "90-3066-04",
+        "qty": 5,
+        "condition": "OH",
+        "ata_chapter": 21
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000231",
+    "received_at": "2025-10-06T18:57:59.472Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000022",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "90-3066-04",
+        "qty": 8,
+        "condition": "SV",
+        "ata_chapter": 21
+      },
+      {
+        "part_number": "89-2053-70",
+        "qty": 3,
+        "condition": "AR",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000232",
+    "received_at": "2026-04-05T23:25:11.641Z",
+    "channel": "email",
+    "customer_id": "cust_000004",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "71-8294-61",
+        "qty": 4,
+        "condition": "SV",
+        "ata_chapter": 28
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000233",
+    "received_at": "2026-01-25T21:55:27.555Z",
+    "channel": "email",
+    "customer_id": "cust_000005",
+    "end_user_type": "ga",
+    "lines": [
+      {
+        "part_number": "73-4451-16",
+        "qty": 7,
+        "condition": "OH",
+        "ata_chapter": 28
+      },
+      {
+        "part_number": "67-9177-11",
+        "qty": 1,
+        "condition": "AR",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "37-8759-80",
+        "qty": 1,
+        "condition": "AR",
+        "ata_chapter": 72
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": false,
+    "clarifications_needed": [
+      "qty unconfirmed"
+    ],
+    "status": "new",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000234",
+    "received_at": "2026-03-13T13:53:36.280Z",
+    "channel": "portal",
+    "customer_id": "cust_000021",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "19-9919-84",
+        "qty": 3,
+        "condition": "AR",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "new",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000235",
+    "received_at": "2025-07-02T22:13:45.798Z",
+    "channel": "phone",
+    "customer_id": "cust_000012",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "43-5546-61",
+        "qty": 1,
+        "condition": "NEW",
+        "ata_chapter": 28
+      },
+      {
+        "part_number": "91-1334-39",
+        "qty": 4,
+        "condition": "AR",
+        "ata_chapter": 71
+      },
+      {
+        "part_number": "96-1556-94",
+        "qty": 2,
+        "condition": "OH",
+        "ata_chapter": 27
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000236",
+    "received_at": "2025-11-29T00:22:36.767Z",
+    "channel": "portal",
+    "customer_id": "cust_000002",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "84-4285-25",
+        "qty": 5,
+        "condition": "NEW",
+        "ata_chapter": 79
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "new",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000237",
+    "received_at": "2025-09-04T10:29:34.717Z",
+    "channel": "phone",
+    "customer_id": "cust_000014",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "61-7444-22",
+        "qty": 3,
+        "condition": "OH",
+        "ata_chapter": 71
+      },
+      {
+        "part_number": "45-5309-52",
+        "qty": 5,
+        "condition": "NEW",
+        "ata_chapter": 77
+      },
+      {
+        "part_number": "47-8273-22",
+        "qty": 4,
+        "condition": "NEW",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000238",
+    "received_at": "2025-09-01T08:23:27.361Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000013",
+    "end_user_type": "airline",
+    "lines": [
+      {
+        "part_number": "53-9657-97",
+        "qty": 6,
+        "condition": "AR",
+        "ata_chapter": 34
+      },
+      {
+        "part_number": "83-8885-81",
+        "qty": 6,
+        "condition": "SV",
+        "ata_chapter": 28
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000239",
+    "received_at": "2026-01-22T13:19:28.268Z",
+    "channel": "email",
+    "customer_id": "cust_000013",
+    "end_user_type": "airline",
+    "lines": [
+      {
+        "part_number": "88-9152-59",
+        "qty": 6,
+        "condition": "NEW",
+        "ata_chapter": 28
+      },
+      {
+        "part_number": "72-3884-25",
+        "qty": 2,
+        "condition": "NEW",
+        "ata_chapter": 33
+      },
+      {
+        "part_number": "59-5664-14",
+        "qty": 3,
+        "condition": "SV",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000240",
+    "received_at": "2025-09-19T11:18:20.206Z",
+    "channel": "email",
+    "customer_id": "cust_000008",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "88-7467-83",
+        "qty": 2,
+        "condition": "NEW",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000241",
+    "received_at": "2026-03-02T14:20:06.592Z",
+    "channel": "phone",
+    "customer_id": "cust_000008",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "40-5708-44",
+        "qty": 1,
+        "condition": "SV",
+        "ata_chapter": 79
+      },
+      {
+        "part_number": "32-8203-74",
+        "qty": 5,
+        "condition": "AR",
+        "ata_chapter": 71
+      },
+      {
+        "part_number": "89-5325-55",
+        "qty": 1,
+        "condition": "NEW",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000242",
+    "received_at": "2026-05-07T03:31:10.275Z",
+    "channel": "form",
+    "customer_id": "cust_000002",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "26-2098-91",
+        "qty": 4,
+        "condition": "NEW",
+        "ata_chapter": 77
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000243",
+    "received_at": "2026-05-18T10:41:34.618Z",
+    "channel": "phone",
+    "customer_id": "cust_000009",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "30-3987-17",
+        "qty": 6,
+        "condition": "AR",
+        "ata_chapter": 77
+      },
+      {
+        "part_number": "72-3884-25",
+        "qty": 2,
+        "condition": "NEW",
+        "ata_chapter": 33
+      },
+      {
+        "part_number": "95-9456-37",
+        "qty": 8,
+        "condition": "AR",
+        "ata_chapter": 49
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000244",
+    "received_at": "2025-12-08T13:45:35.174Z",
+    "channel": "portal",
+    "customer_id": "cust_000001",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "57-7930-06",
+        "qty": 8,
+        "condition": "NEW",
+        "ata_chapter": 27
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000245",
+    "received_at": "2026-05-20T15:45:55.422Z",
+    "channel": "form",
+    "customer_id": "cust_000008",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "81-9705-07",
+        "qty": 5,
+        "condition": "OH",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "15-9098-24",
+        "qty": 3,
+        "condition": "AR",
+        "ata_chapter": 27
+      },
+      {
+        "part_number": "74-8750-99",
+        "qty": 2,
+        "condition": "AR",
+        "ata_chapter": 25
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000246",
+    "received_at": "2025-09-22T00:31:57.940Z",
+    "channel": "email",
+    "customer_id": "cust_000005",
+    "end_user_type": "ga",
+    "lines": [
+      {
+        "part_number": "37-5192-45",
+        "qty": 7,
+        "condition": "NEW",
+        "ata_chapter": 24
+      },
+      {
+        "part_number": "43-4970-94",
+        "qty": 3,
+        "condition": "AR",
+        "ata_chapter": 71
+      },
+      {
+        "part_number": "17-4902-24",
+        "qty": 7,
+        "condition": "AR",
+        "ata_chapter": 33
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000247",
+    "received_at": "2025-12-29T00:22:31.025Z",
+    "channel": "email",
+    "customer_id": "cust_000014",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "65-5221-07",
+        "qty": 2,
+        "condition": "AR",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "19-3813-17",
+        "qty": 1,
+        "condition": "AR",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "91-9387-22",
+        "qty": 1,
+        "condition": "NEW",
+        "ata_chapter": 49
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000248",
+    "received_at": "2026-04-06T17:11:11.674Z",
+    "channel": "email",
+    "customer_id": "cust_000021",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "73-4451-16",
+        "qty": 5,
+        "condition": "OH",
+        "ata_chapter": 28
+      },
+      {
+        "part_number": "48-3717-41",
+        "qty": 6,
+        "condition": "SV",
+        "ata_chapter": 24
+      },
+      {
+        "part_number": "28-1303-81",
+        "qty": 3,
+        "condition": "OH",
+        "ata_chapter": 28
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000249",
+    "received_at": "2026-04-01T06:28:12.904Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000014",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "45-5309-52",
+        "qty": 8,
+        "condition": "OH",
+        "ata_chapter": 77
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000250",
+    "received_at": "2026-05-04T19:09:33.879Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000001",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "77-4462-49",
+        "qty": 6,
+        "condition": "SV",
+        "ata_chapter": 77
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [
+      "ambiguous P/N"
+    ],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000251",
+    "received_at": "2026-05-23T19:05:17.318Z",
+    "channel": "email",
+    "customer_id": "cust_000009",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "39-5550-22",
+        "qty": 3,
+        "condition": "AR",
+        "ata_chapter": 24
+      },
+      {
+        "part_number": "90-3066-04",
+        "qty": 5,
+        "condition": "OH",
+        "ata_chapter": 21
+      },
+      {
+        "part_number": "32-8203-74",
+        "qty": 5,
+        "condition": "NEW",
+        "ata_chapter": 71
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000252",
+    "received_at": "2025-08-14T16:04:54.466Z",
+    "channel": "form",
+    "customer_id": "cust_000018",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "28-9694-85",
+        "qty": 6,
+        "condition": "OH",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000253",
+    "received_at": "2025-07-21T03:37:52.487Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000023",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "33-4702-16",
+        "qty": 2,
+        "condition": "OH",
+        "ata_chapter": 23
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [
+      "missing condition"
+    ],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000254",
+    "received_at": "2025-11-28T16:16:23.373Z",
+    "channel": "phone",
+    "customer_id": "cust_000002",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "61-9323-84",
+        "qty": 1,
+        "condition": "SV",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000255",
+    "received_at": "2026-04-14T19:01:58.350Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000015",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "11-6701-48",
+        "qty": 6,
+        "condition": "SV",
+        "ata_chapter": 27
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000256",
+    "received_at": "2026-02-11T11:02:14.743Z",
+    "channel": "email",
+    "customer_id": "cust_000019",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "73-4451-16",
+        "qty": 2,
+        "condition": "OH",
+        "ata_chapter": 28
+      },
+      {
+        "part_number": "37-5192-45",
+        "qty": 4,
+        "condition": "NEW",
+        "ata_chapter": 24
+      },
+      {
+        "part_number": "25-2580-39",
+        "qty": 4,
+        "condition": "OH",
+        "ata_chapter": 77
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [
+      "ambiguous P/N"
+    ],
+    "status": "new",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000257",
+    "received_at": "2026-02-16T22:31:39.195Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000015",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "17-1276-29",
+        "qty": 2,
+        "condition": "NEW",
+        "ata_chapter": 29
+      },
+      {
+        "part_number": "96-1556-94",
+        "qty": 3,
+        "condition": "OH",
+        "ata_chapter": 27
+      },
+      {
+        "part_number": "61-4362-45",
+        "qty": 1,
+        "condition": "SV",
+        "ata_chapter": 79
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000258",
+    "received_at": "2025-09-09T16:16:15.605Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000001",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "17-4902-24",
+        "qty": 6,
+        "condition": "NEW",
+        "ata_chapter": 33
+      },
+      {
+        "part_number": "32-3437-58",
+        "qty": 6,
+        "condition": "OH",
+        "ata_chapter": 27
+      },
+      {
+        "part_number": "97-3951-24",
+        "qty": 3,
+        "condition": "SV",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000259",
+    "received_at": "2025-12-24T14:16:11.758Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000009",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "97-1019-22",
+        "qty": 5,
+        "condition": "AR",
+        "ata_chapter": 34
+      },
+      {
+        "part_number": "93-9576-56",
+        "qty": 7,
+        "condition": "SV",
+        "ata_chapter": 25
+      },
+      {
+        "part_number": "68-6493-69",
+        "qty": 7,
+        "condition": "NEW",
+        "ata_chapter": 71
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "new",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000260",
+    "received_at": "2025-08-11T12:49:05.425Z",
+    "channel": "email",
+    "customer_id": "cust_000012",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "28-4288-31",
+        "qty": 2,
+        "condition": "AR",
+        "ata_chapter": 49
+      },
+      {
+        "part_number": "17-6064-12",
+        "qty": 4,
+        "condition": "SV",
+        "ata_chapter": 57
+      },
+      {
+        "part_number": "48-3717-41",
+        "qty": 6,
+        "condition": "SV",
+        "ata_chapter": 24
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000261",
+    "received_at": "2026-06-14T02:26:16.915Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000011",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "28-4288-31",
+        "qty": 1,
+        "condition": "OH",
+        "ata_chapter": 49
+      },
+      {
+        "part_number": "75-1446-75",
+        "qty": 6,
+        "condition": "SV",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "46-5806-50",
+        "qty": 7,
+        "condition": "SV",
+        "ata_chapter": 33
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000262",
+    "received_at": "2026-05-16T16:52:14.991Z",
+    "channel": "email",
+    "customer_id": "cust_000021",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "89-2053-70",
+        "qty": 2,
+        "condition": "AR",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "25-1019-82",
+        "qty": 4,
+        "condition": "OH",
+        "ata_chapter": 25
+      },
+      {
+        "part_number": "65-8267-13",
+        "qty": 1,
+        "condition": "OH",
+        "ata_chapter": 23
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000263",
+    "received_at": "2026-05-14T00:21:20.717Z",
+    "channel": "form",
+    "customer_id": "cust_000018",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "86-3132-79",
+        "qty": 7,
+        "condition": "AR",
+        "ata_chapter": 49
+      },
+      {
+        "part_number": "94-8977-97",
+        "qty": 5,
+        "condition": "NEW",
+        "ata_chapter": 71
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [
+      "ambiguous P/N"
+    ],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000264",
+    "received_at": "2026-05-24T01:53:38.457Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000001",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "28-9864-22",
+        "qty": 3,
+        "condition": "SV",
+        "ata_chapter": 24
+      },
+      {
+        "part_number": "88-3977-07",
+        "qty": 5,
+        "condition": "NEW",
+        "ata_chapter": 25
+      },
+      {
+        "part_number": "13-5023-95",
+        "qty": 8,
+        "condition": "OH",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000265",
+    "received_at": "2026-04-29T20:41:26.350Z",
+    "channel": "phone",
+    "customer_id": "cust_000017",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "18-3733-69",
+        "qty": 2,
+        "condition": "NEW",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000266",
+    "received_at": "2025-09-26T06:40:19.492Z",
+    "channel": "email",
+    "customer_id": "cust_000006",
+    "end_user_type": "ga",
+    "lines": [
+      {
+        "part_number": "43-4970-94",
+        "qty": 2,
+        "condition": "AR",
+        "ata_chapter": 71
+      },
+      {
+        "part_number": "43-5546-61",
+        "qty": 5,
+        "condition": "AR",
+        "ata_chapter": 28
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [
+      "ambiguous P/N"
+    ],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000267",
+    "received_at": "2025-07-15T01:34:51.495Z",
+    "channel": "email",
+    "customer_id": "cust_000016",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "37-9687-46",
+        "qty": 2,
+        "condition": "AR",
+        "ata_chapter": 77
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000268",
+    "received_at": "2026-01-11T04:40:15.203Z",
+    "channel": "portal",
+    "customer_id": "cust_000015",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "85-8706-60",
+        "qty": 8,
+        "condition": "SV",
+        "ata_chapter": 77
+      },
+      {
+        "part_number": "58-8875-69",
+        "qty": 3,
+        "condition": "OH",
+        "ata_chapter": 21
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000269",
+    "received_at": "2025-07-30T01:30:11.382Z",
+    "channel": "portal",
+    "customer_id": "cust_000019",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "19-3813-17",
+        "qty": 2,
+        "condition": "NEW",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [
+      "missing condition"
+    ],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000270",
+    "received_at": "2025-07-13T18:52:14.868Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000007",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "10-1580-62",
+        "qty": 2,
+        "condition": "NEW",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000271",
+    "received_at": "2025-08-11T11:48:48.058Z",
+    "channel": "form",
+    "customer_id": "cust_000001",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "64-9144-37",
+        "qty": 3,
+        "condition": "NEW",
+        "ata_chapter": 57
+      },
+      {
+        "part_number": "28-9864-22",
+        "qty": 2,
+        "condition": "SV",
+        "ata_chapter": 24
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000272",
+    "received_at": "2026-04-07T16:10:38.233Z",
+    "channel": "email",
+    "customer_id": "cust_000007",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "28-4288-31",
+        "qty": 6,
+        "condition": "NEW",
+        "ata_chapter": 49
+      },
+      {
+        "part_number": "38-1638-13",
+        "qty": 3,
+        "condition": "AR",
+        "ata_chapter": 29
+      },
+      {
+        "part_number": "18-3733-69",
+        "qty": 5,
+        "condition": "NEW",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000273",
+    "received_at": "2025-12-26T18:26:08.223Z",
+    "channel": "phone",
+    "customer_id": "cust_000023",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "59-5664-14",
+        "qty": 1,
+        "condition": "SV",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000274",
+    "received_at": "2026-01-07T00:56:21.748Z",
+    "channel": "form",
+    "customer_id": "cust_000022",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "94-1384-05",
+        "qty": 2,
+        "condition": "SV",
+        "ata_chapter": 33
+      },
+      {
+        "part_number": "85-8706-60",
+        "qty": 5,
+        "condition": "SV",
+        "ata_chapter": 77
+      },
+      {
+        "part_number": "52-8642-87",
+        "qty": 4,
+        "condition": "SV",
+        "ata_chapter": 25
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000275",
+    "received_at": "2026-05-28T18:07:07.564Z",
+    "channel": "email",
+    "customer_id": "cust_000002",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "51-8696-45",
+        "qty": 8,
+        "condition": "AR",
+        "ata_chapter": 23
+      },
+      {
+        "part_number": "72-3884-25",
+        "qty": 2,
+        "condition": "NEW",
+        "ata_chapter": 33
+      },
+      {
+        "part_number": "30-3987-17",
+        "qty": 6,
+        "condition": "NEW",
+        "ata_chapter": 77
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000276",
+    "received_at": "2025-08-19T18:59:29.848Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000015",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "66-3821-95",
+        "qty": 2,
+        "condition": "OH",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000277",
+    "received_at": "2026-03-22T22:19:22.434Z",
+    "channel": "phone",
+    "customer_id": "cust_000003",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "90-3066-04",
+        "qty": 1,
+        "condition": "SV",
+        "ata_chapter": 21
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [
+      "qty unconfirmed"
+    ],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000278",
+    "received_at": "2025-08-13T18:14:31.685Z",
+    "channel": "email",
+    "customer_id": "cust_000014",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "47-4578-51",
+        "qty": 8,
+        "condition": "AR",
+        "ata_chapter": 28
+      },
+      {
+        "part_number": "89-2053-70",
+        "qty": 2,
+        "condition": "AR",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000279",
+    "received_at": "2026-01-26T02:40:33.972Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000002",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "78-2711-30",
+        "qty": 5,
+        "condition": "NEW",
+        "ata_chapter": 34
+      },
+      {
+        "part_number": "36-2060-92",
+        "qty": 7,
+        "condition": "OH",
+        "ata_chapter": 77
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [
+      "qty unconfirmed"
+    ],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000280",
+    "received_at": "2026-02-25T12:07:45.947Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000014",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "13-5023-95",
+        "qty": 8,
+        "condition": "AR",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [
+      "missing condition"
+    ],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000281",
+    "received_at": "2025-10-04T10:35:19.341Z",
+    "channel": "portal",
+    "customer_id": "cust_000009",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "68-6493-69",
+        "qty": 4,
+        "condition": "NEW",
+        "ata_chapter": 71
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000282",
+    "received_at": "2026-04-22T04:17:58.622Z",
+    "channel": "email",
+    "customer_id": "cust_000004",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "25-1019-82",
+        "qty": 1,
+        "condition": "OH",
+        "ata_chapter": 25
+      },
+      {
+        "part_number": "56-9717-78",
+        "qty": 7,
+        "condition": "OH",
+        "ata_chapter": 34
+      },
+      {
+        "part_number": "45-5547-15",
+        "qty": 3,
+        "condition": "AR",
+        "ata_chapter": 72
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [
+      "qty unconfirmed"
+    ],
+    "status": "new",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000283",
+    "received_at": "2025-09-16T12:03:00.835Z",
+    "channel": "form",
+    "customer_id": "cust_000019",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "59-6170-54",
+        "qty": 5,
+        "condition": "SV",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "32-8203-74",
+        "qty": 7,
+        "condition": "NEW",
+        "ata_chapter": 71
+      },
+      {
+        "part_number": "55-5890-02",
+        "qty": 6,
+        "condition": "AR",
+        "ata_chapter": 27
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000284",
+    "received_at": "2025-09-28T21:42:50.467Z",
+    "channel": "phone",
+    "customer_id": "cust_000007",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "21-9569-84",
+        "qty": 7,
+        "condition": "NEW",
+        "ata_chapter": 34
+      },
+      {
+        "part_number": "65-4083-65",
+        "qty": 4,
+        "condition": "NEW",
+        "ata_chapter": 24
+      },
+      {
+        "part_number": "47-2048-14",
+        "qty": 6,
+        "condition": "AR",
+        "ata_chapter": 49
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [
+      "qty unconfirmed"
+    ],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000285",
+    "received_at": "2025-09-29T08:35:13.055Z",
+    "channel": "email",
+    "customer_id": "cust_000016",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "61-9323-84",
+        "qty": 3,
+        "condition": "AR",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "47-4578-51",
+        "qty": 7,
+        "condition": "AR",
+        "ata_chapter": 28
+      },
+      {
+        "part_number": "21-1928-10",
+        "qty": 3,
+        "condition": "AR",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000286",
+    "received_at": "2026-05-14T14:50:16.872Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000020",
+    "end_user_type": "airline",
+    "lines": [
+      {
+        "part_number": "74-8750-99",
+        "qty": 7,
+        "condition": "AR",
+        "ata_chapter": 25
+      },
+      {
+        "part_number": "43-9613-87",
+        "qty": 3,
+        "condition": "AR",
+        "ata_chapter": 77
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [
+      "qty unconfirmed"
+    ],
+    "status": "new",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000287",
+    "received_at": "2026-01-31T01:41:47.003Z",
+    "channel": "phone",
+    "customer_id": "cust_000003",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "72-3884-25",
+        "qty": 3,
+        "condition": "NEW",
+        "ata_chapter": 33
+      },
+      {
+        "part_number": "53-9657-97",
+        "qty": 1,
+        "condition": "AR",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000288",
+    "received_at": "2026-01-11T20:32:19.897Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000017",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "48-3717-41",
+        "qty": 8,
+        "condition": "SV",
+        "ata_chapter": 24
+      },
+      {
+        "part_number": "10-7966-88",
+        "qty": 4,
+        "condition": "OH",
+        "ata_chapter": 21
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [
+      "missing condition"
+    ],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000289",
+    "received_at": "2025-07-02T21:43:21.843Z",
+    "channel": "phone",
+    "customer_id": "cust_000018",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "19-9919-84",
+        "qty": 5,
+        "condition": "SV",
+        "ata_chapter": 34
+      },
+      {
+        "part_number": "46-5806-50",
+        "qty": 7,
+        "condition": "SV",
+        "ata_chapter": 33
+      },
+      {
+        "part_number": "97-3094-38",
+        "qty": 1,
+        "condition": "NEW",
+        "ata_chapter": 72
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000290",
+    "received_at": "2025-11-20T10:13:48.477Z",
+    "channel": "email",
+    "customer_id": "cust_000010",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "45-4265-51",
+        "qty": 3,
+        "condition": "SV",
+        "ata_chapter": 28
+      },
+      {
+        "part_number": "73-4362-84",
+        "qty": 3,
+        "condition": "OH",
+        "ata_chapter": 24
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000291",
+    "received_at": "2025-12-22T01:45:09.646Z",
+    "channel": "portal",
+    "customer_id": "cust_000011",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "89-2053-70",
+        "qty": 8,
+        "condition": "AR",
+        "ata_chapter": 32
+      },
+      {
+        "part_number": "91-9387-22",
+        "qty": 6,
+        "condition": "NEW",
+        "ata_chapter": 49
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000292",
+    "received_at": "2026-05-06T15:49:22.335Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000018",
+    "end_user_type": "defense",
+    "lines": [
+      {
+        "part_number": "61-4362-45",
+        "qty": 6,
+        "condition": "SV",
+        "ata_chapter": 79
+      },
+      {
+        "part_number": "67-6321-30",
+        "qty": 2,
+        "condition": "OH",
+        "ata_chapter": 23
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000293",
+    "received_at": "2025-07-21T12:50:20.573Z",
+    "channel": "phone",
+    "customer_id": "cust_000003",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "58-2386-74",
+        "qty": 4,
+        "condition": "OH",
+        "ata_chapter": 49
+      },
+      {
+        "part_number": "17-6064-12",
+        "qty": 6,
+        "condition": "SV",
+        "ata_chapter": 57
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000294",
+    "received_at": "2025-08-22T16:04:59.687Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000003",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "30-3987-17",
+        "qty": 7,
+        "condition": "NEW",
+        "ata_chapter": 77
+      },
+      {
+        "part_number": "38-8595-67",
+        "qty": 1,
+        "condition": "SV",
+        "ata_chapter": 34
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000295",
+    "received_at": "2026-03-09T02:50:15.836Z",
+    "channel": "form",
+    "customer_id": "cust_000006",
+    "end_user_type": "ga",
+    "lines": [
+      {
+        "part_number": "18-2759-38",
+        "qty": 1,
+        "condition": "OH",
+        "ata_chapter": 21
+      },
+      {
+        "part_number": "11-6701-48",
+        "qty": 5,
+        "condition": "SV",
+        "ata_chapter": 27
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000296",
+    "received_at": "2026-06-19T03:31:28.655Z",
+    "channel": "email",
+    "customer_id": "cust_000003",
+    "end_user_type": "mro",
+    "lines": [
+      {
+        "part_number": "32-3437-58",
+        "qty": 7,
+        "condition": "OH",
+        "ata_chapter": 27
+      },
+      {
+        "part_number": "90-8712-20",
+        "qty": 5,
+        "condition": "OH",
+        "ata_chapter": 49
+      }
+    ],
+    "urgency": "aog",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "lost",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000297",
+    "received_at": "2025-08-02T15:13:55.938Z",
+    "channel": "email",
+    "customer_id": "cust_000012",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "33-4702-16",
+        "qty": 4,
+        "condition": "AR",
+        "ata_chapter": 23
+      },
+      {
+        "part_number": "45-5309-52",
+        "qty": 2,
+        "condition": "NEW",
+        "ata_chapter": 77
+      },
+      {
+        "part_number": "26-2783-50",
+        "qty": 5,
+        "condition": "OH",
+        "ata_chapter": 32
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000298",
+    "received_at": "2025-11-19T15:19:01.543Z",
+    "channel": "form",
+    "customer_id": "cust_000006",
+    "end_user_type": "ga",
+    "lines": [
+      {
+        "part_number": "71-8294-61",
+        "qty": 1,
+        "condition": "NEW",
+        "ata_chapter": 28
+      },
+      {
+        "part_number": "26-3657-10",
+        "qty": 6,
+        "condition": "OH",
+        "ata_chapter": 79
+      },
+      {
+        "part_number": "64-9144-37",
+        "qty": 3,
+        "condition": "NEW",
+        "ata_chapter": 57
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "quoted",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000299",
+    "received_at": "2026-02-19T09:56:05.052Z",
+    "channel": "phone",
+    "customer_id": "cust_000011",
+    "end_user_type": "govt",
+    "lines": [
+      {
+        "part_number": "73-4362-84",
+        "qty": 8,
+        "condition": "OH",
+        "ata_chapter": 24
+      },
+      {
+        "part_number": "40-5708-44",
+        "qty": 6,
+        "condition": "SV",
+        "ata_chapter": 79
+      }
+    ],
+    "urgency": "routine",
+    "export_control_review": true,
+    "clarifications_needed": [],
+    "status": "won",
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "rfq_000300",
+    "received_at": "2026-01-12T05:07:19.322Z",
+    "channel": "whatsapp",
+    "customer_id": "cust_000017",
+    "end_user_type": "operator",
+    "lines": [
+      {
+        "part_number": "91-1334-39",
+        "qty": 4,
+        "condition": "SV",
+        "ata_chapter": 71
+      },
+      {
+        "part_number": "82-3875-89",
+        "qty": 6,
+        "condition": "SV",
+        "ata_chapter": 77
+      },
+      {
+        "part_number": "57-7930-06",
+        "qty": 8,
+        "condition": "NEW",
+        "ata_chapter": 27
+      }
+    ],
+    "urgency": "critical",
+    "export_control_review": false,
+    "clarifications_needed": [],
+    "status": "triaged",
+    "_synthetic": true,
+    "_dataset": "v1"
+  }
+]

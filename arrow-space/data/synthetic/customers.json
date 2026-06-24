@@ -1,0 +1,482 @@
+[
+  {
+    "id": "cust_000001",
+    "name": "Charter Aviation 85",
+    "type": "operator",
+    "country": "IN",
+    "contacts": [
+      {
+        "name": "R. Khan",
+        "email": "procurement@charter-aviation-85.example.com",
+        "phone": "+95878927183",
+        "role": "Procurement"
+      },
+      {
+        "name": "S. Gupta",
+        "email": "chief-engineer@charter-aviation-85.example.com",
+        "phone": "+96376301362",
+        "role": "Chief Engineer"
+      }
+    ],
+    "portal_enabled": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "cust_000002",
+    "name": "Executive Air 1",
+    "type": "operator",
+    "country": "IN",
+    "contacts": [
+      {
+        "name": "A. Mendis",
+        "email": "stores@executive-air-1.example.com",
+        "phone": "+91340260388",
+        "role": "Stores"
+      }
+    ],
+    "portal_enabled": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "cust_000003",
+    "name": "Continental Aero Services 3",
+    "type": "mro",
+    "country": "IN",
+    "contacts": [
+      {
+        "name": "R. Pillai",
+        "email": "stores@continental-aero-services-3.example.com",
+        "phone": "+93504906155",
+        "role": "Stores"
+      }
+    ],
+    "portal_enabled": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "cust_000004",
+    "name": "Executive Air 25",
+    "type": "operator",
+    "country": "SG",
+    "contacts": [
+      {
+        "name": "S. Pillai",
+        "email": "maintenance-director@executive-air-25.example.com",
+        "phone": "+97557196660",
+        "role": "Maintenance Director"
+      },
+      {
+        "name": "S. Khan",
+        "email": "maintenance-director@executive-air-25.example.com",
+        "phone": "+91693873814",
+        "role": "Maintenance Director"
+      }
+    ],
+    "portal_enabled": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "cust_000005",
+    "name": "Flying Club 94",
+    "type": "ga",
+    "country": "IN",
+    "contacts": [
+      {
+        "name": "A. Sharma",
+        "email": "stores@flying-club-94.example.com",
+        "phone": "+91424401117",
+        "role": "Stores"
+      }
+    ],
+    "portal_enabled": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "cust_000006",
+    "name": "Flying Club 72",
+    "type": "ga",
+    "country": "AE",
+    "contacts": [
+      {
+        "name": "M. Khan",
+        "email": "maintenance-director@flying-club-72.example.com",
+        "phone": "+95839702582",
+        "role": "Maintenance Director"
+      },
+      {
+        "name": "K. Mendis",
+        "email": "procurement@flying-club-72.example.com",
+        "phone": "+98490591332",
+        "role": "Procurement"
+      }
+    ],
+    "portal_enabled": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "cust_000007",
+    "name": "Charter Aviation 73",
+    "type": "operator",
+    "country": "IN",
+    "contacts": [
+      {
+        "name": "K. Pillai",
+        "email": "chief-engineer@charter-aviation-73.example.com",
+        "phone": "+98901178317",
+        "role": "Chief Engineer"
+      }
+    ],
+    "portal_enabled": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "cust_000008",
+    "name": "State Aviation Directorate 69",
+    "type": "govt",
+    "country": "IN",
+    "contacts": [
+      {
+        "name": "K. Sharma",
+        "email": "fleet-manager@state-aviation-directorate-69.example.com",
+        "phone": "+94839755726",
+        "role": "Fleet Manager"
+      }
+    ],
+    "portal_enabled": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "cust_000009",
+    "name": "Defence Logistics 70",
+    "type": "defense",
+    "country": "AE",
+    "contacts": [
+      {
+        "name": "A. Mendis",
+        "email": "chief-engineer@defence-logistics-70.example.com",
+        "phone": "+93286258710",
+        "role": "Chief Engineer"
+      }
+    ],
+    "portal_enabled": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "cust_000010",
+    "name": "Police Air Unit 39",
+    "type": "govt",
+    "country": "NP",
+    "contacts": [
+      {
+        "name": "S. Sharma",
+        "email": "stores@police-air-unit-39.example.com",
+        "phone": "+96671737436",
+        "role": "Stores"
+      }
+    ],
+    "portal_enabled": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "cust_000011",
+    "name": "Government Flying Service 49",
+    "type": "govt",
+    "country": "IN",
+    "contacts": [
+      {
+        "name": "M. Pillai",
+        "email": "procurement@government-flying-service-49.example.com",
+        "phone": "+93347936215",
+        "role": "Procurement"
+      }
+    ],
+    "portal_enabled": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "cust_000012",
+    "name": "Police Air Unit 57",
+    "type": "govt",
+    "country": "NP",
+    "contacts": [
+      {
+        "name": "A. Mendis",
+        "email": "procurement@police-air-unit-57.example.com",
+        "phone": "+93455190699",
+        "role": "Procurement"
+      },
+      {
+        "name": "R. Pillai",
+        "email": "chief-engineer@police-air-unit-57.example.com",
+        "phone": "+94402508719",
+        "role": "Chief Engineer"
+      }
+    ],
+    "portal_enabled": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "cust_000013",
+    "name": "Skyline Carriers 55",
+    "type": "airline",
+    "country": "IN",
+    "contacts": [
+      {
+        "name": "S. Khan",
+        "email": "maintenance-director@skyline-carriers-55.example.com",
+        "phone": "+93702366122",
+        "role": "Maintenance Director"
+      },
+      {
+        "name": "A. Pillai",
+        "email": "maintenance-director@skyline-carriers-55.example.com",
+        "phone": "+93212420948",
+        "role": "Maintenance Director"
+      }
+    ],
+    "portal_enabled": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "cust_000014",
+    "name": "Corporate Jet Operations 48",
+    "type": "operator",
+    "country": "NP",
+    "contacts": [
+      {
+        "name": "K. Pillai",
+        "email": "fleet-manager@corporate-jet-operations-48.example.com",
+        "phone": "+94238728227",
+        "role": "Fleet Manager"
+      }
+    ],
+    "portal_enabled": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "cust_000015",
+    "name": "Apex Line Maintenance 45",
+    "type": "mro",
+    "country": "US",
+    "contacts": [
+      {
+        "name": "K. Khan",
+        "email": "fleet-manager@apex-line-maintenance-45.example.com",
+        "phone": "+94591095914",
+        "role": "Fleet Manager"
+      }
+    ],
+    "portal_enabled": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "cust_000016",
+    "name": "Apex Line Maintenance 74",
+    "type": "mro",
+    "country": "US",
+    "contacts": [
+      {
+        "name": "A. Mendis",
+        "email": "procurement@apex-line-maintenance-74.example.com",
+        "phone": "+96784719415",
+        "role": "Procurement"
+      }
+    ],
+    "portal_enabled": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "cust_000017",
+    "name": "Continental Charters 85",
+    "type": "operator",
+    "country": "IN",
+    "contacts": [
+      {
+        "name": "R. Gupta",
+        "email": "maintenance-director@continental-charters-85.example.com",
+        "phone": "+96414324578",
+        "role": "Maintenance Director"
+      },
+      {
+        "name": "M. Khan",
+        "email": "stores@continental-charters-85.example.com",
+        "phone": "+97236435154",
+        "role": "Stores"
+      }
+    ],
+    "portal_enabled": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "cust_000018",
+    "name": "Defence Logistics 72",
+    "type": "defense",
+    "country": "SG",
+    "contacts": [
+      {
+        "name": "R. Pillai",
+        "email": "stores@defence-logistics-72.example.com",
+        "phone": "+92345790951",
+        "role": "Stores"
+      },
+      {
+        "name": "A. Khan",
+        "email": "procurement@defence-logistics-72.example.com",
+        "phone": "+94611887522",
+        "role": "Procurement"
+      }
+    ],
+    "portal_enabled": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "cust_000019",
+    "name": "Aerotech MRO 66",
+    "type": "mro",
+    "country": "AE",
+    "contacts": [
+      {
+        "name": "R. Rao",
+        "email": "chief-engineer@aerotech-mro-66.example.com",
+        "phone": "+94398729598",
+        "role": "Chief Engineer"
+      },
+      {
+        "name": "A. Mendis",
+        "email": "maintenance-director@aerotech-mro-66.example.com",
+        "phone": "+93577501635",
+        "role": "Maintenance Director"
+      }
+    ],
+    "portal_enabled": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "cust_000020",
+    "name": "Regional Airways 1",
+    "type": "airline",
+    "country": "IN",
+    "contacts": [
+      {
+        "name": "A. Gupta",
+        "email": "stores@regional-airways-1.example.com",
+        "phone": "+94552219411",
+        "role": "Stores"
+      }
+    ],
+    "portal_enabled": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "cust_000021",
+    "name": "Naval Air Arm 23",
+    "type": "defense",
+    "country": "IN",
+    "contacts": [
+      {
+        "name": "A. Gupta",
+        "email": "chief-engineer@naval-air-arm-23.example.com",
+        "phone": "+97695080474",
+        "role": "Chief Engineer"
+      },
+      {
+        "name": "R. Pillai",
+        "email": "fleet-manager@naval-air-arm-23.example.com",
+        "phone": "+95259149194",
+        "role": "Fleet Manager"
+      }
+    ],
+    "portal_enabled": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "cust_000022",
+    "name": "Naval Air Arm 67",
+    "type": "defense",
+    "country": "US",
+    "contacts": [
+      {
+        "name": "K. Sharma",
+        "email": "chief-engineer@naval-air-arm-67.example.com",
+        "phone": "+94404053463",
+        "role": "Chief Engineer"
+      },
+      {
+        "name": "K. Mendis",
+        "email": "maintenance-director@naval-air-arm-67.example.com",
+        "phone": "+92949867691",
+        "role": "Maintenance Director"
+      }
+    ],
+    "portal_enabled": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "cust_000023",
+    "name": "Continental Charters 93",
+    "type": "operator",
+    "country": "US",
+    "contacts": [
+      {
+        "name": "K. Khan",
+        "email": "chief-engineer@continental-charters-93.example.com",
+        "phone": "+94775225519",
+        "role": "Chief Engineer"
+      },
+      {
+        "name": "M. Mendis",
+        "email": "chief-engineer@continental-charters-93.example.com",
+        "phone": "+95970274465",
+        "role": "Chief Engineer"
+      }
+    ],
+    "portal_enabled": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "cust_000024",
+    "name": "Government Flying Service 67",
+    "type": "govt",
+    "country": "SG",
+    "contacts": [
+      {
+        "name": "K. Khan",
+        "email": "maintenance-director@government-flying-service-67.example.com",
+        "phone": "+98471920572",
+        "role": "Maintenance Director"
+      },
+      {
+        "name": "R. Gupta",
+        "email": "maintenance-director@government-flying-service-67.example.com",
+        "phone": "+95880961527",
+        "role": "Maintenance Director"
+      }
+    ],
+    "portal_enabled": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  }
+]

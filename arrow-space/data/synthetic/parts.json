@@ -1,0 +1,3132 @@
+[
+  {
+    "id": "part_000001",
+    "oem_part_number": "91-9387-22",
+    "manufacturer": "Collins Aerospace",
+    "ata_chapter": 49,
+    "ata_subchapter": "49-10",
+    "description": "Collins Aerospace APU starter — ATA 49 Auxiliary Power",
+    "applicable_aircraft": [
+      "Beechcraft King Air 350"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000002",
+    "oem_part_number": "28-1303-81",
+    "manufacturer": "Textron Aviation",
+    "ata_chapter": 28,
+    "ata_subchapter": "28-40",
+    "description": "Textron Aviation fuel pump — ATA 28 Fuel",
+    "applicable_aircraft": [
+      "Airbus H125"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000003",
+    "oem_part_number": "47-8273-22",
+    "manufacturer": "Collins Aerospace",
+    "ata_chapter": 34,
+    "ata_subchapter": "34-20",
+    "description": "Collins Aerospace air data computer — ATA 34 Navigation",
+    "applicable_aircraft": [
+      "Cessna Citation CJ3",
+      "Beechcraft King Air B200"
+    ],
+    "conditions_available": [
+      "NEW"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000004",
+    "oem_part_number": "86-5370-77",
+    "manufacturer": "David Clark",
+    "ata_chapter": 23,
+    "ata_subchapter": "23-10",
+    "description": "David Clark headset — ATA 23 Communications",
+    "applicable_aircraft": [
+      "Pilatus PC-12"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "AR"
+    ],
+    "lead_time_tier": "quote",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000005",
+    "oem_part_number": "96-1556-94",
+    "manufacturer": "Collins Aerospace",
+    "ata_chapter": 27,
+    "ata_subchapter": "27-50",
+    "description": "Collins Aerospace actuator — ATA 27 Flight Controls",
+    "applicable_aircraft": [
+      "Cessna Citation CJ3",
+      "Cessna Caravan 208B",
+      "Hawker 850XP"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000006",
+    "oem_part_number": "67-6321-30",
+    "manufacturer": "David Clark",
+    "ata_chapter": 23,
+    "ata_subchapter": "23-10",
+    "description": "David Clark headset — ATA 23 Communications",
+    "applicable_aircraft": [
+      "Cessna Caravan 208B",
+      "Beechcraft King Air B200",
+      "Beechcraft Bonanza G36",
+      "Bell 407"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "AR"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000007",
+    "oem_part_number": "88-9152-59",
+    "manufacturer": "Hawker Beechcraft",
+    "ata_chapter": 28,
+    "ata_subchapter": "28-40",
+    "description": "Hawker Beechcraft fuel pump — ATA 28 Fuel",
+    "applicable_aircraft": [
+      "Beechcraft King Air 350",
+      "Airbus H125",
+      "Cessna Caravan 208B"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "SV"
+    ],
+    "lead_time_tier": "24h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000008",
+    "oem_part_number": "84-4285-25",
+    "manufacturer": "Collins Aerospace",
+    "ata_chapter": 79,
+    "ata_subchapter": "79-20",
+    "description": "Collins Aerospace oil cooler — ATA 79 Oil",
+    "applicable_aircraft": [
+      "Beechcraft King Air B200"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "SV"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000009",
+    "oem_part_number": "88-7467-83",
+    "manufacturer": "Meggitt",
+    "ata_chapter": 32,
+    "ata_subchapter": "32-40",
+    "description": "Meggitt wheel & brake assembly — ATA 32 Landing Gear",
+    "applicable_aircraft": [
+      "Hawker 850XP"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH"
+    ],
+    "lead_time_tier": "quote",
+    "us_origin": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000010",
+    "oem_part_number": "35-9967-66",
+    "manufacturer": "Collins Aerospace",
+    "ata_chapter": 33,
+    "ata_subchapter": "33-40",
+    "description": "Collins Aerospace LED beacon — ATA 33 Lights",
+    "applicable_aircraft": [
+      "Hawker 900XP"
+    ],
+    "conditions_available": [
+      "OH"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000011",
+    "oem_part_number": "71-8294-61",
+    "manufacturer": "Collins Aerospace",
+    "ata_chapter": 28,
+    "ata_subchapter": "28-40",
+    "description": "Collins Aerospace fuel pump — ATA 28 Fuel",
+    "applicable_aircraft": [
+      "Beechcraft Baron G58"
+    ],
+    "conditions_available": [
+      "NEW",
+      "SV"
+    ],
+    "lead_time_tier": "24h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000012",
+    "oem_part_number": "25-1019-82",
+    "manufacturer": "Parker Hannifin",
+    "ata_chapter": 25,
+    "ata_subchapter": "25-20",
+    "description": "Parker Hannifin seat assembly — ATA 25 Equipment & Furnishings",
+    "applicable_aircraft": [
+      "Hawker 900XP",
+      "Hawker 850XP",
+      "Cessna Caravan 208B",
+      "Pilatus PC-12"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "AR"
+    ],
+    "lead_time_tier": "quote",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000013",
+    "oem_part_number": "27-1537-50",
+    "manufacturer": "Safran",
+    "ata_chapter": 32,
+    "ata_subchapter": "32-40",
+    "description": "Safran wheel & brake assembly — ATA 32 Landing Gear",
+    "applicable_aircraft": [
+      "Hawker 900XP",
+      "Beechcraft Baron G58",
+      "Robinson R66"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "quote",
+    "us_origin": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000014",
+    "oem_part_number": "64-9144-37",
+    "manufacturer": "Goodrich",
+    "ata_chapter": 57,
+    "ata_subchapter": "57-50",
+    "description": "Goodrich flap track — ATA 57 Wings",
+    "applicable_aircraft": [
+      "Pilatus PC-12",
+      "Bell 407",
+      "Robinson R66"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "stock",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000015",
+    "oem_part_number": "30-3987-17",
+    "manufacturer": "Liebherr Aerospace",
+    "ata_chapter": 77,
+    "ata_subchapter": "77-20",
+    "description": "Liebherr Aerospace ITT harness — ATA 77 Engine Indicating",
+    "applicable_aircraft": [
+      "Beechcraft Baron G58",
+      "Beechcraft Bonanza G36",
+      "Beechcraft King Air B200"
+    ],
+    "conditions_available": [
+      "NEW",
+      "AR"
+    ],
+    "lead_time_tier": "stock",
+    "us_origin": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000016",
+    "oem_part_number": "26-2783-50",
+    "manufacturer": "Safran",
+    "ata_chapter": 32,
+    "ata_subchapter": "32-40",
+    "description": "Safran wheel & brake assembly — ATA 32 Landing Gear",
+    "applicable_aircraft": [
+      "Beechcraft King Air 350",
+      "Cessna Citation CJ3",
+      "Hawker 900XP",
+      "Cessna Caravan 208B"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH"
+    ],
+    "lead_time_tier": "stock",
+    "us_origin": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000017",
+    "oem_part_number": "39-5550-22",
+    "manufacturer": "Hawker Beechcraft",
+    "ata_chapter": 24,
+    "ata_subchapter": "24-30",
+    "description": "Hawker Beechcraft generator control unit — ATA 24 Electrical Power",
+    "applicable_aircraft": [
+      "Beechcraft King Air 350",
+      "Beechcraft Bonanza G36"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000018",
+    "oem_part_number": "40-5708-44",
+    "manufacturer": "Hawker Beechcraft",
+    "ata_chapter": 79,
+    "ata_subchapter": "79-20",
+    "description": "Hawker Beechcraft oil cooler — ATA 79 Oil",
+    "applicable_aircraft": [
+      "Robinson R66"
+    ],
+    "conditions_available": [
+      "SV"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000019",
+    "oem_part_number": "65-4083-65",
+    "manufacturer": "Meggitt",
+    "ata_chapter": 24,
+    "ata_subchapter": "24-30",
+    "description": "Meggitt generator control unit — ATA 24 Electrical Power",
+    "applicable_aircraft": [
+      "Airbus H125",
+      "Cessna Caravan 208B",
+      "Hawker 850XP"
+    ],
+    "conditions_available": [
+      "NEW"
+    ],
+    "lead_time_tier": "stock",
+    "us_origin": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000020",
+    "oem_part_number": "17-6064-12",
+    "manufacturer": "Textron Aviation",
+    "ata_chapter": 57,
+    "ata_subchapter": "57-50",
+    "description": "Textron Aviation flap track — ATA 57 Wings",
+    "applicable_aircraft": [
+      "Pilatus PC-12"
+    ],
+    "conditions_available": [
+      "NEW",
+      "SV"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000021",
+    "oem_part_number": "26-2098-91",
+    "manufacturer": "Liebherr Aerospace",
+    "ata_chapter": 77,
+    "ata_subchapter": "77-20",
+    "description": "Liebherr Aerospace ITT harness — ATA 77 Engine Indicating",
+    "applicable_aircraft": [
+      "Beechcraft King Air 350",
+      "Beechcraft King Air B200",
+      "Pilatus PC-12"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000022",
+    "oem_part_number": "85-8706-60",
+    "manufacturer": "Hawker Beechcraft",
+    "ata_chapter": 77,
+    "ata_subchapter": "77-20",
+    "description": "Hawker Beechcraft ITT harness — ATA 77 Engine Indicating",
+    "applicable_aircraft": [
+      "Cessna Caravan 208B"
+    ],
+    "conditions_available": [
+      "SV"
+    ],
+    "lead_time_tier": "24h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000023",
+    "oem_part_number": "76-3578-15",
+    "manufacturer": "Safran",
+    "ata_chapter": 24,
+    "ata_subchapter": "24-30",
+    "description": "Safran generator control unit — ATA 24 Electrical Power",
+    "applicable_aircraft": [
+      "Beechcraft Bonanza G36"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "AR"
+    ],
+    "lead_time_tier": "24h",
+    "us_origin": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000024",
+    "oem_part_number": "24-1716-03",
+    "manufacturer": "Honeywell",
+    "ata_chapter": 32,
+    "ata_subchapter": "32-40",
+    "description": "Honeywell wheel & brake assembly — ATA 32 Landing Gear",
+    "applicable_aircraft": [
+      "Airbus H125"
+    ],
+    "conditions_available": [
+      "SV"
+    ],
+    "lead_time_tier": "stock",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000025",
+    "oem_part_number": "47-4722-10",
+    "manufacturer": "David Clark",
+    "ata_chapter": 23,
+    "ata_subchapter": "23-10",
+    "description": "David Clark headset — ATA 23 Communications",
+    "applicable_aircraft": [
+      "Beechcraft Baron G58",
+      "Hawker 900XP",
+      "Cessna Caravan 208B",
+      "Beechcraft King Air B200"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "quote",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000026",
+    "oem_part_number": "45-4265-51",
+    "manufacturer": "Liebherr Aerospace",
+    "ata_chapter": 28,
+    "ata_subchapter": "28-40",
+    "description": "Liebherr Aerospace fuel pump — ATA 28 Fuel",
+    "applicable_aircraft": [
+      "Airbus H125",
+      "Pilatus PC-12",
+      "Beechcraft Baron G58",
+      "Cessna Citation CJ3"
+    ],
+    "conditions_available": [
+      "SV"
+    ],
+    "lead_time_tier": "24h",
+    "us_origin": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000027",
+    "oem_part_number": "56-9717-78",
+    "manufacturer": "Goodrich",
+    "ata_chapter": 34,
+    "ata_subchapter": "34-20",
+    "description": "Goodrich air data computer — ATA 34 Navigation",
+    "applicable_aircraft": [
+      "Cessna Citation CJ3",
+      "Airbus H125",
+      "Robinson R66"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "stock",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000028",
+    "oem_part_number": "37-5192-45",
+    "manufacturer": "Collins Aerospace",
+    "ata_chapter": 24,
+    "ata_subchapter": "24-30",
+    "description": "Collins Aerospace generator control unit — ATA 24 Electrical Power",
+    "applicable_aircraft": [
+      "Hawker 850XP",
+      "Beechcraft Baron G58"
+    ],
+    "conditions_available": [
+      "NEW"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000029",
+    "oem_part_number": "36-2060-92",
+    "manufacturer": "Honeywell",
+    "ata_chapter": 77,
+    "ata_subchapter": "77-20",
+    "description": "Honeywell ITT harness — ATA 77 Engine Indicating",
+    "applicable_aircraft": [
+      "Cessna Citation CJ3",
+      "Pilatus PC-12",
+      "Beechcraft King Air B200",
+      "Beechcraft Bonanza G36"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "AR"
+    ],
+    "lead_time_tier": "quote",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000030",
+    "oem_part_number": "26-3734-32",
+    "manufacturer": "Hawker Beechcraft",
+    "ata_chapter": 32,
+    "ata_subchapter": "32-40",
+    "description": "Hawker Beechcraft wheel & brake assembly — ATA 32 Landing Gear",
+    "applicable_aircraft": [
+      "Hawker 850XP"
+    ],
+    "conditions_available": [
+      "NEW"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000031",
+    "oem_part_number": "55-2378-79",
+    "manufacturer": "Meggitt",
+    "ata_chapter": 24,
+    "ata_subchapter": "24-30",
+    "description": "Meggitt generator control unit — ATA 24 Electrical Power",
+    "applicable_aircraft": [
+      "Cessna Citation CJ3",
+      "Beechcraft Bonanza G36",
+      "Cessna Caravan 208B"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "AR"
+    ],
+    "lead_time_tier": "24h",
+    "us_origin": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000032",
+    "oem_part_number": "64-7400-71",
+    "manufacturer": "Parker Hannifin",
+    "ata_chapter": 27,
+    "ata_subchapter": "27-50",
+    "description": "Parker Hannifin actuator — ATA 27 Flight Controls",
+    "applicable_aircraft": [
+      "Beechcraft King Air 350"
+    ],
+    "conditions_available": [
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "stock",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000033",
+    "oem_part_number": "90-8712-20",
+    "manufacturer": "Textron Aviation",
+    "ata_chapter": 49,
+    "ata_subchapter": "49-10",
+    "description": "Textron Aviation APU starter — ATA 49 Auxiliary Power",
+    "applicable_aircraft": [
+      "Cessna Citation CJ3"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "24h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000034",
+    "oem_part_number": "85-9794-72",
+    "manufacturer": "Goodrich",
+    "ata_chapter": 27,
+    "ata_subchapter": "27-50",
+    "description": "Goodrich actuator — ATA 27 Flight Controls",
+    "applicable_aircraft": [
+      "Beechcraft Bonanza G36"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000035",
+    "oem_part_number": "19-1765-45",
+    "manufacturer": "Textron Aviation",
+    "ata_chapter": 34,
+    "ata_subchapter": "34-20",
+    "description": "Textron Aviation air data computer — ATA 34 Navigation",
+    "applicable_aircraft": [
+      "Bell 407"
+    ],
+    "conditions_available": [
+      "NEW",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "stock",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000036",
+    "oem_part_number": "65-5221-07",
+    "manufacturer": "Collins Aerospace",
+    "ata_chapter": 32,
+    "ata_subchapter": "32-40",
+    "description": "Collins Aerospace wheel & brake assembly — ATA 32 Landing Gear",
+    "applicable_aircraft": [
+      "Hawker 900XP",
+      "Beechcraft Bonanza G36",
+      "Cessna Caravan 208B"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "stock",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000037",
+    "oem_part_number": "74-6673-41",
+    "manufacturer": "Honeywell",
+    "ata_chapter": 71,
+    "ata_subchapter": "71-00",
+    "description": "Honeywell engine mount — ATA 71 Power Plant",
+    "applicable_aircraft": [
+      "Cessna Caravan 208B"
+    ],
+    "conditions_available": [
+      "NEW"
+    ],
+    "lead_time_tier": "stock",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000038",
+    "oem_part_number": "34-6013-32",
+    "manufacturer": "Collins Aerospace",
+    "ata_chapter": 72,
+    "ata_subchapter": "72-30",
+    "description": "Collins Aerospace compressor blade set — ATA 72 Engine",
+    "applicable_aircraft": [
+      "Cessna Citation CJ3",
+      "Airbus H125",
+      "Beechcraft Baron G58"
+    ],
+    "conditions_available": [
+      "AR"
+    ],
+    "lead_time_tier": "24h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000039",
+    "oem_part_number": "65-8267-13",
+    "manufacturer": "David Clark",
+    "ata_chapter": 23,
+    "ata_subchapter": "23-10",
+    "description": "David Clark headset — ATA 23 Communications",
+    "applicable_aircraft": [
+      "Cessna Citation CJ3",
+      "Bell 407",
+      "Beechcraft King Air 350",
+      "Airbus H125"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "AR"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000040",
+    "oem_part_number": "91-1334-39",
+    "manufacturer": "Collins Aerospace",
+    "ata_chapter": 71,
+    "ata_subchapter": "71-00",
+    "description": "Collins Aerospace engine mount — ATA 71 Power Plant",
+    "applicable_aircraft": [
+      "Beechcraft King Air B200",
+      "Beechcraft Bonanza G36",
+      "Airbus H125",
+      "Cessna Caravan 208B"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "stock",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000041",
+    "oem_part_number": "28-4288-31",
+    "manufacturer": "Hawker Beechcraft",
+    "ata_chapter": 49,
+    "ata_subchapter": "49-10",
+    "description": "Hawker Beechcraft APU starter — ATA 49 Auxiliary Power",
+    "applicable_aircraft": [
+      "Cessna Caravan 208B",
+      "Beechcraft King Air 350",
+      "Beechcraft Bonanza G36"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "AR"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000042",
+    "oem_part_number": "75-1446-75",
+    "manufacturer": "Honeywell",
+    "ata_chapter": 32,
+    "ata_subchapter": "32-40",
+    "description": "Honeywell wheel & brake assembly — ATA 32 Landing Gear",
+    "applicable_aircraft": [
+      "Cessna Caravan 208B",
+      "Robinson R66",
+      "Beechcraft King Air B200"
+    ],
+    "conditions_available": [
+      "OH",
+      "SV"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000043",
+    "oem_part_number": "28-9694-85",
+    "manufacturer": "Textron Aviation",
+    "ata_chapter": 34,
+    "ata_subchapter": "34-20",
+    "description": "Textron Aviation air data computer — ATA 34 Navigation",
+    "applicable_aircraft": [
+      "Beechcraft King Air 350",
+      "Airbus H125"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000044",
+    "oem_part_number": "33-4702-16",
+    "manufacturer": "David Clark",
+    "ata_chapter": 23,
+    "ata_subchapter": "23-10",
+    "description": "David Clark headset — ATA 23 Communications",
+    "applicable_aircraft": [
+      "Beechcraft King Air 350",
+      "Beechcraft Baron G58",
+      "Airbus H125"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "AR"
+    ],
+    "lead_time_tier": "stock",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000045",
+    "oem_part_number": "52-8642-87",
+    "manufacturer": "Textron Aviation",
+    "ata_chapter": 25,
+    "ata_subchapter": "25-20",
+    "description": "Textron Aviation seat assembly — ATA 25 Equipment & Furnishings",
+    "applicable_aircraft": [
+      "Hawker 850XP"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "24h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000046",
+    "oem_part_number": "97-3951-24",
+    "manufacturer": "Textron Aviation",
+    "ata_chapter": 32,
+    "ata_subchapter": "32-40",
+    "description": "Textron Aviation wheel & brake assembly — ATA 32 Landing Gear",
+    "applicable_aircraft": [
+      "Airbus H125",
+      "Robinson R66",
+      "Cessna Citation CJ3"
+    ],
+    "conditions_available": [
+      "SV"
+    ],
+    "lead_time_tier": "stock",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000047",
+    "oem_part_number": "61-7444-22",
+    "manufacturer": "Hawker Beechcraft",
+    "ata_chapter": 71,
+    "ata_subchapter": "71-00",
+    "description": "Hawker Beechcraft engine mount — ATA 71 Power Plant",
+    "applicable_aircraft": [
+      "Robinson R66"
+    ],
+    "conditions_available": [
+      "OH"
+    ],
+    "lead_time_tier": "24h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000048",
+    "oem_part_number": "68-6493-69",
+    "manufacturer": "Parker Hannifin",
+    "ata_chapter": 71,
+    "ata_subchapter": "71-00",
+    "description": "Parker Hannifin engine mount — ATA 71 Power Plant",
+    "applicable_aircraft": [
+      "Cessna Caravan 208B",
+      "Hawker 850XP",
+      "Hawker 900XP",
+      "Beechcraft Bonanza G36"
+    ],
+    "conditions_available": [
+      "NEW",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000049",
+    "oem_part_number": "89-5325-55",
+    "manufacturer": "Hawker Beechcraft",
+    "ata_chapter": 32,
+    "ata_subchapter": "32-40",
+    "description": "Hawker Beechcraft wheel & brake assembly — ATA 32 Landing Gear",
+    "applicable_aircraft": [
+      "Beechcraft Baron G58",
+      "Cessna Caravan 208B"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "stock",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000050",
+    "oem_part_number": "93-9576-56",
+    "manufacturer": "Textron Aviation",
+    "ata_chapter": 25,
+    "ata_subchapter": "25-20",
+    "description": "Textron Aviation seat assembly — ATA 25 Equipment & Furnishings",
+    "applicable_aircraft": [
+      "Cessna Citation CJ3"
+    ],
+    "conditions_available": [
+      "OH",
+      "SV"
+    ],
+    "lead_time_tier": "stock",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000051",
+    "oem_part_number": "53-9657-97",
+    "manufacturer": "Textron Aviation",
+    "ata_chapter": 34,
+    "ata_subchapter": "34-20",
+    "description": "Textron Aviation air data computer — ATA 34 Navigation",
+    "applicable_aircraft": [
+      "Beechcraft King Air B200",
+      "Airbus H125",
+      "Hawker 900XP",
+      "Robinson R66"
+    ],
+    "conditions_available": [
+      "OH",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "quote",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000052",
+    "oem_part_number": "22-8884-52",
+    "manufacturer": "Collins Aerospace",
+    "ata_chapter": 32,
+    "ata_subchapter": "32-40",
+    "description": "Collins Aerospace wheel & brake assembly — ATA 32 Landing Gear",
+    "applicable_aircraft": [
+      "Hawker 900XP",
+      "Bell 407",
+      "Beechcraft King Air 350",
+      "Pilatus PC-12"
+    ],
+    "conditions_available": [
+      "OH",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "stock",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000053",
+    "oem_part_number": "84-1077-74",
+    "manufacturer": "Safran",
+    "ata_chapter": 24,
+    "ata_subchapter": "24-30",
+    "description": "Safran generator control unit — ATA 24 Electrical Power",
+    "applicable_aircraft": [
+      "Beechcraft King Air B200"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "AR"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000054",
+    "oem_part_number": "97-1019-22",
+    "manufacturer": "Hawker Beechcraft",
+    "ata_chapter": 34,
+    "ata_subchapter": "34-20",
+    "description": "Hawker Beechcraft air data computer — ATA 34 Navigation",
+    "applicable_aircraft": [
+      "Cessna Caravan 208B",
+      "Hawker 900XP",
+      "Bell 407",
+      "Beechcraft King Air B200"
+    ],
+    "conditions_available": [
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000055",
+    "oem_part_number": "58-8875-69",
+    "manufacturer": "Meggitt",
+    "ata_chapter": 21,
+    "ata_subchapter": "21-50",
+    "description": "Meggitt ECS valve — ATA 21 Air Conditioning",
+    "applicable_aircraft": [
+      "Bell 407",
+      "Beechcraft King Air 350",
+      "Cessna Citation CJ3"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "AR"
+    ],
+    "lead_time_tier": "quote",
+    "us_origin": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000056",
+    "oem_part_number": "51-8696-45",
+    "manufacturer": "David Clark",
+    "ata_chapter": 23,
+    "ata_subchapter": "23-10",
+    "description": "David Clark headset — ATA 23 Communications",
+    "applicable_aircraft": [
+      "Beechcraft Bonanza G36"
+    ],
+    "conditions_available": [
+      "NEW",
+      "AR"
+    ],
+    "lead_time_tier": "stock",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000057",
+    "oem_part_number": "52-2358-10",
+    "manufacturer": "Hawker Beechcraft",
+    "ata_chapter": 32,
+    "ata_subchapter": "32-40",
+    "description": "Hawker Beechcraft wheel & brake assembly — ATA 32 Landing Gear",
+    "applicable_aircraft": [
+      "Hawker 900XP",
+      "Beechcraft Baron G58",
+      "Cessna Citation CJ3"
+    ],
+    "conditions_available": [
+      "SV"
+    ],
+    "lead_time_tier": "stock",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000058",
+    "oem_part_number": "90-3066-04",
+    "manufacturer": "Collins Aerospace",
+    "ata_chapter": 21,
+    "ata_subchapter": "21-50",
+    "description": "Collins Aerospace ECS valve — ATA 21 Air Conditioning",
+    "applicable_aircraft": [
+      "Pilatus PC-12",
+      "Bell 407"
+    ],
+    "conditions_available": [
+      "OH",
+      "SV"
+    ],
+    "lead_time_tier": "quote",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000059",
+    "oem_part_number": "25-8347-57",
+    "manufacturer": "Parker Hannifin",
+    "ata_chapter": 21,
+    "ata_subchapter": "21-50",
+    "description": "Parker Hannifin ECS valve — ATA 21 Air Conditioning",
+    "applicable_aircraft": [
+      "Beechcraft Baron G58"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "24h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000060",
+    "oem_part_number": "62-2962-18",
+    "manufacturer": "Safran",
+    "ata_chapter": 52,
+    "ata_subchapter": "52-10",
+    "description": "Safran door seal kit — ATA 52 Doors",
+    "applicable_aircraft": [
+      "Beechcraft King Air 350",
+      "Bell 407",
+      "Beechcraft Bonanza G36",
+      "Beechcraft Baron G58"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000061",
+    "oem_part_number": "81-9705-07",
+    "manufacturer": "Hawker Beechcraft",
+    "ata_chapter": 32,
+    "ata_subchapter": "32-40",
+    "description": "Hawker Beechcraft wheel & brake assembly — ATA 32 Landing Gear",
+    "applicable_aircraft": [
+      "Beechcraft King Air B200",
+      "Hawker 850XP"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000062",
+    "oem_part_number": "18-3733-69",
+    "manufacturer": "Parker Hannifin",
+    "ata_chapter": 34,
+    "ata_subchapter": "34-20",
+    "description": "Parker Hannifin air data computer — ATA 34 Navigation",
+    "applicable_aircraft": [
+      "Beechcraft Bonanza G36",
+      "Hawker 900XP",
+      "Bell 407"
+    ],
+    "conditions_available": [
+      "NEW"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000063",
+    "oem_part_number": "97-9074-67",
+    "manufacturer": "Collins Aerospace",
+    "ata_chapter": 28,
+    "ata_subchapter": "28-40",
+    "description": "Collins Aerospace fuel pump — ATA 28 Fuel",
+    "applicable_aircraft": [
+      "Bell 407"
+    ],
+    "conditions_available": [
+      "NEW"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000064",
+    "oem_part_number": "72-3884-25",
+    "manufacturer": "Honeywell",
+    "ata_chapter": 33,
+    "ata_subchapter": "33-40",
+    "description": "Honeywell LED beacon — ATA 33 Lights",
+    "applicable_aircraft": [
+      "Cessna Citation CJ3",
+      "Beechcraft Bonanza G36"
+    ],
+    "conditions_available": [
+      "NEW"
+    ],
+    "lead_time_tier": "stock",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000065",
+    "oem_part_number": "17-1276-29",
+    "manufacturer": "Safran",
+    "ata_chapter": 29,
+    "ata_subchapter": "29-10",
+    "description": "Safran hydraulic pump — ATA 29 Hydraulic Power",
+    "applicable_aircraft": [
+      "Airbus H125",
+      "Hawker 850XP",
+      "Beechcraft King Air B200",
+      "Beechcraft Baron G58"
+    ],
+    "conditions_available": [
+      "NEW"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000066",
+    "oem_part_number": "96-1492-60",
+    "manufacturer": "Parker Hannifin",
+    "ata_chapter": 72,
+    "ata_subchapter": "72-30",
+    "description": "Parker Hannifin compressor blade set — ATA 72 Engine",
+    "applicable_aircraft": [
+      "Airbus H125"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000067",
+    "oem_part_number": "67-9177-11",
+    "manufacturer": "Goodrich",
+    "ata_chapter": 32,
+    "ata_subchapter": "32-40",
+    "description": "Goodrich wheel & brake assembly — ATA 32 Landing Gear",
+    "applicable_aircraft": [
+      "Beechcraft Baron G58"
+    ],
+    "conditions_available": [
+      "OH",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000068",
+    "oem_part_number": "48-3717-41",
+    "manufacturer": "Textron Aviation",
+    "ata_chapter": 24,
+    "ata_subchapter": "24-30",
+    "description": "Textron Aviation generator control unit — ATA 24 Electrical Power",
+    "applicable_aircraft": [
+      "Hawker 850XP",
+      "Cessna Citation CJ3",
+      "Beechcraft King Air B200"
+    ],
+    "conditions_available": [
+      "SV"
+    ],
+    "lead_time_tier": "stock",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000069",
+    "oem_part_number": "32-3437-58",
+    "manufacturer": "Liebherr Aerospace",
+    "ata_chapter": 27,
+    "ata_subchapter": "27-50",
+    "description": "Liebherr Aerospace actuator — ATA 27 Flight Controls",
+    "applicable_aircraft": [
+      "Airbus H125",
+      "Cessna Caravan 208B"
+    ],
+    "conditions_available": [
+      "OH"
+    ],
+    "lead_time_tier": "24h",
+    "us_origin": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000070",
+    "oem_part_number": "37-8759-80",
+    "manufacturer": "Hawker Beechcraft",
+    "ata_chapter": 72,
+    "ata_subchapter": "72-30",
+    "description": "Hawker Beechcraft compressor blade set — ATA 72 Engine",
+    "applicable_aircraft": [
+      "Beechcraft King Air 350"
+    ],
+    "conditions_available": [
+      "AR"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000071",
+    "oem_part_number": "42-7426-11",
+    "manufacturer": "Liebherr Aerospace",
+    "ata_chapter": 52,
+    "ata_subchapter": "52-10",
+    "description": "Liebherr Aerospace door seal kit — ATA 52 Doors",
+    "applicable_aircraft": [
+      "Beechcraft Baron G58",
+      "Robinson R66"
+    ],
+    "conditions_available": [
+      "OH",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000072",
+    "oem_part_number": "49-8344-04",
+    "manufacturer": "Meggitt",
+    "ata_chapter": 25,
+    "ata_subchapter": "25-20",
+    "description": "Meggitt seat assembly — ATA 25 Equipment & Furnishings",
+    "applicable_aircraft": [
+      "Pilatus PC-12",
+      "Beechcraft Baron G58"
+    ],
+    "conditions_available": [
+      "OH",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000073",
+    "oem_part_number": "74-8750-99",
+    "manufacturer": "Goodrich",
+    "ata_chapter": 25,
+    "ata_subchapter": "25-20",
+    "description": "Goodrich seat assembly — ATA 25 Equipment & Furnishings",
+    "applicable_aircraft": [
+      "Cessna Caravan 208B",
+      "Cessna Citation CJ3",
+      "Airbus H125",
+      "Bell 407"
+    ],
+    "conditions_available": [
+      "OH",
+      "AR"
+    ],
+    "lead_time_tier": "quote",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000074",
+    "oem_part_number": "66-2518-98",
+    "manufacturer": "Textron Aviation",
+    "ata_chapter": 33,
+    "ata_subchapter": "33-40",
+    "description": "Textron Aviation LED beacon — ATA 33 Lights",
+    "applicable_aircraft": [
+      "Beechcraft King Air 350",
+      "Bell 407"
+    ],
+    "conditions_available": [
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "stock",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000075",
+    "oem_part_number": "90-7407-29",
+    "manufacturer": "Goodrich",
+    "ata_chapter": 32,
+    "ata_subchapter": "32-40",
+    "description": "Goodrich wheel & brake assembly — ATA 32 Landing Gear",
+    "applicable_aircraft": [
+      "Beechcraft Baron G58",
+      "Beechcraft Bonanza G36",
+      "Beechcraft King Air B200",
+      "Hawker 850XP"
+    ],
+    "conditions_available": [
+      "OH",
+      "SV"
+    ],
+    "lead_time_tier": "stock",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000076",
+    "oem_part_number": "38-6717-61",
+    "manufacturer": "Hawker Beechcraft",
+    "ata_chapter": 29,
+    "ata_subchapter": "29-10",
+    "description": "Hawker Beechcraft hydraulic pump — ATA 29 Hydraulic Power",
+    "applicable_aircraft": [
+      "Cessna Citation CJ3",
+      "Hawker 900XP",
+      "Bell 407",
+      "Beechcraft Baron G58"
+    ],
+    "conditions_available": [
+      "NEW",
+      "AR"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000077",
+    "oem_part_number": "47-4578-51",
+    "manufacturer": "Collins Aerospace",
+    "ata_chapter": 28,
+    "ata_subchapter": "28-40",
+    "description": "Collins Aerospace fuel pump — ATA 28 Fuel",
+    "applicable_aircraft": [
+      "Beechcraft Bonanza G36",
+      "Beechcraft Baron G58"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "stock",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000078",
+    "oem_part_number": "57-7930-06",
+    "manufacturer": "Hawker Beechcraft",
+    "ata_chapter": 27,
+    "ata_subchapter": "27-50",
+    "description": "Hawker Beechcraft actuator — ATA 27 Flight Controls",
+    "applicable_aircraft": [
+      "Airbus H125"
+    ],
+    "conditions_available": [
+      "NEW"
+    ],
+    "lead_time_tier": "24h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000079",
+    "oem_part_number": "83-8885-81",
+    "manufacturer": "Liebherr Aerospace",
+    "ata_chapter": 28,
+    "ata_subchapter": "28-40",
+    "description": "Liebherr Aerospace fuel pump — ATA 28 Fuel",
+    "applicable_aircraft": [
+      "Beechcraft Bonanza G36"
+    ],
+    "conditions_available": [
+      "SV"
+    ],
+    "lead_time_tier": "stock",
+    "us_origin": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000080",
+    "oem_part_number": "59-5664-14",
+    "manufacturer": "Hawker Beechcraft",
+    "ata_chapter": 34,
+    "ata_subchapter": "34-20",
+    "description": "Hawker Beechcraft air data computer — ATA 34 Navigation",
+    "applicable_aircraft": [
+      "Beechcraft Bonanza G36",
+      "Beechcraft King Air B200",
+      "Cessna Caravan 208B"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "quote",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000081",
+    "oem_part_number": "27-1840-04",
+    "manufacturer": "Hawker Beechcraft",
+    "ata_chapter": 77,
+    "ata_subchapter": "77-20",
+    "description": "Hawker Beechcraft ITT harness — ATA 77 Engine Indicating",
+    "applicable_aircraft": [
+      "Hawker 850XP"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000082",
+    "oem_part_number": "73-4451-16",
+    "manufacturer": "Parker Hannifin",
+    "ata_chapter": 28,
+    "ata_subchapter": "28-40",
+    "description": "Parker Hannifin fuel pump — ATA 28 Fuel",
+    "applicable_aircraft": [
+      "Robinson R66",
+      "Beechcraft Bonanza G36",
+      "Pilatus PC-12",
+      "Beechcraft King Air 350"
+    ],
+    "conditions_available": [
+      "OH"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000083",
+    "oem_part_number": "64-8408-94",
+    "manufacturer": "Parker Hannifin",
+    "ata_chapter": 34,
+    "ata_subchapter": "34-20",
+    "description": "Parker Hannifin air data computer — ATA 34 Navigation",
+    "applicable_aircraft": [
+      "Airbus H125",
+      "Beechcraft King Air 350",
+      "Bell 407",
+      "Beechcraft King Air B200"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "quote",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000084",
+    "oem_part_number": "16-6778-21",
+    "manufacturer": "Textron Aviation",
+    "ata_chapter": 28,
+    "ata_subchapter": "28-40",
+    "description": "Textron Aviation fuel pump — ATA 28 Fuel",
+    "applicable_aircraft": [
+      "Beechcraft Baron G58",
+      "Beechcraft King Air B200"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000085",
+    "oem_part_number": "50-5762-78",
+    "manufacturer": "Textron Aviation",
+    "ata_chapter": 34,
+    "ata_subchapter": "34-20",
+    "description": "Textron Aviation air data computer — ATA 34 Navigation",
+    "applicable_aircraft": [
+      "Beechcraft King Air B200",
+      "Beechcraft Baron G58",
+      "Bell 407",
+      "Cessna Caravan 208B"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000086",
+    "oem_part_number": "39-9507-43",
+    "manufacturer": "Textron Aviation",
+    "ata_chapter": 32,
+    "ata_subchapter": "32-40",
+    "description": "Textron Aviation wheel & brake assembly — ATA 32 Landing Gear",
+    "applicable_aircraft": [
+      "Hawker 850XP"
+    ],
+    "conditions_available": [
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "24h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000087",
+    "oem_part_number": "10-1580-62",
+    "manufacturer": "Safran",
+    "ata_chapter": 34,
+    "ata_subchapter": "34-20",
+    "description": "Safran air data computer — ATA 34 Navigation",
+    "applicable_aircraft": [
+      "Hawker 850XP",
+      "Pilatus PC-12"
+    ],
+    "conditions_available": [
+      "NEW"
+    ],
+    "lead_time_tier": "24h",
+    "us_origin": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000088",
+    "oem_part_number": "88-3977-07",
+    "manufacturer": "Honeywell",
+    "ata_chapter": 25,
+    "ata_subchapter": "25-20",
+    "description": "Honeywell seat assembly — ATA 25 Equipment & Furnishings",
+    "applicable_aircraft": [
+      "Beechcraft King Air B200",
+      "Robinson R66"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "AR"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000089",
+    "oem_part_number": "43-9613-87",
+    "manufacturer": "Textron Aviation",
+    "ata_chapter": 77,
+    "ata_subchapter": "77-20",
+    "description": "Textron Aviation ITT harness — ATA 77 Engine Indicating",
+    "applicable_aircraft": [
+      "Beechcraft King Air 350"
+    ],
+    "conditions_available": [
+      "AR"
+    ],
+    "lead_time_tier": "quote",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000090",
+    "oem_part_number": "32-8203-74",
+    "manufacturer": "Safran",
+    "ata_chapter": 71,
+    "ata_subchapter": "71-00",
+    "description": "Safran engine mount — ATA 71 Power Plant",
+    "applicable_aircraft": [
+      "Beechcraft King Air B200",
+      "Airbus H125"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "24h",
+    "us_origin": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000091",
+    "oem_part_number": "47-2048-14",
+    "manufacturer": "Honeywell",
+    "ata_chapter": 49,
+    "ata_subchapter": "49-10",
+    "description": "Honeywell APU starter — ATA 49 Auxiliary Power",
+    "applicable_aircraft": [
+      "Pilatus PC-12",
+      "Cessna Caravan 208B",
+      "Beechcraft King Air 350",
+      "Hawker 850XP"
+    ],
+    "conditions_available": [
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000092",
+    "oem_part_number": "86-9570-05",
+    "manufacturer": "Collins Aerospace",
+    "ata_chapter": 25,
+    "ata_subchapter": "25-20",
+    "description": "Collins Aerospace seat assembly — ATA 25 Equipment & Furnishings",
+    "applicable_aircraft": [
+      "Cessna Caravan 208B",
+      "Beechcraft King Air 350"
+    ],
+    "conditions_available": [
+      "NEW",
+      "SV"
+    ],
+    "lead_time_tier": "stock",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000093",
+    "oem_part_number": "78-2711-30",
+    "manufacturer": "Honeywell",
+    "ata_chapter": 34,
+    "ata_subchapter": "34-20",
+    "description": "Honeywell air data computer — ATA 34 Navigation",
+    "applicable_aircraft": [
+      "Cessna Caravan 208B",
+      "Hawker 900XP",
+      "Bell 407",
+      "Hawker 850XP"
+    ],
+    "conditions_available": [
+      "NEW",
+      "SV"
+    ],
+    "lead_time_tier": "quote",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000094",
+    "oem_part_number": "86-8501-47",
+    "manufacturer": "Collins Aerospace",
+    "ata_chapter": 24,
+    "ata_subchapter": "24-30",
+    "description": "Collins Aerospace generator control unit — ATA 24 Electrical Power",
+    "applicable_aircraft": [
+      "Hawker 900XP",
+      "Airbus H125",
+      "Pilatus PC-12",
+      "Robinson R66"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "stock",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000095",
+    "oem_part_number": "16-7871-27",
+    "manufacturer": "Meggitt",
+    "ata_chapter": 32,
+    "ata_subchapter": "32-40",
+    "description": "Meggitt wheel & brake assembly — ATA 32 Landing Gear",
+    "applicable_aircraft": [
+      "Hawker 900XP",
+      "Cessna Citation CJ3",
+      "Beechcraft King Air 350"
+    ],
+    "conditions_available": [
+      "OH"
+    ],
+    "lead_time_tier": "stock",
+    "us_origin": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000096",
+    "oem_part_number": "92-2207-24",
+    "manufacturer": "Collins Aerospace",
+    "ata_chapter": 34,
+    "ata_subchapter": "34-20",
+    "description": "Collins Aerospace air data computer — ATA 34 Navigation",
+    "applicable_aircraft": [
+      "Cessna Citation CJ3",
+      "Robinson R66"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "24h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000097",
+    "oem_part_number": "61-9323-84",
+    "manufacturer": "Parker Hannifin",
+    "ata_chapter": 32,
+    "ata_subchapter": "32-40",
+    "description": "Parker Hannifin wheel & brake assembly — ATA 32 Landing Gear",
+    "applicable_aircraft": [
+      "Cessna Caravan 208B",
+      "Beechcraft King Air B200"
+    ],
+    "conditions_available": [
+      "OH",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "24h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000098",
+    "oem_part_number": "15-9098-24",
+    "manufacturer": "Safran",
+    "ata_chapter": 27,
+    "ata_subchapter": "27-50",
+    "description": "Safran actuator — ATA 27 Flight Controls",
+    "applicable_aircraft": [
+      "Hawker 850XP",
+      "Hawker 900XP",
+      "Cessna Citation CJ3",
+      "Beechcraft King Air 350"
+    ],
+    "conditions_available": [
+      "AR"
+    ],
+    "lead_time_tier": "stock",
+    "us_origin": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000099",
+    "oem_part_number": "66-3821-95",
+    "manufacturer": "Hawker Beechcraft",
+    "ata_chapter": 32,
+    "ata_subchapter": "32-40",
+    "description": "Hawker Beechcraft wheel & brake assembly — ATA 32 Landing Gear",
+    "applicable_aircraft": [
+      "Hawker 850XP"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "SV"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000100",
+    "oem_part_number": "61-4362-45",
+    "manufacturer": "Textron Aviation",
+    "ata_chapter": 79,
+    "ata_subchapter": "79-20",
+    "description": "Textron Aviation oil cooler — ATA 79 Oil",
+    "applicable_aircraft": [
+      "Hawker 850XP",
+      "Bell 407",
+      "Hawker 900XP"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "SV"
+    ],
+    "lead_time_tier": "24h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000101",
+    "oem_part_number": "21-1928-10",
+    "manufacturer": "Collins Aerospace",
+    "ata_chapter": 32,
+    "ata_subchapter": "32-40",
+    "description": "Collins Aerospace wheel & brake assembly — ATA 32 Landing Gear",
+    "applicable_aircraft": [
+      "Hawker 900XP",
+      "Beechcraft Baron G58",
+      "Robinson R66"
+    ],
+    "conditions_available": [
+      "AR"
+    ],
+    "lead_time_tier": "24h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000102",
+    "oem_part_number": "86-3132-79",
+    "manufacturer": "Textron Aviation",
+    "ata_chapter": 49,
+    "ata_subchapter": "49-10",
+    "description": "Textron Aviation APU starter — ATA 49 Auxiliary Power",
+    "applicable_aircraft": [
+      "Beechcraft King Air 350",
+      "Hawker 850XP"
+    ],
+    "conditions_available": [
+      "OH",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000103",
+    "oem_part_number": "43-4970-94",
+    "manufacturer": "Parker Hannifin",
+    "ata_chapter": 71,
+    "ata_subchapter": "71-00",
+    "description": "Parker Hannifin engine mount — ATA 71 Power Plant",
+    "applicable_aircraft": [
+      "Cessna Citation CJ3",
+      "Pilatus PC-12",
+      "Beechcraft Baron G58"
+    ],
+    "conditions_available": [
+      "NEW",
+      "AR"
+    ],
+    "lead_time_tier": "stock",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000104",
+    "oem_part_number": "25-2580-39",
+    "manufacturer": "Liebherr Aerospace",
+    "ata_chapter": 77,
+    "ata_subchapter": "77-20",
+    "description": "Liebherr Aerospace ITT harness — ATA 77 Engine Indicating",
+    "applicable_aircraft": [
+      "Beechcraft Baron G58",
+      "Cessna Citation CJ3",
+      "Hawker 900XP"
+    ],
+    "conditions_available": [
+      "OH",
+      "SV"
+    ],
+    "lead_time_tier": "quote",
+    "us_origin": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000105",
+    "oem_part_number": "12-8645-42",
+    "manufacturer": "Liebherr Aerospace",
+    "ata_chapter": 34,
+    "ata_subchapter": "34-20",
+    "description": "Liebherr Aerospace air data computer — ATA 34 Navigation",
+    "applicable_aircraft": [
+      "Bell 407",
+      "Cessna Caravan 208B",
+      "Beechcraft King Air B200"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000106",
+    "oem_part_number": "89-1651-47",
+    "manufacturer": "Parker Hannifin",
+    "ata_chapter": 52,
+    "ata_subchapter": "52-10",
+    "description": "Parker Hannifin door seal kit — ATA 52 Doors",
+    "applicable_aircraft": [
+      "Beechcraft King Air 350",
+      "Beechcraft Bonanza G36",
+      "Hawker 850XP",
+      "Airbus H125"
+    ],
+    "conditions_available": [
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000107",
+    "oem_part_number": "37-9687-46",
+    "manufacturer": "Hawker Beechcraft",
+    "ata_chapter": 77,
+    "ata_subchapter": "77-20",
+    "description": "Hawker Beechcraft ITT harness — ATA 77 Engine Indicating",
+    "applicable_aircraft": [
+      "Robinson R66"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "AR"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000108",
+    "oem_part_number": "59-6170-54",
+    "manufacturer": "Honeywell",
+    "ata_chapter": 32,
+    "ata_subchapter": "32-40",
+    "description": "Honeywell wheel & brake assembly — ATA 32 Landing Gear",
+    "applicable_aircraft": [
+      "Hawker 850XP",
+      "Beechcraft Bonanza G36",
+      "Beechcraft King Air B200"
+    ],
+    "conditions_available": [
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "24h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000109",
+    "oem_part_number": "73-5009-50",
+    "manufacturer": "Safran",
+    "ata_chapter": 32,
+    "ata_subchapter": "32-40",
+    "description": "Safran wheel & brake assembly — ATA 32 Landing Gear",
+    "applicable_aircraft": [
+      "Beechcraft Bonanza G36",
+      "Hawker 850XP"
+    ],
+    "conditions_available": [
+      "OH",
+      "SV"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000110",
+    "oem_part_number": "95-9456-37",
+    "manufacturer": "Textron Aviation",
+    "ata_chapter": 49,
+    "ata_subchapter": "49-10",
+    "description": "Textron Aviation APU starter — ATA 49 Auxiliary Power",
+    "applicable_aircraft": [
+      "Robinson R66",
+      "Beechcraft Bonanza G36",
+      "Beechcraft King Air B200",
+      "Hawker 900XP"
+    ],
+    "conditions_available": [
+      "OH",
+      "AR"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000111",
+    "oem_part_number": "10-7966-88",
+    "manufacturer": "Honeywell",
+    "ata_chapter": 21,
+    "ata_subchapter": "21-50",
+    "description": "Honeywell ECS valve — ATA 21 Air Conditioning",
+    "applicable_aircraft": [
+      "Hawker 850XP",
+      "Beechcraft Bonanza G36",
+      "Beechcraft King Air B200",
+      "Airbus H125"
+    ],
+    "conditions_available": [
+      "OH",
+      "SV"
+    ],
+    "lead_time_tier": "24h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000112",
+    "oem_part_number": "40-6358-50",
+    "manufacturer": "Safran",
+    "ata_chapter": 32,
+    "ata_subchapter": "32-40",
+    "description": "Safran wheel & brake assembly — ATA 32 Landing Gear",
+    "applicable_aircraft": [
+      "Beechcraft Baron G58"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "stock",
+    "us_origin": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000113",
+    "oem_part_number": "38-8595-67",
+    "manufacturer": "Parker Hannifin",
+    "ata_chapter": 34,
+    "ata_subchapter": "34-20",
+    "description": "Parker Hannifin air data computer — ATA 34 Navigation",
+    "applicable_aircraft": [
+      "Cessna Citation CJ3",
+      "Cessna Caravan 208B"
+    ],
+    "conditions_available": [
+      "SV"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000114",
+    "oem_part_number": "83-6423-55",
+    "manufacturer": "Collins Aerospace",
+    "ata_chapter": 32,
+    "ata_subchapter": "32-40",
+    "description": "Collins Aerospace wheel & brake assembly — ATA 32 Landing Gear",
+    "applicable_aircraft": [
+      "Hawker 900XP",
+      "Cessna Caravan 208B",
+      "Airbus H125",
+      "Robinson R66"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "AR"
+    ],
+    "lead_time_tier": "stock",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000115",
+    "oem_part_number": "77-5748-91",
+    "manufacturer": "Parker Hannifin",
+    "ata_chapter": 72,
+    "ata_subchapter": "72-30",
+    "description": "Parker Hannifin compressor blade set — ATA 72 Engine",
+    "applicable_aircraft": [
+      "Pilatus PC-12",
+      "Beechcraft Baron G58",
+      "Cessna Caravan 208B",
+      "Airbus H125"
+    ],
+    "conditions_available": [
+      "NEW"
+    ],
+    "lead_time_tier": "24h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000116",
+    "oem_part_number": "28-2271-04",
+    "manufacturer": "Hawker Beechcraft",
+    "ata_chapter": 34,
+    "ata_subchapter": "34-20",
+    "description": "Hawker Beechcraft air data computer — ATA 34 Navigation",
+    "applicable_aircraft": [
+      "Beechcraft Bonanza G36",
+      "Airbus H125",
+      "Hawker 900XP"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "quote",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000117",
+    "oem_part_number": "18-6097-03",
+    "manufacturer": "Goodrich",
+    "ata_chapter": 32,
+    "ata_subchapter": "32-40",
+    "description": "Goodrich wheel & brake assembly — ATA 32 Landing Gear",
+    "applicable_aircraft": [
+      "Beechcraft King Air B200"
+    ],
+    "conditions_available": [
+      "AR"
+    ],
+    "lead_time_tier": "24h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000118",
+    "oem_part_number": "94-1384-05",
+    "manufacturer": "Meggitt",
+    "ata_chapter": 33,
+    "ata_subchapter": "33-40",
+    "description": "Meggitt LED beacon — ATA 33 Lights",
+    "applicable_aircraft": [
+      "Hawker 850XP",
+      "Beechcraft Baron G58",
+      "Robinson R66",
+      "Airbus H125"
+    ],
+    "conditions_available": [
+      "NEW",
+      "SV"
+    ],
+    "lead_time_tier": "24h",
+    "us_origin": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000119",
+    "oem_part_number": "75-3731-16",
+    "manufacturer": "Parker Hannifin",
+    "ata_chapter": 34,
+    "ata_subchapter": "34-20",
+    "description": "Parker Hannifin air data computer — ATA 34 Navigation",
+    "applicable_aircraft": [
+      "Airbus H125"
+    ],
+    "conditions_available": [
+      "NEW"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000120",
+    "oem_part_number": "45-5309-52",
+    "manufacturer": "Textron Aviation",
+    "ata_chapter": 77,
+    "ata_subchapter": "77-20",
+    "description": "Textron Aviation ITT harness — ATA 77 Engine Indicating",
+    "applicable_aircraft": [
+      "Hawker 900XP"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000121",
+    "oem_part_number": "19-3813-17",
+    "manufacturer": "Meggitt",
+    "ata_chapter": 32,
+    "ata_subchapter": "32-40",
+    "description": "Meggitt wheel & brake assembly — ATA 32 Landing Gear",
+    "applicable_aircraft": [
+      "Airbus H125",
+      "Hawker 850XP",
+      "Hawker 900XP"
+    ],
+    "conditions_available": [
+      "NEW",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "stock",
+    "us_origin": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000122",
+    "oem_part_number": "11-6701-48",
+    "manufacturer": "Textron Aviation",
+    "ata_chapter": 27,
+    "ata_subchapter": "27-50",
+    "description": "Textron Aviation actuator — ATA 27 Flight Controls",
+    "applicable_aircraft": [
+      "Beechcraft King Air 350",
+      "Pilatus PC-12"
+    ],
+    "conditions_available": [
+      "SV"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000123",
+    "oem_part_number": "97-3094-38",
+    "manufacturer": "Safran",
+    "ata_chapter": 72,
+    "ata_subchapter": "72-30",
+    "description": "Safran compressor blade set — ATA 72 Engine",
+    "applicable_aircraft": [
+      "Hawker 900XP",
+      "Beechcraft Bonanza G36"
+    ],
+    "conditions_available": [
+      "NEW"
+    ],
+    "lead_time_tier": "stock",
+    "us_origin": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000124",
+    "oem_part_number": "25-3674-47",
+    "manufacturer": "Hawker Beechcraft",
+    "ata_chapter": 33,
+    "ata_subchapter": "33-40",
+    "description": "Hawker Beechcraft LED beacon — ATA 33 Lights",
+    "applicable_aircraft": [
+      "Beechcraft King Air 350"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "SV"
+    ],
+    "lead_time_tier": "quote",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000125",
+    "oem_part_number": "94-8977-97",
+    "manufacturer": "Hawker Beechcraft",
+    "ata_chapter": 71,
+    "ata_subchapter": "71-00",
+    "description": "Hawker Beechcraft engine mount — ATA 71 Power Plant",
+    "applicable_aircraft": [
+      "Beechcraft Bonanza G36",
+      "Robinson R66"
+    ],
+    "conditions_available": [
+      "NEW"
+    ],
+    "lead_time_tier": "quote",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000126",
+    "oem_part_number": "38-1638-13",
+    "manufacturer": "Liebherr Aerospace",
+    "ata_chapter": 29,
+    "ata_subchapter": "29-10",
+    "description": "Liebherr Aerospace hydraulic pump — ATA 29 Hydraulic Power",
+    "applicable_aircraft": [
+      "Bell 407",
+      "Cessna Caravan 208B",
+      "Beechcraft King Air B200"
+    ],
+    "conditions_available": [
+      "OH",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000127",
+    "oem_part_number": "43-5546-61",
+    "manufacturer": "Collins Aerospace",
+    "ata_chapter": 28,
+    "ata_subchapter": "28-40",
+    "description": "Collins Aerospace fuel pump — ATA 28 Fuel",
+    "applicable_aircraft": [
+      "Beechcraft King Air 350",
+      "Cessna Caravan 208B",
+      "Robinson R66",
+      "Beechcraft King Air B200"
+    ],
+    "conditions_available": [
+      "NEW",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "24h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000128",
+    "oem_part_number": "27-2748-45",
+    "manufacturer": "Safran",
+    "ata_chapter": 79,
+    "ata_subchapter": "79-20",
+    "description": "Safran oil cooler — ATA 79 Oil",
+    "applicable_aircraft": [
+      "Pilatus PC-12",
+      "Beechcraft King Air 350"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "SV"
+    ],
+    "lead_time_tier": "stock",
+    "us_origin": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000129",
+    "oem_part_number": "58-2386-74",
+    "manufacturer": "Liebherr Aerospace",
+    "ata_chapter": 49,
+    "ata_subchapter": "49-10",
+    "description": "Liebherr Aerospace APU starter — ATA 49 Auxiliary Power",
+    "applicable_aircraft": [
+      "Robinson R66",
+      "Hawker 900XP",
+      "Beechcraft King Air B200",
+      "Bell 407"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "SV"
+    ],
+    "lead_time_tier": "stock",
+    "us_origin": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000130",
+    "oem_part_number": "30-5636-67",
+    "manufacturer": "Honeywell",
+    "ata_chapter": 28,
+    "ata_subchapter": "28-40",
+    "description": "Honeywell fuel pump — ATA 28 Fuel",
+    "applicable_aircraft": [
+      "Beechcraft Bonanza G36",
+      "Pilatus PC-12",
+      "Cessna Citation CJ3",
+      "Hawker 900XP"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "quote",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000131",
+    "oem_part_number": "28-9864-22",
+    "manufacturer": "Collins Aerospace",
+    "ata_chapter": 24,
+    "ata_subchapter": "24-30",
+    "description": "Collins Aerospace generator control unit — ATA 24 Electrical Power",
+    "applicable_aircraft": [
+      "Pilatus PC-12",
+      "Airbus H125"
+    ],
+    "conditions_available": [
+      "SV"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000132",
+    "oem_part_number": "26-3657-10",
+    "manufacturer": "Hawker Beechcraft",
+    "ata_chapter": 79,
+    "ata_subchapter": "79-20",
+    "description": "Hawker Beechcraft oil cooler — ATA 79 Oil",
+    "applicable_aircraft": [
+      "Hawker 850XP",
+      "Beechcraft Bonanza G36"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000133",
+    "oem_part_number": "78-7522-73",
+    "manufacturer": "Collins Aerospace",
+    "ata_chapter": 34,
+    "ata_subchapter": "34-20",
+    "description": "Collins Aerospace air data computer — ATA 34 Navigation",
+    "applicable_aircraft": [
+      "Beechcraft Bonanza G36",
+      "Cessna Caravan 208B"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "48-72h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000134",
+    "oem_part_number": "21-9569-84",
+    "manufacturer": "Hawker Beechcraft",
+    "ata_chapter": 34,
+    "ata_subchapter": "34-20",
+    "description": "Hawker Beechcraft air data computer — ATA 34 Navigation",
+    "applicable_aircraft": [
+      "Beechcraft King Air B200"
+    ],
+    "conditions_available": [
+      "NEW",
+      "AR"
+    ],
+    "lead_time_tier": "quote",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000135",
+    "oem_part_number": "29-6720-55",
+    "manufacturer": "Hawker Beechcraft",
+    "ata_chapter": 24,
+    "ata_subchapter": "24-30",
+    "description": "Hawker Beechcraft generator control unit — ATA 24 Electrical Power",
+    "applicable_aircraft": [
+      "Hawker 850XP",
+      "Beechcraft Baron G58"
+    ],
+    "conditions_available": [
+      "NEW",
+      "SV"
+    ],
+    "lead_time_tier": "stock",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000136",
+    "oem_part_number": "19-9919-84",
+    "manufacturer": "Meggitt",
+    "ata_chapter": 34,
+    "ata_subchapter": "34-20",
+    "description": "Meggitt air data computer — ATA 34 Navigation",
+    "applicable_aircraft": [
+      "Hawker 850XP"
+    ],
+    "conditions_available": [
+      "NEW",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "stock",
+    "us_origin": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000137",
+    "oem_part_number": "97-5211-33",
+    "manufacturer": "Honeywell",
+    "ata_chapter": 28,
+    "ata_subchapter": "28-40",
+    "description": "Honeywell fuel pump — ATA 28 Fuel",
+    "applicable_aircraft": [
+      "Airbus H125",
+      "Beechcraft Bonanza G36"
+    ],
+    "conditions_available": [
+      "NEW"
+    ],
+    "lead_time_tier": "24h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000138",
+    "oem_part_number": "38-8034-97",
+    "manufacturer": "Textron Aviation",
+    "ata_chapter": 27,
+    "ata_subchapter": "27-50",
+    "description": "Textron Aviation actuator — ATA 27 Flight Controls",
+    "applicable_aircraft": [
+      "Hawker 850XP"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH"
+    ],
+    "lead_time_tier": "24h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000139",
+    "oem_part_number": "45-5547-15",
+    "manufacturer": "Honeywell",
+    "ata_chapter": 72,
+    "ata_subchapter": "72-30",
+    "description": "Honeywell compressor blade set — ATA 72 Engine",
+    "applicable_aircraft": [
+      "Beechcraft Baron G58",
+      "Hawker 900XP",
+      "Cessna Citation CJ3"
+    ],
+    "conditions_available": [
+      "AR"
+    ],
+    "lead_time_tier": "stock",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000140",
+    "oem_part_number": "18-2759-38",
+    "manufacturer": "Goodrich",
+    "ata_chapter": 21,
+    "ata_subchapter": "21-50",
+    "description": "Goodrich ECS valve — ATA 21 Air Conditioning",
+    "applicable_aircraft": [
+      "Hawker 900XP",
+      "Beechcraft King Air B200",
+      "Beechcraft King Air 350"
+    ],
+    "conditions_available": [
+      "OH"
+    ],
+    "lead_time_tier": "stock",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000141",
+    "oem_part_number": "17-4902-24",
+    "manufacturer": "Parker Hannifin",
+    "ata_chapter": 33,
+    "ata_subchapter": "33-40",
+    "description": "Parker Hannifin LED beacon — ATA 33 Lights",
+    "applicable_aircraft": [
+      "Beechcraft King Air B200",
+      "Robinson R66",
+      "Hawker 900XP",
+      "Airbus H125"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "AR"
+    ],
+    "lead_time_tier": "quote",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000142",
+    "oem_part_number": "46-5806-50",
+    "manufacturer": "Hawker Beechcraft",
+    "ata_chapter": 33,
+    "ata_subchapter": "33-40",
+    "description": "Hawker Beechcraft LED beacon — ATA 33 Lights",
+    "applicable_aircraft": [
+      "Cessna Caravan 208B",
+      "Bell 407",
+      "Hawker 900XP"
+    ],
+    "conditions_available": [
+      "SV"
+    ],
+    "lead_time_tier": "24h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000143",
+    "oem_part_number": "55-5890-02",
+    "manufacturer": "Hawker Beechcraft",
+    "ata_chapter": 27,
+    "ata_subchapter": "27-50",
+    "description": "Hawker Beechcraft actuator — ATA 27 Flight Controls",
+    "applicable_aircraft": [
+      "Robinson R66",
+      "Hawker 850XP"
+    ],
+    "conditions_available": [
+      "OH",
+      "AR"
+    ],
+    "lead_time_tier": "stock",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000144",
+    "oem_part_number": "66-1599-74",
+    "manufacturer": "Safran",
+    "ata_chapter": 33,
+    "ata_subchapter": "33-40",
+    "description": "Safran LED beacon — ATA 33 Lights",
+    "applicable_aircraft": [
+      "Hawker 900XP",
+      "Beechcraft King Air B200",
+      "Airbus H125",
+      "Hawker 850XP"
+    ],
+    "conditions_available": [
+      "NEW",
+      "AR"
+    ],
+    "lead_time_tier": "quote",
+    "us_origin": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000145",
+    "oem_part_number": "33-9746-28",
+    "manufacturer": "Meggitt",
+    "ata_chapter": 34,
+    "ata_subchapter": "34-20",
+    "description": "Meggitt air data computer — ATA 34 Navigation",
+    "applicable_aircraft": [
+      "Beechcraft Bonanza G36",
+      "Beechcraft King Air B200",
+      "Beechcraft King Air 350"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "SV"
+    ],
+    "lead_time_tier": "quote",
+    "us_origin": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000146",
+    "oem_part_number": "73-4362-84",
+    "manufacturer": "Goodrich",
+    "ata_chapter": 24,
+    "ata_subchapter": "24-30",
+    "description": "Goodrich generator control unit — ATA 24 Electrical Power",
+    "applicable_aircraft": [
+      "Pilatus PC-12",
+      "Beechcraft Bonanza G36",
+      "Beechcraft King Air B200",
+      "Cessna Citation CJ3"
+    ],
+    "conditions_available": [
+      "OH"
+    ],
+    "lead_time_tier": "24h",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000147",
+    "oem_part_number": "77-4462-49",
+    "manufacturer": "Safran",
+    "ata_chapter": 77,
+    "ata_subchapter": "77-20",
+    "description": "Safran ITT harness — ATA 77 Engine Indicating",
+    "applicable_aircraft": [
+      "Airbus H125",
+      "Hawker 900XP",
+      "Beechcraft Baron G58"
+    ],
+    "conditions_available": [
+      "NEW",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "24h",
+    "us_origin": false,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000148",
+    "oem_part_number": "82-3875-89",
+    "manufacturer": "Hawker Beechcraft",
+    "ata_chapter": 77,
+    "ata_subchapter": "77-20",
+    "description": "Hawker Beechcraft ITT harness — ATA 77 Engine Indicating",
+    "applicable_aircraft": [
+      "Hawker 900XP",
+      "Pilatus PC-12",
+      "Beechcraft King Air 350"
+    ],
+    "conditions_available": [
+      "NEW",
+      "OH",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "quote",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000149",
+    "oem_part_number": "89-2053-70",
+    "manufacturer": "Honeywell",
+    "ata_chapter": 32,
+    "ata_subchapter": "32-40",
+    "description": "Honeywell wheel & brake assembly — ATA 32 Landing Gear",
+    "applicable_aircraft": [
+      "Beechcraft Bonanza G36",
+      "Hawker 850XP",
+      "Cessna Caravan 208B"
+    ],
+    "conditions_available": [
+      "AR"
+    ],
+    "lead_time_tier": "quote",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  },
+  {
+    "id": "part_000150",
+    "oem_part_number": "13-5023-95",
+    "manufacturer": "Textron Aviation",
+    "ata_chapter": 32,
+    "ata_subchapter": "32-40",
+    "description": "Textron Aviation wheel & brake assembly — ATA 32 Landing Gear",
+    "applicable_aircraft": [
+      "Cessna Caravan 208B"
+    ],
+    "conditions_available": [
+      "OH",
+      "SV",
+      "AR"
+    ],
+    "lead_time_tier": "quote",
+    "us_origin": true,
+    "_synthetic": true,
+    "_dataset": "v1"
+  }
+]
