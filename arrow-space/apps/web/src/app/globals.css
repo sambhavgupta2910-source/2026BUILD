@@ -1,0 +1,38 @@
+@import "tailwindcss";
+
+/*
+ * Arrow Space — institutional design tokens.
+ * Restrained, authority-led: deep navy ink, steel, a single azure accent and a
+ * thin authorization gold. No retail brights, no gradients-as-decoration.
+ */
+@theme {
+  --color-ink: #0a1626;
+  --color-navy: #0b1f3a;
+  --color-steel: #2b4a6f;
+  --color-azure: #2f6fed;
+  --color-gold: #b08948;
+  --color-paper: #f6f7f9;
+  --color-card: #ffffff;
+  --color-line: #e3e7ee;
+  --color-muted: #5b6b80;
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Thin top rule under the fixed header */
+.hairline {
+  border-color: var(--color-line);
+}

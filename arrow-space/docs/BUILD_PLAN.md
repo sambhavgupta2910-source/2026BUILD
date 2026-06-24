@@ -29,9 +29,10 @@ zero refactor.
 
 ## 1. Current state (read this)
 
-- **Phase 0 is complete on this branch.** Monorepo scaffolded; data contract, synthetic generator +
-  dataset, the test suite, and the `.claude/` operator layer are all built (`pnpm typecheck` +
-  `pnpm test` green, 47 tests). Next is Phase 1 (`apps/web`).
+- **Phase 0 and Phase 1 are complete on this branch.** Monorepo scaffolded; data contract, synthetic
+  generator + dataset, the test suite, and the `.claude/` operator layer (Phase 0); plus the
+  institutional site `apps/web` with structured RFQ/AOG intake → schema (Phase 1). `pnpm typecheck`
+  + `pnpm test` green (59 tests); `next build` green. Next is Phase 3 (`apps/portal`).
 - Done so far: **Task 1** (pnpm + Turborepo scaffold; `apps/{web,portal,console}` stubs;
   `packages/schema`), **Task 2** (all ten entities as zod + inferred types, the `syntheticOf`
   marker, `assert*` helpers, and the non-negotiables encoded in `rules.ts`), **Task 3** (the
@@ -41,8 +42,8 @@ zero refactor.
   portal (`claude/focused-keller-4jpxy3`, under `arrow-space/web/`) and a vanilla-JS clickable demo
   (`codex/arrow-space-build-1`, under `arrow-space-codex/`). We port copy/ideas from them; the
   schema-first monorepo on this branch is the base.
-- The next builder continues at **§7 Task breakdown** — Phase 0 is done; next up is **Task 6**
-  (Phase 1 `apps/web`: app shell + design system), then the institutional pages and intake forms.
+- The next builder continues at **§7 Task breakdown** — Phases 0 and 1 are done; next up is **Task
+  11** (Phase 3 `apps/portal`: auth + gated shell), then fleet/inventory views and portal reorder.
 
 ---
 
@@ -374,13 +375,17 @@ so the shape is locked and the synthetic generator can populate them — the UI 
    log, verify before stop), `.mcp.json`. **Phase 0 complete.**
 
 **Phase 1 — front door**
-6. `feat(web): app shell + design system` — Next.js App Router + Tailwind, brand-forward base.
-7. `feat(web): institutional pages` — hero, trust spine, capabilities, markets (defense-first),
-   AOG desk (§6 IA); strip retail signals.
-8. `feat(web): demoted self-serve store` — catalog section, no checkout, "request pricing" CTA.
-9. `feat(web): RFQ + AOG intake → schema` — forms + Route Handler validating against `RFQ`, writing
-   to `data/synthetic/intake/` (§6).
-10. `chore(web): Vercel deploy config` — deploy; confirm exit criteria.
+6. ✅ `feat(web): app shell + design system` — Next.js 15 App Router + Tailwind v4, institutional
+   tokens, header/footer, UI primitives.
+7. ✅ `feat(web): institutional pages` — authorization-led hero, Authorizations & Quality trust
+   spine, capabilities, markets (defense-first), AOG desk (§6 IA); retail signals stripped.
+8. ✅ `feat(web): demoted self-serve store` — David Clark/Bose catalogue, no cart/checkout/payment
+   signals, "request pricing" routes into the RFQ queue.
+9. ✅ `feat(web): RFQ + AOG intake → schema` — `buildIntakeRfq` + `/api/rfq` & `/api/aog` validate
+   against `RfqSchema`, set urgency, apply the (fail-safe) export-control rule, write to
+   `data/synthetic/intake/`, and never return a price. 12 unit tests + runtime-verified.
+10. ✅ `chore(web): Vercel deploy config` — `vercel.json` + `outputFileTracingIncludes`; `next build`
+    green (10 routes). **Phase 1 complete.**
 
 **Phase 3 — gated portal + customer inventory/reorder** (§6.5)
 11. `feat(portal): auth + gated shell` — per-customer accounts, gated routes.

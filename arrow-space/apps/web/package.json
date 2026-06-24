@@ -2,5 +2,30 @@
   "name": "@arrow-space/web",
   "version": "0.0.0",
   "private": true,
-  "description": "Institutional site (Next.js). Built in Phase 1 — placeholder for now."
+  "type": "module",
+  "description": "Arrow Space institutional site (Next.js App Router + Tailwind) — Phase 1.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@arrow-space/schema": "workspace:*",
+    "next": "^15.1.6",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "server-only": "^0.0.1",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.0.0",
+    "@types/node": "catalog:",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "tailwindcss": "^4.0.0",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
 }

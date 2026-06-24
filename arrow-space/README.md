@@ -14,7 +14,7 @@ now** behind a schema that swaps to real data later.
 
 ---
 
-## Status: Phase 0 complete → Phase 1 next
+## Status: Phase 0 + Phase 1 complete → Phase 3 next
 
 The monorepo is scaffolded (pnpm + Turborepo, TypeScript strict). Built and tested:
 
@@ -25,11 +25,16 @@ The monorepo is scaffolded (pnpm + Turborepo, TypeScript strict). Built and test
   `data/synthetic/` dataset v1 (1,429 records, seed 42, byte-identical on regen, every record
   validated against the schema and stamped synthetic).
 - **`.claude/` operator layer** — `rfq-triage` + `synthetic-data` subagents, `/new-rfq` +
-  `/gen-synthetic` commands, and hooks that enforce the guardrails (block hand-edits to synthetic
-  data + secrets, audit log, verify typecheck/tests before finishing).
+  `/gen-synthetic` commands, and guardrail hooks.
+- **`apps/web`** — the institutional site (Next.js 15 App Router + Tailwind v4 → Vercel):
+  authorization-led hero, Authorizations & Quality trust spine, capabilities, markets (defense-first),
+  24/7 AOG desk, and a **demoted** headset store (no cart/checkout). Structured **RFQ + AOG intake**
+  validates against the `RFQ` schema, applies the fail-safe export-control rule, writes to the intake
+  queue, and **never returns a price**.
 
-`pnpm typecheck` and `pnpm test` are green (47 tests). Next: **Phase 1 (`apps/web`)** — the
-institutional site. See `docs/BUILD_PLAN.md` → "Task breakdown" for what's done and what's next.
+`pnpm typecheck` and `pnpm test` are green (59 tests); `next build` is green. Next: **Phase 3
+(`apps/portal`)** — the gated customer fleet/inventory/reorder portal. See `docs/BUILD_PLAN.md` →
+"Task breakdown".
 
 - **`CLAUDE.md`** — always-loaded project memory + non-negotiables.
 - **`AGENTS.md`** — handoff for Codex/Claude: how to pick up, working rules, build sequence.

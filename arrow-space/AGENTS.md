@@ -22,23 +22,30 @@ Aviation Services. This file tells you how to pick up the work. **Read `CLAUDE.m
    WhatsApp/phone as human channels, or the principal's final pricing + compliance authority.
 
 ## Where things stand
-- **Phase 0 (foundation) is COMPLETE** on branch `claude/nice-darwin-9q52dd`: monorepo scaffold,
-  `packages/schema` (data contract), `packages/data` (deterministic synthetic generator + committed
-  `data/synthetic/` dataset v1), the test suite, and the `.claude/` operator layer.
-  `pnpm typecheck` + `pnpm test` green (47 tests).
-- **Next: Phase 1 (`apps/web`)** — start at `docs/BUILD_PLAN.md` → "Task breakdown," **Task 6**.
+- **Phases 0 and 1 are COMPLETE** on branch `claude/nice-darwin-9q52dd`:
+  - Phase 0 — monorepo scaffold, `packages/schema` (data contract), `packages/data` (deterministic
+    synthetic generator + committed `data/synthetic/` dataset v1), the test suite, `.claude/`
+    operator layer.
+  - Phase 1 — `apps/web` institutional site (Next.js 15 + Tailwind v4): hero, trust spine,
+    capabilities, markets (defense-first), AOG desk, demoted store, and structured RFQ/AOG intake →
+    schema (`/api/rfq`, `/api/aog`) that never returns a price.
+  - `pnpm typecheck` + `pnpm test` green (59 tests); `next build` green.
+- **Next: Phase 3 (`apps/portal`)** — start at `docs/BUILD_PLAN.md` → "Task breakdown," **Task 11**.
 
 ## Working in this repo
 - Install: `pnpm install`. Verify: `pnpm typecheck` + `pnpm test`. Regenerate data: `pnpm gen:synthetic`.
+- Run the site: `pnpm --filter @arrow-space/web dev`.
 - The schema (`packages/schema`) is the contract — extend it first, then everything else.
 - Don't hand-edit `data/synthetic/` — regenerate. The operator-layer hook blocks it anyway.
+- Intake → schema lives in `apps/web/src/lib/intake.ts` (pure, tested). Reuse it for portal reorders.
 
-## Phase 1 first moves (apps/web)
-1. App shell + design system (Next.js App Router + Tailwind, brand-forward, deploy to Vercel).
-2. Institutional pages: authorization-led hero, Authorizations & Quality trust spine, capabilities,
-   markets (defense-first), AOG desk. Strip retail signals. (`docs/BUILD_PLAN.md §6`.)
-3. Demoted self-serve store (no checkout / payment-card signals).
-4. RFQ + AOG intake forms that validate against the `RFQ` schema and write to the intake queue.
+## Phase 3 first moves (apps/portal)
+1. Auth + gated per-customer shell.
+2. My-fleet (`Aircraft`) + my-inventory (`CustomerInventory`) views, seeded from `Order` history,
+   with traceability docs per owned part.
+3. Reorder → creates an `RFQ` with `channel = "portal"` into the SAME queue (reuse `buildIntakeRfq`
+   semantics) — inquiry, not auto-order; no price shown; human approval still gates the quote.
+4. Console vendor-sourcing handoff (drafts/routes; human dispatches via existing channels).
 
 ## Then Phase 1 (apps/web)
 Institutional site (Next.js → Vercel): authorization-led hero, Authorizations & Quality trust
