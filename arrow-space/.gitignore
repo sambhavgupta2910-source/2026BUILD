@@ -35,3 +35,5 @@ coverage/
 # committed as versioned fixtures (clearly labelled synthetic). See BUILD_PLAN.md.
 # EXCEPT the intake queue, which is mutable runtime state written by the web app:
 data/synthetic/intake/
+# and operator approvals (runtime state written by the console):
+data/synthetic/approvals/

@@ -22,8 +22,12 @@ Aviation Services. This file tells you how to pick up the work. **Read `CLAUDE.m
    WhatsApp/phone as human channels, or the principal's final pricing + compliance authority.
 
 ## Where things stand
-- **Phases 0, 1, and the Phase 3 portal (tasks 11–13) are COMPLETE** on branch
-  `claude/nice-darwin-9q52dd`:
+- **All 14 planned tasks are COMPLETE** (Phases 0/1/3) on branch `claude/nice-darwin-9q52dd`.
+  `packages/engine` (quote-builder) + `apps/console` (operator queue, draft quote, human approval,
+  vendor handoff) close the loop. `pnpm typecheck` + `pnpm test` green (75 tests); all three apps
+  `next build` green. Remaining work is operational (real margin bands, AS9120/ASA wording, deploy,
+  real-data swap) — not on the task list.
+- Historical detail below:
   - Phase 0 — monorepo scaffold, `packages/schema` (data contract), `packages/data` (deterministic
     synthetic generator + committed `data/synthetic/` dataset v1), the test suite, `.claude/`
     operator layer.

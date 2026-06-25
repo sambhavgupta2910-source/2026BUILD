@@ -29,11 +29,13 @@ zero refactor.
 
 ## 1. Current state (read this)
 
-- **Phases 0, 1, and most of Phase 3 are complete on this branch.** Phase 0 (monorepo, data contract,
-  synthetic generator + dataset, test suite, `.claude/` operator layer); Phase 1 (`apps/web`
-  institutional site + RFQ/AOG intake → schema); Phase 3 tasks 11–13 (`apps/portal` gated
-  fleet/inventory/orders + reorder → portal RFQ into the shared queue). `pnpm typecheck` + `pnpm test`
-  green (66 tests); both apps `next build` green. Remaining: **Task 14** (operator console handoff).
+- **All 14 planned tasks are complete on this branch** (Phases 0, 1, 3). Phase 0 (monorepo, data
+  contract, synthetic generator + dataset, test suite, `.claude/` operator layer); Phase 1
+  (`apps/web` institutional site + RFQ/AOG intake → schema); Phase 3 (`apps/portal` gated
+  fleet/inventory/orders + reorder; `apps/console` operator queue + draft quote + human approval +
+  vendor handoff; `packages/engine` quote-builder). `pnpm typecheck` + `pnpm test` green (75 tests);
+  all three apps `next build` green. The end-to-end loop exists: intake → one queue → draft within
+  floor → human approval → vendor handoff.
 - Done so far: **Task 1** (pnpm + Turborepo scaffold; `apps/{web,portal,console}` stubs;
   `packages/schema`), **Task 2** (all ten entities as zod + inferred types, the `syntheticOf`
   marker, `assert*` helpers, and the non-negotiables encoded in `rules.ts`), **Task 3** (the
@@ -43,9 +45,10 @@ zero refactor.
   portal (`claude/focused-keller-4jpxy3`, under `arrow-space/web/`) and a vanilla-JS clickable demo
   (`codex/arrow-space-build-1`, under `arrow-space-codex/`). We port copy/ideas from them; the
   schema-first monorepo on this branch is the base.
-- The next builder continues at **§7 Task breakdown** — next up is **Task 14** (`apps/console`: the
-  operator vendor-sourcing handoff that views the shared queue and drafts/routes to vendors; human
-  dispatches). After that: real margin-floor bands, then real-data swap.
+- The planned build (tasks 1–14) is complete. Remaining work is operational, not on the task list:
+  the principal's **real margin-floor bands** (placeholder in `packages/data/src/margins.config.ts`),
+  **AS9120/ASA status** wording, optional **portal fleet add/edit**, optional `packages/intake`
+  consolidation, Vercel **deploy**, and the **real-data swap** (schema/IDs ready).
 
 ---
 
@@ -397,9 +400,10 @@ so the shape is locked and the synthetic generator can populate them — the UI 
 13. ✅ `feat(portal): reorder → RFQ` — `buildReorderRfq` + `/api/reorder` create an `RFQ`
     (`channel = portal`, `status = new`) into the SAME intake queue; export-control rule applied; no
     price shown/committed. 7 unit tests + runtime-verified (gating, 401, reorder, export flag).
-14. `feat(console): vendor sourcing handoff` — approved reorder/RFQ surfaced to the operator to push
-    to vendors via existing channels (drafts/assists; human dispatches). **← next (apps/console).**
-    The reorder already lands in the shared queue; the console UI to view/dispatch is the remaining piece.
+14. ✅ `feat(console): vendor sourcing handoff` — `apps/console`: one RFQ queue across all channels
+    (synthetic + live intake), `@arrow-space/engine` `buildDraftQuote` (DRAFT within the margin
+    floor), **human price approval** gated by `canQuoteBeSent`, and a vendor-sourcing handoff that
+    drafts/routes (human dispatches; no OEM/Textron/DC wiring). **Phases 0/1/3 complete; all 14 tasks done.**
 
 Each unit: typecheck + tests green, non-negotiables upheld (encode as tests where possible),
 conventional commit, session summary logged to Notion.

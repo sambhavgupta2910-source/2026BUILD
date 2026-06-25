@@ -14,7 +14,7 @@ now** behind a schema that swaps to real data later.
 
 ---
 
-## Status: Phase 0 + Phase 1 + Phase 3 portal complete → operator console next
+## Status: all 14 planned tasks complete (Phases 0/1/3) — end-to-end loop built
 
 The monorepo is scaffolded (pnpm + Turborepo, TypeScript strict). Built and tested:
 
@@ -35,10 +35,17 @@ The monorepo is scaffolded (pnpm + Turborepo, TypeScript strict). Built and test
   (with per-part traceability), order history + trace pack, and **one-click reorder**. A reorder is
   an inquiry → creates an `RFQ` with `channel = portal` into the **same** intake queue; no price is
   shown, margin floor + human approval still gate any quote, vendor dispatch stays human.
+- **`packages/engine`** — the quote-builder (`buildDraftQuote`): drafts a quote within the margin
+  floor; never auto-approves (`approved_by_human` stays false; `canQuoteBeSent` gates the send).
+- **`apps/console`** — the internal operator console: **one RFQ queue across every channel**
+  (synthetic + live web/portal intake), per-RFQ **draft quote**, **human price approval** (gated by
+  the margin floor), and a **vendor-sourcing handoff** that drafts/routes (human dispatches; no
+  wiring into OEM/Textron/David Clark ordering).
 
-`pnpm typecheck` and `pnpm test` are green (66 tests); both apps `next build` green. Next: the
-**operator console** (`apps/console`) — the vendor-sourcing handoff that surfaces the shared queue.
-See `docs/BUILD_PLAN.md` → "Task breakdown".
+`pnpm typecheck` and `pnpm test` are green (75 tests); all three apps `next build` green. The full
+loop exists: **intake → one queue → draft within floor → human approval → vendor handoff.** Remaining
+is operational: real margin bands, AS9120/ASA wording, deploy, real-data swap. See
+`docs/BUILD_PLAN.md`.
 
 - **`CLAUDE.md`** — always-loaded project memory + non-negotiables.
 - **`AGENTS.md`** — handoff for Codex/Claude: how to pick up, working rules, build sequence.

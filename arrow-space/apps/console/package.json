@@ -2,5 +2,32 @@
   "name": "@arrow-space/console",
   "version": "0.0.0",
   "private": true,
-  "description": "Internal operator console (RFQ triage, quote approval, vendor sourcing handoff). Placeholder for now."
+  "type": "module",
+  "description": "Arrow Space internal operator console (RFQ queue, draft quotes, human approval, vendor handoff).",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@arrow-space/data": "workspace:*",
+    "@arrow-space/engine": "workspace:*",
+    "@arrow-space/schema": "workspace:*",
+    "next": "^15.1.6",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "server-only": "^0.0.1",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.0.0",
+    "@types/node": "catalog:",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "tailwindcss": "^4.0.0",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
 }
