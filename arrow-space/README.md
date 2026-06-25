@@ -14,7 +14,7 @@ now** behind a schema that swaps to real data later.
 
 ---
 
-## Status: Phase 0 + Phase 1 complete → Phase 3 next
+## Status: Phase 0 + Phase 1 + Phase 3 portal complete → operator console next
 
 The monorepo is scaffolded (pnpm + Turborepo, TypeScript strict). Built and tested:
 
@@ -31,10 +31,14 @@ The monorepo is scaffolded (pnpm + Turborepo, TypeScript strict). Built and test
   24/7 AOG desk, and a **demoted** headset store (no cart/checkout). Structured **RFQ + AOG intake**
   validates against the `RFQ` schema, applies the fail-safe export-control rule, writes to the intake
   queue, and **never returns a price**.
+- **`apps/portal`** — the gated customer portal (synthetic demo accounts): My fleet, My inventory
+  (with per-part traceability), order history + trace pack, and **one-click reorder**. A reorder is
+  an inquiry → creates an `RFQ` with `channel = portal` into the **same** intake queue; no price is
+  shown, margin floor + human approval still gate any quote, vendor dispatch stays human.
 
-`pnpm typecheck` and `pnpm test` are green (59 tests); `next build` is green. Next: **Phase 3
-(`apps/portal`)** — the gated customer fleet/inventory/reorder portal. See `docs/BUILD_PLAN.md` →
-"Task breakdown".
+`pnpm typecheck` and `pnpm test` are green (66 tests); both apps `next build` green. Next: the
+**operator console** (`apps/console`) — the vendor-sourcing handoff that surfaces the shared queue.
+See `docs/BUILD_PLAN.md` → "Task breakdown".
 
 - **`CLAUDE.md`** — always-loaded project memory + non-negotiables.
 - **`AGENTS.md`** — handoff for Codex/Claude: how to pick up, working rules, build sequence.

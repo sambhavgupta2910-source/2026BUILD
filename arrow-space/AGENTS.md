@@ -22,15 +22,20 @@ Aviation Services. This file tells you how to pick up the work. **Read `CLAUDE.m
    WhatsApp/phone as human channels, or the principal's final pricing + compliance authority.
 
 ## Where things stand
-- **Phases 0 and 1 are COMPLETE** on branch `claude/nice-darwin-9q52dd`:
+- **Phases 0, 1, and the Phase 3 portal (tasks 11–13) are COMPLETE** on branch
+  `claude/nice-darwin-9q52dd`:
   - Phase 0 — monorepo scaffold, `packages/schema` (data contract), `packages/data` (deterministic
     synthetic generator + committed `data/synthetic/` dataset v1), the test suite, `.claude/`
     operator layer.
   - Phase 1 — `apps/web` institutional site (Next.js 15 + Tailwind v4): hero, trust spine,
     capabilities, markets (defense-first), AOG desk, demoted store, and structured RFQ/AOG intake →
     schema (`/api/rfq`, `/api/aog`) that never returns a price.
-  - `pnpm typecheck` + `pnpm test` green (59 tests); `next build` green.
-- **Next: Phase 3 (`apps/portal`)** — start at `docs/BUILD_PLAN.md` → "Task breakdown," **Task 11**.
+  - Phase 3 — `apps/portal` gated customer portal: demo session, My fleet, My inventory (with
+    traceability), orders + trace pack, and reorder → `RFQ` (`channel = portal`) into the SAME intake
+    queue (`/api/reorder`), inquiry-only, no price.
+  - `pnpm typecheck` + `pnpm test` green (66 tests); both apps `next build` green.
+- **Next: Task 14 (`apps/console`)** — operator vendor-sourcing handoff. Start at
+  `docs/BUILD_PLAN.md` → "Task breakdown."
 
 ## Working in this repo
 - Install: `pnpm install`. Verify: `pnpm typecheck` + `pnpm test`. Regenerate data: `pnpm gen:synthetic`.
@@ -39,13 +44,14 @@ Aviation Services. This file tells you how to pick up the work. **Read `CLAUDE.m
 - Don't hand-edit `data/synthetic/` — regenerate. The operator-layer hook blocks it anyway.
 - Intake → schema lives in `apps/web/src/lib/intake.ts` (pure, tested). Reuse it for portal reorders.
 
-## Phase 3 first moves (apps/portal)
-1. Auth + gated per-customer shell.
-2. My-fleet (`Aircraft`) + my-inventory (`CustomerInventory`) views, seeded from `Order` history,
-   with traceability docs per owned part.
-3. Reorder → creates an `RFQ` with `channel = "portal"` into the SAME queue (reuse `buildIntakeRfq`
-   semantics) — inquiry, not auto-order; no price shown; human approval still gates the quote.
-4. Console vendor-sourcing handoff (drafts/routes; human dispatches via existing channels).
+## Next: operator console (apps/console, Task 14)
+1. Read the shared intake queue (`data/synthetic/intake/` + the synthetic RFQs) into one operator
+   view across all channels (email/whatsapp/form/phone/portal).
+2. Per RFQ: run `rfq-triage`, draft a quote within the margin floor (DRAFT, never auto-sent),
+   surface the export-control flag, and require **human price approval** (`canQuoteBeSent`).
+3. Vendor-sourcing handoff: draft/route the sourcing request to the operator — the **human
+   dispatches** via existing authorized channels. Do NOT wire into OEM/Textron/David Clark ordering.
+4. Consider extracting a shared `packages/intake` to consolidate the web + portal RFQ builders.
 
 ## Then Phase 1 (apps/web)
 Institutional site (Next.js → Vercel): authorization-led hero, Authorizations & Quality trust

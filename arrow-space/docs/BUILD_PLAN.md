@@ -29,10 +29,11 @@ zero refactor.
 
 ## 1. Current state (read this)
 
-- **Phase 0 and Phase 1 are complete on this branch.** Monorepo scaffolded; data contract, synthetic
-  generator + dataset, the test suite, and the `.claude/` operator layer (Phase 0); plus the
-  institutional site `apps/web` with structured RFQ/AOG intake → schema (Phase 1). `pnpm typecheck`
-  + `pnpm test` green (59 tests); `next build` green. Next is Phase 3 (`apps/portal`).
+- **Phases 0, 1, and most of Phase 3 are complete on this branch.** Phase 0 (monorepo, data contract,
+  synthetic generator + dataset, test suite, `.claude/` operator layer); Phase 1 (`apps/web`
+  institutional site + RFQ/AOG intake → schema); Phase 3 tasks 11–13 (`apps/portal` gated
+  fleet/inventory/orders + reorder → portal RFQ into the shared queue). `pnpm typecheck` + `pnpm test`
+  green (66 tests); both apps `next build` green. Remaining: **Task 14** (operator console handoff).
 - Done so far: **Task 1** (pnpm + Turborepo scaffold; `apps/{web,portal,console}` stubs;
   `packages/schema`), **Task 2** (all ten entities as zod + inferred types, the `syntheticOf`
   marker, `assert*` helpers, and the non-negotiables encoded in `rules.ts`), **Task 3** (the
@@ -42,8 +43,9 @@ zero refactor.
   portal (`claude/focused-keller-4jpxy3`, under `arrow-space/web/`) and a vanilla-JS clickable demo
   (`codex/arrow-space-build-1`, under `arrow-space-codex/`). We port copy/ideas from them; the
   schema-first monorepo on this branch is the base.
-- The next builder continues at **§7 Task breakdown** — Phases 0 and 1 are done; next up is **Task
-  11** (Phase 3 `apps/portal`: auth + gated shell), then fleet/inventory views and portal reorder.
+- The next builder continues at **§7 Task breakdown** — next up is **Task 14** (`apps/console`: the
+  operator vendor-sourcing handoff that views the shared queue and drafts/routes to vendors; human
+  dispatches). After that: real margin-floor bands, then real-data swap.
 
 ---
 
@@ -388,13 +390,16 @@ so the shape is locked and the synthetic generator can populate them — the UI 
     green (10 routes). **Phase 1 complete.**
 
 **Phase 3 — gated portal + customer inventory/reorder** (§6.5)
-11. `feat(portal): auth + gated shell` — per-customer accounts, gated routes.
-12. `feat(portal): my-fleet + my-inventory` — `Aircraft` + `CustomerInventory` views, seeded from
-    `Order` history; traceability docs per owned part.
-13. `feat(portal): reorder → RFQ` — reorder action creates an `RFQ` (`channel = portal`) into the one
-    queue; no pricing shown; human-approval path downstream.
+11. ✅ `feat(portal): auth + gated shell` — per-customer demo session (synthetic accounts), middleware
+    gating, header/logout. Real SSO swaps into `session.ts` later.
+12. ✅ `feat(portal): my-fleet + my-inventory` — `Aircraft` + `CustomerInventory` views (inventory
+    joined to parts/fleet) + order history & per-order trace pack; traceability surfaced, not invented.
+13. ✅ `feat(portal): reorder → RFQ` — `buildReorderRfq` + `/api/reorder` create an `RFQ`
+    (`channel = portal`, `status = new`) into the SAME intake queue; export-control rule applied; no
+    price shown/committed. 7 unit tests + runtime-verified (gating, 401, reorder, export flag).
 14. `feat(console): vendor sourcing handoff` — approved reorder/RFQ surfaced to the operator to push
-    to vendors via existing channels (drafts/assists; human dispatches).
+    to vendors via existing channels (drafts/assists; human dispatches). **← next (apps/console).**
+    The reorder already lands in the shared queue; the console UI to view/dispatch is the remaining piece.
 
 Each unit: typecheck + tests green, non-negotiables upheld (encode as tests where possible),
 conventional commit, session summary logged to Notion.

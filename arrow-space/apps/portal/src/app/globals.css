@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+/* Arrow Space portal — shares the institutional token set with apps/web. */
+@theme {
+  --color-ink: #0a1626;
+  --color-navy: #0b1f3a;
+  --color-steel: #2b4a6f;
+  --color-azure: #2f6fed;
+  --color-gold: #b08948;
+  --color-paper: #f6f7f9;
+  --color-card: #ffffff;
+  --color-line: #e3e7ee;
+  --color-muted: #5b6b80;
+  --color-ok: #1f7a4d;
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+}
+
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
