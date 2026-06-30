@@ -11,7 +11,9 @@
     "dev": "node --watch server.js",
     "demo": "node scripts/start-demo.js",
     "generate:demo-data": "node scripts/generate-sample.js",
-    "dda": "node scripts/dda-client.js"
+    "ddads": "node scripts/fetch-ddads.js",
+    "pull:dld": "node scripts/fetch-ddads.js pull",
+    "start:dld": "node scripts/start-dld.js"
   },
   "dependencies": {}
 }
