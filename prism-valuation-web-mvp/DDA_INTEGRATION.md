@@ -7,11 +7,12 @@ synthetic dev data to a **live, official** Dubai data feed.
 
 ## ⚠️ Two things decide whether this is useful for PRISM
 
-1. **Which datasets are in your grant.** The onboarding email's attachments are the
-   *generic* gateway specs — they do **not** confirm that Dubai Land Department
-   (DLD) real-estate transactions are accessible. You must discover this from the
-   catalogue (see below). Look for a **DLD / "Dubai Land Department" / real-estate /
-   transactions / rents** entity.
+1. **Which datasets are in your grant.** ✅ **CONFIRMED by DDA** — the DLD
+   transactions dataset is accessible: `entity=dld`,
+   `dataset=dld_transactions-open-api` (`open` classification) →
+   `GET {base}/open/dld/dld_transactions-open-api`. Its real schema/coverage still
+   need an empirical `probe` (below). Other datasets require the per-dataset
+   "Request API Access Key" step on the portal.
 2. **UAE geofence.** "Requests originating outside the UAE are restricted." The
    token + data calls only work from **inside the UAE** (a Dubai machine, or a
    UAE-hosted server / `me-central-1`). They will **not** work from this cloud
@@ -32,10 +33,10 @@ synthetic dev data to a **live, official** Dubai data feed.
    ```
    node scripts/dda-client.js health      # expect: {"status":"success", ... "API is healthy"}
    ```
-3. Pull a sample from a dataset:
+3. Verify the confirmed DLD dataset (status + schema + coverage + PRISM-fit):
    ```
-   node scripts/dda-client.js get <entity> <dataset> --pageSize 5
-   node scripts/dda-client.js get <entity> <dataset> --pageSize 1000 --save sample.json
+   node scripts/dda-client.js probe dld dld_transactions-open-api
+   node scripts/dda-client.js get  dld dld_transactions-open-api --pageSize 1000 --save dld-sample.json
    ```
 
 `scripts/dda-client.js` is zero-dependency: it mints the 1-hour bearer token,

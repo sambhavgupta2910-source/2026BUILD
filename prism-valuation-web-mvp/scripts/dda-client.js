@@ -36,7 +36,8 @@
 // Examples (entity/dataset names come from the data.dubai catalogue):
 //   node scripts/dda-client.js health
 //   node scripts/dda-client.js get amaf amaf_minor-open-api --pageSize 5
-//   node scripts/dda-client.js get dld <dld-transactions-dataset> --pageSize 5 --save sample.json
+//   node scripts/dda-client.js probe dld dld_transactions-open-api      # confirmed DLD endpoint
+//   node scripts/dda-client.js get dld dld_transactions-open-api --pageSize 5 --save sample.json
 
 import https from 'node:https';
 import http from 'node:http';
@@ -186,6 +187,82 @@ async function query(token, entity, dataset, params) {
   return { status: r.status, body: r.body.toString('utf8'), url };
 }
 
+function statusMeaning(code) {
+  return {
+    200: 'OK — granted & live',
+    204: 'no content — granted but empty',
+    400: 'bad/missing query params (your query, not the grant)',
+    401: 'unauthorized — token bad/expired',
+    403: 'forbidden — bad credentials OR request from outside the UAE',
+    404: 'not found — wrong entity/dataset name, or not provisioned to you',
+    405: 'method not allowed',
+    500: 'server error',
+    503: 'service under maintenance',
+  }[code] || 'unexpected status';
+}
+
+// Inspect a single dataset (read-only): HTTP status, schema, coverage, and a
+// PRISM-fit map. Run from inside the UAE; paste the output back for mapping.
+async function probe(token, entity, dataset, dateCol) {
+  const first = await query(token, entity, dataset, { pageSize: 1, page: 1 });
+  console.log(`[dda] GET ${first.url}`);
+  console.log(`[dda] HTTP ${first.status} — ${statusMeaning(first.status)}`);
+  if (first.status !== 200) {
+    console.log(`[dda] body: ${first.body.slice(0, 400)}`);
+    return;
+  }
+
+  let json;
+  try { json = JSON.parse(first.body); } catch { console.log('[dda] response not JSON:', first.body.slice(0, 300)); return; }
+  const rows = json.results || json.records || json.result?.records || [];
+  if (!rows.length) { console.log('[dda] 200 but no records — granted but empty.'); return; }
+
+  const sample = rows[0];
+  const cols = Object.keys(sample);
+  console.log(`\n[dda] columns (${cols.length}):`);
+  for (const c of cols) {
+    const v = sample[c];
+    const t = v === null ? 'null' : typeof v;
+    let s = v === null ? '' : String(v);
+    if (s.length > 48) s = s.slice(0, 48) + '…';
+    console.log(`  ${c}  (${t})  e.g. ${s}`);
+  }
+
+  if (json.total !== undefined) console.log(`\n[dda] reported total rows: ${json.total}`);
+  else console.log('\n[dda] no "total" field — full size only knowable by paging.');
+
+  const dc = dateCol || cols.find((c) => /date|instance|timestamp|reg_dt/i.test(c));
+  if (dc) {
+    try {
+      const newest = await query(token, entity, dataset, { pageSize: 1, order_by: dc, order_dir: 'desc' });
+      const oldest = await query(token, entity, dataset, { pageSize: 1, order_by: dc, order_dir: 'asc' });
+      const nv = (JSON.parse(newest.body).results || [])[0]?.[dc];
+      const ov = (JSON.parse(oldest.body).results || [])[0]?.[dc];
+      console.log(`\n[dda] coverage by "${dc}": oldest=${ov}  newest=${nv}`);
+    } catch { console.log(`\n[dda] coverage probe on "${dc}" failed (column may not be sortable).`); }
+  } else {
+    console.log('\n[dda] no obvious date column — pass --date <col> to probe coverage.');
+  }
+
+  const buckets = {
+    'area / location': /area|community|location|zone|master/i,
+    'price / value': /worth|price|amount|value|trans_value/i,
+    'size': /size|sq_?m|sq_?ft|procedure_area|builtup|built_up/i,
+    'rooms': /room|bed/i,
+    'date': /date|instance|timestamp/i,
+    'project / building': /project|building|tower/i,
+    'off-plan / resale': /reg_type|off_?plan|ready|resale|sale_type|is_offplan/i,
+  };
+  console.log('\n[dda] PRISM-fit (candidate columns per field PRISM needs):');
+  for (const [label, re] of Object.entries(buckets)) {
+    const hits = cols.filter((c) => re.test(c));
+    console.log(`  ${hits.length ? '✓' : '·'} ${label}: ${hits.join(', ') || '(none found)'}`);
+  }
+
+  console.log('\n[dda] one sample record:');
+  console.log(JSON.stringify(sample, null, 2));
+}
+
 // ---------------------------------------------------------------------------
 // CLI
 // ---------------------------------------------------------------------------
@@ -206,6 +283,7 @@ const USAGE = `DDA data.dubai API client
 Usage:
   node scripts/dda-client.js token
   node scripts/dda-client.js health
+  node scripts/dda-client.js probe <entity> <dataset> [--date <column>]
   node scripts/dda-client.js get <entity> <dataset> [--page --pageSize --limit --filter --column --order_by --order_dir --offset --save]`;
 
 async function main() {
@@ -229,6 +307,18 @@ async function main() {
     const res = await health(token);
     console.log(`[dda] health HTTP ${res.status}: ${res.body}`);
     process.exit(res.status === 200 ? 0 : 1);
+  }
+
+  if (cmd === 'probe') {
+    const [entity, dataset] = rest.filter((a) => !a.startsWith('--'));
+    if (!entity || !dataset) {
+      console.error('[dda] usage: probe <entity> <dataset> [--date <column>]');
+      process.exit(1);
+    }
+    const flags = parseFlags(rest);
+    const token = await getToken();
+    await probe(token, entity, dataset, flags.date);
+    return;
   }
 
   if (cmd === 'get') {
