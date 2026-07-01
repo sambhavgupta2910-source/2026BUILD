@@ -15,6 +15,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="/site.css" />
+  <link rel="stylesheet" href="/polish.css" />
 </head>
 <body>
 
@@ -39,16 +40,21 @@
   <!-- ── Hero ─────────────────────────────────────────────────────────── -->
   <section class="hero">
     <div class="hero-inner">
-      <p class="hero-kicker">Built on official Dubai Land Department transactions</p>
-      <h1>Know what it's<br /><em>really</em> worth.</h1>
-      <p class="hero-sub">
-        Listing portals show asking prices. We show what buyers actually paid —
-        and tell you in seconds whether a deal is priced right.
-      </p>
-      <div class="hero-actions">
-        <a class="btn btn-gold" href="#sell">What's my home worth?</a>
-        <a class="btn btn-ghost" href="#deal-check">Check a listing's price</a>
-        <a class="btn btn-ghost" href="#explorer">Explore market data</a>
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p class="hero-kicker">Built on official Dubai Land Department transactions</p>
+          <h1>Know what it's<br /><em>really</em> worth.</h1>
+          <p class="hero-sub">
+            Listing portals show asking prices. We show what buyers actually paid —
+            and tell you in seconds whether a deal is priced right.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-gold" href="#sell">What's my home worth?</a>
+            <a class="btn btn-ghost" href="#deal-check">Check a listing's price</a>
+            <a class="btn btn-ghost" href="#explorer">Explore market data</a>
+          </div>
+        </div>
+        <aside class="hero-pulse" id="heroPulse" aria-label="Live Dubai market pulse"></aside>
       </div>
 
       <div class="stat-strip" id="statStrip">
@@ -479,5 +485,6 @@
   </div>
 
   <script src="/site.js" type="module"></script>
+  <script src="/polish.js" defer></script>
 </body>
 </html>

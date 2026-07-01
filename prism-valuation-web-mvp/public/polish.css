@@ -1,0 +1,317 @@
+/* Elevate Homes — polish layer.
+   Motion, depth and micro-interactions on top of site.css. Everything here is
+   progressive enhancement: rules are gated behind html.pjs (added by polish.js)
+   so the site renders identically if JS is disabled, and all motion respects
+   prefers-reduced-motion. */
+
+:root {
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.44, 1);
+  --shadow-1: 0 2px 10px rgba(0, 0, 0, 0.35);
+  --shadow-2: 0 12px 40px rgba(0, 0, 0, 0.45);
+}
+
+::selection { background: rgba(200, 169, 106, 0.35); color: #fff; }
+
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* Slim, unobtrusive scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb {
+  background: #1d2833;
+  border-radius: 8px;
+  border: 2px solid var(--bg);
+}
+::-webkit-scrollbar-thumb:hover { background: #2a3946; }
+
+/* ── Nav: glass + scrolled state ─────────────────────────────────────── */
+.pjs .nav {
+  background: rgba(6, 12, 18, 0.72);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  backdrop-filter: blur(14px) saturate(1.4);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.35s ease, background 0.35s ease;
+}
+.pjs .nav.scrolled {
+  background: rgba(6, 12, 18, 0.85);
+  border-bottom-color: var(--line);
+}
+.pjs .nav-links a { position: relative; }
+.pjs .nav-links a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--gold-hi), var(--gold));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s var(--ease-out);
+}
+.pjs .nav-links a:hover::after { transform: scaleX(1); }
+
+/* ── Buttons: lift, press, gold sheen ────────────────────────────────── */
+.pjs .btn {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.25s var(--ease-spring), box-shadow 0.25s ease,
+    background 0.25s ease, border-color 0.25s ease;
+}
+.pjs .btn:hover { transform: translateY(-2px); }
+.pjs .btn:active { transform: translateY(0) scale(0.985); }
+.pjs .btn-ghost:hover { border-color: rgba(200, 169, 106, 0.45); background: rgba(200, 169, 106, 0.06); }
+.pjs .btn-gold::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -80%;
+  width: 55%;
+  background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+  transform: skewX(-18deg);
+  opacity: 0;
+  transition: none;
+  pointer-events: none;
+}
+.pjs .btn-gold:hover::after {
+  opacity: 1;
+  transition: left 0.7s var(--ease-out), opacity 0.15s ease;
+  left: 130%;
+}
+
+/* ── Hero: ambient light + two-column grid with live pulse panel ─────── */
+.pjs .hero { position: relative; overflow: hidden; }
+.pjs .hero::before,
+.pjs .hero::after {
+  content: '';
+  position: absolute;
+  width: 560px;
+  height: 560px;
+  border-radius: 50%;
+  filter: blur(110px);
+  pointer-events: none;
+  z-index: 0;
+}
+.pjs .hero::before {
+  background: radial-gradient(circle, rgba(200, 169, 106, 0.14), transparent 65%);
+  top: -220px;
+  right: -120px;
+  animation: heroDriftA 16s ease-in-out infinite alternate;
+}
+.pjs .hero::after {
+  background: radial-gradient(circle, rgba(14, 165, 184, 0.12), transparent 65%);
+  bottom: -260px;
+  left: -160px;
+  animation: heroDriftB 20s ease-in-out infinite alternate;
+}
+@keyframes heroDriftA { from { transform: translate(0, 0); } to { transform: translate(-70px, 50px); } }
+@keyframes heroDriftB { from { transform: translate(0, 0); } to { transform: translate(80px, -40px); } }
+.hero-inner { position: relative; z-index: 1; }
+
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 44px; align-items: center; }
+@media (min-width: 1024px) {
+  .hero-grid { grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr); }
+}
+
+/* Live market pulse card */
+.hero-pulse {
+  position: relative;
+  border: 1px solid var(--line);
+  border-radius: calc(var(--radius) + 4px);
+  background: linear-gradient(180deg, rgba(17, 24, 32, 0.9), rgba(12, 18, 25, 0.9));
+  box-shadow: var(--shadow-2);
+  padding: 22px 22px 16px;
+  min-height: 300px;
+  transform-style: preserve-3d;
+  will-change: transform;
+  display: none;
+}
+.pjs .hero-pulse { display: block; }
+@media (max-width: 1023px) { .pjs .hero-pulse { display: none; } }
+.hero-pulse::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, rgba(232, 200, 122, 0.7), transparent);
+}
+.pulse-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.pulse-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.6);
+  animation: pulseDot 2.2s ease-out infinite;
+}
+@keyframes pulseDot {
+  0% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.55); }
+  70% { box-shadow: 0 0 0 9px rgba(52, 211, 153, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
+}
+.pulse-big {
+  margin-top: 14px;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.pulse-big strong {
+  font-family: var(--font-display);
+  font-size: 40px;
+  line-height: 1;
+  color: var(--gold-hi);
+  font-weight: 600;
+}
+.pulse-big .pulse-unit { color: var(--muted); font-size: 13px; }
+.pulse-delta { font-size: 13px; font-weight: 600; }
+.pulse-delta.up { color: var(--green); }
+.pulse-delta.down { color: var(--red); }
+.pulse-caption { margin-top: 2px; font-size: 12.5px; color: var(--muted); }
+
+.pulse-chart { margin-top: 16px; }
+.pulse-chart svg { display: block; width: 100%; height: 96px; overflow: visible; }
+.pulse-line {
+  fill: none;
+  stroke: url(#pulseStroke);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.pjs .pulse-line.draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: pulseDraw 1.6s var(--ease-out) 0.25s forwards;
+}
+@keyframes pulseDraw { to { stroke-dashoffset: 0; } }
+.pulse-area { opacity: 0; transition: opacity 1s ease 1.2s; }
+.pulse-area.draw { opacity: 1; }
+.pulse-axis { font-size: 9.5px; fill: #5c6b78; letter-spacing: 0.04em; }
+
+.pulse-ticker {
+  margin-top: 14px;
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+  min-height: 52px;
+  position: relative;
+}
+.pulse-ticker-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #5c6b78;
+  margin-bottom: 6px;
+}
+.tick-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.45s ease, transform 0.45s var(--ease-out);
+}
+.tick-item.in { opacity: 1; transform: translateY(0); }
+.tick-what { color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tick-what .tick-rooms { color: var(--muted); }
+.tick-price { color: var(--gold-hi); font-weight: 600; white-space: nowrap; }
+.tick-psf { color: var(--muted); font-size: 12px; white-space: nowrap; }
+
+/* ── Reveal-on-scroll ────────────────────────────────────────────────── */
+.pjs [data-reveal] {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.7s ease calc(var(--rd, 0) * 1ms),
+    transform 0.7s var(--ease-out) calc(var(--rd, 0) * 1ms);
+  will-change: opacity, transform;
+}
+.pjs [data-reveal].in { opacity: 1; transform: none; }
+
+/* ── Cards, chips, pills, stats ──────────────────────────────────────── */
+.pjs .card,
+.pjs .stat-strip {
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s var(--ease-out);
+}
+.pjs .trust-pill { transition: border-color 0.25s ease, color 0.25s ease, transform 0.25s var(--ease-out); }
+.pjs .trust-pill:hover { border-color: rgba(200, 169, 106, 0.4); transform: translateY(-1px); }
+.pjs .stat strong { font-variant-numeric: tabular-nums; }
+
+/* Area chips in the explorer */
+.pjs .chip,
+.pjs [class*='chip'] {
+  transition: transform 0.22s var(--ease-spring), border-color 0.22s ease,
+    background 0.22s ease, box-shadow 0.22s ease;
+}
+.pjs .chip:hover,
+.pjs [class*='chip']:hover { transform: translateY(-2px); }
+
+/* ── Tables: row entrance + hover ────────────────────────────────────── */
+.pjs tbody tr {
+  animation: rowIn 0.5s var(--ease-out) both;
+  transition: background 0.2s ease;
+}
+.pjs tbody tr:nth-child(1) { animation-delay: 0.03s; }
+.pjs tbody tr:nth-child(2) { animation-delay: 0.08s; }
+.pjs tbody tr:nth-child(3) { animation-delay: 0.13s; }
+.pjs tbody tr:nth-child(4) { animation-delay: 0.18s; }
+.pjs tbody tr:nth-child(5) { animation-delay: 0.23s; }
+.pjs tbody tr:nth-child(6) { animation-delay: 0.28s; }
+.pjs tbody tr:nth-child(7) { animation-delay: 0.33s; }
+.pjs tbody tr:nth-child(8) { animation-delay: 0.38s; }
+@keyframes rowIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+.pjs tbody tr:hover { background: rgba(200, 169, 106, 0.05); }
+
+/* ── Forms: focus glow ───────────────────────────────────────────────── */
+.pjs input,
+.pjs select,
+.pjs textarea {
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+.pjs input:focus,
+.pjs select:focus,
+.pjs textarea:focus {
+  border-color: rgba(200, 169, 106, 0.55);
+  box-shadow: 0 0 0 3px rgba(200, 169, 106, 0.14);
+}
+
+/* ── Result cards: pop when a verdict lands ──────────────────────────── */
+.pjs .result-card.pop { animation: verdictPop 0.65s var(--ease-spring) both; }
+@keyframes verdictPop {
+  0% { opacity: 0; transform: translateY(14px) scale(0.975); }
+  100% { opacity: 1; transform: none; }
+}
+
+/* ── Reduced motion: switch everything off ───────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .pjs [data-reveal] { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .pjs .hero::before,
+  .pjs .hero::after,
+  .pjs .pulse-dot,
+  .pjs tbody tr,
+  .pjs .result-card.pop { animation: none !important; }
+  .pjs .pulse-line.draw { animation: none !important; stroke-dasharray: none; }
+  .pjs .pulse-area { opacity: 1; transition: none; }
+  .pjs .btn:hover { transform: none; }
+}
