@@ -1471,6 +1471,48 @@ async function start() {
         return send(res, 200, { communities, total: byCommunity.size });
       }
 
+      // Project aggregates — powers the "Visualise Dubai" map. Groups the
+      // registered sales by project and returns per-project stats, so every
+      // marker on the map is backed by real DLD registry activity.
+      if (req.method === 'GET' && req.url.startsWith('/api/projects')) {
+        const qs = new URL(req.url, 'http://x').searchParams;
+        const offplanOnly = (qs.get('offplan') || '') === 'true';
+        const limit = Math.min(200, Math.max(1, parseInt(qs.get('limit') || '90', 10)));
+
+        const byProject = new Map();
+        for (const r of dataset.rows) {
+          if (!r.project) continue;
+          if (offplanOnly && !(r.offplan || '').toLowerCase().includes('off')) continue;
+          let b = byProject.get(r.project);
+          if (!b) {
+            b = { rows: [], area: r.area, community: r.masterProject };
+            byProject.set(r.project, b);
+          }
+          b.rows.push(r);
+        }
+
+        const projects = [...byProject.entries()]
+          .map(([name, b]) => {
+            const psfs = b.rows.map((r) => r.aedPerSqft);
+            const offCount = b.rows.filter((r) => (r.offplan || '').toLowerCase().includes('off')).length;
+            const latest = b.rows.reduce((m, r) => (r.date > m ? r.date : m), '');
+            return {
+              name,
+              area: b.area,
+              community: b.community,
+              sales: b.rows.length,
+              medianPsf: Math.round(median(psfs)),
+              medianPrice: Math.round(median(b.rows.map((r) => r.transValue))),
+              offplanPct: Math.round((offCount / b.rows.length) * 100),
+              lastSale: latest,
+            };
+          })
+          .sort((a, b) => b.sales - a.sales)
+          .slice(0, limit);
+
+        return send(res, 200, { total: byProject.size, projects });
+      }
+
       // Paginated property listings — for the landing page
       if (req.method === 'GET' && req.url.startsWith('/api/properties')) {
         const qs = new URL(req.url, 'http://x').searchParams;

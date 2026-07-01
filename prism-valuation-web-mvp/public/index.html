@@ -16,6 +16,7 @@
 
   <link rel="stylesheet" href="/site.css" />
   <link rel="stylesheet" href="/polish.css" />
+  <link rel="stylesheet" href="/map.css" />
 </head>
 <body>
 
@@ -30,6 +31,7 @@
         <a href="#sell">Sell</a>
         <a href="#deal-check">Deal Check</a>
         <a href="#market">Market Data</a>
+        <a href="#dubai-map">Dubai Map</a>
         <a href="#offplan">Off-Plan</a>
         <a href="/brokers">For Brokers</a>
       </nav>
@@ -108,6 +110,34 @@
         </table>
       </div>
       <p class="form-note" style="text-align:left;margin-top:10px;">Most recent registered sales in the selected community. Source: Dubai Land Department.</p>
+    </div>
+  </section>
+
+  <!-- ── Visualise Dubai — 3D project map ─────────────────────────────── -->
+  <section class="section section-alt" id="dubai-map">
+    <div class="section-inner">
+      <div class="section-head">
+        <p class="eyebrow">Off-Plan · Project Map</p>
+        <h2>Visualise Dubai.</h2>
+        <p class="section-sub">
+          Every gold tower is a project with registered DLD sales — the taller it
+          rises, the more the market is moving there. Fly between communities,
+          click a tower, and see its live pricing.
+        </p>
+      </div>
+    </div>
+    <div class="map-shell" id="mapShell">
+      <div id="dubaiMap" class="dubai-map" role="application" aria-label="Interactive 3D map of Dubai projects"></div>
+      <div class="map-fallback hidden" id="mapFallback"></div>
+      <div class="map-hud">
+        <div class="map-chips" id="mapChips"></div>
+        <div class="map-toggle" id="mapToggle">
+          <button data-mode="offplan" class="on">Off-plan</button>
+          <button data-mode="all">All projects</button>
+        </div>
+      </div>
+      <aside class="map-panel hidden" id="mapPanel" aria-live="polite"></aside>
+      <div class="map-legend"><span class="gold-dot"></span>Tower height = registered sales activity (DLD). Locations approximate within community.</div>
     </div>
   </section>
 
@@ -486,5 +516,6 @@
 
   <script src="/site.js" type="module"></script>
   <script src="/polish.js" defer></script>
+  <script src="/map.js" defer></script>
 </body>
 </html>
