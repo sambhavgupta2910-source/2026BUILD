@@ -1,4 +1,6 @@
-# Deploy only what the preview needs — the app + its bundled demo dataset.
+# Deploy only what the preview needs. The deployed server fetches the real
+# DLD dataset from its Drive default URL at boot; the bundled demo CSV ships
+# only as a clearly-ribboned fallback for when that fetch fails.
 .git
 node_modules
 _codex

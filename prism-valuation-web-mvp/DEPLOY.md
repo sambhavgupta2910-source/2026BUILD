@@ -1,8 +1,20 @@
 # Deploying PRISM / Elevate Homes to a public URL
 
 The app is a single zero-dependency Node server — it runs anywhere Node 18+
-runs. Recommended: **Railway** (already referenced across the repo), ~10
-minutes from zero to a public URL.
+runs. Two supported paths:
+
+- **Vercel preview** (fastest): root `vercel.json` + `api/index.js` wrap the
+  server as one serverless function. With no env vars set, the function boots
+  on the **real DLD dataset** from the built-in Drive default URL
+  (`DEFAULT_DRIVE_FILE_ID` in `server.js` — the link-shared PRISM pull). The
+  bundled synthetic CSV is only a fallback if that fetch fails, and the UI
+  shows a DEMO DATA ribbon whenever it is in use. To point a deployment at a
+  fresher pull, set `TRANSACTIONS_URL` in the Vercel project settings, or
+  replace the Drive file's content in place (Drive → right-click → File
+  information → **Manage versions** keeps the same FILE_ID) and hit
+  `POST /api/refresh?token=<REFRESH_SECRET>`.
+- **Railway** (recommended for the real domain): a long-lived server with a
+  volume for leads, ~10 minutes from zero to a public URL.
 
 ## 1. Railway (recommended)
 

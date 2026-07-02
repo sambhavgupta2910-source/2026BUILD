@@ -20,17 +20,15 @@ import { fileURLToPath } from 'node:url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PUBLIC_DIR = path.join(__dirname, 'public');
 
-// Serverless (Vercel) support: the filesystem is read-only except /tmp, and a
-// preview with no data source configured boots on the bundled synthetic set.
+// Serverless (Vercel) support: the filesystem is read-only except /tmp. With no
+// data source configured the loader falls through to DEFAULT_URL — the real,
+// link-shared Drive pull — and the bundled synthetic CSV is only a last-resort
+// fallback when that fetch fails (see loadCsvText).
 const IS_SERVERLESS = !!process.env.VERCEL;
 const CACHE_DIR = process.env.CACHE_DIR || (IS_SERVERLESS ? '/tmp/prism-cache' : path.join(__dirname, '.cache'));
-if (IS_SERVERLESS && !process.env.TRANSACTIONS_CSV && !process.env.TRANSACTIONS_URL && !process.env.DUBAI_PULSE_API_URL) {
-  const demoCsv = path.join(__dirname, 'transactions-dev.csv');
-  if (fs.existsSync(demoCsv)) process.env.TRANSACTIONS_CSV = demoCsv;
-}
 // Synthetic demo data must never read as real market figures — the UI shows a
-// ribbon whenever this is true (see /api/config).
-const DEMO_DATA = (process.env.TRANSACTIONS_CSV || '').includes('transactions-dev');
+// ribbon whenever this is true (see /api/config). Set on every dataset load.
+let usingDemoData = false;
 
 const PORT = Number(process.env.PORT || 4173);
 const SQM_TO_SQFT = 10.764;
@@ -114,7 +112,7 @@ function fetchToBuffer(url, redirects = 0, extraHeaders = {}) {
   return new Promise((resolve, reject) => {
     if (redirects > 5) return reject(new Error('Too many redirects'));
     const client = url.startsWith('https:') ? https : http;
-    client
+    const req = client
       .get(url, { headers: extraHeaders }, (res) => {
         if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
           res.resume();
@@ -131,6 +129,11 @@ function fetchToBuffer(url, redirects = 0, extraHeaders = {}) {
         res.on('error', reject);
       })
       .on('error', reject);
+    // Inactivity timeout: without it a stalled connection would eat the whole
+    // serverless maxDuration and the site would die instead of falling back.
+    req.setTimeout(Number(process.env.FETCH_TIMEOUT_MS || 15_000), () => {
+      req.destroy(new Error(`Timeout fetching ${url}`));
+    });
   });
 }
 
@@ -151,11 +154,12 @@ async function fetchPulseCsv(apiUrl, apiKey) {
   return [headers.join(','), ...records.map((r) => headers.map((h) => esc(r[h])).join(','))].join('\r\n');
 }
 
-async function loadCsvText() {
+async function loadCsvText({ refresh = false } = {}) {
   // Priority 1 — local file (fastest, for development)
   const localPath = process.env.TRANSACTIONS_CSV;
   if (localPath && fs.existsSync(localPath)) {
     console.log(`[data] reading local CSV: ${localPath}`);
+    usingDemoData = localPath.includes('transactions-dev');
     return fs.readFileSync(localPath, 'utf8');
   }
 
@@ -163,31 +167,54 @@ async function loadCsvText() {
   const pulseUrl = process.env.DUBAI_PULSE_API_URL;
   const pulseKey = process.env.DUBAI_PULSE_API_KEY;
   if (pulseUrl && pulseKey) {
-    return fetchPulseCsv(pulseUrl, pulseKey);
+    const text = await fetchPulseCsv(pulseUrl, pulseKey);
+    usingDemoData = false;
+    return text;
   }
 
-  // Priority 3 — any CSV URL (Drive, S3, etc.) with local .cache/ fallback
+  // Priority 3 — any CSV URL (Drive, S3, etc.) with local .cache/ fallback.
+  // Refresh calls skip the cache so an updated Drive file actually lands.
   const url = process.env.TRANSACTIONS_URL || DEFAULT_URL;
   const cachePath = path.join(CACHE_DIR, 'transactions.csv');
-  if (fs.existsSync(cachePath) && !process.env.PRISM_REFRESH) {
+  if (!refresh && fs.existsSync(cachePath) && !process.env.PRISM_REFRESH) {
     console.log(`[data] using cached CSV: ${cachePath}`);
+    usingDemoData = false;
     return fs.readFileSync(cachePath, 'utf8');
   }
 
-  console.log(`[data] fetching CSV from ${url}`);
-  const buf = await fetchToBuffer(url);
-  const text = buf.toString('utf8');
-  if (text.includes('<html') && text.toLowerCase().includes('virus')) {
-    throw new Error(
-      'Drive returned the virus-scan interstitial instead of the file. ' +
-        'Make sure the file is shared as "anyone with the link" and is under 25 MB, ' +
-        'or set TRANSACTIONS_CSV to a local path.',
-    );
+  try {
+    console.log(`[data] fetching CSV from ${url}`);
+    const buf = await fetchToBuffer(url);
+    const text = buf.toString('utf8');
+    if (text.includes('<html') && text.toLowerCase().includes('virus')) {
+      throw new Error(
+        'Drive returned the virus-scan interstitial instead of the file. ' +
+          'Make sure the file is shared as "anyone with the link" and is under 25 MB, ' +
+          'or set TRANSACTIONS_CSV to a local path.',
+      );
+    }
+    fs.mkdirSync(CACHE_DIR, { recursive: true });
+    fs.writeFileSync(cachePath, text);
+    console.log(`[data] cached ${(buf.length / 1024 / 1024).toFixed(1)} MB to ${cachePath}`);
+    usingDemoData = false;
+    return text;
+  } catch (err) {
+    // Degrade gracefully: stale cache (still real data) beats the bundled
+    // synthetic set, which beats a dead site — and the demo ribbon makes the
+    // synthetic case unmistakable in the UI.
+    if (fs.existsSync(cachePath)) {
+      console.warn(`[data] fetch failed (${err.message}) — serving stale cached CSV`);
+      usingDemoData = false;
+      return fs.readFileSync(cachePath, 'utf8');
+    }
+    const demoCsv = path.join(__dirname, 'transactions-dev.csv');
+    if (fs.existsSync(demoCsv)) {
+      console.warn(`[data] fetch failed (${err.message}) — falling back to bundled demo data`);
+      usingDemoData = true;
+      return fs.readFileSync(demoCsv, 'utf8');
+    }
+    throw err;
   }
-  fs.mkdirSync(CACHE_DIR, { recursive: true });
-  fs.writeFileSync(cachePath, text);
-  console.log(`[data] cached ${(buf.length / 1024 / 1024).toFixed(1)} MB to ${cachePath}`);
-  return text;
 }
 
 // ---------------------------------------------------------------------------
@@ -1211,8 +1238,8 @@ function readJson(req) {
 
 let state = { dataset: null, metadata: null, trends: null };
 
-async function rebuildDataset() {
-  const csvText = await loadCsvText();
+async function rebuildDataset(opts = {}) {
+  const csvText = await loadCsvText(opts);
   const dataset = buildDataset(csvText);
   const metadata = buildMetadata(dataset);
   const trends = buildTrends(dataset);
@@ -1240,7 +1267,7 @@ function scheduleNightlyRefresh() {
   setTimeout(async () => {
     console.log('[refresh] nightly reload starting…');
     try {
-      await rebuildDataset();
+      await rebuildDataset({ refresh: true });
       console.log('[refresh] nightly reload complete');
     } catch (err) {
       console.error('[refresh] nightly reload failed:', err.message);
@@ -1283,7 +1310,7 @@ async function start() {
 
       // Public config — agent WhatsApp number for lead redirect
       if (req.url === '/api/config') {
-        return send(res, 200, { agentWhatsapp: AGENT_WHATSAPP, demoData: DEMO_DATA });
+        return send(res, 200, { agentWhatsapp: AGENT_WHATSAPP, demoData: usingDemoData });
       }
 
       // Manual refresh webhook — POST /api/refresh?token=SECRET
@@ -1292,7 +1319,7 @@ async function start() {
         const secret = process.env.REFRESH_SECRET;
         if (!secret || token !== secret) return send(res, 401, { error: 'unauthorized' });
         console.log('[refresh] manual webhook triggered');
-        await rebuildDataset();
+        await rebuildDataset({ refresh: true });
         return send(res, 200, { ok: true, rows: state.dataset.cleanRows });
       }
 
