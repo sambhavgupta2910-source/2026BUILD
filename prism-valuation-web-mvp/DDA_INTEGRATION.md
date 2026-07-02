@@ -38,13 +38,15 @@ CSV specifically (vs JSON/DB) because it's the format PRISM's loader already rea
 ## Setup (run from inside the UAE)
 
 1. Put the DDA block from `.env.example` into a local `.env` (gitignored), filled
-   from the DDA onboarding email:
+   from the onboarding email **for the environment you're targeting** (STG and
+   PROD each send their own credential set):
    ```
-   DATA_DUBAI_BASE_URL=https://stg-apis.data.dubai
+   DATA_DUBAI_BASE_URL=https://apis.data.dubai
    DATA_DUBAI_SECURITY_IDENTIFIER=...
    DATA_DUBAI_CLIENT_ID=...
    DATA_DUBAI_CLIENT_SECRET=...
    ```
+   (staging: `DATA_DUBAI_BASE_URL=https://stg-apis.data.dubai` with the STG creds)
 2. Validate connectivity, then pull and serve:
    ```
    npm run ddads -- health          # expect: "API is healthy"
@@ -96,6 +98,12 @@ PRISM then filters Sales + Residential, derives AED/sqft, and winsorizes
 - Credentials live only in `.env` (gitignored). **Never commit them.** The pulled
   `transactions-dld.csv` is also gitignored (`transactions-*.csv`). If a secret is
   exposed, request rotation via the portal "Contact Us" form.
-- **Test ≠ production.** These are STG creds — keep `DATA_DUBAI_BASE_URL` on
-  `stg-apis.data.dubai`. After validation, request production access via "Contact
-  Us" with your Application ID (in the email).
+- **Test ≠ production.** STG and PROD issue separate credential sets (one email
+  each, same Application ID) and creds from one environment 403 on the other —
+  the base URL and the credential set must always come from the same email.
+  Production remains **UAE-geofenced**, exactly like staging, so the Mac-pull →
+  Drive → deployed-server architecture is unchanged; production's win is the
+  live-refreshed dataset.
+- Queries about API access go through the portal's "Contact Us" form; data
+  clarifications go to data.portal@digitaldubai.ae with the Application ID. The
+  credential emails themselves are unmonitored.
