@@ -199,6 +199,7 @@
         </div>
         <h3>${esc(p.name)}</h3>
         <p class="map-panel-loc">${esc(p.community || p.area)}${p.community && p.area && p.community !== p.area ? ' · ' + esc(p.area) : ''}</p>
+        ${p.developer || p.status ? `<p class="map-panel-reg">${[p.developer && esc(p.developer), p.status && esc(p.status), p.percentComplete != null && `${esc(p.percentComplete)}% complete`].filter(Boolean).join(' · ')}</p>` : ''}
         <div class="map-panel-stats">
           <div><strong>${p.medianPsf.toLocaleString()}</strong><span>median AED/sqft</span></div>
           <div><strong>${fmtPrice(p.medianPrice)}</strong><span>median price</span></div>

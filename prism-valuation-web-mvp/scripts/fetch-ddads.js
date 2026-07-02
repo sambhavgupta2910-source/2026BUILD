@@ -244,11 +244,61 @@ async function cmdPull(flags) {
   }
 }
 
+// Pull the DLD projects registry (developer, status, % complete) into
+// projects-dld.json, which server.js merges into /api/projects. Field names
+// are matched defensively — run `sample` on the endpoint first if unsure.
+async function cmdPullProjects(flags) {
+  const endpoint = flags.endpoint || '/open/dld/dld_projects-open-api';
+  const pageSize = Number(flags.pageSize || 1000);
+  const maxPages = Number(flags.pages || 10);
+  const outPath = path.isAbsolute(flags.out || '') ? flags.out : path.join(APP_ROOT, flags.out || 'projects-dld.json');
+
+  const pick = (rec, keys) => {
+    for (const k of keys) if (rec[k] !== undefined && rec[k] !== null && rec[k] !== '') return rec[k];
+    return null;
+  };
+
+  console.log(`[ddads] pulling ${endpoint} — up to ${maxPages} pages × ${pageSize}`);
+  let token = await getToken();
+  const out = [];
+  for (let page = 1; page <= maxPages; page++) {
+    let res = await getData(token, endpoint, { page, pageSize });
+    if (res.status === 401) { token = await getToken(); res = await getData(token, endpoint, { page, pageSize }); }
+    if (res.status !== 200) {
+      console.error(`[ddads] page ${page} failed — HTTP ${res.status}: ${res.body.slice(0, 300)}`);
+      if (out.length === 0) process.exit(1);
+      break;
+    }
+    const rows = JSON.parse(res.body).results || [];
+    if (!rows.length) break;
+    for (const rec of rows) {
+      const name = pick(rec, ['project_name_en', 'project_name', 'name_en', 'name']);
+      if (!name) continue;
+      out.push({
+        name,
+        developer: pick(rec, ['developer_name_en', 'developer_name', 'developer', 'master_developer_name_en', 'master_developer_name']),
+        status: pick(rec, ['project_status_en', 'project_status', 'status']),
+        percentComplete: pick(rec, ['percent_completed', 'percent_complete', 'project_percent_completed', 'completion_percentage']),
+        startDate: pick(rec, ['project_start_date', 'start_date', 'registration_date']),
+        endDate: pick(rec, ['project_end_date', 'end_date', 'expected_completion_date']),
+        area: pick(rec, ['area_name_en', 'area_name', 'master_project_en']),
+      });
+    }
+    console.log(`[ddads] page ${page}: +${rows.length} (total ${out.length.toLocaleString()})`);
+    if (rows.length < pageSize) break;
+    if (page < maxPages) await sleep(1100);
+  }
+  fs.writeFileSync(outPath, JSON.stringify(out, null, 1));
+  console.log(`[ddads] wrote ${out.length.toLocaleString()} projects → ${outPath}`);
+  console.log('[ddads] restart the server (or redeploy) and /api/projects will include developer/status/% complete.');
+}
+
 const USAGE = `DDA data.dubai (DDADS) client + PRISM loader
 Usage:
   node scripts/fetch-ddads.js health
   node scripts/fetch-ddads.js sample --endpoint ${DEFAULT_ENDPOINT} --pageSize 5
-  node scripts/fetch-ddads.js pull   [--pages 50] [--pageSize 1000] [--out transactions-dld.csv] [--refresh]`;
+  node scripts/fetch-ddads.js pull   [--pages 50] [--pageSize 1000] [--out transactions-dld.csv] [--refresh]
+  node scripts/fetch-ddads.js pull-projects [--endpoint /open/dld/dld_projects-open-api] [--pages 10]`;
 
 function parseFlags(argv) {
   const flags = {};
@@ -269,6 +319,7 @@ async function main() {
   if (cmd === 'health') return cmdHealth();
   if (cmd === 'sample') return cmdSample(flags);
   if (cmd === 'pull') return cmdPull(flags);
+  if (cmd === 'pull-projects') return cmdPullProjects(flags);
   console.error(`[ddads] unknown command: ${cmd}`);
   console.log(USAGE);
   process.exit(1);

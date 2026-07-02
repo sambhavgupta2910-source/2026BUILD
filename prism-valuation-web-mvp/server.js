@@ -19,7 +19,18 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PUBLIC_DIR = path.join(__dirname, 'public');
-const CACHE_DIR = path.join(__dirname, '.cache');
+
+// Serverless (Vercel) support: the filesystem is read-only except /tmp, and a
+// preview with no data source configured boots on the bundled synthetic set.
+const IS_SERVERLESS = !!process.env.VERCEL;
+const CACHE_DIR = process.env.CACHE_DIR || (IS_SERVERLESS ? '/tmp/prism-cache' : path.join(__dirname, '.cache'));
+if (IS_SERVERLESS && !process.env.TRANSACTIONS_CSV && !process.env.TRANSACTIONS_URL && !process.env.DUBAI_PULSE_API_URL) {
+  const demoCsv = path.join(__dirname, 'transactions-dev.csv');
+  if (fs.existsSync(demoCsv)) process.env.TRANSACTIONS_CSV = demoCsv;
+}
+// Synthetic demo data must never read as real market figures — the UI shows a
+// ribbon whenever this is true (see /api/config).
+const DEMO_DATA = (process.env.TRANSACTIONS_CSV || '').includes('transactions-dev');
 
 const PORT = Number(process.env.PORT || 4173);
 const SQM_TO_SQFT = 10.764;
@@ -37,7 +48,7 @@ const DEFAULT_URL = `https://drive.google.com/uc?export=download&id=${DEFAULT_DR
 // snapshot and a status pipeline the agent can advance.
 // ---------------------------------------------------------------------------
 
-const DATA_DIR = path.join(__dirname, '.data');
+const DATA_DIR = process.env.DATA_DIR || (IS_SERVERLESS ? '/tmp/prism-data' : path.join(__dirname, '.data'));
 const LEADS_PATH = path.join(DATA_DIR, 'leads.json');
 
 // CRM pipeline stages (mirror the mandate workflow: capture → mandate → close)
@@ -1242,8 +1253,25 @@ function scheduleNightlyRefresh() {
 // HTTP server
 // ---------------------------------------------------------------------------
 
+// Optional DLD projects registry (developer, status, % complete) — written by
+// `scripts/fetch-ddads.js pull-projects` once the dld_projects dataset is
+// granted. Merged into /api/projects when present; absent file is fine.
+let projectRegistry = new Map();
+function loadProjectRegistry() {
+  try {
+    const p = path.join(__dirname, 'projects-dld.json');
+    if (!fs.existsSync(p)) return;
+    const arr = JSON.parse(fs.readFileSync(p, 'utf8'));
+    projectRegistry = new Map(arr.map((r) => [String(r.name || '').trim().toUpperCase(), r]));
+    console.log(`[registry] loaded ${projectRegistry.size} DLD-registered projects`);
+  } catch (err) {
+    console.warn('[registry] could not load projects-dld.json:', err.message);
+  }
+}
+
 async function start() {
   await rebuildDataset();
+  loadProjectRegistry();
   scheduleNightlyRefresh();
 
   const server = http.createServer(async (req, res) => {
@@ -1255,7 +1283,7 @@ async function start() {
 
       // Public config — agent WhatsApp number for lead redirect
       if (req.url === '/api/config') {
-        return send(res, 200, { agentWhatsapp: AGENT_WHATSAPP });
+        return send(res, 200, { agentWhatsapp: AGENT_WHATSAPP, demoData: DEMO_DATA });
       }
 
       // Manual refresh webhook — POST /api/refresh?token=SECRET
@@ -1496,6 +1524,7 @@ async function start() {
             const psfs = b.rows.map((r) => r.aedPerSqft);
             const offCount = b.rows.filter((r) => (r.offplan || '').toLowerCase().includes('off')).length;
             const latest = b.rows.reduce((m, r) => (r.date > m ? r.date : m), '');
+            const reg = projectRegistry.get(name.trim().toUpperCase());
             return {
               name,
               area: b.area,
@@ -1505,6 +1534,10 @@ async function start() {
               medianPrice: Math.round(median(b.rows.map((r) => r.transValue))),
               offplanPct: Math.round((offCount / b.rows.length) * 100),
               lastSale: latest,
+              developer: reg?.developer ?? null,
+              status: reg?.status ?? null,
+              percentComplete: reg?.percentComplete ?? null,
+              registered: reg?.startDate ?? null,
             };
           })
           .sort((a, b) => b.sales - a.sales)
@@ -1754,12 +1787,25 @@ async function start() {
     }
   });
 
-  server.listen(PORT, () => {
-    console.log(`[server] Elevate Homes ready at http://localhost:${PORT}/`);
+  if (!IS_SERVERLESS) {
+    server.listen(PORT, () => {
+      console.log(`[server] Elevate Homes ready at http://localhost:${PORT}/`);
+    });
+  }
+  return server;
+}
+
+let serverPromise = null;
+if (!IS_SERVERLESS) {
+  start().catch((err) => {
+    console.error('[boot] failed:', err.message);
+    process.exit(1);
   });
 }
 
-start().catch((err) => {
-  console.error('[boot] failed:', err.message);
-  process.exit(1);
-});
+// Vercel entry — boot once per instance, then feed each request to the same
+// listener the long-running server uses.
+export default async function handler(req, res) {
+  serverPromise ||= start();
+  (await serverPromise).emit('request', req, res);
+}

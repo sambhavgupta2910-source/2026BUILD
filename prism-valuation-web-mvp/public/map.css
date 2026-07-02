@@ -173,6 +173,7 @@
 }
 .map-panel h3 { font-family: var(--font-display); font-size: 24px; line-height: 1.15; }
 .map-panel-loc { color: var(--muted); font-size: 13px; margin-top: 3px; }
+.map-panel-reg { color: var(--gold-hi); font-size: 12px; margin-top: 5px; }
 .map-panel-stats {
   display: grid;
   grid-template-columns: 1fr 1fr;

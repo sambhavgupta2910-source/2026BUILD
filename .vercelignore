@@ -1,0 +1,13 @@
+# Deploy only what the preview needs — the app + its bundled demo dataset.
+.git
+node_modules
+_codex
+presentation
+*.pptx
+*.pdf
+# real DLD pulls and captured leads never ship in a preview bundle
+transactions-dld.csv
+projects-dld.json
+.data
+.cache
+.env

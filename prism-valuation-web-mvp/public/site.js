@@ -22,6 +22,14 @@ async function boot() {
   ]);
 
   agentWhatsapp = config.agentWhatsapp || '';
+
+  // Honesty guard: synthetic demo data must never read as real DLD figures
+  if (config.demoData) {
+    const ribbon = document.createElement('div');
+    ribbon.className = 'demo-ribbon';
+    ribbon.textContent = 'DEMO — synthetic sample data, not real DLD figures';
+    document.body.appendChild(ribbon);
+  }
   setWhatsappLinks();
 
   if (metadata) {
