@@ -15,11 +15,16 @@
 <!-- ── Nav ──────────────────────────────────────────────── -->
 <nav class="topnav">
   <a href="/" class="nav-logo">
-    <svg width="20" height="20" viewBox="0 0 192 192" fill="none">
-      <rect x="52" y="41" width="22" height="110" rx="4" fill="#c9a96e"/>
-      <rect x="52" y="41" width="79" height="22" rx="4" fill="#c9a96e"/>
-      <rect x="52" y="90" width="71" height="20" rx="4" fill="#c9a96e"/>
-      <rect x="109" y="41" width="22" height="69" rx="4" fill="#c9a96e"/>
+    <svg width="20" height="20" viewBox="0 0 192 192" fill="none" aria-hidden="true">
+      <defs>
+        <linearGradient id="navGrad" x1="52" y1="41" x2="131" y2="151" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#83b8ff"/><stop offset="1" stop-color="#d8b579"/>
+        </linearGradient>
+      </defs>
+      <rect x="52" y="41" width="22" height="110" rx="4" fill="url(#navGrad)"/>
+      <rect x="52" y="41" width="79" height="22" rx="4" fill="url(#navGrad)"/>
+      <rect x="52" y="90" width="71" height="20" rx="4" fill="url(#navGrad)"/>
+      <rect x="109" y="41" width="22" height="69" rx="4" fill="url(#navGrad)"/>
     </svg>
     PRISM
   </a>

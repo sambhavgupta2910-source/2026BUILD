@@ -123,7 +123,12 @@ function readForm() {
 }
 
 function renderResult(result) {
-  $('#baseValue').textContent = fmtAed(result.baseValue);
+  const baseEl = $('#baseValue');
+  baseEl.textContent = fmtAed(result.baseValue);
+  // Micro-pop when a fresh estimate lands (restart the CSS animation)
+  baseEl.classList.remove('pop');
+  void baseEl.offsetWidth;
+  baseEl.classList.add('pop');
   $('#lowValue').textContent = fmtAed(result.lowValue);
   $('#highValue').textContent = fmtAed(result.highValue);
 
@@ -417,30 +422,47 @@ function renderTrendsChart(monthly, containerId) {
   const yPsf = (v) => PT + cH - ((v - minPsf) / (maxPsf - minPsf || 1)) * cH;
   const barW = Math.max(5, (cW / n) * 0.55);
 
+  const defs = `<defs>
+    <linearGradient id="psfArea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5b9cf6" stop-opacity="0.26"/>
+      <stop offset="1" stop-color="#5b9cf6" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="volBar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6ea8ff" stop-opacity="0.34"/>
+      <stop offset="1" stop-color="#6ea8ff" stop-opacity="0.06"/>
+    </linearGradient>
+    <linearGradient id="offBar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5fd6a8" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#5fd6a8" stop-opacity="0.10"/>
+    </linearGradient>
+  </defs>`;
+
   const grid = [0, 0.25, 0.5, 0.75, 1].map((f) => {
     const y = (PT + cH - f * cH).toFixed(1);
-    return `<line x1="${PL}" y1="${y}" x2="${W - PR}" y2="${y}" stroke="#1f2a3d" stroke-width="1"/>`;
+    return `<line x1="${PL}" y1="${y}" x2="${W - PR}" y2="${y}" stroke="#1b2740" stroke-width="1"/>`;
   }).join('');
 
   const bars = monthly.map((m, i) => {
     const x = (xOf(i) - barW / 2).toFixed(1);
     const bH = ((m.count / maxCount) * cH).toFixed(1);
     const y = (PT + cH - (m.count / maxCount) * cH).toFixed(1);
-    return `<rect x="${x}" y="${y}" width="${barW.toFixed(1)}" height="${bH}" fill="#6ea8ff" opacity="0.2" rx="2"/>`;
+    return `<rect x="${x}" y="${y}" width="${barW.toFixed(1)}" height="${bH}" fill="url(#volBar)" rx="3"/>`;
   }).join('');
 
   const offBars = monthly.map((m, i) => {
     const x = (xOf(i) - barW / 2).toFixed(1);
     const bH = ((m.offplanCount / maxCount) * cH).toFixed(1);
     const y = (PT + cH - (m.offplanCount / maxCount) * cH).toFixed(1);
-    return `<rect x="${x}" y="${y}" width="${barW.toFixed(1)}" height="${bH}" fill="#5fd6a8" opacity="0.35" rx="2"/>`;
+    return `<rect x="${x}" y="${y}" width="${barW.toFixed(1)}" height="${bH}" fill="url(#offBar)" rx="3"/>`;
   }).join('');
 
   const linePoints = monthly.map((m, i) => `${xOf(i).toFixed(1)},${yPsf(m.medianPsf).toFixed(1)}`);
-  const linePath = `<path d="M${linePoints.join(' L')}" fill="none" stroke="#6ea8ff" stroke-width="2" stroke-linejoin="round"/>`;
+  const baseY = (PT + cH).toFixed(1);
+  const areaPath = `<path d="M${xOf(0).toFixed(1)},${baseY} L${linePoints.join(' L')} L${xOf(n - 1).toFixed(1)},${baseY} Z" fill="url(#psfArea)"/>`;
+  const linePath = `<path d="M${linePoints.join(' L')}" fill="none" stroke="#83b8ff" stroke-width="2.25" stroke-linejoin="round" stroke-linecap="round"/>`;
 
   const dots = monthly.map((m, i) =>
-    `<circle cx="${xOf(i).toFixed(1)}" cy="${yPsf(m.medianPsf).toFixed(1)}" r="3.5" fill="#6ea8ff" stroke="#121826" stroke-width="1.5"/>`
+    `<circle cx="${xOf(i).toFixed(1)}" cy="${yPsf(m.medianPsf).toFixed(1)}" r="3.2" fill="#83b8ff" stroke="#0d131f" stroke-width="1.5"/>`
   ).join('');
 
   const xLabels = monthly.map((m, i) =>
@@ -464,16 +486,16 @@ function renderTrendsChart(monthly, containerId) {
   const axisRight = `<text x="${W - 11}" y="${(PT + cH / 2).toFixed(1)}" text-anchor="middle" font-size="9" fill="#6ea8ff" transform="rotate(90,${W - 11},${(PT + cH / 2).toFixed(1)})">AED / sqft</text>`;
 
   const legend = `
-    <rect x="${PL}" y="5" width="10" height="8" fill="#6ea8ff" opacity="0.2" rx="1"/>
+    <rect x="${PL}" y="5" width="10" height="8" fill="#6ea8ff" opacity="0.34" rx="2"/>
     <text x="${PL + 14}" y="12" font-size="9" fill="#6b7a99">Total vol.</text>
-    <rect x="${PL + 78}" y="5" width="10" height="8" fill="#5fd6a8" opacity="0.35" rx="1"/>
+    <rect x="${PL + 78}" y="5" width="10" height="8" fill="#5fd6a8" opacity="0.5" rx="2"/>
     <text x="${PL + 92}" y="12" font-size="9" fill="#6b7a99">Off-plan</text>
-    <line x1="${PL + 156}" y1="9" x2="${PL + 172}" y2="9" stroke="#6ea8ff" stroke-width="2"/>
-    <circle cx="${PL + 164}" cy="9" r="3" fill="#6ea8ff" stroke="#121826" stroke-width="1.5"/>
+    <line x1="${PL + 156}" y1="9" x2="${PL + 172}" y2="9" stroke="#83b8ff" stroke-width="2.25"/>
+    <circle cx="${PL + 164}" cy="9" r="3" fill="#83b8ff" stroke="#0d131f" stroke-width="1.5"/>
     <text x="${PL + 178}" y="12" font-size="9" fill="#6b7a99">Median AED/sqft</text>`;
 
   el.innerHTML = `<svg width="100%" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
-    ${grid}${bars}${offBars}${linePath}${dots}${xLabels}${countTicks}${psfTicks}${axisLeft}${axisRight}${legend}
+    ${defs}${grid}${areaPath}${bars}${offBars}${linePath}${dots}${xLabels}${countTicks}${psfTicks}${axisLeft}${axisRight}${legend}
   </svg>`;
 }
 
