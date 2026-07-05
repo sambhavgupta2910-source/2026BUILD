@@ -1,6 +1,7 @@
 // Operator console behavior. Talks to the gated /api/operator endpoints.
 // Pricing actions never auto-send: a draft is created, then a human must
 // explicitly approve, and only if the quote clears the margin floor.
+import { initMotion } from "/src/motion.js";
 
 const statusOptions = [
   "new",
@@ -24,6 +25,7 @@ function init() {
     if (e.key === "Enter") login();
   });
   $("#refresh").addEventListener("click", loadQueue);
+  initMotion();
   // Try to load immediately in case a session cookie already exists.
   loadQueue({ silent: true });
 }
@@ -172,6 +174,9 @@ function renderDetail(lead) {
         <input id="quote-cost" type="number" min="0" placeholder="Cost basis (USD)" />
         <button class="primary-button" type="button" id="draft-quote">Draft</button>
       </div>
+      <div class="filter-row" style="margin-top:8px">
+        <input id="approver-name" type="text" placeholder="Approver name (required to approve)" autocomplete="name" />
+      </div>
       <p class="muted">A draft below the margin floor is flagged as a margin exception and cannot be approved or sent.</p>
       ${
         lead.quotes?.length
@@ -207,8 +212,13 @@ function renderDetail(lead) {
 
   document.querySelectorAll("[data-approve]").forEach((button) => {
     button.addEventListener("click", async () => {
-      const approver = prompt("Approver name for human sign-off:");
-      if (!approver) return;
+      const approverInput = $("#approver-name");
+      const approver = approverInput.value.trim();
+      if (!approver) {
+        toast("Enter the approver name for human sign-off.");
+        approverInput.focus();
+        return;
+      }
       const res = await postJson(`/api/operator/leads/${lead.id}/quotes/${button.dataset.approve}/approve`, { approver });
       if (res.ok) {
         toast("Quote approved by human — now sendable.");

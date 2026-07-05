@@ -4,6 +4,7 @@ import {
   formatCurrency,
   rankRfqQueue
 } from "./src/portal-data.js";
+import { initMotion } from "./src/motion.js";
 
 const state = {
   parts: [
@@ -206,20 +207,45 @@ const sourceLabels = {
   gse_alliance: "GSE alliance"
 };
 
-renderAll();
+// Views render lazily: each builds on first activation and is re-rendered
+// only after its underlying state changes (see invalidateViews).
+const renderers = {
+  dashboard: renderDashboard,
+  rfqs: renderRfqs,
+  catalog: renderCatalog,
+  trace: renderTrace,
+  aog: renderAog,
+  account: renderAccount
+};
+const renderedViews = new Set();
+let currentView = "dashboard";
+
 bindPublicSite();
 bindNavigation();
 bindGlobalActions();
+updateSidebarSla();
+initMotion();
 
-function renderAll() {
-  renderDashboard();
-  renderRfqs();
-  renderCatalog();
-  renderTrace();
-  renderAog();
-  renderAccount();
+function ensureView(viewName) {
+  if (!renderedViews.has(viewName)) {
+    renderers[viewName]();
+    renderedViews.add(viewName);
+  }
+}
 
-  const fastest = Math.min(...state.aogEvents.filter((event) => !event.resolved).map((event) => event.respondedMinutes));
+function invalidateViews(...viewNames) {
+  for (const viewName of viewNames) {
+    renderedViews.delete(viewName);
+  }
+  if (viewNames.includes(currentView)) {
+    ensureView(currentView);
+  }
+  updateSidebarSla();
+}
+
+function updateSidebarSla() {
+  const open = state.aogEvents.filter((event) => !event.resolved);
+  const fastest = open.length ? Math.min(...open.map((event) => event.respondedMinutes)) : 0;
   document.querySelector("#sidebar-sla").textContent = `${fastest} min`;
 }
 
@@ -290,9 +316,9 @@ function renderRfqs() {
 
 function renderCatalog() {
   const view = document.querySelector("#view-catalog");
-  const parts = filterParts(state.parts, state.filters);
-  const selected = state.parts.find((part) => part.id === state.selectedPartId) || parts[0] || state.parts[0];
 
+  // The filter row renders once and persists across result updates, so typing
+  // in the search field never loses focus.
   view.innerHTML = `
     <div class="card" style="margin-bottom:16px">
       <div class="filter-row">
@@ -311,48 +337,59 @@ function renderCatalog() {
         </select>
       </div>
     </div>
-    <div class="grid two-col">
-      <section class="card">
-        <p class="eyebrow">${parts.length} matching parts</p>
-        <div class="list">
-          ${parts.map((part) => `
-            <button class="row-card clickable ${part.id === selected.id ? "selected" : ""}" type="button" data-part-id="${part.id}">
-              <span>
-                <strong>${part.partNumber}</strong><br />
-                <span class="muted">${part.description} · ATA ${part.ata}</span>
-              </span>
-              <span class="status-pill ${part.leadTimeTier === "quote" ? "amber" : "green"}">${part.leadTimeTier}</span>
-            </button>
-          `).join("")}
-        </div>
-      </section>
-      <aside class="card detail-panel">
-        <p class="eyebrow">Part record</p>
-        <h3>${selected.partNumber}</h3>
-        <p class="muted">${selected.description}</p>
-        <div class="chips">
-          <span class="status-pill blue">${sourceLabels[selected.sourceType]}</span>
-          <span class="status-pill">${selected.condition}</span>
-          <span class="status-pill ${selected.usOrigin ? "amber" : "green"}">${selected.usOrigin ? "US origin" : "Non-US origin"}</span>
-        </div>
-        <table class="data-table" style="margin-top:14px">
-          <tbody>
-            <tr><th>Aircraft</th><td>${selected.aircraft}</td></tr>
-            <tr><th>Supplier</th><td>${selected.supplier}</td></tr>
-            <tr><th>Guide price</th><td>${formatCurrency(selected.unitPrice, selected.currency)}</td></tr>
-            <tr><th>Stock</th><td>${selected.stock}</td></tr>
-            <tr><th>Docs</th><td>${selected.traceDocs.join(", ")}</td></tr>
-          </tbody>
-        </table>
-        <div class="action-row" style="margin-top:14px">
-          <button class="primary-button" type="button" data-draft="${selected.id}">Draft quote</button>
-          <button class="ghost-button" type="button" data-trace="${selected.id}">Build trace pack</button>
-        </div>
-      </aside>
-    </div>
+    <div class="grid two-col" id="catalog-results"></div>
   `;
 
-  bindCatalog();
+  bindCatalogFilters();
+  renderCatalogResults();
+}
+
+function renderCatalogResults() {
+  const container = document.querySelector("#catalog-results");
+  const parts = filterParts(state.parts, state.filters);
+  const selected = state.parts.find((part) => part.id === state.selectedPartId) || parts[0] || state.parts[0];
+
+  container.innerHTML = `
+    <section class="card">
+      <p class="eyebrow">${parts.length} matching parts</p>
+      <div class="list">
+        ${parts.map((part) => `
+          <button class="row-card clickable ${part.id === selected.id ? "selected" : ""}" type="button" data-part-id="${part.id}">
+            <span>
+              <strong>${part.partNumber}</strong><br />
+              <span class="muted">${part.description} · ATA ${part.ata}</span>
+            </span>
+            <span class="status-pill ${part.leadTimeTier === "quote" ? "amber" : "green"}">${part.leadTimeTier}</span>
+          </button>
+        `).join("")}
+      </div>
+    </section>
+    <aside class="card detail-panel">
+      <p class="eyebrow">Part record</p>
+      <h3>${selected.partNumber}</h3>
+      <p class="muted">${selected.description}</p>
+      <div class="chips">
+        <span class="status-pill blue">${sourceLabels[selected.sourceType]}</span>
+        <span class="status-pill">${selected.condition}</span>
+        <span class="status-pill ${selected.usOrigin ? "amber" : "green"}">${selected.usOrigin ? "US origin" : "Non-US origin"}</span>
+      </div>
+      <table class="data-table" style="margin-top:14px">
+        <tbody>
+          <tr><th>Aircraft</th><td>${selected.aircraft}</td></tr>
+          <tr><th>Supplier</th><td>${selected.supplier}</td></tr>
+          <tr><th>Guide price</th><td>${formatCurrency(selected.unitPrice, selected.currency)}</td></tr>
+          <tr><th>Stock</th><td>${selected.stock}</td></tr>
+          <tr><th>Docs</th><td>${selected.traceDocs.join(", ")}</td></tr>
+        </tbody>
+      </table>
+      <div class="action-row" style="margin-top:14px">
+        <button class="primary-button" type="button" data-draft="${selected.id}">Draft quote</button>
+        <button class="ghost-button" type="button" data-trace="${selected.id}">Build trace pack</button>
+      </div>
+    </aside>
+  `;
+
+  bindCatalogResults();
 }
 
 function renderTrace() {
@@ -636,17 +673,31 @@ function showPortal() {
 }
 
 function setView(viewName) {
-  document.querySelectorAll("[data-view-link]").forEach((link) => {
-    link.classList.toggle("active", link.dataset.viewLink === viewName);
-  });
-  document.querySelectorAll("[data-view]").forEach((view) => {
-    view.classList.toggle("active", view.dataset.view === viewName);
-  });
-  document.querySelector("#view-title").textContent = viewTitles[viewName];
-  history.replaceState(null, "", `#${viewName}`);
+  const apply = () => {
+    currentView = viewName;
+    ensureView(viewName);
+    document.querySelectorAll("[data-view-link]").forEach((link) => {
+      link.classList.toggle("active", link.dataset.viewLink === viewName);
+    });
+    document.querySelectorAll("[data-view]").forEach((view) => {
+      view.classList.toggle("active", view.dataset.view === viewName);
+    });
+    const title = document.querySelector("#view-title");
+    title.textContent = viewTitles[viewName];
+    title.setAttribute("tabindex", "-1");
+    title.focus({ preventScroll: true });
+    history.replaceState(null, "", `#${viewName}`);
+  };
+
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (document.startViewTransition && !reduced) {
+    document.startViewTransition(apply);
+  } else {
+    apply();
+  }
 }
 
-function bindCatalog() {
+function bindCatalogFilters() {
   const query = document.querySelector("#part-query");
   const ata = document.querySelector("#ata-filter");
   const source = document.querySelector("#source-filter");
@@ -660,14 +711,17 @@ function bindCatalog() {
         sourceType: source.value,
         availability: availability.value
       };
-      renderCatalog();
+      // Only the results re-render; the filter controls (and focus) persist.
+      renderCatalogResults();
     });
   });
+}
 
+function bindCatalogResults() {
   document.querySelectorAll("[data-part-id]").forEach((button) => {
     button.addEventListener("click", () => {
       state.selectedPartId = button.dataset.partId;
-      renderCatalog();
+      renderCatalogResults();
     });
   });
 
@@ -698,7 +752,7 @@ function bindGlobalActions() {
       neededBy: "48 hours",
       note: "Synthetic RFQ generated for demo review."
     });
-    renderAll();
+    invalidateViews("dashboard", "rfqs");
     showToast(`${nextId} added to the queue.`);
   });
 

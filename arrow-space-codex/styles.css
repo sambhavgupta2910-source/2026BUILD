@@ -15,7 +15,13 @@
   --red: #a4493d;
   --blue: #7fa6d4;
   --shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --dur-quick: 200ms;
+  --dur-base: 600ms;
+  --dur-slow: 900ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  /* Deliberate system stack: no webfont download, no layout shift. */
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 * {
@@ -1052,5 +1058,353 @@ input {
   .row-card,
   .data-table {
     font-size: 0.92rem;
+  }
+}
+
+/* ==========================================================================
+   Motion & modern layer (Build 3)
+   Scroll reveals, native lazy rendering, view transitions, micro-interactions.
+   All animation is compositor-friendly (transform/opacity/filter) and fully
+   disabled under prefers-reduced-motion.
+   ========================================================================== */
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 96px;
+  overflow-x: clip;
+}
+
+/* Native lazy rendering: below-fold landing sections skip layout and paint
+   until they approach the viewport. */
+.company-section,
+.credential-ledger,
+.parts-counter {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 640px;
+}
+
+/* --- Scroll-reveal system -------------------------------------------------
+   Hidden states only apply once the inline head script stamps .has-motion,
+   so content stays visible without JavaScript. */
+.has-motion [data-reveal],
+.has-motion [data-reveal-stagger] > * {
+  opacity: 0;
+  transform: translateY(26px);
+  filter: blur(6px);
+  transition:
+    opacity var(--dur-base) var(--ease-out),
+    transform var(--dur-base) var(--ease-out),
+    filter var(--dur-base) var(--ease-out);
+}
+
+.has-motion [data-reveal-stagger] > * {
+  transition-delay: calc(var(--reveal-i, 0) * 70ms);
+}
+
+.has-motion [data-reveal].is-revealed,
+.has-motion [data-reveal-stagger].is-revealed > * {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+/* Progressive enhancement: browsers with scroll-driven animations also get a
+   gentle section rise tied directly to scroll position. */
+@supports (animation-timeline: view()) {
+  .has-motion .company-section {
+    animation: section-rise both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 36%;
+  }
+}
+
+@keyframes section-rise {
+  from {
+    opacity: 0.35;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* --- Hero atmosphere ------------------------------------------------------ */
+.company-hero {
+  position: relative;
+}
+
+.company-hero::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: -18%;
+  right: -8%;
+  width: 56vmax;
+  height: 56vmax;
+  background: radial-gradient(circle, rgba(200, 155, 83, 0.14), transparent 62%);
+  animation: hero-glow 22s var(--ease-out) infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes hero-glow {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.7;
+  }
+  to {
+    transform: translate3d(-6%, 7%, 0) scale(1.12);
+    opacity: 1;
+  }
+}
+
+/* --- Glass panels --------------------------------------------------------- */
+.inventory-console,
+.aog-panel {
+  background: rgba(12, 28, 45, 0.62);
+  backdrop-filter: blur(16px) saturate(1.25);
+  -webkit-backdrop-filter: blur(16px) saturate(1.25);
+}
+
+/* --- Sticky nav scroll state ---------------------------------------------- */
+.public-nav {
+  transition:
+    background var(--dur-quick) ease,
+    box-shadow var(--dur-quick) ease,
+    padding var(--dur-quick) ease;
+}
+
+.public-nav.is-scrolled {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  background: rgba(4, 11, 19, 0.92);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+}
+
+/* Nav link underline slide-in */
+.public-nav nav a {
+  position: relative;
+  padding-bottom: 3px;
+  transition: color var(--dur-quick) ease;
+}
+
+.public-nav nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1.5px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--dur-quick) var(--ease-out);
+}
+
+.public-nav nav a:hover::after,
+.public-nav nav a:focus-visible::after {
+  transform: scaleX(1);
+}
+
+/* --- Buttons -------------------------------------------------------------- */
+.primary-button,
+.ghost-button,
+.small-button {
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform var(--dur-quick) var(--ease-out),
+    box-shadow var(--dur-quick) var(--ease-out),
+    border-color var(--dur-quick) ease,
+    background var(--dur-quick) ease;
+}
+
+.primary-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 26px rgba(200, 155, 83, 0.32);
+}
+
+.ghost-button:hover,
+.small-button:hover {
+  transform: translateY(-1px);
+  border-color: rgba(214, 170, 94, 0.55);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.primary-button:active,
+.ghost-button:active,
+.small-button:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Gold sheen sweep across primary buttons */
+.primary-button::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 32%,
+    rgba(255, 255, 255, 0.35) 48%,
+    transparent 62%
+  );
+  transform: translateX(-120%);
+  transition: transform var(--dur-base) var(--ease-out);
+  pointer-events: none;
+}
+
+.primary-button:hover::after {
+  transform: translateX(120%);
+}
+
+/* --- Cards & tiles --------------------------------------------------------- */
+.card,
+.service-card,
+.market-grid article,
+.row-card,
+.inventory-console,
+.aog-panel {
+  transition:
+    transform var(--dur-quick) var(--ease-out),
+    border-color var(--dur-quick) ease,
+    background var(--dur-quick) ease,
+    box-shadow var(--dur-quick) var(--ease-out);
+}
+
+.service-card:hover,
+.market-grid article:hover {
+  transform: translateY(-4px);
+  border-color: rgba(214, 170, 94, 0.5);
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.3);
+}
+
+.row-card.clickable {
+  cursor: pointer;
+}
+
+.row-card.clickable:hover {
+  transform: translateX(3px);
+}
+
+/* Ledger tiles: tint instead of lift so shared borders stay seamless */
+.quick-actions article,
+.product-grid span,
+.trust-strip span,
+.counter-grid article {
+  transition: background var(--dur-quick) ease, color var(--dur-quick) ease;
+}
+
+.quick-actions article:hover,
+.product-grid span:hover,
+.trust-strip span:hover,
+.counter-grid article:hover {
+  background: rgba(200, 155, 83, 0.09);
+}
+
+.product-grid span:hover {
+  color: var(--gold);
+}
+
+/* --- Portal view transitions ----------------------------------------------- */
+.view.active {
+  animation: view-enter var(--dur-base) var(--ease-out);
+}
+
+@keyframes view-enter {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@supports (view-transition-name: root) {
+  ::view-transition-old(root) {
+    animation: vt-fade-out 140ms ease both;
+  }
+
+  ::view-transition-new(root) {
+    animation: vt-rise-in 280ms var(--ease-out) both;
+  }
+}
+
+@keyframes vt-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes vt-rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* --- Toast ------------------------------------------------------------------ */
+.toast {
+  transform: translateY(14px) scale(0.97);
+  transition:
+    opacity 320ms var(--ease-spring),
+    transform 320ms var(--ease-spring);
+}
+
+.toast.show {
+  transform: translateY(0) scale(1);
+}
+
+/* --- Accessibility & polish -------------------------------------------------- */
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.skip-link {
+  position: fixed;
+  top: -48px;
+  left: 16px;
+  z-index: 100;
+  padding: 10px 16px;
+  color: #07111d;
+  font-weight: 750;
+  text-decoration: none;
+  border-radius: 4px;
+  background: var(--gold);
+  transition: top var(--dur-quick) var(--ease-out);
+}
+
+.skip-link:focus-visible {
+  top: 12px;
+}
+
+/* --- Reduced motion: global kill-switch -------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+
+  .has-motion [data-reveal],
+  .has-motion [data-reveal-stagger] > * {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
   }
 }

@@ -45,6 +45,7 @@ const STATIC_ROUTES = {
   "/app.js": "app.js",
   "/src/portal-data.js": "src/portal-data.js",
   "/src/catalog.js": "src/catalog.js",
+  "/src/motion.js": "src/motion.js",
   "/operator": "operator/index.html",
   "/operator/": "operator/index.html",
   "/operator/index.html": "operator/index.html",

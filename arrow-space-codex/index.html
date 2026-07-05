@@ -3,10 +3,26 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Arrow Space by Arrow Aviation Services: aircraft parts supply, AOG response, repair coordination, and release documentation for defense, airline, MRO, and business aviation buyers."
+    />
+    <meta name="theme-color" content="#06111d" />
     <title>Arrow Space | Codex Prototype</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='5' fill='%2306111d'/%3E%3Cpath d='M8 21h13' stroke='%23c89b53' stroke-width='2.4'/%3E%3Cpath d='M17 9l7 7-7-1z' fill='%23c89b53'/%3E%3C/svg%3E"
+    />
     <link rel="stylesheet" href="./styles.css" />
+    <script>
+      /* Gate reveal-hiding behind JS so content stays visible without it. */
+      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        document.documentElement.classList.add("has-motion");
+      }
+    </script>
   </head>
   <body>
+    <a class="skip-link" href="#top">Skip to content</a>
     <div class="public-site" id="public-site">
       <div class="utility-bar">
         <span>25+ years of excellence</span>
@@ -34,7 +50,7 @@
 
       <main id="top">
         <section class="company-hero">
-          <div class="hero-copy">
+          <div class="hero-copy" data-reveal-stagger>
             <p class="eyebrow">Global aircraft parts supply</p>
             <h1>The parts company for aviation buyers who need certainty before dispatch.</h1>
             <p class="hero-lede">
@@ -46,7 +62,7 @@
               <a class="ghost-button" href="#inventory">Search live inventory</a>
             </div>
           </div>
-          <aside class="inventory-console" aria-label="Live inventory search">
+          <aside class="inventory-console" aria-label="Live inventory search" data-reveal>
             <span class="panel-label">Search our live inventory</span>
             <label>Part number, NSN, or keyword
               <input id="hero-q" type="search" placeholder="Brake assembly, DC-ONE-X, 130-384045-1" />
@@ -74,11 +90,11 @@
         </section>
 
         <section class="credential-ledger" aria-label="Certifications and distributions">
-          <div class="section-heading compact">
+          <div class="section-heading compact" data-reveal>
             <p class="eyebrow">Certifications and distributions</p>
             <h2>Start with the credentials buyers use to qualify a supplier.</h2>
           </div>
-          <div class="trust-strip">
+          <div class="trust-strip" data-reveal-stagger>
             <span>Authorized channel partner of Textron Aviation</span>
             <span>Authorized David Clark dealer</span>
             <span>Authorized Bose aviation dealer</span>
@@ -87,25 +103,25 @@
         </section>
 
         <section class="parts-counter" id="inventory">
-          <div>
+          <div data-reveal>
             <p class="eyebrow">Parts counter</p>
             <h2>Search, request, or route a requirement without guessing the right inbox.</h2>
           </div>
-          <div class="counter-grid">
+          <div class="counter-grid" data-reveal-stagger>
             <article>
-              <strong>4</strong>
+              <strong data-count>4</strong>
               <span>regional desks</span>
             </article>
             <article>
-              <strong>24/7</strong>
+              <strong data-count>24/7</strong>
               <span>AOG response path</span>
             </article>
             <article>
-              <strong>25+</strong>
+              <strong data-count>25+</strong>
               <span>years in aviation supply</span>
             </article>
           </div>
-          <div class="quick-actions">
+          <div class="quick-actions" data-reveal-stagger>
             <article>
               <span class="panel-label">Parts</span>
               <h3>Search parts</h3>
@@ -134,11 +150,11 @@
         </section>
 
         <section class="company-section" id="parts">
-          <div class="section-heading">
+          <div class="section-heading" data-reveal>
             <p class="eyebrow">What we do</p>
             <h2>Parts supply, aircraft support, repairs, exchange, logistics, and MRO services.</h2>
           </div>
-          <div class="company-grid three-col">
+          <div class="company-grid three-col" data-reveal-stagger>
             <article class="service-card">
               <span>01</span>
               <h3>OEM and authorized paths</h3>
@@ -158,11 +174,11 @@
         </section>
 
         <section class="company-section product-section">
-          <div class="section-heading">
+          <div class="section-heading" data-reveal>
             <p class="eyebrow">Aircraft products</p>
             <h2>Navigate by the categories parts buyers actually use.</h2>
           </div>
-          <div class="product-grid">
+          <div class="product-grid" data-reveal-stagger>
             <span>Airframe</span>
             <span>Engines</span>
             <span>Avionics and instruments</span>
@@ -179,7 +195,7 @@
         </section>
 
         <section class="company-section split" id="aog-support">
-          <div>
+          <div data-reveal>
             <p class="eyebrow">AOG support</p>
             <h2>For grounded aircraft, the first response is structured immediately.</h2>
             <p>
@@ -187,7 +203,7 @@
               flags export or defense review where needed, and routes the case for human response.
             </p>
           </div>
-          <div class="aog-panel">
+          <div class="aog-panel" data-reveal>
             <strong>11 min</strong>
             <span>sample active response</span>
             <p>Synthetic demo metric. Real AOG handling stays phone-backed and operator-owned.</p>
@@ -204,11 +220,11 @@
         </section>
 
         <section class="company-section" id="quality">
-          <div class="section-heading">
+          <div class="section-heading" data-reveal>
             <p class="eyebrow">Quality and release control</p>
             <h2>Built for buyers who check documents before they check price.</h2>
           </div>
-          <div class="proof-list">
+          <div class="proof-list" data-reveal-stagger>
             <article><strong>Traceability</strong><p>FAA 8130-3, EASA Form 1, CoC, ATA Spec 106, workshop release, and supplier-path records.</p></article>
             <article><strong>Export review</strong><p>US-origin and defense end-use cases are flagged before pricing is released.</p></article>
             <article><strong>Human approval</strong><p>Draft quotes, compliance holds, and release packs require operator sign-off.</p></article>
@@ -216,11 +232,11 @@
         </section>
 
         <section class="company-section markets-section">
-          <div class="section-heading">
+          <div class="section-heading" data-reveal>
             <p class="eyebrow">Markets served</p>
             <h2>Support paths for defense, airlines, MROs, business aviation, and rotor-wing operators.</h2>
           </div>
-          <div class="market-grid">
+          <div class="market-grid" data-reveal-stagger>
             <article><strong>Defense and government</strong><p>End-use review, document discipline, and approval-led sourcing.</p></article>
             <article><strong>Airlines and operators</strong><p>AOG, recurring consumables, repair exchange, and order visibility.</p></article>
             <article><strong>MRO and Part-145</strong><p>Traceable supplier paths, release documents, and multi-line RFQ handling.</p></article>
@@ -229,12 +245,12 @@
         </section>
 
         <section class="company-section rfq-panel" id="rfq">
-          <div>
+          <div data-reveal>
             <p class="eyebrow">New client intake</p>
             <h2>Send a parts request with enough detail to quote correctly.</h2>
             <p>For the prototype, this form demonstrates the intake path. Existing customers can log in to see quotes, orders, and documents.</p>
           </div>
-          <form class="rfq-form">
+          <form class="rfq-form" data-reveal>
             <label>Part number <input id="rfq-part" type="text" placeholder="e.g. 130-384045-1" /></label>
             <label>Aircraft / fleet <input id="rfq-aircraft" type="text" placeholder="e.g. King Air B300" /></label>
             <label>Required condition
@@ -306,7 +322,7 @@
           </div>
         </header>
 
-        <section class="hero-strip" aria-label="Portal positioning">
+        <section class="hero-strip" aria-label="Portal positioning" data-reveal>
           <div>
             <span class="status-pill green">Institutional aviation operations</span>
             <h2>RFQs, sourcing paths, traceability, and AOG response in one controlled workspace.</h2>
