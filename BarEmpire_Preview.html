@@ -277,9 +277,21 @@ const DATA = {
     {tier:3, name:'Flagship',   cap:2.4, appeal:1.5, cost:260000},
   ],
   districts: [
-    {id:'riverside', name:'Riverside Strip', traffic:900,  rent:1100, affluence:1.00, comp:2, fitout:0},
-    {id:'market',    name:'Market Lane',     traffic:1250, rent:1900, affluence:1.05, comp:3, fitout:42000},
-    {id:'harbor',    name:'Harbour Front',   traffic:1700, rent:3000, affluence:1.25, comp:5, fitout:120000},
+    {id:'riverside', name:'Riverside Strip', city:'bayside', traffic:900,  rent:1100, affluence:1.00, comp:2, fitout:0},
+    {id:'market',    name:'Market Lane',     city:'bayside', traffic:1250, rent:1900, affluence:1.05, comp:3, fitout:42000},
+    {id:'harbor',    name:'Harbour Front',   city:'bayside', traffic:1700, rent:3000, affluence:1.25, comp:5, fitout:120000},
+    {id:'oldtown',   name:'Old Town',        city:'silverport', traffic:1150, rent:1600, affluence:1.10, comp:3, fitout:65000},
+    {id:'promenade', name:'The Promenade',   city:'silverport', traffic:1650, rent:2700, affluence:1.22, comp:4, fitout:110000},
+    {id:'heights',   name:'Crown Heights',   city:'silverport', traffic:2100, rent:4300, affluence:1.48, comp:6, fitout:210000},
+  ],
+  cities: [
+    {id:'bayside',    name:'Bayside',    unlock:0,      note:'Home turf — where it all started.'},
+    {id:'silverport', name:'Silverport', unlock:150000, note:'A wealthier coastal city. Higher rents, bigger spenders.'},
+  ],
+  luxury: [
+    {id:'penthouse', name:'Skyline Penthouse',        icon:'🌆', price:600000,  rep:4},
+    {id:'yacht',     name:"Yacht — Angel's Share",    icon:'🛥️', price:1100000, rep:6},
+    {id:'jet',       name:'Private Jet',              icon:'✈️', price:1800000, rep:8},
   ],
   trends: [
     {id:'balanced', name:'Balanced Scene',     boosts:{},                                       note:'No strong pull this season.'},
@@ -308,6 +320,8 @@ const DATA = {
     {id:'retail_market',   name:'Market Retail Unit',    district:'market',    price:180000, rent:2100},
     {id:'office_harbor',   name:'Harbour Office Suite',  district:'harbor',    price:220000, rent:2600},
     {id:'penthouse_harbor',name:'Harbour Penthouse',     district:'harbor',    price:480000, rent:5200},
+    {id:'loft_oldtown',    name:'Old Town Lofts',        district:'oldtown',   price:120000, rent:1400},
+    {id:'tower_heights',   name:'Crown Heights Tower',   district:'heights',   price:650000, rent:7200},
   ],
   rivalNames: ['The Anchor','Lane & Co','Quayside Social','The Tipsy Fox','Harbour Taps','Velvet Room','The Brass Owl','Smokestack Tavern'],
 };
@@ -410,6 +424,24 @@ DATA.events = [
         {p:0.5,effects:[{t:'cash',amount:-2500}],result:'It breaks again mid-week — an expensive emergency repair.'},
         {p:0.5,effects:[],result:'The patch holds, for now.'}]}]},
    ]},
+  {id:'ventureDeal', icon:'🚀', title:'Startup Pitch',
+   body:'A founder pitches you their hospitality-tech startup over drinks. They want backing.',
+   check:(s)=>s.cash>=40000,
+   choices:[
+     {label:'Invest '+fmt$(40000), sub:'Venture stake — could exit big, could go to zero', cost:40000,
+      effects:[{t:'venture',stake:40000}],
+      result:'Term sheet signed. Now you wait — startups take time to exit or fold.'},
+     {label:'Pass on the deal', sub:'No cost', effects:[], result:'You wish them luck and keep your capital.'},
+   ]},
+  {id:'ventureDeal2', icon:'🧪', title:'Craft Distilling Startup',
+   body:'Two ex-distillers are raising for a micro-cask ageing venture and want a strategic backer.',
+   check:(s)=>s.cash>=75000 && s.ownedLines.length>0,
+   choices:[
+     {label:'Invest '+fmt$(75000), sub:'Bigger stake, bigger swing', cost:75000,
+      effects:[{t:'venture',stake:75000}],
+      result:'You wire the funds — your name goes on the cap table.'},
+     {label:'Decline', sub:'No cost', effects:[], result:'Interesting, but not this one.'},
+   ]},
 ];
 
 // generic, JSON-safe choice-effect interpreter — returns a result message
@@ -427,6 +459,7 @@ function applyChoiceEffects(engine, choice){
         const ids=DATA.stocks.map(s=>s.id), id=ids[engine.rngInt(ids.length)], cur=S.stocks[id];
         const qty=Math.floor(eff.amount/cur.price); cur.shares+=qty; cur.price*=1.2; break;
       }
+      case 'venture': S.ventures.push({stake:eff.stake, week:S.week}); break;
       case 'staffLoss': {
         const cand=S.venues.filter(v=>v.staff>eff.amount);
         if (cand.length){ const v=cand[engine.rngInt(cand.length)]; v.staff-=eff.amount; }
@@ -501,6 +534,9 @@ function newGameState(seed){
   s.projects=[]; s.lineBonuses={}; s.wageBonus=0; s.lineAlloc={};
   s.pendingEvent=null; s.eventCooldown=2;
   s.rivals={}; DATA.districts.forEach((d,i)=>{ s.rivals[d.id]={tier:1, nameIdx:i%DATA.rivalNames.length}; });
+  s.currentCity='bayside'; s.unlockedCities=['bayside'];
+  s.publicCo=false; s.ownPct=100;
+  s.brands={}; s.luxury={}; s.ventures=[];
   return s;
 }
 
@@ -615,7 +651,8 @@ class SimEngine {
     const servicePerc = S.venues.length>0 ? serviceSum/S.venues.length : 1;
     const onMenu = DATA.drinks.filter(dr=>S.menu[dr.id].on);
     const avgQ = onMenu.length ? onMenu.reduce((a,dr)=>a+this.catQuality(dr.cat),0)/onMenu.length : 0.4;
-    const repTarget = clamp(100*(0.35+0.40*valuePerc*avgQ+0.25*servicePerc),5,100);
+    const luxRep = DATA.luxury.reduce((a,lx)=>a+(S.luxury[lx.id]?lx.rep:0),0);
+    const repTarget = clamp(100*(0.35+0.40*valuePerc*avgQ+0.25*servicePerc)+luxRep,5,100);
     S.reputation = clamp(S.reputation+(repTarget-S.reputation)*0.28,1,100);
     S.awareness = clamp(S.awareness*0.90+Math.sqrt(S.marketing/200)*2.2,0,100);
 
@@ -649,7 +686,8 @@ class SimEngine {
         const wsUnits=b.units*(alloc.wholesalePct||0)/100;
         const ownUnits=b.units-wsUnits;
         if (wsUnits>0){
-          this._wholesale += wsUnits*l.prodCost*2.5*S.marketIndex[b.cat];
+          const brandMult=S.brands[b.cat]?1.6:1;
+          this._wholesale += wsUnits*l.prodCost*2.5*S.marketIndex[b.cat]*brandMult;
         }
         if (ownUnits>0){
           const ex=S.ownInv[b.cat];
@@ -698,6 +736,22 @@ class SimEngine {
       const cur=S.stocks[st.id];
       const bias = st.id==='PROOF' ? clamp((this.netWorth()/300000-1)*0.002,-0.01,0.01) : 0;
       cur.price=clamp(cur.price*(1+stockDrift+bias+(this.rng()-0.5)*st.vol), st.base*0.2, st.base*6);
+    }
+
+    // venture portfolio: startups exit or fold over time
+    if (S.ventures.length){
+      const kept=[];
+      for (const vt of S.ventures){
+        const r2=this.rng(), age=S.week-vt.week;
+        if (age>=6 && r2<0.05){
+          const mult=3+this.rng()*5, payout=vt.stake*mult;
+          S.cash+=payout;
+          ev.push({msg:'🚀 Startup exit! Your '+fmt$(vt.stake)+' venture stake pays out '+fmt$(payout)+' ('+mult.toFixed(1)+'×)', big:true});
+        } else if (age>=6 && r2<0.09){
+          ev.push({msg:'📉 A startup you backed has folded — the '+fmt$(vt.stake)+' stake is written off.'});
+        } else kept.push(vt);
+      }
+      S.ventures=kept;
     }
 
     // weekly decision event trigger
@@ -836,7 +890,9 @@ class SimEngine {
     const lines=S.ownedLines.reduce((a,id)=>a+lineById(id).capex*0.5,0);
     const stocks=DATA.stocks.reduce((a,st)=>a+S.stocks[st.id].price*S.stocks[st.id].shares,0);
     const props=DATA.properties.filter(pr=>S.properties[pr.id]).reduce((a,pr)=>a+pr.price,0);
-    return S.cash-S.debt+inv+prem+lines+stocks+props;
+    const lux=DATA.luxury.filter(lx=>S.luxury[lx.id]).reduce((a,lx)=>a+lx.price*0.8,0);
+    const vent=S.ventures.reduce((a,v)=>a+v.stake,0);
+    return S.cash-S.debt+inv+prem+lines+stocks+props+lux+vent;
   }
   buyStock(id,qty){
     const S=this.S, st=DATA.stocks.find(x=>x.id===id), cur=st&&S.stocks[id];
@@ -855,6 +911,58 @@ class SimEngine {
     if (!pr || S.properties[id] || S.cash<pr.price) return false;
     S.cash-=pr.price; S.properties[id]=true; return true;
   }
+  // ------------------------------------------------ phase-3 empire actions
+  unlockCity(id){
+    const S=this.S, ct=DATA.cities.find(c=>c.id===id);
+    if (!ct || S.unlockedCities.includes(id) || S.cash<ct.unlock) return false;
+    S.cash-=ct.unlock; S.unlockedCities.push(id); return true;
+  }
+  goPublic(){
+    const S=this.S;
+    if (S.publicCo || this.netWorth()<500000 || S.reputation<60) return false;
+    const raise=this.netWorth()*1.3*0.30;
+    S.publicCo=true; S.ownPct=70; S.cash+=raise;
+    S.stocks.PROOF.price=Math.max(S.stocks.PROOF.price, this.netWorth()/20000);
+    return raise;
+  }
+  sellShares(){ // 5% blocks; must retain control (>55%)
+    const S=this.S;
+    if (!S.publicCo || S.ownPct<=55) return false;
+    const chunk=this.netWorth()*1.3*0.05;
+    S.ownPct-=5; S.cash+=chunk; return chunk;
+  }
+  acquireRival(districtId){
+    const S=this.S, riv=S.rivals[districtId];
+    if (!riv || riv.tier===0) return false;
+    const price=riv.tier*90000;
+    if (S.cash<price) return false;
+    S.cash-=price; riv.tier=0;
+    S.reputation=clamp(S.reputation+2,1,100);
+    S.awareness=clamp(S.awareness+6,0,100);
+    return price;
+  }
+  caskValue(b){
+    const l=lineById(b.lineId)||DATA.lines.find(x=>x.cat===b.cat);
+    const age=(this.S.week-b.start)/52;
+    return b.units*l.prodCost*(1.15+age*(l.aging*10+0.5))*this.S.marketIndex[b.cat];
+  }
+  sellCask(idx){
+    const S=this.S, b=S.maturing[idx];
+    if (!b) return false;
+    const price=this.caskValue(b);
+    S.maturing.splice(idx,1); S.cash+=price; return price;
+  }
+  launchBrand(lineId){
+    const S=this.S, l=lineById(lineId);
+    if (!l || !S.ownedLines.includes(lineId) || S.brands[l.cat] || S.cash<60000) return false;
+    S.cash-=60000; S.brands[l.cat]=true;
+    S.awareness=clamp(S.awareness+8,0,100); return true;
+  }
+  buyLuxury(id){
+    const S=this.S, lx=DATA.luxury.find(x=>x.id===id);
+    if (!lx || S.luxury[id] || S.cash<lx.price) return false;
+    S.cash-=lx.price; S.luxury[id]=true; return true;
+  }
   // est. unit cost of a drink for menu UI
   drinkCost(dr){
     const S=this.S;
@@ -871,7 +979,9 @@ class SimEngine {
 // ============================================================================
 const COLS=12, DROWS=6, NDIST=3, GROWS=NDIST*DROWS; // 12 x 18 grid
 const TILE_W=76, TILE_H=42, OX=684, OY=150;
-const DIST_IDS=['riverside','market','harbor'];
+let VIEW_CITY='bayside';
+const cityDists=cid=>DATA.districts.filter(d=>d.city===cid).map(d=>d.id);
+let DIST_IDS=cityDists(VIEW_CITY);
 function districtRow(d){ return {back0:d*DROWS+0, back1:d*DROWS+1, road:d*DROWS+2, front:d*DROWS+3, plaza:d*DROWS+4, road2:d*DROWS+5}; }
 function iso(gx,gy){ return {x:OX+(gx-gy)*(TILE_W/2), y:OY+(gx+gy)*(TILE_H/2)}; }
 
@@ -880,24 +990,39 @@ const CITY = {
   H: OY+(COLS+GROWS)*(TILE_H/2)+160,
   lots:{}, pads:{}, civic:{},
 };
-DIST_IDS.forEach((id,d)=>{
-  const r=districtRow(d);
-  CITY.lots[id]={gx:4,gy:r.front,fw:2,fd:1,districtId:id};
-});
-['brewery','wineest','distill'].forEach((id,d)=>{
-  const r=districtRow(d);
-  CITY.pads[id]={gx:0,gy:r.front,fw:3,fd:1};
-});
 // civic destinations — systems live at physical places, not permanent tabs
 const CIVIC_DEFS={
-  bank:    {district:0, icon:'🏦', label:'CITY BANK', drawer:'finance', c:'#8a94a8'},
-  hq:      {district:1, icon:'🏢', label:'PROOF HQ',  drawer:'brand',   c:'#a8905e'},
-  exchange:{district:2, icon:'💹', label:'EXCHANGE',  drawer:'invest',  c:'#7e98ad'},
+  bank:     {city:'bayside',    district:0, gx:7,  icon:'🏦', label:'CITY BANK', drawer:'finance', c:'#8a94a8'},
+  hq:       {city:'bayside',    district:1, gx:7,  icon:'🏢', label:'PROOF HQ',  drawer:'brand',   c:'#a8905e'},
+  exchange: {city:'bayside',    district:2, gx:7,  icon:'💹', label:'EXCHANGE',  drawer:'invest',  c:'#7e98ad'},
+  airport:  {city:'bayside',    district:0, gx:10, icon:'✈️', label:'AIRPORT',   drawer:'airport', c:'#9aa4b8'},
+  airport2: {city:'silverport', district:0, gx:7,  icon:'✈️', label:'AIRPORT',   drawer:'airport', c:'#9aa4b8'},
+  bank2:    {city:'silverport', district:1, gx:7,  icon:'🏦', label:'CITY BANK', drawer:'finance', c:'#8a94a8'},
+  exchange2:{city:'silverport', district:2, gx:7,  icon:'💹', label:'EXCHANGE',  drawer:'invest',  c:'#7e98ad'},
 };
-Object.keys(CIVIC_DEFS).forEach(id=>{
-  const r=districtRow(CIVIC_DEFS[id].district);
-  CITY.civic[id]={gx:7,gy:r.front,fw:2,fd:1};
-});
+function buildCityLayout(){
+  CITY.lots={}; CITY.pads={}; CITY.civic={};
+  DIST_IDS.forEach((id,d)=>{
+    const r=districtRow(d);
+    CITY.lots[id]={gx:4,gy:r.front,fw:2,fd:1,districtId:id};
+  });
+  if (VIEW_CITY==='bayside')
+    ['brewery','wineest','distill'].forEach((id,d)=>{
+      const r=districtRow(d);
+      CITY.pads[id]={gx:0,gy:r.front,fw:3,fd:1};
+    });
+  Object.keys(CIVIC_DEFS).forEach(id=>{
+    const cv=CIVIC_DEFS[id];
+    if (cv.city!==VIEW_CITY) return;
+    const r=districtRow(cv.district);
+    CITY.civic[id]={gx:cv.gx,gy:r.front,fw:2,fd:1};
+  });
+}
+buildCityLayout();
+function setCity(cid){
+  VIEW_CITY=cid; DIST_IDS=cityDists(cid);
+  buildCityLayout(); genCity();
+}
 const VENUE_FW=[0,2,2,2], VENUE_FD=[0,1,1,1], VENUE_H=[0,46,80,124];
 const PALETTES=[
   {walls:['#e7c9a1','#d9b48b','#c9d4b8','#e3d3b5','#d4a98c','#e0c0a8'], win:'#7e93a8', winLit:'#ffd98a'},
@@ -920,7 +1045,11 @@ function shade(hex,f){ // f<1 darker, f>1 lighter
 let DECOR=[];
 function genCity(){
   DECOR=[];
-  let vr=917;
+  let vr=917+(VIEW_CITY==='silverport'?533:0);
+  const covered=(gx,gy)=>{
+    const all=[...Object.values(CITY.lots),...Object.values(CITY.pads),...Object.values(CITY.civic)];
+    return all.some(o=>gy===o.gy && gx>=o.gx && gx<o.gx+o.fw);
+  };
   const vrng=()=>{ vr=(vr+0x6D2B79F5)>>>0; let t=vr;
     t=Math.imul(t^(t>>>15),1|t); t^=t+Math.imul(t^(t>>>7),61|t);
     return ((t^(t>>>14))>>>0)/4294967296; };
@@ -940,9 +1069,7 @@ function genCity(){
     }
     // front row shop cells (skip pad cols 0-2 and venue cols 4-5)
     for (let gx=0;gx<COLS;gx++){
-      if (gx>=0&&gx<3) continue; // pad
-      if (gx>=4&&gx<6) continue; // venue
-      if (gx>=7&&gx<9) continue; // civic building
+      if (covered(gx,r.front)) continue; // pad / venue lot / civic building
       const h=40+vrng()*46;
       DECOR.push({gx,gy:r.front,fw:1,fd:1,h,
         c:pal.walls[(vrng()*pal.walls.length)|0], win:pal.win, winLit:pal.winLit,
@@ -1264,7 +1391,8 @@ function updateParticles(dt,now){
   // factory smoke
   if (engine && Math.random()<dt*3){
     for (const id of engine.S.ownedLines){
-      const pad=CITY.pads[id]; const top=iso(pad.gx+pad.fw/2,pad.gy+pad.fd/2);
+      const pad=CITY.pads[id]; if (!pad) continue;
+      const top=iso(pad.gx+pad.fw/2,pad.gy+pad.fd/2);
       smokes.push({x:top.x+14+Math.random()*6-3,y:top.y-86,r:3,a:0.5});
     }
   }
@@ -1355,7 +1483,7 @@ function render(now){
     drawPropertyPins(c,d,engine.S,now);
   });
   // first-session pulse ring on starting bar
-  if (firstSessionPulse && engine.S.week<4){
+  if (firstSessionPulse && engine.S.week<4 && CITY.lots.riverside){
     const lot=CITY.lots.riverside, top=iso(lot.gx+1,lot.gy+0.5);
     const rad=46+Math.sin(now/300)*8;
     c.strokeStyle='rgba(240,201,110,'+(0.5+0.3*Math.sin(now/300))+')'; c.lineWidth=3;
@@ -1570,7 +1698,9 @@ function nextWeek(){
   for (const e of engine.lastEvents) pushTicker(e.msg);
   pushTicker('Wk '+r.week+' · net '+(r.net>=0?'+':'')+fmt$(r.net)+' · '+r.units.toLocaleString()+' drinks'+(r.shortfall?' · sourcing gap':''));
   for (const vs of engine.venueStats){
-    const lot=CITY.lots[vs.districtId], tier=engine.venueAt(vs.districtId).tier;
+    const lot=CITY.lots[vs.districtId];
+    if (!lot) continue; // venue is in another city — no mote on this map
+    const tier=engine.venueAt(vs.districtId).tier;
     const top=iso(lot.gx+VENUE_FW[tier]/2,lot.gy+VENUE_FD[tier]/2);
     motes.push({x:top.x,y:top.y-VENUE_H[tier]-18,
       vy:-13,a:1.6,t:'+'+fmt$(vs.revenue),c:'#4caf7d'});
@@ -1819,6 +1949,25 @@ function renderDrawer(){
           +'<span>'+alloc.wholesalePct+'% wholesale</span>'
           +'<button onclick="uiLineWholesale(\''+l.id+'\',10)">+</button></div>'
           +'<div class="dsub">'+Math.round(outUnits)+' units/wk → '+wsUnits+' sold wholesale @ $'+wsPrice.toFixed(2)+' ('+fmt$(wsUnits*wsPrice*S.marketIndex[l.cat])+'/wk) · '+ownUnits+' kept for your venues</div>';
+        // bottled brand
+        html+='<div class="dlabel" style="margin-top:6px">Bottled brand</div>';
+        if (S.brands[l.cat])
+          html+='<div class="dsub" style="color:var(--pos)">🏷️ Own '+l.cat.toLowerCase()+' brand on shelves — wholesale sells at 1.6× price.</div>';
+        else
+          html+='<div class="drow"><button class="btn btn-sm btn-gold" '+(S.cash<60000?'disabled':'')
+            +' onclick="uiLaunchBrand(\''+l.id+'\')">🏷️ Launch brand · '+fmt$(60000)+'</button>'
+            +'<span class="dsub">1.6× wholesale price · +8 awareness</span></div>';
+        // cask market — sell aging batches early
+        const myCasks=S.maturing.map((b,i)=>({b,i})).filter(x=>x.b.lineId===l.id).slice(0,5);
+        if (myCasks.length){
+          html+='<div class="dlabel" style="margin-top:6px">Cask market — sell inventory before it matures</div>';
+          for (const {b,i} of myCasks){
+            const age=((S.week-b.start)/52), val=engine.caskValue(b);
+            html+='<div class="drow" style="justify-content:space-between;margin-top:4px">'
+              +'<span class="dsub">'+Math.round(b.units)+' units · aged '+(age>=1?age.toFixed(1)+' yr':Math.round((S.week-b.start))+' wk')+' · ready wk '+b.ready+'</span>'
+              +'<button class="btn btn-sm" onclick="uiSellCask('+i+')">Sell '+fmt$(val)+'</button></div>';
+          }
+        }
       }
       html+='</div>';
     }
@@ -1909,6 +2058,59 @@ function renderDrawer(){
       +'<span class="schip">stocks <b>'+fmt$(stockVal)+'</b></span>'
       +'<span class="schip">property <b>'+fmt$(propVal)+'</b></span>'
       +'<span class="schip">rent income <b>'+fmt$(propIncome)+'/wk</b></span></div></div>';
+    // ---- IPO / public company
+    html+='<div class="dcard"><div class="dlabel">Proof Holdings — capital markets</div>';
+    if (!S.publicCo){
+      const eligible=engine.netWorth()>=500000 && S.reputation>=60;
+      html+='<div class="dsub">Take PROOF public: sell 30% of the company at a 1.3× valuation. Requires '+fmt$(500000)+' net worth and 60 reputation.</div>'
+        +'<div class="drow" style="margin-top:6px"><button class="btn btn-gold btn-sm" '+(eligible?'':'disabled')
+        +' onclick="uiGoPublic()">📣 IPO — raise '+fmt$(engine.netWorth()*1.3*0.30)+'</button></div>';
+    } else {
+      html+='<div class="chips"><span class="schip">your stake <b>'+S.ownPct+'%</b></span>'
+        +'<span class="schip">market cap <b>'+fmt$(engine.netWorth()*1.3)+'</b></span></div>'
+        +'<div class="drow" style="margin-top:6px"><button class="btn btn-sm" '+(S.ownPct>55?'':'disabled')
+        +' onclick="uiSellShares()">Sell 5% block · '+fmt$(engine.netWorth()*1.3*0.05)+'</button></div>'
+        +'<div class="dsub">You must keep control (>55%). Fund the empire, don\'t lose it.</div>';
+    }
+    if (S.ventures.length)
+      html+='<div class="dsub" style="margin-top:6px">🚀 Venture stakes: '+S.ventures.map(v=>fmt$(v.stake)).join(' · ')+' — exits arrive with time.</div>';
+    html+='</div>';
+    // ---- M&A: buy out rivals
+    const targets=DATA.districts.filter(d=>S.rivals[d.id]&&S.rivals[d.id].tier>0);
+    html+='<div class="dcard"><div class="dlabel">Acquisitions — rival buyouts</div>';
+    if (!targets.length) html+='<div class="dsub">No rival businesses operating right now.</div>';
+    for (const d of targets){
+      const riv=S.rivals[d.id], price=riv.tier*90000;
+      html+='<div class="drow" style="justify-content:space-between;margin-top:6px">'
+        +'<span class="dname">'+DATA.rivalNames[riv.nameIdx]+' <span class="dsub">('+d.name+' · '+DATA.tiers[riv.tier-1].name+')</span></span>'
+        +'<button class="btn btn-sm btn-gold" '+(S.cash<price?'disabled':'')+' onclick="uiAcquire(\''+d.id+'\')">Buy out '+fmt$(price)+'</button></div>';
+    }
+    html+='</div>';
+    // ---- luxury / prestige assets
+    html+='<div class="dcard"><div class="dlabel">Private brokerage — prestige assets</div>'
+      +'<div class="dsub">Tycoon status made visible. Each asset permanently lifts your reputation.</div>';
+    for (const lx of DATA.luxury){
+      html+='<div class="drow" style="justify-content:space-between;margin-top:6px">'
+        +'<span class="dname">'+lx.icon+' '+lx.name+' <span class="dsub">rep +'+lx.rep+'</span></span>'
+        +(S.luxury[lx.id]?'<span class="goldc" style="font-size:11px">OWNED</span>'
+          :'<button class="btn btn-sm" '+(S.cash<lx.price?'disabled':'')+' onclick="uiBuyLux(\''+lx.id+'\')">Buy '+fmt$(lx.price)+'</button>')
+        +'</div>';
+    }
+    html+='</div>';
+
+  } else if (drawerType==='airport'){
+    title='✈️ '+(DATA.cities.find(c=>c.id===VIEW_CITY)||{}).name+' Airport';
+    html+='<div class="dsub" style="margin-bottom:8px">Your empire doesn\'t end at the city limits. Open routes to new cities and fly between them.</div>';
+    for (const ct of DATA.cities){
+      const here=ct.id===VIEW_CITY, unlocked=S.unlockedCities.includes(ct.id);
+      const nVen=S.venues.filter(v=>districtById(v.districtId).city===ct.id).length;
+      html+='<div class="dcard"><div class="drow" style="justify-content:space-between">'
+        +'<span class="dname">🏙️ '+ct.name+(here?' <span class="goldc" style="font-size:10px">YOU ARE HERE</span>':'')+'</span>'
+        +(here?'':unlocked
+          ?'<button class="btn btn-sm btn-gold" onclick="uiTravel(\''+ct.id+'\')">Fly there ✈️</button>'
+          :'<button class="btn btn-sm btn-gold" '+(S.cash<ct.unlock?'disabled':'')+' onclick="uiUnlockCity(\''+ct.id+'\')">Open route · '+fmt$(ct.unlock)+'</button>')
+        +'</div><div class="dsub">'+ct.note+(unlocked?' · '+nVen+' venue'+(nVen===1?'':'s')+' here':'')+'</div></div>';
+    }
 
   } else if (drawerType==='goals'){
     title='Objectives';
@@ -1981,6 +2183,50 @@ function uiProperty(id){
     updateHUD(); renderDrawer();
   }
 }
+function uiTravel(cid){
+  if (!engine.S.unlockedCities.includes(cid)) return;
+  engine.S.currentCity=cid; setCity(cid);
+  closeDrawer(); autosave(); updateHUD();
+  const ct=DATA.cities.find(c=>c.id===cid);
+  toast('✈️ Touchdown','Welcome to '+ct.name+'.');
+}
+function uiUnlockCity(cid){
+  if (engine.unlockCity(cid)){
+    const ct=DATA.cities.find(c=>c.id===cid);
+    toast('✈️ Route opened',ct.name+' is on the map. Fly over and plant the flag.');
+    updateHUD(); renderDrawer();
+  }
+}
+function uiGoPublic(){
+  const raise=engine.goPublic();
+  if (raise){ toast('📣 PROOF is public!','The IPO raises '+fmt$(raise)+'. You keep 70% control.'); updateHUD(); renderDrawer(); }
+}
+function uiSellShares(){
+  const got=engine.sellShares();
+  if (got){ toast('💹 Block sold','5% of PROOF placed for '+fmt$(got)+'.'); updateHUD(); renderDrawer(); }
+}
+function uiAcquire(did){
+  const price=engine.acquireRival(did);
+  if (price){ toast('🤝 Acquisition closed','Their regulars are your regulars now. Paid '+fmt$(price)+'.'); updateHUD(); renderDrawer(); }
+}
+function uiSellCask(i){
+  const got=engine.sellCask(i);
+  if (got){ toast('🛢️ Cask sold','Inventory moved for '+fmt$(got)+'.'); updateHUD(); renderDrawer(); }
+}
+function uiLaunchBrand(id){
+  if (engine.launchBrand(id)){
+    const l=lineById(id);
+    toast('🏷️ Brand launched','Your own '+l.cat.toLowerCase()+' label ships to the trade at a premium.');
+    updateHUD(); renderDrawer();
+  }
+}
+function uiBuyLux(id){
+  if (engine.buyLuxury(id)){
+    const lx=DATA.luxury.find(x=>x.id===id);
+    toast(lx.icon+' '+lx.name,'The city notices. Reputation rises for good.');
+    updateHUD(); renderDrawer();
+  }
+}
 function uiLineScale(id,val){
   const S=engine.S; if (!S.lineAlloc[id]) S.lineAlloc[id]={scale:1,wholesalePct:0};
   S.lineAlloc[id].scale=val; lastDrawerTouch=performance.now(); updateHUD(); renderDrawer();
@@ -1997,6 +2243,7 @@ function uiNewGame(fromOver){
   if (!fromOver && !confirm('Start a fresh empire? Current progress is replaced.')) return;
   $('ob-over').hidden=true; $('ob-win').hidden=true; $('ob-week').hidden=true;
   initGame(newGameState());
+  if (VIEW_CITY!=='bayside') setCity('bayside');
   closeDrawer();
   toast('🍸 Fresh start','Riverside pop-up open. Make it count.');
 }
@@ -2020,6 +2267,13 @@ function migrateSave(S){
   for (const id of S.ownedLines) if (!S.lineAlloc[id]) S.lineAlloc[id]={scale:1,wholesalePct:0};
   if (!S.rivals) S.rivals={};
   DATA.districts.forEach((d,i)=>{ if (!S.rivals[d.id]) S.rivals[d.id]={tier:1,nameIdx:i%DATA.rivalNames.length}; });
+  if (!S.currentCity) S.currentCity='bayside';
+  if (!Array.isArray(S.unlockedCities)) S.unlockedCities=['bayside'];
+  if (typeof S.publicCo!=='boolean') S.publicCo=false;
+  if (typeof S.ownPct!=='number') S.ownPct=100;
+  if (!S.brands) S.brands={};
+  if (!S.luxury) S.luxury={};
+  if (!Array.isArray(S.ventures)) S.ventures=[];
   return S;
 }
 function loadSave(){
@@ -2059,6 +2313,7 @@ function boot(){
   const saved=loadSave();
   if (saved){
     initGame(saved);
+    if (saved.currentCity && saved.currentCity!==VIEW_CITY) setCity(saved.currentCity);
     firstSessionPulse=false;
     toast('Welcome back','Week '+saved.week+' — the city kept your seat.');
   } else {
