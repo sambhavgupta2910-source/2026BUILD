@@ -170,10 +170,6 @@ tr:last-child td{border-bottom:none}
 <div id="cmdbar">
   <button class="cmd" data-d="menu" onclick="openDrawer('menu')"><span class="ic">🍸</span>Menu</button>
   <button class="cmd" data-d="supply" onclick="openDrawer('supply')"><span class="ic">📦</span>Supply</button>
-  <button class="cmd" data-d="production" onclick="openDrawer('production')"><span class="ic">🏭</span>Produce</button>
-  <button class="cmd" data-d="brand" onclick="openDrawer('brand')"><span class="ic">⭐</span>Brand</button>
-  <button class="cmd" data-d="finance" onclick="openDrawer('finance')"><span class="ic">📈</span>Finance</button>
-  <button class="cmd" data-d="invest" onclick="openDrawer('invest')"><span class="ic">💹</span>Invest</button>
   <button class="cmd" data-d="goals" onclick="openDrawer('goals')"><span class="ic">🎯</span>Goals</button>
 </div>
 
@@ -196,6 +192,7 @@ tr:last-child td{border-bottom:none}
       <li><span class="em">🏙️</span><span>This is your city. <b>Drag</b> to explore, <b>pinch</b> to zoom.</span></li>
       <li><span class="em">🍺</span><span>Your first bar is open on the <b>Riverside Strip</b> — tap it to manage staff &amp; upgrades.</span></li>
       <li><span class="em">🏗️</span><span>Tap <b>FOR LEASE</b> lots to expand. Building takes a few weeks — choose standard or premium fit-outs along the way.</span></li>
+      <li><span class="em">🏦</span><span>The city is your office: visit the <b>Bank</b> for finances, <b>PROOF HQ</b> for brand &amp; staff, the <b>Exchange</b> for stocks &amp; property, and the industrial sites to brew your own.</span></li>
       <li><span class="em">▶</span><span>Tap <b>Next Week</b> to run the week. Expect news, decisions and the odd curveball every time you do.</span></li>
     </ul>
     <button class="btn btn-gold" onclick="startGame()">Open the doors ▶</button>
@@ -881,7 +878,7 @@ function iso(gx,gy){ return {x:OX+(gx-gy)*(TILE_W/2), y:OY+(gx+gy)*(TILE_H/2)}; 
 const CITY = {
   W: OX+(COLS+GROWS)*(TILE_W/2)+40,
   H: OY+(COLS+GROWS)*(TILE_H/2)+160,
-  lots:{}, pads:{},
+  lots:{}, pads:{}, civic:{},
 };
 DIST_IDS.forEach((id,d)=>{
   const r=districtRow(d);
@@ -890,6 +887,16 @@ DIST_IDS.forEach((id,d)=>{
 ['brewery','wineest','distill'].forEach((id,d)=>{
   const r=districtRow(d);
   CITY.pads[id]={gx:0,gy:r.front,fw:3,fd:1};
+});
+// civic destinations — systems live at physical places, not permanent tabs
+const CIVIC_DEFS={
+  bank:    {district:0, icon:'🏦', label:'CITY BANK', drawer:'finance', c:'#8a94a8'},
+  hq:      {district:1, icon:'🏢', label:'PROOF HQ',  drawer:'brand',   c:'#a8905e'},
+  exchange:{district:2, icon:'💹', label:'EXCHANGE',  drawer:'invest',  c:'#7e98ad'},
+};
+Object.keys(CIVIC_DEFS).forEach(id=>{
+  const r=districtRow(CIVIC_DEFS[id].district);
+  CITY.civic[id]={gx:7,gy:r.front,fw:2,fd:1};
 });
 const VENUE_FW=[0,2,2,2], VENUE_FD=[0,1,1,1], VENUE_H=[0,46,80,124];
 const PALETTES=[
@@ -935,6 +942,7 @@ function genCity(){
     for (let gx=0;gx<COLS;gx++){
       if (gx>=0&&gx<3) continue; // pad
       if (gx>=4&&gx<6) continue; // venue
+      if (gx>=7&&gx<9) continue; // civic building
       const h=40+vrng()*46;
       DECOR.push({gx,gy:r.front,fw:1,fd:1,h,
         c:pal.walls[(vrng()*pal.walls.length)|0], win:pal.win, winLit:pal.winLit,
@@ -1114,6 +1122,24 @@ function drawPad(c,padId,pad,built,nf,now,S){
 }
 
 // rival businesses + ownable properties --------------------------------
+// civic destinations (bank / HQ / exchange) ----------------------------
+function drawCivic(c,id,cv,nf,now){
+  const def=CIVIC_DEFS[id];
+  const box=drawIsoBox(c,cv.gx,cv.gy,cv.fw,cv.fd,66, def.c, shade(def.c,0.75), shade(def.c,0.52));
+  // columns on the right face for an institutional look
+  c.fillStyle=shade(def.c,0.9);
+  for (let k=0;k<3;k++){
+    const t=(k+0.5)/3;
+    const wx=box.Bt.x+(box.Ct.x-box.Bt.x)*t;
+    c.fillRect(wx-2.5,box.Bt.y+(box.B.y-box.Bt.y)*0.15,5,(box.B.y-box.Bt.y)*0.7);
+  }
+  // name plaque
+  c.fillStyle='rgba(20,18,32,.88)'; rr(c,box.At.x-44,box.At.y-18,88,18,9); c.fill();
+  c.fillStyle='#e8ecf4'; c.font='700 10px system-ui'; c.textAlign='center';
+  c.fillText(def.icon+' '+def.label,box.At.x,box.At.y-5);
+  drawPin(c,box.At.x,box.At.y-30,'#6f8fc9',def.icon,now);
+}
+
 const RIVAL_TIER_COLOR=['#5a5a5a','#c08a52','#b8bec8','#f0c96e'];
 function drawRivalPin(c,dIdx,S,now){
   const r=districtRow(dIdx);
@@ -1312,6 +1338,10 @@ function render(now){
   for (const id of Object.keys(CITY.pads))
     drawPad(c,id,CITY.pads[id],engine.S.ownedLines.includes(id),nf,now,engine.S);
 
+  // civic destinations (bank / HQ / exchange)
+  for (const id of Object.keys(CITY.civic))
+    drawCivic(c,id,CITY.civic[id],nf,now);
+
   // player lots / venues
   for (const did of Object.keys(CITY.lots)){
     const lot=CITY.lots[did], v=engine.venueAt(did);
@@ -1397,6 +1427,11 @@ function hitTest(wx,wy){
     const b=isoBounds(pad.gx,pad.gy,pad.fw,pad.fd,90);
     if (wx>=b.minX-10 && wx<=b.maxX+10 && wy>=b.minY-10 && wy<=b.maxY+10) return {type:'pad',id};
   }
+  for (const id of Object.keys(CITY.civic)){
+    const cv=CITY.civic[id];
+    const b=isoBounds(cv.gx,cv.gy,cv.fw,cv.fd,100);
+    if (wx>=b.minX-10 && wx<=b.maxX+10 && wy>=b.minY-10 && wy<=b.maxY+10) return {type:'civic',id};
+  }
   return null;
 }
 function bindInput(){
@@ -1466,6 +1501,7 @@ function handleTap(wx,wy){
   if (!hit){ closeDrawer(); return; }
   if (hit.type==='venue') openDrawer('venue',hit.id);
   else if (hit.type==='lot') openDrawer('build',hit.id);
+  else if (hit.type==='civic') openDrawer(CIVIC_DEFS[hit.id].drawer);
   else openDrawer('production',hit.id);
 }
 // ============================================================================
